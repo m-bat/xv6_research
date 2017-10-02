@@ -21,6 +21,7 @@ struct {
   struct spinlock lock;
   int use_lock;
   struct run *freelist;
+  struct run *freelist_userinfo;
 } kmem;
 
 // Initialization happens in two phases.
@@ -51,6 +52,7 @@ freerange(void *vstart, void *vend)
   for(; p + PGSIZE <= (char*)vend; p += PGSIZE)
     kfree(p);
 }
+
 //PAGEBREAK: 21
 // Free the page of physical memory pointed at by v,
 // which normally should have been returned by a
@@ -70,8 +72,18 @@ kfree(char *v)
   if(kmem.use_lock)
     acquire(&kmem.lock);
   r = (struct run*)v;
-  r->next = kmem.freelist;
-  kmem.freelist = r;
+  //r->next = kmem.freelist;
+  
+  if (v >= (char *)USERINFO) {
+    r->next = kmem.freelist_userinfo;
+    kmem.freelist_userinfo = r;
+  }
+  else {
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+  }
+    
+  //kmem.freelist = r;
   if(kmem.use_lock)
     release(&kmem.lock);
 }
@@ -92,5 +104,25 @@ kalloc(void)
   if(kmem.use_lock)
     release(&kmem.lock);
   return (char*)r;
+}
+
+
+//add function  by manabu
+
+char*
+kuinfo_alloc (void) {
+	struct run *r;
+
+	if (kmem.use_lock) 
+		acquire(&kmem.lock);
+	
+	r = kmem.freelist_userinfo;
+	if (r) 
+		kmem.freelist_userinfo = r->next;
+	
+	if (kmem.use_lock)
+		release(&kmem.lock);
+	
+	return (char*)r;
 }
 

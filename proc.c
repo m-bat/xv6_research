@@ -20,6 +20,9 @@ extern void trapret(void);
 
 static void wakeup1(void *chan);
 
+//add manaubu
+extern pde_t *kpgdir;
+
 void
 pinit(void)
 {
@@ -92,10 +95,22 @@ found:
   release(&ptable.lock);
 
   // Allocate kernel stack.
+  
   if((p->kstack = kalloc()) == 0){
     p->state = UNUSED;
     return 0;
   }
+  
+
+  //Allocate kernel stack by kuinfo_alloc add manabu
+  /*
+  if((p->kstack = kuinfo_alloc()) == 0){
+    p->state = UNUSED;
+    return 0;
+  }
+  */
+  //
+   
   sp = p->kstack + KSTACKSIZE;
 
   // Leave room for trap frame.
@@ -114,6 +129,20 @@ found:
 
   return p;
 }
+
+//add function by manabu
+
+int alloc_test_local(struct proc *p) {
+
+  if ((p->tl = (struct test_local *)kuinfo_alloc()) == 0) {
+    return -1;
+  }
+  
+  return 0;
+}
+
+
+
 
 //PAGEBREAK: 32
 // Set up first user process.
@@ -189,6 +218,7 @@ fork(void)
     return -1;
   }
 
+  //Allocate struct test_local  
   // Copy process state from proc.
   if((np->pgdir = copyuvm(curproc->pgdir, curproc->sz)) == 0){
     kfree(np->kstack);
@@ -216,6 +246,21 @@ fork(void)
 
   np->state = RUNNABLE;
 
+  //add alloc_test
+
+  /*
+  if (alloc_test_local(np) < 0) {
+    panic("alloc_test_local");
+  }
+
+  np->tl->pid = np->pid;
+  np->tl->ppid = np->parent->pid;
+  */
+  
+
+  //
+  
+  
   release(&ptable.lock);
 
   return pid;
@@ -265,6 +310,7 @@ exit(void)
   curproc->state = ZOMBIE;
   sched();
   panic("zombie exit");
+  
 }
 
 // Wait for a child process to exit and return its pid.
@@ -287,6 +333,7 @@ wait(void)
       if(p->state == ZOMBIE){
         // Found one.
         pid = p->pid;
+        //kfree((char *)p->tl);
         kfree(p->kstack);
         p->kstack = 0;
         freevm(p->pgdir);
@@ -532,3 +579,69 @@ procdump(void)
     cprintf("\n");
   }
 }
+
+int
+cps(void)
+{
+  struct proc *p;
+
+  
+  sti();
+  acquire(&ptable.lock);
+
+  cprintf("pid \t ppid \t name \t tl->pid \t tl->ppid \t state \t\n");
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if (p->state == SLEEPING)
+      cprintf("%d \t %d \t %s \t %d \t %d \t SLEEPING \t \n", p->pid, p->parent->pid, p->name, p->tl->pid, p->tl->ppid);
+    else if (p->state == RUNNING)
+      cprintf("%d \t %d \t %s \t %d \t %d \t RUNNING \t \n", p->pid, p->parent->pid, p->name, p->tl->pid, p->tl->ppid);
+    else if (p->state == RUNNABLE) {
+      cprintf("%d \t %d \t %s \t %d \t %d \t RUNNABLE \t \n", p->pid, p->parent->pid, p->name, p->tl->pid, p->tl->ppid);
+      
+    }
+    else if (p->state == ZOMBIE) {
+      cprintf("%d \t %d \t %s \t %d \t %d \t ZOMBIE \t \n", p->pid, p->parent->pid, p->name, p->tl->pid, p->tl->ppid);
+      
+    }
+
+    
+  } 
+  
+  release(&ptable.lock);
+
+  return 22;
+}
+
+int
+plocal(void)
+{
+  struct proc *curproc = myproc();
+  
+
+  struct test_global *plocal;
+
+  
+  if((plocal = (struct test_global *)kuinfo_alloc()) == 0) {
+          
+    return 0;
+  }
+
+  //pte_t *pte;
+
+  //kernel global is read-only (test)
+  
+  //clearptew(kpgdir, (char *)&tglobal); 
+  
+  clearptew(curproc->pgdir, (char *)plocal);
+  plocal->pid = 0;
+  cprintf("process name : %s\n", curproc->name);
+  //cprintf("plocal: tglocal 0x%x\n", &tglobal);
+
+  //cprintf("plocal: tglocal_pte  0x%x\n", *pte);
+
+  return 23;
+}
+
+
+
+

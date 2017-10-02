@@ -134,6 +134,7 @@ struct segdesc {
 // Page table/directory entry flags.
 #define PTE_P           0x001   // Present
 #define PTE_W           0x002   // Writeable
+#define PTE_R           0x000   // Read-only
 #define PTE_U           0x004   // User
 #define PTE_PWT         0x008   // Write-Through
 #define PTE_PCD         0x010   // Cache-Disable

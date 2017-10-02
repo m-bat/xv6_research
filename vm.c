@@ -34,7 +34,7 @@ seginit(void)
 // create any required page table pages.
 static pte_t *
 walkpgdir(pde_t *pgdir, const void *va, int alloc)
-{
+{  
   pde_t *pde;
   pte_t *pgtab;
 
@@ -53,6 +53,23 @@ walkpgdir(pde_t *pgdir, const void *va, int alloc)
   }
   return &pgtab[PTX(va)];
 }
+
+//add manabu wrap walkpgdir 9/21
+char * walkpgdir_global (pde_t *pgdir, const void *va, int alloc) {
+  //pte_t *pte1;
+  char *pte;
+  
+  //pte1 = walkpgdir(pgdir, va, alloc);
+  pte = (char *)walkpgdir(pgdir, va, alloc);
+
+  /*
+  cprintf("pte1: 0x%x\n", *pte1);
+  cprintf("pte: 0x%x\n", *(pte_t *)pte);
+  */
+  
+  return pte;
+}
+
 
 // Create PTEs for virtual addresses starting at va that refer to
 // physical addresses starting at pa. va and size might not
@@ -109,8 +126,9 @@ static struct kmap {
   int perm;
 } kmap[] = {
  { (void*)KERNBASE, 0,             EXTMEM,    PTE_W}, // I/O space
- { (void*)KERNLINK, V2P(KERNLINK), V2P(data), 0},     // kern text+rodata
- { (void*)data,     V2P(data),     PHYSTOP,   PTE_W}, // kern data+memory
+ { (void*)KERNLINK, V2P(KERNLINK), V2P(data),     0}, // kern text+rodata
+ { (void*)data,     V2P(data),     V2P(USERINFO), PTE_W}, // kern data+memory
+ { (void*)USERINFO, V2P(USERINFO), PHYSTOP,   PTE_W}, // kern userinfo
  { (void*)DEVSPACE, DEVSPACE,      0,         PTE_W}, // more devices
 };
 
@@ -118,20 +136,27 @@ static struct kmap {
 pde_t*
 setupkvm(void)
 {
+  
   pde_t *pgdir;
   struct kmap *k;
 
   if((pgdir = (pde_t*)kalloc()) == 0)
     return 0;
-  memset(pgdir, 0, PGSIZE);
+  memset(pgdir, 0, PGSIZE);  
+
   if (P2V(PHYSTOP) > (void*)DEVSPACE)
     panic("PHYSTOP too high");
-  for(k = kmap; k < &kmap[NELEM(kmap)]; k++)
+  for(k = kmap; k < &kmap[NELEM(kmap)]; k++) {
+    //DEBUG
+    /*
+    cprintf("k->virt: 0x%x, k->phys_start: 0x%x, k->phys_end: 0x%x\n", k->virt, k->phys_start, k->phys_end);
+    */    
     if(mappages(pgdir, k->virt, k->phys_end - k->phys_start,
                 (uint)k->phys_start, k->perm) < 0) {
       freevm(pgdir);
       return 0;
     }
+  }
   return pgdir;
 }
 
@@ -310,6 +335,35 @@ clearpteu(pde_t *pgdir, char *uva)
   *pte &= ~PTE_U;
 }
 
+
+//add manabu 9/22: set read-only
+void
+clearptew(pde_t *pgdir, char *uva)  
+{
+
+  pte_t *pte;
+  
+  pte = walkpgdir(pgdir, uva, 0);
+  //pte1 = walkpgdir(pgdir, 0);
+  
+  if (pte == 0)
+    panic("clearptew");
+
+  //read-only
+  *pte &= ~PTE_W;
+  //write-eable
+  //*pte |= PTE_W;  
+
+  //flush the TLB
+  lcr3(V2P(pgdir));
+
+  //DEBUG print
+  //cprintf("plocal: len %d\n", len);
+  //cprintf("plocal: tglocal 0x%x\n", uva);
+  //cprintf("plocal: tglocal_pte  0x%x\n", *pte);
+  //
+}
+
 // Given a parent process's page table, create a copy
 // of it for a child.
 pde_t*
@@ -382,6 +436,33 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
   }
   return 0;
 }
+
+
+//add manabu   don't use
+int copy_proc(struct proc *p)
+{
+	char *mem;
+    
+	if ((mem = kuinfo_alloc()) == 0) {
+      panic("debug: kuinfo_alloc");
+      return -1;
+    }
+	
+	memmove(mem, (char*)p, PGSIZE);
+
+    /*
+	if (mappages(d, (void*)USERINFO, PGSIZE, V2P(mem), flags) < 0) {
+      panic("debug: mappages");
+      return -1;
+	}
+    */
+    //cprintf("%d \t %d \t\n", ((struct proc *)mem)->pid, ((struct proc *)mem)->parent->pid);
+    
+	return 0;
+}
+
+
+
 
 //PAGEBREAK!
 // Blank page.

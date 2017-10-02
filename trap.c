@@ -78,6 +78,14 @@ trap(struct trapframe *tf)
     lapiceoi();
     break;
 
+  //add manabu 9/22 :page table entry writeable
+  case T_PGFLT:    
+    cprintf("T_PGFLT: proccess name %s pid %d\n", myproc()->name, myproc()->pid);
+    //force kill process
+    //myproc()->killed = 1;
+    exit();    
+    break;
+    
   //PAGEBREAK: 13
   default:
     if(myproc() == 0 || (tf->cs&3) == 0){
@@ -105,6 +113,7 @@ trap(struct trapframe *tf)
   if(myproc() && myproc()->state == RUNNING &&
      tf->trapno == T_IRQ0+IRQ_TIMER)
     yield();
+
 
   // Check if the process has been killed since we yielded
   if(myproc() && myproc()->killed && (tf->cs&3) == DPL_USER)

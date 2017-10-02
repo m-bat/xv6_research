@@ -99,6 +99,17 @@ exec(char *path, char **argv)
   curproc->sz = sz;
   curproc->tf->eip = elf.entry;  // main
   curproc->tf->esp = sp;
+
+  //copy proc struct to kernel land
+
+  /*
+  if (copy_proc(curproc) < 0) {
+    panic("fail copy_proc\n");
+  }
+  */
+  
+  
+  
   switchuvm(curproc);
   freevm(oldpgdir);
   return 0;
