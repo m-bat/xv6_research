@@ -70,7 +70,6 @@ char * walkpgdir_global (pde_t *pgdir, const void *va, int alloc) {
   return pte;
 }
 
-
 // Create PTEs for virtual addresses starting at va that refer to
 // physical addresses starting at pa. va and size might not
 // be page-aligned.
@@ -125,11 +124,11 @@ static struct kmap {
   uint phys_end;
   int perm;
 } kmap[] = {
- { (void*)KERNBASE, 0,             EXTMEM,    PTE_W}, // I/O space
- { (void*)KERNLINK, V2P(KERNLINK), V2P(data),     0}, // kern text+rodata
- { (void*)data,     V2P(data),     V2P(USERINFO), PTE_W}, // kern data+memory
- { (void*)USERINFO, V2P(USERINFO), PHYSTOP,   PTE_W}, // kern userinfo
- { (void*)DEVSPACE, DEVSPACE,      0,         PTE_W}, // more devices
+ { (void*)KERNBASE, 0,             EXTMEM,    PTE_W}, //     [1] I/O space 
+ { (void*)KERNLINK, V2P(KERNLINK), V2P(data),     0}, //     [2] kern text+rodata
+ { (void*)data,     V2P(data),     V2P(USERINFO), PTE_W}, // [3] kern data+memory
+ { (void*)USERINFO, V2P(USERINFO), PHYSTOP,  PTE_W}, //      [4] kern userinfo
+ { (void*)DEVSPACE, DEVSPACE,      0,         PTE_W}, //     [5] more devices
 };
 
 // Set up kernel part of a page table.
@@ -159,6 +158,38 @@ setupkvm(void)
   }
   return pgdir;
 }
+
+//add manabu 10/9 kernel land read-only
+void kernel_ro(pde_t *pgdir) {
+  struct kmap *k;  
+  char *a, *last;
+  uint size;
+  int i = 0;
+  
+  for(k = kmap; k < &kmap[NELEM(kmap)]; k++) {
+    i++;
+    //exclude I/O space and device space    
+    if (i == 1 || i == 5) {
+      continue;
+    }
+    
+    cprintf("i: %d\n", i);
+    size = k->phys_end - k->phys_start;
+    a = (char*)PGROUNDDOWN((uint)k->virt);
+    last = (char*)PGROUNDDOWN(((uint)k->virt) + size - 1);
+
+    for(;;){
+      clearptew(pgdir, a);
+      if(a == last)
+        break;
+      a += PGSIZE;
+    }
+    
+  }
+}
+
+
+
 
 // Allocate one page table for the machine for the kernel address
 // space for scheduler processes.
@@ -199,8 +230,88 @@ switchuvm(struct proc *p)
   mycpu()->ts.iomb = (ushort) 0xFFFF;
   ltr(SEG_TSS << 3);
   lcr3(V2P(p->pgdir));  // switch to process's address space
+  
   popcli();
 }
+
+
+
+//add manabu 10/14 moify switchuvm
+void
+switchuvm_ro(struct proc *p, const int n)  
+{
+
+  /*
+  char name[20];
+  strcpy(name, path);
+  */
+
+  
+  if(p == 0)
+    panic("switchuvm: no process");
+  if(p->kstack == 0)
+    panic("switchuvm: no kstack");
+  if(p->pgdir == 0)
+    panic("switchuvm: no pgdir");
+
+  pushcli();
+  mycpu()->gdt[SEG_TSS] = SEG16(STS_T32A, &mycpu()->ts,
+                                sizeof(mycpu()->ts)-1, 0);
+  mycpu()->gdt[SEG_TSS].s = 0;
+  mycpu()->ts.ss0 = SEG_KDATA << 3;
+  mycpu()->ts.esp0 = (uint)p->kstack + KSTACKSIZE;
+  // setting IOPL=0 in eflags *and* iomb beyond the tss segment limit
+  // forbids I/O instructions (e.g., inb and outb) from user space
+  mycpu()->ts.iomb = (ushort) 0xFFFF;
+  ltr(SEG_TSS << 3);
+
+  // kernel Read-Only by manabu
+  /*
+  if (strcmp(path, "/init") == 0) {
+    cprintf("init hit\n");
+  }
+  else if (strcmp(path, "sh") == 0) {
+    cprintf("sh hit\n");
+  }
+  else {
+    cprintf("before: kernel_ro\n");
+    kernel_ro(p->pgdir);
+    cprintf("after: kernel_ro\n");
+  }
+  */
+
+  // add manabu 10/16 
+
+  /*
+  if (n) {
+    cprintf("init hit or sh hit\n");
+  }
+  else {
+    cprintf("before: kernel_ro\n");
+    kernel_ro(p->pgdir);
+    setptew(p->pgdir, p->kstack, KSTACKSIZE);
+    cprintf("after: kernel_ro\n");
+  } 
+  */
+
+  lcr3(V2P(p->pgdir));  // switch to process's address space
+
+
+  /*
+  if (n == 1) {
+    cporintf("init hit or sh hit\n");
+  }
+  else {
+    cprintf("before: kernel_ro\n");
+    kernel_ro(p->pgdir);
+    cprintf("after: kernel_ro\n");
+  }
+  */
+  popcli();
+}
+
+
+
 
 // Load the initcode into address 0 of pgdir.
 // sz must be less than a page.
@@ -344,8 +455,7 @@ clearptew(pde_t *pgdir, char *uva)
   pte_t *pte;
   
   pte = walkpgdir(pgdir, uva, 0);
-  //pte1 = walkpgdir(pgdir, 0);
-  
+    
   if (pte == 0)
     panic("clearptew");
 
@@ -355,14 +465,40 @@ clearptew(pde_t *pgdir, char *uva)
   //*pte |= PTE_W;  
 
   //flush the TLB
-  lcr3(V2P(pgdir));
-
-  //DEBUG print
-  //cprintf("plocal: len %d\n", len);
-  //cprintf("plocal: tglocal 0x%x\n", uva);
-  //cprintf("plocal: tglocal_pte  0x%x\n", *pte);
-  //
+  //lcr3(V2P(pgdir));
 }
+
+
+//add manabu 10/08: set write-enable
+void
+setptew(pde_t *pgdir, char *uva, uint size)  
+{
+  char *a, *last;
+  a = (char *)PGROUNDDOWN((uint)uva);
+  last = (char *)PGROUNDDOWN(((uint)uva) + size - 1);
+  pte_t *pte;
+
+  for (;;) {
+    pte = walkpgdir(pgdir, uva, 0);
+  
+    if (pte == 0)
+      panic("setptew");
+
+    //set write-eable
+    *pte |= PTE_W;
+    if (a == last) {
+      break;
+    }
+    a += PGSIZE;
+  }
+
+  //flush the TLB
+  //lcr3(V2P(pgdir));
+}
+
+
+
+
 
 // Given a parent process's page table, create a copy
 // of it for a child.

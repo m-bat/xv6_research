@@ -95,20 +95,21 @@ found:
   release(&ptable.lock);
 
   // Allocate kernel stack.
-  
+
+  /*
   if((p->kstack = kalloc()) == 0){
     p->state = UNUSED;
     return 0;
   }
-  
+  */
 
   //Allocate kernel stack by kuinfo_alloc add manabu
-  /*
-  if((p->kstack = kuinfo_alloc()) == 0){
+
+  if((p->kstack = kuinfo_alloc()) == 0){    
     p->state = UNUSED;
     return 0;
   }
-  */
+    
   //
    
   sp = p->kstack + KSTACKSIZE;
@@ -605,7 +606,9 @@ cps(void)
     }
 
     
-  } 
+  }
+  //wakeup(&cons.lock);
+  //sleep(myproc(), &ptable.lock);
   
   release(&ptable.lock);
 
@@ -620,11 +623,12 @@ plocal(void)
 
   struct test_global *plocal;
 
-  
-  if((plocal = (struct test_global *)kuinfo_alloc()) == 0) {
-          
+
+  //switchkvm();
+  if((plocal = (struct test_global *)kuinfo_alloc()) == 0) {          
     return 0;
   }
+  //switchuvm(curproc);
 
   //pte_t *pte;
 
@@ -632,16 +636,38 @@ plocal(void)
   
   //clearptew(kpgdir, (char *)&tglobal); 
   
-  clearptew(curproc->pgdir, (char *)plocal);
+  //clearptew(curproc->pgdir, (char *)plocal);
   plocal->pid = 0;
   cprintf("process name : %s\n", curproc->name);
+
+
+  
   //cprintf("plocal: tglocal 0x%x\n", &tglobal);
+
 
   //cprintf("plocal: tglocal_pte  0x%x\n", *pte);
 
   return 23;
 }
 
+int
+strcmp(const char *p, const char *q)
+{
+  while(*p && *p == *q)
+    p++, q++;
+  return (uchar)*p - (uchar)*q;
+}
+
+char*
+strcpy(char *s, char *t)
+{
+  char *os;
+
+  os = s;
+  while((*s++ = *t++) != 0)
+    ;
+  return os;
+}
 
 
 

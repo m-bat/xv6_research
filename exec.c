@@ -7,11 +7,12 @@
 #include "x86.h"
 #include "elf.h"
 
+
 int
 exec(char *path, char **argv)
 {
   char *s, *last;
-  int i, off;
+  int i, off, n = 0;
   uint argc, sz, sp, ustack[3+MAXARG+1];
   struct elfhdr elf;
   struct inode *ip;
@@ -106,11 +107,37 @@ exec(char *path, char **argv)
   if (copy_proc(curproc) < 0) {
     panic("fail copy_proc\n");
   }
+  */   
+
+  //add manabu 10/9 : all kernel land Read-Only
+
+  /*
+  if (strcmp(path, "/init") == 0) {
+    cprintf("init hit\n");
+  }
+  else if (strcmp(path, "sh") == 0) {
+    cprintf("sh hit\n");
+  }
+  else {
+    cprintf("DEBUG: kernel_ro before\n");
+    kernel_ro(curproc->pgdir);
+    cprintf("DEBUG: kernel_ro after\n");
+    setptew(curproc->pgdir,curproc->kstack);    
+  }
   */
+  //
+
+  if (strcmp(path, "/init") == 0) {
+    n = 1;
+  }
+  else if (strcmp(path, "sh") == 0) {
+    n = 1;
+  }
+  else {
+    n = 0;
+  }
   
-  
-  
-  switchuvm(curproc);
+  switchuvm_ro(curproc, n);
   freevm(oldpgdir);
   return 0;
 

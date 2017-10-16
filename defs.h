@@ -123,6 +123,8 @@ void            wakeup(void*);
 void            yield(void);
 int             cps(void);
 int             plocal(void);
+int             strcmp(const char *p, const char *q);
+char*           strcpy(char *s, char *t);
 
 // swtch.S
 void            swtch(struct context**, struct context*);
@@ -190,13 +192,13 @@ int             copyout(pde_t*, uint, void*, uint);
 void            clearpteu(pde_t *pgdir, char *uva);
 void            clearptew(pde_t *pgdir, char *uvao);
 int             copy_proc(struct proc *p);
+
 //add manabu
 char *          walkpgdir_global(pde_t *pgdir, const void *va, int alloc);
-//pte_t*          walkpgdir(pde_t *pgdir, const void *va, int alloc);
-                         
-
-
-
+void            kernel_ro(pde_t *pgdir);
+void            setptew(pde_t *pgdir, char *uva, uint size);
+                      
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))
+void            switchuvm_ro(struct proc *p, const int n);

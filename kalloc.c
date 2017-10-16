@@ -24,6 +24,10 @@ struct {
   struct run *freelist_userinfo;
 } kmem;
 
+
+//add manabu
+extern pde_t *kpgdir;
+
 // Initialization happens in two phases.
 // 1. main() calls kinit1() while still using entrypgdir to place just
 // the pages mapped by entrypgdir on free list.
@@ -43,7 +47,6 @@ kinit2(void *vstart, void *vend)
   freerange(vstart, vend);
   kmem.use_lock = 1;
 }
-
 void
 freerange(void *vstart, void *vend)
 {
@@ -77,6 +80,10 @@ kfree(char *v)
   if (v >= (char *)USERINFO) {
     r->next = kmem.freelist_userinfo;
     kmem.freelist_userinfo = r;
+    //Read-only set PTE_R
+    //clearptew(kpgdir, (char *)r);
+    //DEBUG
+    //cprintf("kinit2: kpgdir->0x%x\n", kpgdir);
   }
   else {
     r->next = kmem.freelist;
@@ -116,7 +123,7 @@ kuinfo_alloc (void) {
 	if (kmem.use_lock) 
 		acquire(&kmem.lock);
 	
-	r = kmem.freelist_userinfo;
+    r = kmem.freelist_userinfo;
 	if (r) 
 		kmem.freelist_userinfo = r->next;
 	
