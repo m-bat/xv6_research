@@ -19,8 +19,11 @@ main(void)
 {
   kinit1(end, P2V(4*1024*1024)); // phys page allocator
   kvmalloc();      // kernel page table
+  //add manabu 10/28
+  cpualloc();
+  //
   mpinit();        // detect other processors
-  lapicinit();     // interrupt controller
+  lapicinit();     // interrupt controller    
   seginit();       // segment descriptors
   picinit();       // disable pic
   ioapicinit();    // another interrupt controller
@@ -33,6 +36,11 @@ main(void)
   ideinit();       // disk 
   startothers();   // start other processors
   kinit2(P2V(4*1024*1024), P2V(PHYSTOP)); // must come after startothers()
+  //add manabu 10/17
+  //fileinit();      // file table
+  //add manabu 11/02  
+  //pinit();         // process table
+  //
   userinit();      // first user process
   mpmain();        // finish this processor's setup
 }
