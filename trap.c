@@ -14,6 +14,10 @@ extern uint vectors[];  // in vectors.S: array of 256 entry pointers
 struct spinlock tickslock;
 uint ticks;
 
+//add manabu 10/24
+uint kgflag = 0;
+
+
 void
 tvinit(void)
 {
@@ -36,6 +40,10 @@ idtinit(void)
 void
 trap(struct trapframe *tf)
 {
+  //add manabu 10/29
+  struct proc *p;
+  //
+  
   if(tf->trapno == T_SYSCALL){
     if(myproc()->killed)
       exit();
@@ -47,6 +55,15 @@ trap(struct trapframe *tf)
   }
 
   switch(tf->trapno){
+
+    /*
+    switchkvm();    
+    p = myproc();
+    setptew_kernel(p->pgdir);
+    switchuvm(p);
+    */
+    
+
   case T_IRQ0 + IRQ_TIMER:
     if(cpuid() == 0){
       acquire(&tickslock);
@@ -79,11 +96,19 @@ trap(struct trapframe *tf)
     break;
 
   //add manabu 9/22 :page table entry writeable
-  case T_PGFLT:    
-    cprintf("T_PGFLT: proccess name %s pid %d\n", myproc()->name, myproc()->pid);
+  case T_PGFLT:        
     //force kill process
-    //myproc()->killed = 1;
-    exit();    
+    //myproc()->killed = 1;   
+    switchkvm();    
+    p = myproc();
+    //cprintf("mycpu->ncli: %d\n", mycpu()->ncli);
+    setptew_kernel(p->pgdir);    
+    switchuvm(p);    
+    kgflag = 1;
+    cprintf("T_PGFLT: kgflag = %d\n", kgflag);
+    cprintf("info: proccess name %s pid %d\n", myproc()->name, myproc()->pid);
+    //panic("T_PGFLT");
+    //exit();    
     break;
     
   //PAGEBREAK: 13
@@ -101,7 +126,6 @@ trap(struct trapframe *tf)
             tf->err, cpuid(), tf->eip, rcr2());
     myproc()->killed = 1;
   }
-
   // Force process exit if it has been killed and is in user space.
   // (If it is still executing in the kernel, let it keep running
   // until it gets to the regular system call return.)
@@ -113,7 +137,6 @@ trap(struct trapframe *tf)
   if(myproc() && myproc()->state == RUNNING &&
      tf->trapno == T_IRQ0+IRQ_TIMER)
     yield();
-
 
   // Check if the process has been killed since we yielded
   if(myproc() && myproc()->killed && (tf->cs&3) == DPL_USER)
