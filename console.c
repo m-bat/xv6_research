@@ -18,11 +18,23 @@
 static void consputc(int);
 
 static int panicked = 0;
+extern uint kgflag;
 
+/*
 static struct {
-  struct spinlock lock;
+   struct spinlock lock;
   int locking;
 } cons;
+*/
+
+//add manabu 10/31
+struct cons_lk {
+  struct spinlock lock;
+  int locking;
+};
+
+struct cons_lk *cons;
+//
 
 static void
 printint(int xx, int base, int sign)
@@ -58,9 +70,13 @@ cprintf(char *fmt, ...)
   uint *argp;
   char *s;
 
-  locking = cons.locking;
+  //locking = cons.locking;
+  locking = cons->locking;
+  
   if(locking)
-    acquire(&cons.lock);
+    //acquire(&cons.lock);
+    acquire(&cons->lock);
+    
 
   if (fmt == 0)
     panic("null fmt");
@@ -100,7 +116,8 @@ cprintf(char *fmt, ...)
   }
 
   if(locking)
-    release(&cons.lock);
+    //release(&cons.lock);
+    release(&cons->lock);
 }
 
 void
@@ -108,14 +125,27 @@ panic(char *s)
 {
   int i;
   uint pcs[10];
-
+  
   cli();
-  cons.locking = 0;
-  // use lapiccpunum so that we can call panic from mycpu()
+  //cons.locking = 0;
+  cons->locking = 0;
+
+  // use lapiccpunum so that we can call panic from mycpu()  
   cprintf("lapicid %d: panic: ", lapicid());
   cprintf(s);
   cprintf("\n");
+
+  //add manabu 10/30
+  if (kgflag == 1) {
+    cprintf("kernel global crash!\n");
+  }
+  else {
+    cprintf("process local crash!\n");
+  }
+  //                      
+  
   getcallerpcs(&s, pcs);
+  
   for(i=0; i<10; i++)
     cprintf(" %p", pcs[i]);
   panicked = 1; // freeze other CPU
@@ -193,7 +223,9 @@ consoleintr(int (*getc)(void))
 {
   int c, doprocdump = 0;
 
-  acquire(&cons.lock);
+  //acquire(&cons.lock);
+  acquire(&cons->lock);
+  
   while((c = getc()) >= 0){
     switch(c){
     case C('P'):  // Process listing.
@@ -226,7 +258,9 @@ consoleintr(int (*getc)(void))
       break;
     }
   }
-  release(&cons.lock);
+  //release(&cons.lock);
+  release(&cons->lock);
+  
   if(doprocdump) {
     procdump();  // now call procdump() wo. cons.lock held
   }
@@ -240,15 +274,24 @@ consoleread(struct inode *ip, char *dst, int n)
 
   iunlock(ip);
   target = n;
-  acquire(&cons.lock);
+  
+  //acquire(&cons.lock);
+  acquire(&cons->lock);
+  
   while(n > 0){
     while(input.r == input.w){
       if(myproc()->killed){
-        release(&cons.lock);
+        
+        //release(&cons.lock);
+        release(&cons->lock);
+        
         ilock(ip);
         return -1;
       }
-      sleep(&input.r, &cons.lock);
+      
+      //sleep(&input.r, &cons.lock);
+      sleep(&input.r, &cons->lock);
+      
     }
     c = input.buf[input.r++ % INPUT_BUF];
     if(c == C('D')){  // EOF
@@ -264,7 +307,10 @@ consoleread(struct inode *ip, char *dst, int n)
     if(c == '\n')
       break;
   }
-  release(&cons.lock);
+  
+  //release(&cons.lock);
+  release(&cons->lock);
+  
   ilock(ip);
 
   return target - n;
@@ -276,10 +322,15 @@ consolewrite(struct inode *ip, char *buf, int n)
   int i;
 
   iunlock(ip);
-  acquire(&cons.lock);
+  //acquire(&cons.lock);
+  acquire(&cons->lock);
+  
   for(i = 0; i < n; i++)
     consputc(buf[i] & 0xff);
-  release(&cons.lock);
+
+  //release(&cons.lock);
+  release(&cons->lock);
+  
   ilock(ip);
 
   return n;
@@ -288,11 +339,21 @@ consolewrite(struct inode *ip, char *buf, int n)
 void
 consoleinit(void)
 {
-  initlock(&cons.lock, "console");
+  //add manabu 10/31
+  if ((cons = (struct cons_lk*)kalloc()) == 0) {
+    panic("kuinfo_alloc");
+  }
+  //
+  
+  
+  //initlock(&cons.lock, "console");
+  initlock(&cons->lock, "console");
 
   devsw[CONSOLE].write = consolewrite;
   devsw[CONSOLE].read = consoleread;
-  cons.locking = 1;
+
+  //cons.locking = 1;
+  cons->locking = 1;
 
   ioapicenable(IRQ_KBD, 0);
 }
