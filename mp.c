@@ -11,7 +11,11 @@
 #include "mmu.h"
 #include "proc.h"
 
-struct cpu cpus[NCPU];
+//struct cpu cpus[NCPU];
+//add manabu 10/28
+struct cpu *cpus;
+//
+
 int ncpu;
 uchar ioapicid;
 
