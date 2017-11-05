@@ -8,6 +8,8 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "spinlock.h"
+#include "proc.h"
+
 
 void freerange(void *vstart, void *vend);
 extern char end[]; // first address after kernel loaded from ELF file
@@ -27,6 +29,8 @@ struct {
 
 //add manabu
 extern pde_t *kpgdir;
+//extern struct cpu *cpus;
+//
 
 // Initialization happens in two phases.
 // 1. main() calls kinit1() while still using entrypgdir to place just
@@ -43,7 +47,7 @@ kinit1(void *vstart, void *vend)
 
 void
 kinit2(void *vstart, void *vend)
-{
+{  
   freerange(vstart, vend);
   kmem.use_lock = 1;
 }
@@ -118,18 +122,34 @@ kalloc(void)
 
 char*
 kuinfo_alloc (void) {
-	struct run *r;
+  struct run *r;
 
-	if (kmem.use_lock) 
-		acquire(&kmem.lock);
+  if (kmem.use_lock) 
+    acquire(&kmem.lock);
 	
-    r = kmem.freelist_userinfo;
-	if (r) 
-		kmem.freelist_userinfo = r->next;
+  r = kmem.freelist_userinfo;
+  if (r) 
+    kmem.freelist_userinfo = r->next;
 	
-	if (kmem.use_lock)
-		release(&kmem.lock);
+  if (kmem.use_lock)
+    release(&kmem.lock);
 	
-	return (char*)r;
+  return (char*)r;
+}
+
+//add function by manabu 10/26
+//allocate cpu array
+//
+
+int 
+cpualloc() {
+
+  if ((cpus = (struct cpu *)kalloc()) == 0) {
+    return 0;
+  }
+
+  //init cpus by zero
+  memset((char *)cpus, 0, PGSIZE);
+  return 1;
 }
 
