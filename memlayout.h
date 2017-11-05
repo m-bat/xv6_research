@@ -5,7 +5,7 @@
 //#define EXTUSE  0xDFFF000
 
 //#define EXTUSE  0xE000000
-#define EXTUSE  0xA000000
+#define EXTUSE  0xC000000
 
 #define EXT64   0x64
 
