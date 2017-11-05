@@ -10,16 +10,45 @@
 #include "sleeplock.h"
 #include "file.h"
 
+//add manabu 10/17
+#include "mmu.h"
+#include "proc.h"
+
+
+
 struct devsw devsw[NDEV];
 struct {
   struct spinlock lock;
-  struct file file[NFILE];
+  //struct file file[NFILE];
+  //add manabu
+  struct file file;  //file head 
 } ftable;
+
+struct file *h;
 
 void
 fileinit(void)
 {
-  //add manabu 10/17
+  //***:add manabu 10/7 start*****
+  /*
+  struct file *f;
+  int i;
+  h = &(ftable.file);
+
+  h->next = h;
+  h->prev = h;  for (i = 0; i < NFILE; i++) {    
+    if ((f = (struct file *)kuinfo_alloc()) == 0) {
+      panic("fileinit");
+    }
+    //insert ftable list(from head)    
+    f->prev = h;
+    f->next = h->next;
+    h->next->prev = f;
+    h->next = f;
+    f->ref = 0;
+  } 
+  */ 
+  // ****finish***********************
   
   initlock(&ftable.lock, "ftable");
 }
@@ -29,15 +58,51 @@ struct file*
 filealloc(void)
 {
   struct file *f;
-
+  // add manabu
+ 
+  struct proc *p;
+  p = myproc(); 
+  
+  //
   acquire(&ftable.lock);
+  //comment out
+  /*
   for(f = ftable.file; f < ftable.file + NFILE; f++){
     if(f->ref == 0){
       f->ref = 1;
       release(&ftable.lock);
       return f;
     }
+  }  
+  */
+  
+  //add manabu 10/17 start
+  /*
+  for(f = ftable.file.next; f != &ftable.file; f = f->next){
+    if(f->ref == 0){
+      f->ref = 1;
+      release(&ftable.lock);
+      return f;
+    }
   }
+  */
+
+  if ((f = (struct file *)kuinfo_alloc()) == 0) {    
+    panic("fileinit");
+  }
+  else {
+    setptew(p->pgdir, (char *)f, PGSIZE, 0);
+    //DEBUG
+    //cprintf("filealloc: f = %x\n", f);
+    f->ref = 1;
+    //proc local alloc list
+    plocal_insert((char *)f);    
+    //    
+    release(&ftable.lock);
+    return f;
+  }  
+  //finish
+  
   release(&ftable.lock);
   return 0;
 }
@@ -70,6 +135,12 @@ fileclose(struct file *f)
   ff = *f;
   f->ref = 0;
   f->type = FD_NONE;
+  
+  //add manabu 10/31
+  //free file struct (kuinfo_alloc)
+  kfree((char*)f);
+  //
+  
   release(&ftable.lock);
 
   if(ff.type == FD_PIPE)
