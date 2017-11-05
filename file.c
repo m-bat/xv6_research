@@ -19,6 +19,8 @@ struct {
 void
 fileinit(void)
 {
+  //add manabu 10/17
+  
   initlock(&ftable.lock, "ftable");
 }
 

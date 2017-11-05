@@ -69,6 +69,9 @@ void            kfree(char*);
 void            kinit1(void*, void*);
 void            kinit2(void*, void*);
 char*           kuinfo_alloc(void);
+//add manabu 10/28
+int             cpualloc(void);
+
 
 // kbd.c
 void            kbdintr(void);
@@ -125,6 +128,7 @@ int             cps(void);
 int             plocal(void);
 int             strcmp(const char *p, const char *q);
 char*           strcpy(char *s, char *t);
+int             plocal_insert(char *p);
 
 // swtch.S
 void            swtch(struct context**, struct context*);
@@ -192,12 +196,11 @@ int             copyout(pde_t*, uint, void*, uint);
 void            clearpteu(pde_t *pgdir, char *uva);
 void            clearptew(pde_t *pgdir, char *uvao);
 int             copy_proc(struct proc *p);
-
 //add manabu
 char *          walkpgdir_global(pde_t *pgdir, const void *va, int alloc);
 void            kernel_ro(pde_t *pgdir);
-void            setptew(pde_t *pgdir, char *uva, uint size);
-                      
+void            setptew(pde_t *pgdir, char *uva, uint size, uint c);
+void            setptew_kernel(pde_t *pgdir);
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))
