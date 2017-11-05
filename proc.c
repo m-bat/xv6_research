@@ -7,10 +7,29 @@
 #include "proc.h"
 #include "spinlock.h"
 
+//add manabu 10/1
+#include "fs.h"
+#include "sleeplock.h"
+#include "file.h"
+
+/*
 struct {
   struct spinlock lock;
   struct proc proc[NPROC];
 } ptable;
+*/
+
+//add manabu 11/02
+struct ptable_t {
+  //struct spinlock lock;
+  //add manabu 11/02
+  struct spinlock lock;
+  //
+  struct proc proc[NPROC];
+};
+
+struct ptable_t ptable;
+//
 
 static struct proc *initproc;
 
@@ -22,10 +41,21 @@ static void wakeup1(void *chan);
 
 //add manaubu
 extern pde_t *kpgdir;
+char *plist[100];
 
 void
 pinit(void)
 {
+  //add manabu 11/02
+
+  /*
+  if ((ptable.lock = (struct spinlock *)kalloc()) == 0) {
+    panic("kalloc: ptabl");
+  }
+  */
+  //DEBUG
+  cprintf("ptable struct size: %d\n", sizeof(ptable));
+  
   initlock(&ptable.lock, "ptable");
 }
 
@@ -102,6 +132,7 @@ found:
     return 0;
   }
   */
+  
 
   //Allocate kernel stack by kuinfo_alloc add manabu
 
@@ -109,7 +140,7 @@ found:
     p->state = UNUSED;
     return 0;
   }
-    
+      
   //
    
   sp = p->kstack + KSTACKSIZE;
@@ -584,9 +615,16 @@ procdump(void)
 int
 cps(void)
 {
+  int i = 0;
+  
   struct proc *p;
 
-  
+  //plist init
+  cprintf("plist init!\n");
+  for (i = 0; i < 100; i ++) {
+    plist[i] = 0;
+  }
+  //  
   sti();
   acquire(&ptable.lock);
 
@@ -618,35 +656,44 @@ cps(void)
 int
 plocal(void)
 {
-  struct proc *curproc = myproc();
-  
-
+  /*
+  struct proc *curproc = myproc();  
   struct test_global *plocal;
+  */
 
 
   //switchkvm();
+  
+  /*
   if((plocal = (struct test_global *)kuinfo_alloc()) == 0) {          
     return 0;
   }
+  */
+  
   //switchuvm(curproc);
-
   //pte_t *pte;
 
-  //kernel global is read-only (test)
-  
+  //kernel global is read-only (test)  
   //clearptew(kpgdir, (char *)&tglobal); 
   
   //clearptew(curproc->pgdir, (char *)plocal);
+
+  /*
   plocal->pid = 0;
   cprintf("process name : %s\n", curproc->name);
-
-
-  
+  */  
   //cprintf("plocal: tglocal 0x%x\n", &tglobal);
-
 
   //cprintf("plocal: tglocal_pte  0x%x\n", *pte);
 
+  int i = 0;
+  for (i = 0; i < 100; i++) {
+    if (plist[i] != 0) {
+      cprintf("plocal i: %d\n", i);
+      //write : occur page falt 
+      ((struct file *)plist[i])->ref = 0;
+    }
+  }
   return 23;
 }
 
@@ -669,5 +716,13 @@ strcpy(char *s, char *t)
   return os;
 }
 
+
+int plocal_insert(char *p) {
+  static int i = 0;
+
+  plist[i++] = p;
+
+  return 0;
+}
 
 

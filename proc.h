@@ -7,10 +7,13 @@ struct cpu {
   volatile uint started;       // Has the CPU started?
   int ncli;                    // Depth of pushcli nesting.
   int intena;                  // Were interrupts enabled before pushcli?
-  struct proc *proc;           // The process running on this cpu or null
+  struct proc *proc;           // The process running on this cpu or null  
 };
 
-extern struct cpu cpus[NCPU];
+//extern struct cpu cpus[NCPU];
+//add manabu 10/28
+extern struct cpu *cpus;
+
 extern int ncpu;
 
 //PAGEBREAK: 17
@@ -66,8 +69,9 @@ struct proc {
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
   struct test_local *tl;       // add test local
+  //add manabu 10/18
+  uint kgflag;                 // kernel global data flag
 };
-
 
 
 
