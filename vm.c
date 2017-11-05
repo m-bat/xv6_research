@@ -10,6 +10,12 @@
 extern char data[];  // defined by kernel.ld
 pde_t *kpgdir;  // for use in scheduler()
 
+//add manabu 10/31
+extern struct cons_lk *cons;
+
+//add manabu 11/2
+extern struct ptable_t ptable;
+
 // Set up CPU's kernel segment descriptors.
 // Run once on entry on each CPU.
 void
@@ -165,6 +171,10 @@ void kernel_ro(pde_t *pgdir) {
   char *a, *last;
   uint size;
   int i = 0;
+  /*
+  struct proc *p;  
+  p = myproc();
+  */
   
   for(k = kmap; k < &kmap[NELEM(kmap)]; k++) {
     i++;
@@ -179,16 +189,21 @@ void kernel_ro(pde_t *pgdir) {
     last = (char*)PGROUNDDOWN(((uint)k->virt) + size - 1);
 
     for(;;){
+      /*
+      if (a == p->kstack) { //kernel stack wirte-enabel
+        a += PGSIZE;
+      }
+      else {
+      */
       clearptew(pgdir, a);
       if(a == last)
         break;
       a += PGSIZE;
+      //}
     }
     
   }
 }
-
-
 
 
 // Allocate one page table for the machine for the kernel address
@@ -234,8 +249,6 @@ switchuvm(struct proc *p)
   popcli();
 }
 
-
-
 //add manabu 10/14 moify switchuvm
 void
 switchuvm_ro(struct proc *p, const int n)  
@@ -244,9 +257,7 @@ switchuvm_ro(struct proc *p, const int n)
   /*
   char name[20];
   strcpy(name, path);
-  */
-
-  
+  */  
   if(p == 0)
     panic("switchuvm: no process");
   if(p->kstack == 0)
@@ -279,45 +290,44 @@ switchuvm_ro(struct proc *p, const int n)
     cprintf("after: kernel_ro\n");
   }
   */
-
-  // add manabu 10/16 
-
-  /*
+ 
+  // add manabu 10/16  
   if (n) {
     cprintf("init hit or sh hit\n");
   }
   else {
     cprintf("before: kernel_ro\n");
-    kernel_ro(p->pgdir);
-    setptew(p->pgdir, p->kstack, KSTACKSIZE);
+    kernel_ro(p->pgdir);    
+    setptew(p->pgdir, p->kstack, KSTACKSIZE, 1);
+    setptew(p->pgdir, (char *)cpus, PGSIZE, 1);
+    setptew(p->pgdir, (char *)cons, PGSIZE, 1);
+    //setptew(p->pgdir, (char *)&ptable, 8500, 1);
+    
+    //set open filen array to be writable
+    //set ofile[0], ofile[1], ofile[2] to be writable because parent process is init.
+    //ofile[0] == ofile[1] == ofile[2] Even if i < 1
+    int i;
+    for (i = 0; i < 1; i++) { // Even if i < NOFILE 
+      setptew(p->pgdir, (char *)(p->ofile[i]), PGSIZE, 1);
+      //DEBUG
+      //cprintf("p->ofile[%d] = %x\n", i, p->ofile[i]);
+    }    
     cprintf("after: kernel_ro\n");
-  } 
-  */
-
+  }   
   lcr3(V2P(p->pgdir));  // switch to process's address space
-
-
-  /*
-  if (n == 1) {
-    cporintf("init hit or sh hit\n");
-  }
-  else {
-    cprintf("before: kernel_ro\n");
-    kernel_ro(p->pgdir);
-    cprintf("after: kernel_ro\n");
-  }
-  */
-  popcli();
+   
+  cprintf("after: changed lcr3\n");
+  popcli(); 
+  //panic after
 }
-
-
 
 
 // Load the initcode into address 0 of pgdir.
 // sz must be less than a page.
+
 void
 inituvm(pde_t *pgdir, char *init, uint sz)
-{
+ {
   char *mem;
 
   if(sz >= PGSIZE)
@@ -351,7 +361,7 @@ loaduvm(pde_t *pgdir, char *addr, struct inode *ip, uint offset, uint sz)
   }
   return 0;
 }
-
+                   
 // Allocate page tables and physical memory to grow process from oldsz to
 // newsz, which need not be page aligned.  Returns new size or 0 on error.
 int
@@ -468,10 +478,10 @@ clearptew(pde_t *pgdir, char *uva)
   //lcr3(V2P(pgdir));
 }
 
-
+ 
 //add manabu 10/08: set write-enable
 void
-setptew(pde_t *pgdir, char *uva, uint size)  
+setptew(pde_t *pgdir, char *uva, uint size, uint c)  
 {
   char *a, *last;
   a = (char *)PGROUNDDOWN((uint)uva);
@@ -493,9 +503,41 @@ setptew(pde_t *pgdir, char *uva, uint size)
   }
 
   //flush the TLB
-  //lcr3(V2P(pgdir));
+  if (c == 0) 
+    lcr3(V2P(pgdir));
 }
 
+
+//add manabu 10/24: set wite-enable kernel land data & memory
+
+void setptew_kernel(pde_t *pgdir)
+{
+  char *a, *last;
+  uint size;
+  pte_t *pte;
+
+  size = kmap[2].phys_end - kmap[2].phys_start;
+  
+  a = (char *)PGROUNDDOWN((uint)kmap[2].virt);
+  last = (char *)PGROUNDDOWN(((uint)kmap[2].virt) + size - 1);
+
+  
+  for (;;) {
+    pte = walkpgdir(pgdir, a, 0);
+  
+    if (pte == 0)
+      panic("setptew");
+
+    //set write-eable
+    *pte |= PTE_W;
+    if (a == last) {
+      break;
+    }
+    a += PGSIZE;
+  }
+  //flush the TLB
+  //lcr3(V2P(pgdir));
+}
 
 
 
