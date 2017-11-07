@@ -5,11 +5,11 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
+
 #include "elf.h"
 
 extern char data[];  // defined by kernel.ld
 pde_t *kpgdir;  // for use in scheduler()
-
 //add manabu 10/31
 extern struct cons_lk *cons;
 
@@ -188,6 +188,7 @@ void kernel_ro(pde_t *pgdir) {
     a = (char*)PGROUNDDOWN((uint)k->virt);
     last = (char*)PGROUNDDOWN(((uint)k->virt) + size - 1);
 
+    
     for(;;){
       /*
       if (a == p->kstack) { //kernel stack wirte-enabel
@@ -294,15 +295,18 @@ switchuvm_ro(struct proc *p, const int n)
   // add manabu 10/16  
   if (n) {
     cprintf("init hit or sh hit\n");
-  }
+  }  
   else {
     cprintf("before: kernel_ro\n");
+    cprintf("ptable addr %x\n", &ptable);
     kernel_ro(p->pgdir);    
     setptew(p->pgdir, p->kstack, KSTACKSIZE, 1);
     setptew(p->pgdir, (char *)cpus, PGSIZE, 1);
     setptew(p->pgdir, (char *)cons, PGSIZE, 1);
-    //cprintf("ptable addr: %x\n", &ptable);
-    setptew(p->pgdir, (char *)&ptable, PGSIZE, 1);
+    cprintf("ptable addr: %x\n", &ptable);
+    int size = PGROUNDUP(sizeof(ptable));
+    cprintf("ptable size %d¥n", size);
+    //`setptew(p->pgdir, (char *)&ptable, size, 1);
     
     //set open filen array to be writable
     //set ofile[0], ofile[1], ofile[2] to be writable because parent process is init.
@@ -315,7 +319,7 @@ switchuvm_ro(struct proc *p, const int n)
     }    
     cprintf("after: kernel_ro\n");
   }   
-  lcr3(V2P(p->pgdir));  // switch to process's address space
+  lcr3(V2P(p->pgdir));  // switch to process's address space  
    
   cprintf("after: changed lcr3\n");
   popcli();
@@ -517,10 +521,18 @@ void setptew_kernel(pde_t *pgdir)
   uint size;
   pte_t *pte;
 
+  
   size = kmap[2].phys_end - kmap[2].phys_start;
+
+  //DEBUG
+  //size /= 2;
   
   a = (char *)PGROUNDDOWN((uint)kmap[2].virt);
   last = (char *)PGROUNDDOWN(((uint)kmap[2].virt) + size - 1);
+
+  cprintf("kernel start addr %x\n", a);
+  cprintf("kernel last addr %x\n", last);
+
 
   
   for (;;) {
@@ -539,9 +551,6 @@ void setptew_kernel(pde_t *pgdir)
   //flush the TLB
   //lcr3(V2P(pgdir));
 }
-
-
-
 
 // Given a parent process's page table, create a copy
 // of it for a child.

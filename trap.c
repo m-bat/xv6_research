@@ -90,7 +90,7 @@ trap(struct trapframe *tf)
     break;
   case T_IRQ0 + 7:
   case T_IRQ0 + IRQ_SPURIOUS:
-    cprintf("cpu%d: spurious interrupt at %x:%x\n",
+    cprintf("cpu%d: spurious interrupt at %x:%x\n",            
             cpuid(), tf->cs, tf->eip);
     lapiceoi();
     break;
@@ -102,9 +102,17 @@ trap(struct trapframe *tf)
     switchkvm();    
     p = myproc();
     //cprintf("mycpu->ncli: %d\n", mycpu()->ncli);
-    setptew_kernel(p->pgdir);    
-    switchuvm(p);    
+    uint a = PGROUNDDOWN(rcr2());
+    cprintf("trap a: %x\n", a);
+    cprintf("trap rcr2: %x\n", rcr2());
+    //setptew(p->pgdir, (void *)a, PGSIZE, 1);
+    //cprintf("after setptew :%x\n", a);
+    setptew_kernel(p->pgdir);
+    cprintf("kgflag : %x\n", &kgflag);
+    switchuvm(p);
+    
     kgflag = 1;
+    
     cprintf("T_PGFLT: kgflag = %d\n", kgflag);
     cprintf("info: proccess name %s pid %d\n", myproc()->name, myproc()->pid);
     //panic("T_PGFLT");

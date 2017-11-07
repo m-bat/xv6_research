@@ -20,6 +20,7 @@ struct {
 */
 
 //add manabu 11/02
+/*
 struct ptable_t {
   //struct spinlock lock;
   //add manabu 11/02
@@ -27,7 +28,7 @@ struct ptable_t {
   //
   struct proc proc[NPROC];
 };
-
+*/
 struct ptable_t ptable;
 //
 
@@ -41,7 +42,7 @@ static void wakeup1(void *chan);
 
 //add manaubu
 extern pde_t *kpgdir;
-char *plist[100];
+//char *plist[100];
 
 void
 pinit(void)
@@ -681,7 +682,8 @@ plocal(void)
 
   //cprintf("plocal: tglocal_pte  0x%x\n", *pte);
 
-  int i = 0;
+  //int i = 0;
+  /*
   for (i = 0; i < 100; i++) {
     if (plist[i] != 0) {
       cprintf("plocal i: %d\n", i);
@@ -689,6 +691,7 @@ plocal(void)
       ((struct file *)plist[i])->ref = 0;
     }    
   }
+  */
   return 23;
 }
 
@@ -714,9 +717,10 @@ strcpy(char *s, char *t)
 
 int plocal_insert(char *p)
 { 
-  static int i = 0;
+  //static int i = 0;
 
-  plist[i++] = p;
+  //plist[i++] = p;
+  cprintf("%x", p);
   
   return 0;
 }
