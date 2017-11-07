@@ -132,8 +132,7 @@ found:
     return 0;
   }
   */
-  
-
+ 
   //Allocate kernel stack by kuinfo_alloc add manabu
 
   if((p->kstack = kuinfo_alloc()) == 0){    
@@ -172,8 +171,6 @@ int alloc_test_local(struct proc *p) {
   
   return 0;
 }
-
-
 
 
 //PAGEBREAK: 32
@@ -289,10 +286,8 @@ fork(void)
   np->tl->ppid = np->parent->pid;
   */
   
-
   //
-  
-  
+    
   release(&ptable.lock);
 
   return pid;
@@ -597,7 +592,7 @@ procdump(void)
 
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if(p->state == UNUSED)
-      continue;
+       continue;
     if(p->state >= 0 && p->state < NELEM(states) && states[p->state])
       state = states[p->state];
     else
@@ -622,7 +617,7 @@ cps(void)
   //plist init
   cprintf("plist init!\n");
   for (i = 0; i < 100; i ++) {
-    plist[i] = 0;
+    //plist[i] = 0;
   }
   //  
   sti();
@@ -692,7 +687,7 @@ plocal(void)
       cprintf("plocal i: %d\n", i);
       //write : occur page falt 
       ((struct file *)plist[i])->ref = 0;
-    }
+    }    
   }
   return 23;
 }
@@ -717,12 +712,12 @@ strcpy(char *s, char *t)
 }
 
 
-int plocal_insert(char *p) {
+int plocal_insert(char *p)
+{ 
   static int i = 0;
 
   plist[i++] = p;
-
+  
   return 0;
 }
-
 

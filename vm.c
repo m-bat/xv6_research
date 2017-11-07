@@ -285,7 +285,7 @@ switchuvm_ro(struct proc *p, const int n)
     cprintf("sh hit\n");
   }
   else {
-    cprintf("before: kernel_ro\n");
+   cprintf("before: kernel_ro\n");
     kernel_ro(p->pgdir);
     cprintf("after: kernel_ro\n");
   }
@@ -301,7 +301,8 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, p->kstack, KSTACKSIZE, 1);
     setptew(p->pgdir, (char *)cpus, PGSIZE, 1);
     setptew(p->pgdir, (char *)cons, PGSIZE, 1);
-    //setptew(p->pgdir, (char *)&ptable, 8500, 1);
+    //cprintf("ptable addr: %x\n", &ptable);
+    setptew(p->pgdir, (char *)&ptable, PGSIZE, 1);
     
     //set open filen array to be writable
     //set ofile[0], ofile[1], ofile[2] to be writable because parent process is init.
@@ -317,7 +318,8 @@ switchuvm_ro(struct proc *p, const int n)
   lcr3(V2P(p->pgdir));  // switch to process's address space
    
   cprintf("after: changed lcr3\n");
-  popcli(); 
+  popcli();
+  //cprintf("after: popcli");
   //panic after
 }
 
@@ -449,7 +451,7 @@ void
 clearpteu(pde_t *pgdir, char *uva)
 {
   pte_t *pte;
-
+  
   pte = walkpgdir(pgdir, uva, 0);
   if(pte == 0)
     panic("clearpteu");
@@ -496,17 +498,16 @@ setptew(pde_t *pgdir, char *uva, uint size, uint c)
 
     //set write-eable
     *pte |= PTE_W;
-    if (a == last) {
+    if  (a == last) {
       break;
     }
     a += PGSIZE;
   }
 
   //flush the TLB
-  if (c == 0) 
+  if (c == 0)
     lcr3(V2P(pgdir));
 }
-
 
 //add manabu 10/24: set wite-enable kernel land data & memory
 
