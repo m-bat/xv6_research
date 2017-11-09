@@ -116,7 +116,7 @@ popcli(void)
     panic("popcli - interruptible");
   if(--mycpu()->ncli < 0)
     panic("popcli");
-  if(mycpu()->ncli == 0 && mycpu()->intena)
-    sti();
+  if(mycpu()->ncli == 0 && mycpu()->intena)    
+    sti();    
 }
 

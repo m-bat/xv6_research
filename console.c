@@ -343,6 +343,8 @@ consoleinit(void)
   if ((cons = (struct cons_lk*)kalloc()) == 0) {
     panic("kuinfo_alloc");
   }
+  //DEBUG
+  //`cprintf("cons %x\n", cons);
   //
   
   

@@ -53,7 +53,6 @@ trap(struct trapframe *tf)
       exit();
     return;
   }
-
   switch(tf->trapno){
 
     /*
@@ -63,7 +62,6 @@ trap(struct trapframe *tf)
     switchuvm(p);
     */
     
-
   case T_IRQ0 + IRQ_TIMER:
     if(cpuid() == 0){
       acquire(&tickslock);
@@ -104,16 +102,16 @@ trap(struct trapframe *tf)
     //cprintf("mycpu->ncli: %d\n", mycpu()->ncli);
     uint a = PGROUNDDOWN(rcr2());
     cprintf("trap a: %x\n", a);
-    cprintf("trap rcr2: %x\n", rcr2());
+    cprintf("trap rcr22: %x\n", rcr2());
     //setptew(p->pgdir, (void *)a, PGSIZE, 1);
-    //cprintf("after setptew :%x\n", a);
+    cprintf("after setptew :%x\n", a);
     setptew_kernel(p->pgdir);
     cprintf("kgflag : %x\n", &kgflag);
     switchuvm(p);
     
-    kgflag = 1;
+    // kgflag = 1;
     
-    cprintf("T_PGFLT: kgflag = %d\n", kgflag);
+    //  cprintf("T_PGFLT: kgflag = %d\n", kgflag);
     cprintf("info: proccess name %s pid %d\n", myproc()->name, myproc()->pid);
     //panic("T_PGFLT");
     //exit();    

@@ -8,6 +8,7 @@
 
 #include "elf.h"
 
+
 extern char data[];  // defined by kernel.ld
 pde_t *kpgdir;  // for use in scheduler()
 //add manabu 10/31
@@ -50,6 +51,7 @@ walkpgdir(pde_t *pgdir, const void *va, int alloc)
   } else {
     if(!alloc || (pgtab = (pte_t*)kalloc()) == 0)
       return 0;
+    
     // Make sure all those PTE_P bits are zero.
     memset(pgtab, 0, PGSIZE);
     // The permissions here are overly generous, but they can
@@ -69,8 +71,8 @@ char * walkpgdir_global (pde_t *pgdir, const void *va, int alloc) {
   pte = (char *)walkpgdir(pgdir, va, alloc);
 
   /*
-  cprintf("pte1: 0x%x\n", *pte1);
-  cprintf("pte: 0x%x\n", *(pte_t *)pte);
+    cprintf("pte1: 0x%x\n", *pte1);
+    cprintf("pte: 0x%x\n", *(pte_t *)pte);
   */
   
   return pte;
@@ -130,18 +132,17 @@ static struct kmap {
   uint phys_end;
   int perm;
 } kmap[] = {
- { (void*)KERNBASE, 0,             EXTMEM,    PTE_W}, //     [1] I/O space 
- { (void*)KERNLINK, V2P(KERNLINK), V2P(data),     0}, //     [2] kern text+rodata
- { (void*)data,     V2P(data),     V2P(USERINFO), PTE_W}, // [3] kern data+memory
- { (void*)USERINFO, V2P(USERINFO), PHYSTOP,  PTE_W}, //      [4] kern userinfo
- { (void*)DEVSPACE, DEVSPACE,      0,         PTE_W}, //     [5] more devices
+  { (void*)KERNBASE, 0,             EXTMEM,    PTE_W}, //     [1] I/O space 
+  { (void*)KERNLINK, V2P(KERNLINK), V2P(data),     0}, //     [2] kern text+rodata
+  { (void*)data,     V2P(data),     V2P(USERINFO), PTE_W}, // [3] kern data+memory
+  { (void*)USERINFO, V2P(USERINFO), PHYSTOP,  PTE_W}, //      [4] kern userinfo
+  { (void*)DEVSPACE, DEVSPACE,      0,         PTE_W}, //     [5] more devices
 };
 
 // Set up kernel part of a page table.
 pde_t*
 setupkvm(void)
-{
-  
+{  
   pde_t *pgdir;
   struct kmap *k;
 
@@ -154,7 +155,7 @@ setupkvm(void)
   for(k = kmap; k < &kmap[NELEM(kmap)]; k++) {
     //DEBUG
     /*
-    cprintf("k->virt: 0x%x, k->phys_start: 0x%x, k->phys_end: 0x%x\n", k->virt, k->phys_start, k->phys_end);
+      cprintf("k->virt: 0x%x, k->phys_start: 0x%x, k->phys_end: 0x%x\n", k->virt, k->phys_start, k->phys_end);
     */    
     if(mappages(pgdir, k->virt, k->phys_end - k->phys_start,
                 (uint)k->phys_start, k->perm) < 0) {
@@ -172,8 +173,8 @@ void kernel_ro(pde_t *pgdir) {
   uint size;
   int i = 0;
   /*
-  struct proc *p;  
-  p = myproc();
+    struct proc *p;  
+    p = myproc();
   */
   
   for(k = kmap; k < &kmap[NELEM(kmap)]; k++) {
@@ -183,18 +184,21 @@ void kernel_ro(pde_t *pgdir) {
       continue;
     }
     
-    cprintf("i: %d\n", i);
+
+    
     size = k->phys_end - k->phys_start;
     a = (char*)PGROUNDDOWN((uint)k->virt);
     last = (char*)PGROUNDDOWN(((uint)k->virt) + size - 1);
+    cprintf("i: %d, start %x, last %x\n", i, a, last);
 
-    
+    //cprintf("i: %d\n", i);
+   
     for(;;){
       /*
-      if (a == p->kstack) { //kernel stack wirte-enabel
+        if (a == p->kstack) { //kernel stack wirte-enabel
         a += PGSIZE;
-      }
-      else {
+        }
+        else {
       */
       clearptew(pgdir, a);
       if(a == last)
@@ -250,14 +254,50 @@ switchuvm(struct proc *p)
   popcli();
 }
 
+
+//**********************************
+
+void
+setptew1(pde_t *pgdir, char *uva, uint size, uint c)  
+{
+  char *a, *last;
+  a = (char *)PGROUNDDOWN((uint)uva);
+  last = (char *)PGROUNDDOWN(((uint)uva) + size - 1);
+  pte_t *pte;
+
+  for (;;) {
+    pte = walkpgdir(pgdir, uva, 0);
+  
+    if (pte == 0)
+      panic("setptew");
+
+    //set write-eable
+    *pte |= PTE_W;
+    
+    if  (a == last) {
+      break;
+    }
+    a += PGSIZE;
+  }
+
+  //flush the TLB
+  if (c == 0)
+    lcr3(V2P(pgdir));
+}
+//**********************************
+
+
 //add manabu 10/14 moify switchuvm
+
+char *mem_inituvm;
+
 void
 switchuvm_ro(struct proc *p, const int n)  
 {
 
   /*
-  char name[20];
-  strcpy(name, path);
+    char name[20];
+    strcpy(name, path);
   */  
   if(p == 0)
     panic("switchuvm: no process");
@@ -279,17 +319,17 @@ switchuvm_ro(struct proc *p, const int n)
 
   // kernel Read-Only by manabu
   /*
-  if (strcmp(path, "/init") == 0) {
+    if (strcmp(path, "/init") == 0) {
     cprintf("init hit\n");
-  }
-  else if (strcmp(path, "sh") == 0) {
+    }
+    else if (strcmp(path, "sh") == 0) {
     cprintf("sh hit\n");
-  }
-  else {
-   cprintf("before: kernel_ro\n");
+    }
+    else {
+    cprintf("before: kernel_ro\n");
     kernel_ro(p->pgdir);
     cprintf("after: kernel_ro\n");
-  }
+    }
   */
  
   // add manabu 10/16  
@@ -299,14 +339,17 @@ switchuvm_ro(struct proc *p, const int n)
   else {
     cprintf("before: kernel_ro\n");
     cprintf("ptable addr %x\n", &ptable);
-    kernel_ro(p->pgdir);    
+    kernel_ro(p->pgdir);
+    
+    //write-enable
     setptew(p->pgdir, p->kstack, KSTACKSIZE, 1);
     setptew(p->pgdir, (char *)cpus, PGSIZE, 1);
     setptew(p->pgdir, (char *)cons, PGSIZE, 1);
     cprintf("ptable addr: %x\n", &ptable);
     int size = PGROUNDUP(sizeof(ptable));
-    cprintf("ptable size %d¥n", size);
-    //`setptew(p->pgdir, (char *)&ptable, size, 1);
+    cprintf("ptable size %d\n", size);
+    //setptew1(p->pgdir, mem_inituvm, size, 1);    
+    setptew1(p->pgdir, (char *)&ptable, size, 1);    
     
     //set open filen array to be writable
     //set ofile[0], ofile[1], ofile[2] to be writable because parent process is init.
@@ -333,12 +376,19 @@ switchuvm_ro(struct proc *p, const int n)
 
 void
 inituvm(pde_t *pgdir, char *init, uint sz)
- {
+{
   char *mem;
 
   if(sz >= PGSIZE)
     panic("inituvm: more than a page");
   mem = kalloc();
+  //add manabu
+  mem_inituvm = mem;
+  //
+  
+  //DEBUG
+  cprintf("mem %x", mem);
+  //
   memset(mem, 0, PGSIZE);
   mappages(pgdir, 0, PGSIZE, V2P(mem), PTE_W|PTE_U);
   memmove(mem, init, sz);
@@ -525,7 +575,7 @@ void setptew_kernel(pde_t *pgdir)
   size = kmap[2].phys_end - kmap[2].phys_start;
 
   //DEBUG
-  //size /= 2;
+  //size /= 1.5;
   
   a = (char *)PGROUNDDOWN((uint)kmap[2].virt);
   last = (char *)PGROUNDDOWN(((uint)kmap[2].virt) + size - 1);
@@ -579,7 +629,7 @@ copyuvm(pde_t *pgdir, uint sz)
   }
   return d;
 
-bad:
+ bad:
   freevm(d);
   return 0;
 }
@@ -629,24 +679,24 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 //add manabu   don't use
 int copy_proc(struct proc *p)
 {
-	char *mem;
+  char *mem;
     
-	if ((mem = kuinfo_alloc()) == 0) {
-      panic("debug: kuinfo_alloc");
-      return -1;
-    }
+  if ((mem = kuinfo_alloc()) == 0) {
+    panic("debug: kuinfo_alloc");
+    return -1;
+  }
 	
-	memmove(mem, (char*)p, PGSIZE);
+  memmove(mem, (char*)p, PGSIZE);
 
-    /*
+  /*
 	if (mappages(d, (void*)USERINFO, PGSIZE, V2P(mem), flags) < 0) {
-      panic("debug: mappages");
-      return -1;
+    panic("debug: mappages");
+    return -1;
 	}
-    */
-    //cprintf("%d \t %d \t\n", ((struct proc *)mem)->pid, ((struct proc *)mem)->parent->pid);
+  */
+  //cprintf("%d \t %d \t\n", ((struct proc *)mem)->pid, ((struct proc *)mem)->parent->pid);
     
-	return 0;
+  return 0;
 }
 
 

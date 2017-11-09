@@ -720,7 +720,7 @@ int plocal_insert(char *p)
   //static int i = 0;
 
   //plist[i++] = p;
-  cprintf("%x", p);
+  cprintf("%x\n", p);
   
   return 0;
 }

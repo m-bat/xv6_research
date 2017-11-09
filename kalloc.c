@@ -147,6 +147,8 @@ cpualloc() {
   if ((cpus = (struct cpu *)kalloc()) == 0) {
     return 0;
   }
+  //DEBUG
+  //`cprintf("cpus %x", cpus);
 
   //init cpus by zero
   memset((char *)cpus, 0, PGSIZE);
