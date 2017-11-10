@@ -11,12 +11,14 @@
 // Interrupt descriptor table (shared by all CPUs).
 struct gatedesc idt[256];
 extern uint vectors[];  // in vectors.S: array of 256 entry pointers
-struct spinlock tickslock;
+//struct spinlock tickslock;
+//add manabu 11/10
+struct spinlock *tickslock;
+
 uint ticks;
 
 //add manabu 10/24
 uint kgflag = 0;
-
 
 void
 tvinit(void)
@@ -27,7 +29,13 @@ tvinit(void)
     SETGATE(idt[i], 0, SEG_KCODE<<3, vectors[i], 0);
   SETGATE(idt[T_SYSCALL], 1, SEG_KCODE<<3, vectors[T_SYSCALL], DPL_USER);
 
-  initlock(&tickslock, "time");
+  //add manabu 11/10
+  if ((tickslock = (struct spinlock *)kalloc()) == 0) {
+    panic("kalloc: tickslock");
+  }
+  //
+
+  initlock(tickslock, "time");
 }
 
 void
@@ -64,10 +72,10 @@ trap(struct trapframe *tf)
     
   case T_IRQ0 + IRQ_TIMER:
     if(cpuid() == 0){
-      acquire(&tickslock);
+      acquire(tickslock);
       ticks++;
       wakeup(&ticks);
-      release(&tickslock);
+      release(tickslock);
     }
     lapiceoi();
     break;
@@ -94,21 +102,23 @@ trap(struct trapframe *tf)
     break;
 
   //add manabu 9/22 :page table entry writeable
-  case T_PGFLT:        
+  case T_PGFLT:
+    cprintf("&lapic :%x, lapic :%x\n", &lapic, lapic);
     //force kill process
     //myproc()->killed = 1;   
-    switchkvm();    
+    //switchkvm();    
     p = myproc();
+    cprintf("DEBUG INFO: in kvm, proccess name %s pid %d\n", myproc()->name, myproc()->pid);
     //cprintf("mycpu->ncli: %d\n", mycpu()->ncli);
     uint a = PGROUNDDOWN(rcr2());
     cprintf("trap a: %x\n", a);
-    cprintf("trap rcr22: %x\n", rcr2());
+    cprintf("trap rcr2: %x\n", rcr2());
     //setptew(p->pgdir, (void *)a, PGSIZE, 1);
-    cprintf("after setptew :%x\n", a);
     setptew_kernel(p->pgdir);
+    cprintf("after setptew :%x\n", a);
     cprintf("kgflag : %x\n", &kgflag);
-    switchuvm(p);
-    
+    //switchuvm(p);
+    lcr3(V2P(p->pgdir));   
     // kgflag = 1;
     
     //  cprintf("T_PGFLT: kgflag = %d\n", kgflag);
