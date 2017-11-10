@@ -72,6 +72,7 @@ kfree(char *v)
     acquire(&kmem.lock);
   r = (struct run*)v;
   if(v >= (char *)KERNPLOCAL) {
+    /* cprintf("DEBUG: free plocal page: %p\n", r); */
     r->next = kmem.freelist_plocal;
     kmem.freelist_plocal = r;
   }
@@ -98,6 +99,7 @@ kalloc(alloc_flag_t flag)
     kmem.freelist = r->next;
   if(kmem.use_lock)
     release(&kmem.lock);
+  /* cprintf("DEBUG: kalloc page: %p\n", r); */
   return (char*)r;
 }
 
