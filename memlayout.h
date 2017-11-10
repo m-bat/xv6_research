@@ -6,10 +6,12 @@
 #define EXTMEM  0x100000            // Start of extended memory
 #define PHYSTOP 0xE000000           // Top physical memory
 #define DEVSPACE 0xFE000000         // Other devices are at high addresses
+#define PROCLOCAL 0xC000000         // Start of the process local data
 
 // Key addresses for address space layout (see kmap in vm.c for layout)
 #define KERNBASE 0x80000000         // First kernel virtual address
 #define KERNLINK (KERNBASE+EXTMEM)  // Address where kernel is linked
+#define KERNPLOCAL (KERNBASE+PROCLOCAL)  // Address where process local data is allocated
 
 #define V2P(a) (((uint) (a)) - KERNBASE)
 #define P2V(a) (((void *) (a)) + KERNBASE)

@@ -110,7 +110,8 @@ static struct kmap {
 } kmap[] = {
  { (void*)KERNBASE, 0,             EXTMEM,    PTE_W}, // I/O space
  { (void*)KERNLINK, V2P(KERNLINK), V2P(data), 0},     // kern text+rodata
- { (void*)data,     V2P(data),     PHYSTOP,   PTE_W}, // kern data+memory
+ { (void*)data,     V2P(data),     V2P(KERNPLOCAL),   PTE_W}, // kern data+memory
+ { (void*)KERNPLOCAL,     V2P(KERNPLOCAL),     PHYSTOP,   PTE_W}, // kern process local
  { (void*)DEVSPACE, DEVSPACE,      0,         PTE_W}, // more devices
 };
 
