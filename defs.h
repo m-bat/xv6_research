@@ -1,3 +1,8 @@
+#ifndef XV6_DEFS_H
+#define XV6_DEFS_H
+
+#include "mmu.h"
+
 struct buf;
 struct context;
 struct file;
@@ -171,8 +176,13 @@ void            timerinit(void);
 // trap.c
 void            idtinit(void);
 extern uint     ticks;
+//add manabu 11/10
+extern struct gatedesc idt[256];
+
 void            tvinit(void);
-extern struct spinlock tickslock;
+
+//extern struct spinlock tickslock;
+extern struct spinlock *tickslock;
 
 // uart.c
 void            uartinit(void);
@@ -205,3 +215,5 @@ void            setptew_kernel(pde_t *pgdir);
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))
 void            switchuvm_ro(struct proc *p, const int n);
+
+#endif
