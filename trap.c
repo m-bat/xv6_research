@@ -78,6 +78,12 @@ trap(struct trapframe *tf)
     lapiceoi();
     break;
 
+  case T_PGFLT: {
+    uint a = PGROUNDDOWN(rcr2());
+    cprintf("DEBUG: page fault at %p\n", (void *) a);
+    panic("page fault\n");
+    return;
+  }
   //PAGEBREAK: 13
   default:
     if(myproc() == 0 || (tf->cs&3) == 0){
