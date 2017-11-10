@@ -21,6 +21,7 @@ struct {
   struct spinlock lock;
   int use_lock;
   struct run *freelist;
+  struct run *freelist_plocal;
 } kmem;
 
 // Initialization happens in two phases.
@@ -70,8 +71,14 @@ kfree(char *v)
   if(kmem.use_lock)
     acquire(&kmem.lock);
   r = (struct run*)v;
-  r->next = kmem.freelist;
-  kmem.freelist = r;
+  if(v >= (char *)KERNPLOCAL) {
+    r->next = kmem.freelist_plocal;
+    kmem.freelist_plocal = r;
+  }
+  else{
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+  }
   if(kmem.use_lock)
     release(&kmem.lock);
 }
@@ -80,7 +87,7 @@ kfree(char *v)
 // Returns a pointer that the kernel can use.
 // Returns 0 if the memory cannot be allocated.
 char*
-kalloc(void)
+kalloc(alloc_flag_t flag)
 {
   struct run *r;
 
