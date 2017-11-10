@@ -1,3 +1,6 @@
+#ifndef XV6_USER_H
+#define XV6_USER_H
+
 struct stat;
 struct rtcdate;
 
@@ -37,3 +40,5 @@ void* memset(void*, int, uint);
 void* malloc(uint);
 void free(void*);
 int atoi(const char*);
+
+#endif

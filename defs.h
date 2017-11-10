@@ -1,3 +1,6 @@
+#ifndef XV6_DEFS_H
+#define XV6_DEFS_H
+
 struct buf;
 struct context;
 struct file;
@@ -188,3 +191,5 @@ void            clearpteu(pde_t *pgdir, char *uva);
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))
+
+#endif

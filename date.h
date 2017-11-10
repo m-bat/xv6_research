@@ -1,3 +1,6 @@
+#ifndef XV6_DATA_H
+#define XV6_DATA_H
+
 struct rtcdate {
   uint second;
   uint minute;
@@ -6,3 +9,5 @@ struct rtcdate {
   uint month;
   uint year;
 };
+
+#endif
