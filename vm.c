@@ -348,8 +348,11 @@ switchuvm_ro(struct proc *p, const int n)
     cprintf("ptable addr: %x\n", &ptable);
     int size = PGROUNDUP(sizeof(ptable));
     cprintf("ptable size %d\n", size);
-    //setptew1(p->pgdir, mem_inituvm, size, 1);    
-    setptew1(p->pgdir, (char *)&ptable, size, 1);    
+    //setptew(p->pgdir, mem_inituvm, PGSIZE, 1);
+    setptew(p->pgdir, (char *)tickslock, PGSIZE, 1);
+    setptew(p->pgdir, (char *)idt, PGSIZE, 1);
+    setptew(p->pgdir, (char *)&ticks, PGSIZE, 1);    
+    //setptew(p->pgdir, (char *)&ptable, size, 1);    
     
     //set open filen array to be writable
     //set ofile[0], ofile[1], ofile[2] to be writable because parent process is init.
@@ -361,8 +364,27 @@ switchuvm_ro(struct proc *p, const int n)
       //cprintf("p->ofile[%d] = %x\n", i, p->ofile[i]);
     }    
     cprintf("after: kernel_ro\n");
-  }   
-  lcr3(V2P(p->pgdir));  // switch to process's address space  
+  }
+  
+  lcr3(V2P(p->pgdir));  // switch to process's address space
+
+/*
+  struct proc *p2 = myproc();
+  kernel_ro(p2->pgdir);
+  setptew(p2->pgdir, p2->kstack, KSTACKSIZE, 1);
+  kernel_ro(p2->pgdir);
+  setptew(p2->pgdir, p2->kstack, KSTACKSIZE, 1);
+  setptew(p2->pgdir, (char *)cpus, PGSIZE, 1);
+  setptew(p2->pgdir, (char *)cons, PGSIZE, 1);
+  cprintf("ptable addr: %x\n", &ptable);
+  int size = PGROUNDUP(sizeof(ptable));
+  cprintf("ptable size %d\n", size);
+  //setptew(p2->pgdir, mem_inituvm, PGSIZE, 1);
+  setptew(p2->pgdir, (char *)tickslock, PGSIZE, 1);
+  setptew(p2->pgdir, (char *)idt, PGSIZE, 1);
+  setptew(p2->pgdir, (char *)&ticks, PGSIZE, 1);
+  lcr3(V2P(p2->pgdir));
+ */ 
    
   cprintf("after: changed lcr3\n");
   popcli();
@@ -596,6 +618,7 @@ void setptew_kernel(pde_t *pgdir)
     if (a == last) {
       break;
     }
+    //cprintf("a %x\n", a);
     a += PGSIZE;
   }
   //flush the TLB
