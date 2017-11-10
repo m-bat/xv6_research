@@ -90,13 +90,26 @@ kfree(char *v)
 char*
 kalloc(alloc_flag_t flag)
 {
-  struct run *r;
+  struct run *r = 0;
 
   if(kmem.use_lock)
     acquire(&kmem.lock);
-  r = kmem.freelist;
-  if(r)
-    kmem.freelist = r->next;
+
+  switch(flag) {
+  case ALLOC_KGLOBAL:
+    r = kmem.freelist;
+    if(r)
+      kmem.freelist = r->next;
+    break;
+  case ALLOC_PLOCAL:
+    r = kmem.freelist_plocal;
+    if(r)
+      kmem.freelist_plocal = r->next;
+    break;
+  default:
+    panic("unknown allocation flag\n");
+  }
+
   if(kmem.use_lock)
     release(&kmem.lock);
   /* cprintf("DEBUG: kalloc page: %p\n", r); */
