@@ -23,7 +23,7 @@ struct {
   struct spinlock lock;
   int use_lock;
   struct run *freelist;
-  struct run *freelist_userinfo;
+  struct run *freelist_plocal;
 } kmem;
 
 
@@ -89,8 +89,8 @@ kfree(char *v)
   //r->next = kmem.freelist;
   
   if (v >= (char *)KERNPLOCAL) {
-    r->next = kmem.freelist_userinfo;
-    kmem.freelist_userinfo = r;
+    r->next = kmem.freelist_plocal;
+    kmem.freelist_plocal = r;
     //Read-only set PTE_R
     //clearptew(kpgdir, (char *)r);
     //DEBUG
@@ -134,9 +134,9 @@ kuinfo_alloc (void) {
   if (kmem.use_lock) 
     acquire(&kmem.lock);
 	
-  r = kmem.freelist_userinfo;
+  r = kmem.freelist_plocal;
   if (r) 
-    kmem.freelist_userinfo = r->next;
+    kmem.freelist_plocal = r->next;
 	
   if (kmem.use_lock)
     release(&kmem.lock);
