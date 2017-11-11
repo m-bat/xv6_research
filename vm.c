@@ -50,7 +50,7 @@ walkpgdir(pde_t *pgdir, const void *va)
 }
 
 static pte_t *
-walkpgdir_with_alloc(pde_t *pgdir, const void *va, int alloc) {
+walkpgdir_with_alloc(pde_t *pgdir, const void *va, alloc_flag_t flag) {
   pde_t *pde;
   pte_t *pgtab;
 
@@ -58,7 +58,7 @@ walkpgdir_with_alloc(pde_t *pgdir, const void *va, int alloc) {
   if(*pde & PTE_P){
     pgtab = (pte_t*)P2V(PTE_ADDR(*pde));
   } else {
-    if(!alloc || (pgtab = (pte_t*)kalloc(ALLOC_KGLOBAL)) == 0)
+    if((pgtab = (pte_t*)kalloc(flag)) == 0)
       return 0;
     // Make sure all those PTE_P bits are zero.
     memset(pgtab, 0, PGSIZE);
@@ -74,7 +74,7 @@ walkpgdir_with_alloc(pde_t *pgdir, const void *va, int alloc) {
 // physical addresses starting at pa. va and size might not
 // be page-aligned.
 static int
-mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
+mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm, alloc_flag_t flag)
 {
   char *a, *last;
   pte_t *pte;
@@ -82,7 +82,7 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
   a = (char*)PGROUNDDOWN((uint)va);
   last = (char*)PGROUNDDOWN(((uint)va) + size - 1);
   for(;;){
-    if((pte = walkpgdir_with_alloc(pgdir, a, 1)) == 0)
+    if((pte = walkpgdir_with_alloc(pgdir, a, flag)) == 0)
       return -1;
     if(*pte & PTE_P)
       panic("remap");
@@ -133,7 +133,7 @@ static struct kmap {
 
 // Set up kernel part of a page table.
 pde_t*
-setupkvm(void)
+setupkvm(alloc_flag_t flag)
 {
   pde_t *pgdir;
   struct kmap *k;
@@ -145,7 +145,7 @@ setupkvm(void)
     panic("PHYSTOP too high");
   for(k = kmap; k < &kmap[NELEM(kmap)]; k++)
     if(mappages(pgdir, k->virt, k->phys_end - k->phys_start,
-                (uint)k->phys_start, k->perm) < 0) {
+                (uint)k->phys_start, k->perm, flag) < 0) {
       freevm(pgdir);
       return 0;
     }
@@ -157,7 +157,7 @@ setupkvm(void)
 void
 kvmalloc(void)
 {
-  kpgdir = setupkvm();
+  kpgdir = setupkvm(ALLOC_KGLOBAL);
   switchkvm();
 }
 
@@ -205,7 +205,7 @@ inituvm(pde_t *pgdir, char *init, uint sz)
     panic("inituvm: more than a page");
   mem = kalloc(ALLOC_KGLOBAL);
   memset(mem, 0, PGSIZE);
-  mappages(pgdir, 0, PGSIZE, V2P(mem), PTE_W|PTE_U);
+  mappages(pgdir, 0, PGSIZE, V2P(mem), PTE_W|PTE_U, ALLOC_PLOCAL);
   memmove(mem, init, sz);
 }
 
@@ -255,7 +255,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       return 0;
     }
     memset(mem, 0, PGSIZE);
-    if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U) < 0){
+    if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U, ALLOC_PLOCAL) < 0){
       cprintf("allocuvm out of memory (2)\n");
       deallocuvm(pgdir, newsz, oldsz);
       kfree(mem);
@@ -371,7 +371,7 @@ copyuvm(pde_t *pgdir, uint sz)
   uint pa, i, flags;
   char *mem;
 
-  if((d = setupkvm()) == 0)
+  if((d = setupkvm(ALLOC_PLOCAL)) == 0)
     return 0;
   for(i = 0; i < sz; i += PGSIZE){
     if((pte = walkpgdir(pgdir, (void *) i)) == 0)
@@ -383,7 +383,7 @@ copyuvm(pde_t *pgdir, uint sz)
     if((mem = kalloc(ALLOC_KGLOBAL)) == 0)
       goto bad;
     memmove(mem, (char*)P2V(pa), PGSIZE);
-    if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags) < 0)
+    if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags, ALLOC_PLOCAL) < 0)
       goto bad;
   }
   return d;
