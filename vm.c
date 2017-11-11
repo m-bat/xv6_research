@@ -15,7 +15,7 @@ pde_t *kpgdir;  // for use in scheduler()
 extern struct cons_lk *cons;
 
 //add manabu 11/2
-extern struct ptable_t ptable;
+extern struct ptable_t *ptable;
 
 // Set up CPU's kernel segment descriptors.
 // Run once on entry on each CPU.
@@ -345,14 +345,15 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, p->kstack, KSTACKSIZE, 1);
     setptew(p->pgdir, (char *)cpus, PGSIZE, 1);
     setptew(p->pgdir, (char *)cons, PGSIZE, 1);
-    cprintf("ptable addr: %x\n", &ptable);
-    int size = PGROUNDUP(sizeof(ptable));
-    cprintf("ptable size %d\n", size);
-    //setptew(p->pgdir, mem_inituvm, PGSIZE, 1);
+    cprintf("ptable addr: %x\n", ptable);
+    //int size = PGROUNDUP(sizeof(ptable));
+    //cprintf("ptable size %d\n", size);
+    setptew(p->pgdir, mem_inituvm, PGSIZE, 1);
     setptew(p->pgdir, (char *)tickslock, PGSIZE, 1);
     setptew(p->pgdir, (char *)idt, PGSIZE, 1);
-    setptew(p->pgdir, (char *)&ticks, PGSIZE, 1);    
-    //setptew(p->pgdir, (char *)&ptable, size, 1);    
+    setptew(p->pgdir, (char *)&ticks, PGSIZE, 1);
+    setptew(p->pgdir, (char *)lapic, PGSIZE, 1);    
+    setptew(p->pgdir, (char *)ptable, PGSIZE, 1);    
     
     //set open filen array to be writable
     //set ofile[0], ofile[1], ofile[2] to be writable because parent process is init.
@@ -384,7 +385,7 @@ switchuvm_ro(struct proc *p, const int n)
   setptew(p2->pgdir, (char *)idt, PGSIZE, 1);
   setptew(p2->pgdir, (char *)&ticks, PGSIZE, 1);
   lcr3(V2P(p2->pgdir));
- */ 
+*/ 
    
   cprintf("after: changed lcr3\n");
   popcli();
