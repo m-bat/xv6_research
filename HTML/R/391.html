@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>mem</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.4' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/46.html#L1782'>mem</a>              1782 usertests.c      mem();</span>
+<span class='curline'><a href='../S/157.html#L402'>mem</a>               402 vm.c             char *mem;</span>
+<span class='curline'><a href='../S/157.html#L406'>mem</a>               406 vm.c             mem = kalloc();</span>
+<span class='curline'><a href='../S/157.html#L408'>mem</a>               408 vm.c             mem_inituvm = mem;</span>
+<span class='curline'><a href='../S/157.html#L412'>mem</a>               412 vm.c             cprintf("mem %x", mem);</span>
+<span class='curline'><a href='../S/157.html#L414'>mem</a>               414 vm.c             memset(mem, 0, PGSIZE);</span>
+<span class='curline'><a href='../S/157.html#L415'>mem</a>               415 vm.c             mappages(pgdir, 0, PGSIZE, V2P(mem), PTE_W|PTE_U);</span>
+<span class='curline'><a href='../S/157.html#L416'>mem</a>               416 vm.c             memmove(mem, init, sz);</span>
+<span class='curline'><a href='../S/157.html#L448'>mem</a>               448 vm.c             char *mem;</span>
+<span class='curline'><a href='../S/157.html#L458'>mem</a>               458 vm.c               mem = kalloc();</span>
+<span class='curline'><a href='../S/157.html#L459'>mem</a>               459 vm.c               if(mem == 0){</span>
+<span class='curline'><a href='../S/157.html#L464'>mem</a>               464 vm.c               memset(mem, 0, PGSIZE);</span>
+<span class='curline'><a href='../S/157.html#L465'>mem</a>               465 vm.c               if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U) &lt; 0){</span>
+<span class='curline'><a href='../S/157.html#L468'>mem</a>               468 vm.c                 kfree(mem);</span>
+<span class='curline'><a href='../S/157.html#L636'>mem</a>               636 vm.c             char *mem;</span>
+<span class='curline'><a href='../S/157.html#L647'>mem</a>               647 vm.c               if((mem = kalloc()) == 0)</span>
+<span class='curline'><a href='../S/157.html#L649'>mem</a>               649 vm.c               memmove(mem, (char*)P2V(pa), PGSIZE);</span>
+<span class='curline'><a href='../S/157.html#L650'>mem</a>               650 vm.c               if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags) &lt; 0)</span>
+<span class='curline'><a href='../S/157.html#L705'>mem</a>               705 vm.c             char *mem;</span>
+<span class='curline'><a href='../S/157.html#L707'>mem</a>               707 vm.c             if ((mem = kuinfo_alloc()) == 0) {</span>
+<span class='curline'><a href='../S/157.html#L712'>mem</a>               712 vm.c             memmove(mem, (char*)p, PGSIZE);</span>
+</pre>
+</body>
+</html>

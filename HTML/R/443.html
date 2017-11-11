@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>proc</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.4' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/118.html#L11'>proc</a>               11 defs.h         struct proc;</span>
+<span class='curline'><a href='../S/118.html#L121'>proc</a>              121 defs.h         struct proc*    myproc();</span>
+<span class='curline'><a href='../S/118.html#L126'>proc</a>              126 defs.h         void            setproc(struct proc*);</span>
+<span class='curline'><a href='../S/118.html#L203'>proc</a>              203 defs.h         void            switchuvm(struct proc*);</span>
+<span class='curline'><a href='../S/118.html#L208'>proc</a>              208 defs.h         int             copy_proc(struct proc *p);</span>
+<span class='curline'><a href='../S/118.html#L217'>proc</a>              217 defs.h         void            switchuvm_ro(struct proc *p, const int n);</span>
+<span class='curline'><a href='../S/89.html#L21'>proc</a>               21 exec.c           struct proc *curproc = myproc();</span>
+<span class='curline'><a href='../S/15.html#L63'>proc</a>               63 file.c           struct proc *p;</span>
+<span class='curline'><a href='../S/99.html#L102'>proc</a>              102 mp.c             struct mpproc *proc;</span>
+<span class='curline'><a href='../S/99.html#L112'>proc</a>              112 mp.c                 proc = (struct mpproc*)p;</span>
+<span class='curline'><a href='../S/99.html#L114'>proc</a>              114 mp.c                   cpus[ncpu].apicid = proc-&gt;apicid;  // apicid may differ from ncpu</span>
+<span class='curline'><a href='../S/63.html#L36'>proc</a>               36 proc.c         static struct proc *initproc;</span>
+<span class='curline'><a href='../S/63.html#L91'>proc</a>               91 proc.c         struct proc*</span>
+<span class='curline'><a href='../S/63.html#L94'>proc</a>               94 proc.c           struct proc *p;</span>
+<span class='curline'><a href='../S/63.html#L97'>proc</a>               97 proc.c           p = c-&gt;proc;</span>
+<span class='curline'><a href='../S/63.html#L107'>proc</a>              107 proc.c         static struct proc*</span>
+<span class='curline'><a href='../S/63.html#L110'>proc</a>              110 proc.c           struct proc *p;</span>
+<span class='curline'><a href='../S/63.html#L115'>proc</a>              115 proc.c           for(p = ptable-&gt;proc; p &lt; &amp;ptable-&gt;proc[NPROC]; p++)</span>
+<span class='curline'><a href='../S/63.html#L167'>proc</a>              167 proc.c         int alloc_test_local(struct proc *p) {</span>
+<span class='curline'><a href='../S/63.html#L182'>proc</a>              182 proc.c           struct proc *p;</span>
+<span class='curline'><a href='../S/63.html#L221'>proc</a>              221 proc.c           struct proc *curproc = myproc();</span>
+<span class='curline'><a href='../S/63.html#L243'>proc</a>              243 proc.c           struct proc *np;</span>
+<span class='curline'><a href='../S/63.html#L244'>proc</a>              244 proc.c           struct proc *curproc = myproc();</span>
+<span class='curline'><a href='../S/63.html#L303'>proc</a>              303 proc.c           struct proc *curproc = myproc();</span>
+<span class='curline'><a href='../S/63.html#L304'>proc</a>              304 proc.c           struct proc *p;</span>
+<span class='curline'><a href='../S/63.html#L329'>proc</a>              329 proc.c           for(p = ptable-&gt;proc; p &lt; &amp;ptable-&gt;proc[NPROC]; p++){</span>
+<span class='curline'><a href='../S/63.html#L349'>proc</a>              349 proc.c           struct proc *p;</span>
+<span class='curline'><a href='../S/63.html#L351'>proc</a>              351 proc.c           struct proc *curproc = myproc();</span>
+<span class='curline'><a href='../S/63.html#L357'>proc</a>              357 proc.c             for(p = ptable-&gt;proc; p &lt; &amp;ptable-&gt;proc[NPROC]; p++){</span>
+<span class='curline'><a href='../S/63.html#L400'>proc</a>              400 proc.c           struct proc *p;</span>
+<span class='curline'><a href='../S/63.html#L402'>proc</a>              402 proc.c           c-&gt;proc = 0;</span>
+<span class='curline'><a href='../S/63.html#L410'>proc</a>              410 proc.c             for(p = ptable-&gt;proc; p &lt; &amp;ptable-&gt;proc[NPROC]; p++){</span>
+<span class='curline'><a href='../S/63.html#L417'>proc</a>              417 proc.c               c-&gt;proc = p;</span>
+<span class='curline'><a href='../S/63.html#L426'>proc</a>              426 proc.c               c-&gt;proc = 0;</span>
+<span class='curline'><a href='../S/63.html#L444'>proc</a>              444 proc.c           struct proc *p = myproc();</span>
+<span class='curline'><a href='../S/63.html#L495'>proc</a>              495 proc.c           struct proc *p = myproc();</span>
+<span class='curline'><a href='../S/63.html#L535'>proc</a>              535 proc.c           struct proc *p;</span>
+<span class='curline'><a href='../S/63.html#L537'>proc</a>              537 proc.c           for(p = ptable-&gt;proc; p &lt; &amp;ptable-&gt;proc[NPROC]; p++)</span>
+<span class='curline'><a href='../S/63.html#L557'>proc</a>              557 proc.c           struct proc *p;</span>
+<span class='curline'><a href='../S/63.html#L560'>proc</a>              560 proc.c           for(p = ptable-&gt;proc; p &lt; &amp;ptable-&gt;proc[NPROC]; p++){</span>
+<span class='curline'><a href='../S/63.html#L590'>proc</a>              590 proc.c           struct proc *p;</span>
+<span class='curline'><a href='../S/63.html#L594'>proc</a>              594 proc.c           for(p = ptable-&gt;proc; p &lt; &amp;ptable-&gt;proc[NPROC]; p++){</span>
+<span class='curline'><a href='../S/63.html#L616'>proc</a>              616 proc.c           struct proc *p;</span>
+<span class='curline'><a href='../S/63.html#L628'>proc</a>              628 proc.c           for (p = ptable-&gt;proc; p &lt; &amp;ptable-&gt;proc[NPROC]; p++) {</span>
+<span class='curline'><a href='../S/92.html#L14'>proc</a>               14 proc.h           struct proc *proc;           // The process running on this cpu or null  </span>
+<span class='curline'><a href='../S/92.html#L67'>proc</a>               67 proc.h           struct proc *parent;         // Parent process</span>
+<span class='curline'><a href='../S/92.html#L90'>proc</a>               90 proc.h           struct proc proc[NPROC];  </span>
+<span class='curline'><a href='../S/81.html#L20'>proc</a>               20 syscall.c        struct proc *curproc = myproc();</span>
+<span class='curline'><a href='../S/81.html#L35'>proc</a>               35 syscall.c        struct proc *curproc = myproc();</span>
+<span class='curline'><a href='../S/81.html#L62'>proc</a>               62 syscall.c        struct proc *curproc = myproc();</span>
+<span class='curline'><a href='../S/81.html#L139'>proc</a>              139 syscall.c        struct proc *curproc = myproc();</span>
+<span class='curline'><a href='../S/83.html#L44'>proc</a>               44 sysfile.c        struct proc *curproc = myproc();</span>
+<span class='curline'><a href='../S/83.html#L377'>proc</a>              377 sysfile.c        struct proc *curproc = myproc();</span>
+<span class='curline'><a href='../S/161.html#L52'>proc</a>               52 trap.c           struct proc *p;</span>
+<span class='curline'><a href='../S/157.html#L233'>proc</a>              233 vm.c           switchuvm(struct proc *p)</span>
+<span class='curline'><a href='../S/157.html#L295'>proc</a>              295 vm.c           switchuvm_ro(struct proc *p, const int n)  </span>
+<span class='curline'><a href='../S/157.html#L703'>proc</a>              703 vm.c           int copy_proc(struct proc *p)</span>
+</pre>
+</body>
+</html>

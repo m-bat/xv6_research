@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>entryother.S</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.4' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/entryother.S</h2>
+<em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<pre>
+<a id='L1' name='L1'></a><em class='sharp'>#include</em> "<a href='144.html'>asm.h</a>"
+<a id='L2' name='L2'></a><em class='sharp'>#include</em> "<a href='49.html'>memlayout.h</a>"
+<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='121.html'>mmu.h</a>"
+<a id='L4' name='L4'></a>        
+<a id='L5' name='L5'></a><em class='comment'># Each non-boot CPU ("AP") is started up in response to a STARTUP</em>
+<a id='L6' name='L6'></a><em class='comment'># IPI from the boot CPU.  Section B.4.2 of the Multi-Processor</em>
+<a id='L7' name='L7'></a><em class='comment'># Specification says that the AP will start in real mode with CS:IP</em>
+<a id='L8' name='L8'></a><em class='comment'># set to XY00:0000, where XY is an 8-bit value sent with the</em>
+<a id='L9' name='L9'></a><em class='comment'># STARTUP. Thus this code must start at a 4096-byte boundary.</em>
+<a id='L10' name='L10'></a><em class='sharp'>#</em>
+<a id='L11' name='L11'></a><em class='comment'># Because this code sets DS to zero, it must sit</em>
+<a id='L12' name='L12'></a><em class='comment'># at an address in the low 2^16 bytes.</em>
+<a id='L13' name='L13'></a><em class='sharp'>#</em>
+<a id='L14' name='L14'></a><em class='comment'># Startothers (in main.c) sends the STARTUPs one at a time.</em>
+<a id='L15' name='L15'></a><em class='comment'># It copies this code (start) at 0x7000.  It puts the address of</em>
+<a id='L16' name='L16'></a><em class='comment'># a newly allocated per-core stack in start-4,the address of the</em>
+<a id='L17' name='L17'></a><em class='comment'># place to jump to (mpenter) in start-8, and the physical address</em>
+<a id='L18' name='L18'></a><em class='comment'># of entrypgdir in start-12.</em>
+<a id='L19' name='L19'></a><em class='sharp'>#</em>
+<a id='L20' name='L20'></a><em class='comment'># This code combines elements of bootasm.S and entry.S.</em>
+<a id='L21' name='L21'></a>
+<a id='L22' name='L22'></a>.code16           
+<a id='L23' name='L23'></a>.globl start
+<a id='L24' name='L24'></a>start:
+<a id='L25' name='L25'></a>  cli            
+<a id='L26' name='L26'></a>
+<a id='L27' name='L27'></a><em class='comment'>  # Zero data segment registers DS, ES, and SS.</em>
+<a id='L28' name='L28'></a>  xorw    %ax,%ax
+<a id='L29' name='L29'></a>  movw    %ax,%ds
+<a id='L30' name='L30'></a>  movw    %ax,%es
+<a id='L31' name='L31'></a>  movw    %ax,%ss
+<a id='L32' name='L32'></a>
+<a id='L33' name='L33'></a><em class='comment'>  # Switch from real to protected mode.  Use a bootstrap GDT that makes</em>
+<a id='L34' name='L34'></a><em class='comment'>  # virtual addresses map directly to physical addresses so that the</em>
+<a id='L35' name='L35'></a><em class='comment'>  # effective memory map doesn't change during the transition.</em>
+<a id='L36' name='L36'></a>  lgdt    gdtdesc
+<a id='L37' name='L37'></a>  movl    %cr0, %eax
+<a id='L38' name='L38'></a>  orl     $CR0_PE, %eax
+<a id='L39' name='L39'></a>  movl    %eax, %cr0
+<a id='L40' name='L40'></a>
+<a id='L41' name='L41'></a><em class='comment'>  # Complete the transition to 32-bit protected mode by using a long jmp</em>
+<a id='L42' name='L42'></a><em class='comment'>  # to reload %cs and %eip.  The segment descriptors are set up with no</em>
+<a id='L43' name='L43'></a><em class='comment'>  # translation, so that the mapping is still the identity mapping.</em>
+<a id='L44' name='L44'></a>  ljmpl    $(SEG_KCODE&lt;&lt;3), $(start32)
+<a id='L45' name='L45'></a>
+<a id='L46' name='L46'></a><em class='comment'>//PAGEBREAK!</em>
+<a id='L47' name='L47'></a>.code32  # Tell assembler to generate 32-bit code now.
+<a id='L48' name='L48'></a>start32:
+<a id='L49' name='L49'></a><em class='comment'>  # Set up the protected-mode data segment registers</em>
+<a id='L50' name='L50'></a>  movw    $(SEG_KDATA&lt;&lt;3), %ax    # Our data segment selector
+<a id='L51' name='L51'></a>  movw    %ax, %ds                # -&gt; DS: Data Segment
+<a id='L52' name='L52'></a>  movw    %ax, %es                # -&gt; ES: Extra Segment
+<a id='L53' name='L53'></a>  movw    %ax, %ss                # -&gt; SS: Stack Segment
+<a id='L54' name='L54'></a>  movw    $0, %ax                 # Zero segments not ready for use
+<a id='L55' name='L55'></a>  movw    %ax, %fs                # -&gt; FS
+<a id='L56' name='L56'></a>  movw    %ax, %gs                # -&gt; GS
+<a id='L57' name='L57'></a>
+<a id='L58' name='L58'></a><em class='comment'>  # Turn on page size extension for 4Mbyte pages</em>
+<a id='L59' name='L59'></a>  movl    %cr4, %eax
+<a id='L60' name='L60'></a>  orl     $(CR4_PSE), %eax
+<a id='L61' name='L61'></a>  movl    %eax, %cr4
+<a id='L62' name='L62'></a><em class='comment'>  # Use entrypgdir as our initial page table</em>
+<a id='L63' name='L63'></a>  movl    (start-12), %eax
+<a id='L64' name='L64'></a>  movl    %eax, %cr3
+<a id='L65' name='L65'></a><em class='comment'>  # Turn on paging.</em>
+<a id='L66' name='L66'></a>  movl    %cr0, %eax
+<a id='L67' name='L67'></a>  orl     $(CR0_PE|CR0_PG|CR0_WP), %eax
+<a id='L68' name='L68'></a>  movl    %eax, %cr0
+<a id='L69' name='L69'></a>
+<a id='L70' name='L70'></a><em class='comment'>  # Switch to the stack allocated by startothers()</em>
+<a id='L71' name='L71'></a>  movl    (start-4), %esp
+<a id='L72' name='L72'></a><em class='comment'>  # Call mpenter()</em>
+<a id='L73' name='L73'></a>  call   *(start-8)
+<a id='L74' name='L74'></a>
+<a id='L75' name='L75'></a>  movw    $0x8a00, %ax
+<a id='L76' name='L76'></a>  movw    %ax, %dx
+<a id='L77' name='L77'></a>  outw    %ax, %dx
+<a id='L78' name='L78'></a>  movw    $0x8ae0, %ax
+<a id='L79' name='L79'></a>  outw    %ax, %dx
+<a id='L80' name='L80'></a>spin:
+<a id='L81' name='L81'></a>  jmp     spin
+<a id='L82' name='L82'></a>
+<a id='L83' name='L83'></a>.p2align 2
+<a id='L84' name='L84'></a>gdt:
+<a id='L85' name='L85'></a>  SEG_NULLASM
+<a id='L86' name='L86'></a>  SEG_ASM(STA_X|STA_R, 0, 0xffffffff)
+<a id='L87' name='L87'></a>  SEG_ASM(STA_W, 0, 0xffffffff)
+<a id='L88' name='L88'></a>
+<a id='L89' name='L89'></a>
+<a id='L90' name='L90'></a>gdtdesc:
+<a id='L91' name='L91'></a>  .word   (gdtdesc - gdt - 1)
+<a id='L92' name='L92'></a>  .long   gdt
+<a id='L93' name='L93'></a>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;][^][v]<a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

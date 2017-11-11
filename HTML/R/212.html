@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>V2P</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.4' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/167.html#L80'>V2P</a>                80 kalloc.c         if((uint)v % PGSIZE || v &lt; end || V2P(v) &gt;= PHYSTOP)</span>
+<span class='curline'><a href='../S/154.html#L98'>V2P</a>                98 main.c             *(int**)(code-12) = (void *) V2P(entrypgdir);</span>
+<span class='curline'><a href='../S/154.html#L100'>V2P</a>               100 main.c             lapicstartap(c-&gt;apicid, V2P(code));</span>
+<span class='curline'><a href='../S/161.html#L121'>V2P</a>               121 trap.c             lcr3(V2P(p-&gt;pgdir));   </span>
+<span class='curline'><a href='../S/157.html#L60'>V2P</a>                60 vm.c               *pde = V2P(pgtab) | PTE_P | PTE_W | PTE_U;</span>
+<span class='curline'><a href='../S/157.html#L136'>V2P</a>               136 vm.c             { (void*)KERNLINK, V2P(KERNLINK), V2P(data),     0}, //     [2] kern text+rodata</span>
+<span class='curline'><a href='../S/157.html#L137'>V2P</a>               137 vm.c             { (void*)data,     V2P(data),     V2P(USERINFO), PTE_W}, // [3] kern data+memory</span>
+<span class='curline'><a href='../S/157.html#L138'>V2P</a>               138 vm.c             { (void*)USERINFO, V2P(USERINFO), PHYSTOP,  PTE_W}, //      [4] kern userinfo</span>
+<span class='curline'><a href='../S/157.html#L228'>V2P</a>               228 vm.c             lcr3(V2P(kpgdir));   // switch to the kernel page table</span>
+<span class='curline'><a href='../S/157.html#L252'>V2P</a>               252 vm.c             lcr3(V2P(p-&gt;pgdir));  // switch to process's address space</span>
+<span class='curline'><a href='../S/157.html#L285'>V2P</a>               285 vm.c               lcr3(V2P(pgdir));</span>
+<span class='curline'><a href='../S/157.html#L369'>V2P</a>               369 vm.c             lcr3(V2P(p-&gt;pgdir));  // switch to process's address space</span>
+<span class='curline'><a href='../S/157.html#L415'>V2P</a>               415 vm.c             mappages(pgdir, 0, PGSIZE, V2P(mem), PTE_W|PTE_U);</span>
+<span class='curline'><a href='../S/157.html#L465'>V2P</a>               465 vm.c               if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U) &lt; 0){</span>
+<span class='curline'><a href='../S/157.html#L585'>V2P</a>               585 vm.c               lcr3(V2P(pgdir));</span>
+<span class='curline'><a href='../S/157.html#L650'>V2P</a>               650 vm.c               if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags) &lt; 0)</span>
+</pre>
+</body>
+</html>

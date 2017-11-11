@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>cpu</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.4' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/118.html#L67'>cpu</a>                67 defs.h         void            ioapicenable(int irq, int cpu);</span>
+<span class='curline'><a href='../S/118.html#L120'>cpu</a>               120 defs.h         struct cpu*     mycpu(void);</span>
+<span class='curline'><a href='../S/167.html#L154'>cpu</a>               154 kalloc.c         if ((cpus = (struct cpu *)kalloc()) == 0) {</span>
+<span class='curline'><a href='../S/154.html#L76'>cpu</a>                76 main.c           struct cpu *c;</span>
+<span class='curline'><a href='../S/99.html#L16'>cpu</a>                16 mp.c           struct cpu *cpus;</span>
+<span class='curline'><a href='../S/63.html#L71'>cpu</a>                71 proc.c         struct cpu*</span>
+<span class='curline'><a href='../S/63.html#L93'>cpu</a>                93 proc.c           struct cpu *c;</span>
+<span class='curline'><a href='../S/63.html#L401'>cpu</a>               401 proc.c           struct cpu *c = mycpu();</span>
+<span class='curline'><a href='../S/92.html#L19'>cpu</a>                19 proc.h         extern struct cpu *cpus;</span>
+<span class='curline'><a href='../S/40.html#L17'>cpu</a>                17 spinlock.c       lk-&gt;cpu = 0;</span>
+<span class='curline'><a href='../S/40.html#L41'>cpu</a>                41 spinlock.c       lk-&gt;cpu = mycpu();</span>
+<span class='curline'><a href='../S/40.html#L53'>cpu</a>                53 spinlock.c       lk-&gt;cpu = 0;</span>
+<span class='curline'><a href='../S/40.html#L92'>cpu</a>                92 spinlock.c       return lock-&gt;locked &amp;&amp; lock-&gt;cpu == mycpu();</span>
+<span class='curline'><a href='../S/9.html#L10'>cpu</a>                10 spinlock.h       struct cpu *cpu;   // The cpu holding the lock.</span>
+<span class='curline'><a href='../S/157.html#L25'>cpu</a>                25 vm.c             struct cpu *c;</span>
+</pre>
+</body>
+</html>

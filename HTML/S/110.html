@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>ls.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.4' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/ls.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L7'>[^]</a><a href='#L74'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L7' title='Defined at 7.'>fmtname</a></li>
+<li><a href='#L26' title='Defined at 26.'>ls</a></li>
+<li><a href='#L74' title='Defined at 74.'>main</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a><em class='sharp'>#include</em> "<a href='125.html'>types.h</a>"
+<a id='L2' name='L2'></a><em class='sharp'>#include</em> "<a href='34.html'>stat.h</a>"
+<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='188.html'>user.h</a>"
+<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='103.html'>fs.h</a>"
+<a id='L5' name='L5'></a>
+<a id='L6' name='L6'></a><strong class='reserved'>char</strong>*
+<a id='L7' name='L7'></a><a href='../R/304.html' title='Multiple referred from 2 places.'>fmtname</a>(<strong class='reserved'>char</strong> *path)
+<a id='L8' name='L8'></a><em class='brace'>{</em>
+<a id='L9' name='L9'></a>  <strong class='reserved'>static</strong> <strong class='reserved'>char</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>[<a href='../S/103.html#L51' title='Defined at 51 in fs.h.'>DIRSIZ</a>+1];
+<a id='L10' name='L10'></a>  <strong class='reserved'>char</strong> *p;
+<a id='L11' name='L11'></a>
+<a id='L12' name='L12'></a>  <em class='comment'>// Find first character after last slash.</em>
+<a id='L13' name='L13'></a>  <strong class='reserved'>for</strong>(p=path+<a href='../D/590.html' title='Multiple defined in 2 places.'>strlen</a>(path); p &gt;= path &amp;&amp; *p != '/'; p--)
+<a id='L14' name='L14'></a>    ;
+<a id='L15' name='L15'></a>  p++;
+<a id='L16' name='L16'></a>
+<a id='L17' name='L17'></a>  <em class='comment'>// Return blank-padded name.</em>
+<a id='L18' name='L18'></a>  <strong class='reserved'>if</strong>(<a href='../D/590.html' title='Multiple defined in 2 places.'>strlen</a>(p) &gt;= <a href='../S/103.html#L51' title='Defined at 51 in fs.h.'>DIRSIZ</a>)
+<a id='L19' name='L19'></a>    <strong class='reserved'>return</strong> p;
+<a id='L20' name='L20'></a>  <a href='../D/488.html' title='Multiple defined in 2 places.'>memmove</a>(<a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>, p, <a href='../D/590.html' title='Multiple defined in 2 places.'>strlen</a>(p));
+<a id='L21' name='L21'></a>  <a href='../D/489.html' title='Multiple defined in 2 places.'>memset</a>(<a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>+<a href='../D/590.html' title='Multiple defined in 2 places.'>strlen</a>(p), ' ', <a href='../S/103.html#L51' title='Defined at 51 in fs.h.'>DIRSIZ</a>-<a href='../D/590.html' title='Multiple defined in 2 places.'>strlen</a>(p));
+<a id='L22' name='L22'></a>  <strong class='reserved'>return</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>;
+<a id='L23' name='L23'></a><em class='brace'>}</em>
+<a id='L24' name='L24'></a>
+<a id='L25' name='L25'></a><strong class='reserved'>void</strong>
+<a id='L26' name='L26'></a><a href='../R/383.html' title='Multiple referred from 2 places.'>ls</a>(<strong class='reserved'>char</strong> *path)
+<a id='L27' name='L27'></a><em class='brace'>{</em>
+<a id='L28' name='L28'></a>  <strong class='reserved'>char</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>[512], *p;
+<a id='L29' name='L29'></a>  <strong class='reserved'>int</strong> fd;
+<a id='L30' name='L30'></a>  <strong class='reserved'>struct</strong> <a href='../S/103.html#L53' title='Defined at 53 in fs.h.'>dirent</a> de;
+<a id='L31' name='L31'></a>  <strong class='reserved'>struct</strong> <a href='../D/581.html' title='Multiple defined in 3 places.'>stat</a> st;
+<a id='L32' name='L32'></a>
+<a id='L33' name='L33'></a>  <strong class='reserved'>if</strong>((fd = open(path, 0)) &lt; 0)<em class='brace'>{</em>
+<a id='L34' name='L34'></a>    <a href='../D/537.html' title='Multiple defined in 2 places.'>printf</a>(2, "ls: cannot open %s\n", path);
+<a id='L35' name='L35'></a>    <strong class='reserved'>return</strong>;
+<a id='L36' name='L36'></a>  <em class='brace'>}</em>
+<a id='L37' name='L37'></a>
+<a id='L38' name='L38'></a>  <strong class='reserved'>if</strong>(fstat(fd, &amp;st) &lt; 0)<em class='brace'>{</em>
+<a id='L39' name='L39'></a>    <a href='../D/537.html' title='Multiple defined in 2 places.'>printf</a>(2, "ls: cannot stat %s\n", path);
+<a id='L40' name='L40'></a>    close(fd);
+<a id='L41' name='L41'></a>    <strong class='reserved'>return</strong>;
+<a id='L42' name='L42'></a>  <em class='brace'>}</em>
+<a id='L43' name='L43'></a>
+<a id='L44' name='L44'></a>  <strong class='reserved'>switch</strong>(st.type)<em class='brace'>{</em>
+<a id='L45' name='L45'></a>  <strong class='reserved'>case</strong> <a href='../S/34.html#L2' title='Defined at 2 in stat.h.'>T_FILE</a>:
+<a id='L46' name='L46'></a>    <a href='../D/537.html' title='Multiple defined in 2 places.'>printf</a>(1, "%s %d %d %d\n", <a href='../S/110.html#L7' title='Defined at 7 in ls.c.'>fmtname</a>(path), st.type, st.ino, st.size);
+<a id='L47' name='L47'></a>    <strong class='reserved'>break</strong>;
+<a id='L48' name='L48'></a>
+<a id='L49' name='L49'></a>  <strong class='reserved'>case</strong> <a href='../S/34.html#L1' title='Defined at 1 in stat.h.'>T_DIR</a>:
+<a id='L50' name='L50'></a>    <strong class='reserved'>if</strong>(<a href='../D/590.html' title='Multiple defined in 2 places.'>strlen</a>(path) + 1 + <a href='../S/103.html#L51' title='Defined at 51 in fs.h.'>DIRSIZ</a> + 1 &gt; <strong class='reserved'>sizeof</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>)<em class='brace'>{</em>
+<a id='L51' name='L51'></a>      <a href='../D/537.html' title='Multiple defined in 2 places.'>printf</a>(1, "ls: path too long\n");
+<a id='L52' name='L52'></a>      <strong class='reserved'>break</strong>;
+<a id='L53' name='L53'></a>    <em class='brace'>}</em>
+<a id='L54' name='L54'></a>    <a href='../D/589.html' title='Multiple defined in 2 places.'>strcpy</a>(<a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>, path);
+<a id='L55' name='L55'></a>    p = <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>+<a href='../D/590.html' title='Multiple defined in 2 places.'>strlen</a>(<a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>);
+<a id='L56' name='L56'></a>    *p++ = '/';
+<a id='L57' name='L57'></a>    <strong class='reserved'>while</strong>(read(fd, &amp;de, <strong class='reserved'>sizeof</strong>(de)) == <strong class='reserved'>sizeof</strong>(de))<em class='brace'>{</em>
+<a id='L58' name='L58'></a>      <strong class='reserved'>if</strong>(de.inum == 0)
+<a id='L59' name='L59'></a>        <strong class='reserved'>continue</strong>;
+<a id='L60' name='L60'></a>      <a href='../D/488.html' title='Multiple defined in 2 places.'>memmove</a>(p, de.name, <a href='../S/103.html#L51' title='Defined at 51 in fs.h.'>DIRSIZ</a>);
+<a id='L61' name='L61'></a>      p[<a href='../S/103.html#L51' title='Defined at 51 in fs.h.'>DIRSIZ</a>] = 0;
+<a id='L62' name='L62'></a>      <strong class='reserved'>if</strong>(<a href='../D/581.html' title='Multiple defined in 3 places.'>stat</a>(<a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>, &amp;st) &lt; 0)<em class='brace'>{</em>
+<a id='L63' name='L63'></a>        <a href='../D/537.html' title='Multiple defined in 2 places.'>printf</a>(1, "ls: cannot stat %s\n", <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>);
+<a id='L64' name='L64'></a>        <strong class='reserved'>continue</strong>;
+<a id='L65' name='L65'></a>      <em class='brace'>}</em>
+<a id='L66' name='L66'></a>      <a href='../D/537.html' title='Multiple defined in 2 places.'>printf</a>(1, "%s %d %d %d\n", <a href='../S/110.html#L7' title='Defined at 7 in ls.c.'>fmtname</a>(<a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>), st.type, st.ino, st.size);
+<a id='L67' name='L67'></a>    <em class='brace'>}</em>
+<a id='L68' name='L68'></a>    <strong class='reserved'>break</strong>;
+<a id='L69' name='L69'></a>  <em class='brace'>}</em>
+<a id='L70' name='L70'></a>  close(fd);
+<a id='L71' name='L71'></a><em class='brace'>}</em>
+<a id='L72' name='L72'></a>
+<a id='L73' name='L73'></a><strong class='reserved'>int</strong>
+<a id='L74' name='L74'></a>main(<strong class='reserved'>int</strong> argc, <strong class='reserved'>char</strong> *argv[])
+<a id='L75' name='L75'></a><em class='brace'>{</em>
+<a id='L76' name='L76'></a>  <strong class='reserved'>int</strong> i;
+<a id='L77' name='L77'></a>
+<a id='L78' name='L78'></a>  <strong class='reserved'>if</strong>(argc &lt; 2)<em class='brace'>{</em>
+<a id='L79' name='L79'></a>    <a href='../S/110.html#L26' title='Defined at 26 in ls.c.'>ls</a>(".");
+<a id='L80' name='L80'></a>    <a href='../S/63.html#L301' title='Defined at 301 in proc.c.'>exit</a>();
+<a id='L81' name='L81'></a>  <em class='brace'>}</em>
+<a id='L82' name='L82'></a>  <strong class='reserved'>for</strong>(i=1; i&lt;argc; i++)
+<a id='L83' name='L83'></a>    <a href='../S/110.html#L26' title='Defined at 26 in ls.c.'>ls</a>(argv[i]);
+<a id='L84' name='L84'></a>  <a href='../S/63.html#L301' title='Defined at 301 in proc.c.'>exit</a>();
+<a id='L85' name='L85'></a><em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L7'>[^]</a><a href='#L74'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

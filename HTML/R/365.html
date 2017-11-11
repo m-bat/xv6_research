@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kmap</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.4' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/157.html#L134'>kmap</a>              134 vm.c           } kmap[] = {</span>
+<span class='curline'><a href='../S/157.html#L147'>kmap</a>              147 vm.c             struct kmap *k;</span>
+<span class='curline'><a href='../S/157.html#L155'>kmap</a>              155 vm.c             for(k = kmap; k &lt; &amp;kmap[NELEM(kmap)]; k++) {</span>
+<span class='curline'><a href='../S/157.html#L171'>kmap</a>              171 vm.c             struct kmap *k;  </span>
+<span class='curline'><a href='../S/157.html#L180'>kmap</a>              180 vm.c             for(k = kmap; k &lt; &amp;kmap[NELEM(kmap)]; k++) {</span>
+<span class='curline'><a href='../S/157.html#L597'>kmap</a>              597 vm.c             size = kmap[2].phys_end - kmap[2].phys_start;</span>
+<span class='curline'><a href='../S/157.html#L602'>kmap</a>              602 vm.c             a = (char *)PGROUNDDOWN((uint)kmap[2].virt);</span>
+<span class='curline'><a href='../S/157.html#L603'>kmap</a>              603 vm.c             last = (char *)PGROUNDDOWN(((uint)kmap[2].virt) + size - 1);</span>
+</pre>
+</body>
+</html>

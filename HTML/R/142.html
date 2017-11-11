@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>PTE_W</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.4' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/154.html#L116'>PTE_W</a>             116 main.c           [0] = (0) | PTE_P | PTE_W | PTE_PS,</span>
+<span class='curline'><a href='../S/154.html#L118'>PTE_W</a>             118 main.c           [KERNBASE&gt;&gt;PDXSHIFT] = (0) | PTE_P | PTE_W | PTE_PS,</span>
+<span class='curline'><a href='../S/157.html#L60'>PTE_W</a>              60 vm.c               *pde = V2P(pgtab) | PTE_P | PTE_W | PTE_U;</span>
+<span class='curline'><a href='../S/157.html#L135'>PTE_W</a>             135 vm.c             { (void*)KERNBASE, 0,             EXTMEM,    PTE_W}, //     [1] I/O space </span>
+<span class='curline'><a href='../S/157.html#L137'>PTE_W</a>             137 vm.c             { (void*)data,     V2P(data),     V2P(USERINFO), PTE_W}, // [3] kern data+memory</span>
+<span class='curline'><a href='../S/157.html#L138'>PTE_W</a>             138 vm.c             { (void*)USERINFO, V2P(USERINFO), PHYSTOP,  PTE_W}, //      [4] kern userinfo</span>
+<span class='curline'><a href='../S/157.html#L139'>PTE_W</a>             139 vm.c             { (void*)DEVSPACE, DEVSPACE,      0,         PTE_W}, //     [5] more devices</span>
+<span class='curline'><a href='../S/157.html#L275'>PTE_W</a>             275 vm.c               *pte |= PTE_W;</span>
+<span class='curline'><a href='../S/157.html#L415'>PTE_W</a>             415 vm.c             mappages(pgdir, 0, PGSIZE, V2P(mem), PTE_W|PTE_U);</span>
+<span class='curline'><a href='../S/157.html#L465'>PTE_W</a>             465 vm.c               if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U) &lt; 0){</span>
+<span class='curline'><a href='../S/157.html#L551'>PTE_W</a>             551 vm.c             *pte &amp;= ~PTE_W;</span>
+<span class='curline'><a href='../S/157.html#L576'>PTE_W</a>             576 vm.c               *pte |= PTE_W;</span>
+<span class='curline'><a href='../S/157.html#L617'>PTE_W</a>             617 vm.c               *pte |= PTE_W;</span>
+</pre>
+</body>
+</html>

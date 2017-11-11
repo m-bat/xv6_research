@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>memlayout.h</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.4' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/memlayout.h</h2>
+<em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'><a href='../J/37.html' title='Multiple included from 19 places.'>INCLUDED FROM</a></h2>
+<hr />
+<pre>
+<a id='L1' name='L1'></a><em class='comment'>// Memory layout</em>
+<a id='L2' name='L2'></a>
+<a id='L3' name='L3'></a>
+<a id='L4' name='L4'></a><em class='sharp'>#define</em> <a href='../R/39.html' title='Multiple referred from 2 places.'>EXTMEM</a>  0x100000            <em class='comment'>// Start of extended memory</em>
+<a id='L5' name='L5'></a><em class='comment'>//#define EXTUSE  0xDFFF000</em>
+<a id='L6' name='L6'></a>
+<a id='L7' name='L7'></a><em class='comment'>//#define EXTUSE  0xE000000</em>
+<a id='L8' name='L8'></a><em class='sharp'>#define</em> <a href='../S/49.html#L26' title='Referred from 26 in memlayout.h.'>EXTUSE</a>  0xC000000
+<a id='L9' name='L9'></a>
+<a id='L10' name='L10'></a><em class='sharp'>#define</em> EXT64   0x64
+<a id='L11' name='L11'></a>
+<a id='L12' name='L12'></a><em class='sharp'>#define</em> <a href='../R/134.html' title='Multiple referred from 4 places.'>PHYSTOP</a> 0xE000000          <em class='comment'>// Top physical memory</em>
+<a id='L13' name='L13'></a><em class='comment'>//#define PHYSTOP 0xE00A000</em>
+<a id='L14' name='L14'></a>
+<a id='L15' name='L15'></a><em class='comment'>//#define USERINFO 0xDFFFF9C</em>
+<a id='L16' name='L16'></a><em class='sharp'>#define</em> <a href='../R/27.html' title='Multiple referred from 2 places.'>DEVSPACE</a> 0xFE000000         <em class='comment'>// Other devices are at high addresses</em>
+<a id='L17' name='L17'></a>
+<a id='L18' name='L18'></a><em class='comment'>// Key addresses for address space layout (see kmap in vm.c for layout)</em>
+<a id='L19' name='L19'></a>
+<a id='L20' name='L20'></a><em class='comment'>//#define KERNBASE_U 0x7FFFFF9C</em>
+<a id='L21' name='L21'></a><em class='sharp'>#define</em> <a href='../R/76.html' title='Multiple referred from 12 places.'>KERNBASE</a> 0x80000000        <em class='comment'>//qFirst kernel virtual address</em>
+<a id='L22' name='L22'></a>
+<a id='L23' name='L23'></a><em class='comment'>//#define KERNBASE 0x7FFFFF9C</em>
+<a id='L24' name='L24'></a><em class='sharp'>#define</em> <a href='../S/157.html#L136' title='Referred from 136 in vm.c.'>KERNLINK</a> (<a href='../S/49.html#L21' title='Defined at 21 in memlayout.h.'>KERNBASE</a>+<a href='../S/49.html#L4' title='Defined at 4 in memlayout.h.'>EXTMEM</a>)  <em class='comment'>// Address where kernel is linked</em>
+<a id='L25' name='L25'></a><em class='comment'>//#define USERINFO (EXTUSE+EXT64)</em>
+<a id='L26' name='L26'></a><em class='sharp'>#define</em> <a href='../R/211.html' title='Multiple referred from 3 places.'>USERINFO</a> (<a href='../S/49.html#L21' title='Defined at 21 in memlayout.h.'>KERNBASE</a>+<a href='../S/49.html#L8' title='Defined at 8 in memlayout.h.'>EXTUSE</a>)
+<a id='L27' name='L27'></a>
+<a id='L28' name='L28'></a><em class='sharp'>#define</em> <a href='../R/212.html' title='Multiple referred from 16 places.'>V2P</a>(a) (((<a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a>) (a)) - <a href='../S/49.html#L21' title='Defined at 21 in memlayout.h.'>KERNBASE</a>)
+<a id='L29' name='L29'></a><em class='sharp'>#define</em> <a href='../R/125.html' title='Multiple referred from 15 places.'>P2V</a>(a) (((<strong class='reserved'>void</strong> *) (a)) + <a href='../S/49.html#L21' title='Defined at 21 in memlayout.h.'>KERNBASE</a>)
+<a id='L30' name='L30'></a>
+<a id='L31' name='L31'></a><em class='sharp'>#define</em> V2P_WO(x) ((x) - <a href='../S/49.html#L21' title='Defined at 21 in memlayout.h.'>KERNBASE</a>)    <em class='comment'>// same as V2P, but without casts</em>
+<a id='L32' name='L32'></a><em class='sharp'>#define</em> P2V_WO(x) ((x) + <a href='../S/49.html#L21' title='Defined at 21 in memlayout.h.'>KERNBASE</a>)    <em class='comment'>// same as P2V, but without casts</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;][^][v]<a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>
