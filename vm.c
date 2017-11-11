@@ -169,6 +169,30 @@ switchkvm(void)
   lcr3(V2P(kpgdir));   // switch to the kernel page table
 }
 
+static void set_kmem_readonly(pde_t *pgdir) {
+  struct kmap *k;
+  char *a, *last;
+  uint size;
+  int i = 0;
+
+  for(k = kmap; k < &kmap[NELEM(kmap)]; k++) {
+    i++;
+    // TODO Now make only kmap:data+memory RO
+    if (i != 2)
+      continue;
+
+    size = k->phys_end - k->phys_start;
+    a = (char*)PGROUNDDOWN((uint)k->virt);
+    last = (char*)PGROUNDDOWN(((uint)k->virt) + size - 1);
+    for(;;){
+      clearptew(pgdir, a);
+      if(a == last)
+        break;
+      a += PGSIZE;
+    }
+  }
+}
+
 // Switch TSS and h/w page table to correspond to process p.
 void
 switchuvm(struct proc *p)
@@ -191,6 +215,7 @@ switchuvm(struct proc *p)
   mycpu()->ts.iomb = (ushort) 0xFFFF;
   ltr(SEG_TSS << 3);
   lcr3(V2P(p->pgdir));  // switch to process's address space
+  set_kmem_readonly(p->pgdir);
   popcli();
 }
 
