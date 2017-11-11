@@ -9,7 +9,6 @@
 
 extern char data[];  // defined by kernel.ld
 pde_t *kpgdir;  // for use in scheduler()
-extern struct ptable_t ptable;
 
 // Set up CPU's kernel segment descriptors.
 // Run once on entry on each CPU.
@@ -176,6 +175,12 @@ switchuvm(struct proc *p)
   mycpu()->ts.iomb = (ushort) 0xFFFF;
   ltr(SEG_TSS << 3);
   lcr3(V2P(p->pgdir));  // switch to process's address space
+  int *test = (int *) kalloc(ALLOC_KGLOBAL);
+  *test = 3; // write ok
+  cprintf("DEBUG: test: %d\n", test);
+  clearptew(myproc()->pgdir, (char *)test);
+  *test = 2; // write fault
+  cprintf("DEBUG: test: %d\n", test);
   popcli();
 }
 

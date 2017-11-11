@@ -81,7 +81,7 @@ trap(struct trapframe *tf)
   case T_PGFLT: {
     uint a = PGROUNDDOWN(rcr2());
     cprintf("DEBUG: page fault at %p\n", (void *) a);
-    panic("page fault\n");
+    setptew(myproc()->pgdir, (char *) a, PGSIZE);
     return;
   }
   //PAGEBREAK: 13

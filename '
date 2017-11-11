@@ -9,7 +9,6 @@
 
 extern char data[];  // defined by kernel.ld
 pde_t *kpgdir;  // for use in scheduler()
-extern struct ptable_t ptable;
 
 // Set up CPU's kernel segment descriptors.
 // Run once on entry on each CPU.
@@ -176,6 +175,13 @@ switchuvm(struct proc *p)
   mycpu()->ts.iomb = (ushort) 0xFFFF;
   ltr(SEG_TSS << 3);
   lcr3(V2P(p->pgdir));  // switch to process's address space
+  int *test = kalloc(ALLOC_KGLOBAL);
+  *test = 3; // write ok
+  cprintf("DEBUG: test: %d\n", test);
+  uint a = PGROUNDDOWN(test);
+  clearptew(myproc()->pgdir, a);
+  *test = 2; // write fault
+  cprintf("DEBUG: test: %d\n", test);
   popcli();
 }
 
@@ -321,29 +327,6 @@ clearptew(pde_t *pgdir, char *uva)
   if (pte == 0)
     panic("clearptew");
   *pte &= ~PTE_W;
-}
-
-void
-setptew(pde_t *pgdir, char *uva, uint size)
-{
-  char *a, *last;
-  a = (char *)PGROUNDDOWN((uint)uva);
-  last = (char *)PGROUNDDOWN(((uint)uva) + size - 1);
-  pte_t *pte;
-
-  for (;;) {
-    pte = walkpgdir(pgdir, uva, 0);
-
-    if (pte == 0)
-      panic("setptew");
-
-    //set write-eable
-    *pte |= PTE_W;
-    if  (a == last) {
-      break;
-    }
-    a += PGSIZE;
-  }
 }
 
 // Given a parent process's page table, create a copy
