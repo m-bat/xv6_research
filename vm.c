@@ -5,8 +5,12 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
-
 #include "elf.h"
+
+#include "fs.h"
+#include "sleeplock.h"
+#include "file.h"
+#include "buf.h"
 
 
 extern char data[];  // defined by kernel.ld
@@ -16,6 +20,24 @@ extern struct cons_lk *cons;
 
 //add manabu 11/2
 extern struct ptable_t *ptable;
+
+extern struct superblock sb;
+
+extern struct {
+  struct spinlock lock;
+  struct inode inode[NINODE];
+} icache;
+
+
+extern struct {
+  struct spinlock lock;
+  struct buf buf[NBUF];
+
+  // Linked list of all buffers, through prev/next.
+  // head.next is most recently used.
+  struct buf head;
+} bcache;
+
 
 // Set up CPU's kernel segment descriptors.
 // Run once on entry on each CPU.
@@ -254,39 +276,6 @@ switchuvm(struct proc *p)
   popcli();
 }
 
-
-//**********************************
-
-void
-setptew1(pde_t *pgdir, char *uva, uint size, uint c)  
-{
-  char *a, *last;
-  a = (char *)PGROUNDDOWN((uint)uva);
-  last = (char *)PGROUNDDOWN(((uint)uva) + size - 1);
-  pte_t *pte;
-
-  for (;;) {
-    pte = walkpgdir(pgdir, uva, 0);
-  
-    if (pte == 0)
-      panic("setptew");
-
-    //set write-eable
-    *pte |= PTE_W;
-    
-    if  (a == last) {
-      break;
-    }
-    a += PGSIZE;
-  }
-
-  //flush the TLB
-  if (c == 0)
-    lcr3(V2P(pgdir));
-}
-//**********************************
-
-
 //add manabu 10/14 moify switchuvm
 
 char *mem_inituvm;
@@ -352,8 +341,11 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, (char *)tickslock, PGSIZE, 1);
     setptew(p->pgdir, (char *)idt, PGSIZE, 1);
     setptew(p->pgdir, (char *)&ticks, PGSIZE, 1);
-    setptew(p->pgdir, (char *)lapic, PGSIZE, 1);    
-    //setptew(p->pgdir, (char *)ptable, PGSIZE, 1);    
+    setptew(p->pgdir, (char *)lapic, PGSIZE, 1);
+    setptew(p->pgdir, (char *)&icache, sizeof(icache), 1);
+    setptew(p->pgdir, (char *)&sb, sizeof(sb), 1);
+    setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 1);    
+    setptew(p->pgdir, (char *)ptable, PGSIZE, 1);    
     
     //set open filen array to be writable
     //set ofile[0], ofile[1], ofile[2] to be writable because parent process is init.
@@ -368,24 +360,6 @@ switchuvm_ro(struct proc *p, const int n)
   }
   
   lcr3(V2P(p->pgdir));  // switch to process's address space
-
-/*
-  struct proc *p2 = myproc();
-  kernel_ro(p2->pgdir);
-  setptew(p2->pgdir, p2->kstack, KSTACKSIZE, 1);
-  kernel_ro(p2->pgdir);
-  setptew(p2->pgdir, p2->kstack, KSTACKSIZE, 1);
-  setptew(p2->pgdir, (char *)cpus, PGSIZE, 1);
-  setptew(p2->pgdir, (char *)cons, PGSIZE, 1);
-  cprintf("ptable addr: %x\n", &ptable);
-  int size = PGROUNDUP(sizeof(ptable));
-  cprintf("ptable size %d\n", size);
-  //setptew(p2->pgdir, mem_inituvm, PGSIZE, 1);
-  setptew(p2->pgdir, (char *)tickslock, PGSIZE, 1);
-  setptew(p2->pgdir, (char *)idt, PGSIZE, 1);
-  setptew(p2->pgdir, (char *)&ticks, PGSIZE, 1);
-  lcr3(V2P(p2->pgdir));
-*/ 
    
   cprintf("after: changed lcr3\n");
   popcli();
