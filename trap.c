@@ -83,6 +83,7 @@ trap(struct trapframe *tf)
     // because it may cause infinit fault loop
     uint a = PGROUNDDOWN(rcr2());
     setptew(myproc()->pgdir, (char *) a, PGSIZE);
+    cprintf("DEBUG: page falut RW: %p\n", rcr2());
     return;
   }
   //PAGEBREAK: 13

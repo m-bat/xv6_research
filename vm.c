@@ -6,10 +6,32 @@
 #include "mmu.h"
 #include "proc.h"
 #include "elf.h"
+#include "fs.h"
+#include "sleeplock.h"
+#include "file.h"
+#include "buf.h"
 
 extern char data[];  // defined by kernel.ld
 pde_t *kpgdir;  // for use in scheduler()
+
 extern struct ptable_t ptable;
+extern struct {
+  struct spinlock lock;
+  int locking;
+} cons;
+extern struct {
+  struct spinlock lock;
+  struct inode inode[NINODE];
+} icache;
+extern struct superblock sb;
+extern struct {
+  struct spinlock lock;
+  struct buf buf[NBUF];
+
+  // Linked list of all buffers, through prev/next.
+  // head.next is most recently used.
+  struct buf head;
+} bcache;
 
 // Set up CPU's kernel segment descriptors.
 // Run once on entry on each CPU.
@@ -173,17 +195,17 @@ static void set_kmem_readonly(pde_t *pgdir) {
   struct kmap *k;
   char *a, *last;
   uint size;
-  int i = 0;
 
+  /* cprintf("DEBUG: ReadOnly PGDIR %p\n", pgdir); */
   for(k = kmap; k < &kmap[NELEM(kmap)]; k++) {
-    i++;
     // TODO Now make only kmap:data+memory RO
-    if (i != 2)
+    if (k->virt != data)
       continue;
 
     size = k->phys_end - k->phys_start;
     a = (char*)PGROUNDDOWN((uint)k->virt);
     last = (char*)PGROUNDDOWN(((uint)k->virt) + size - 1);
+    cprintf("DEBUG: RO start: %p <----> last: %p\n", a, last);
     for(;;){
       clearptew(pgdir, a);
       if(a == last)
@@ -215,7 +237,15 @@ switchuvm(struct proc *p)
   mycpu()->ts.iomb = (ushort) 0xFFFF;
   ltr(SEG_TSS << 3);
   lcr3(V2P(p->pgdir));  // switch to process's address space
-  set_kmem_readonly(p->pgdir);
+  pde_t *pgdir = myproc()->pgdir;
+  set_kmem_readonly(pgdir);
+  setptew(pgdir, (char *) &cons, sizeof(cons));
+  setptew(pgdir, (char *) &cpus, sizeof(cpus));
+  setptew(pgdir, (char *) &icache, sizeof(icache));
+  setptew(pgdir, (char *) &ticks, sizeof(ticks));
+  setptew(pgdir, (char *) &ptable, sizeof(ptable));
+  setptew(pgdir, (char *) &sb, sizeof(sb));
+  setptew(pgdir, (char *) &bcache, sizeof(bcache));
   popcli();
 }
 
@@ -380,8 +410,11 @@ setptew(pde_t *pgdir, char *uva, uint size)
     if (pte == 0)
       panic("setptew");
 
-    //set write-eable
-    *pte |= PTE_W;
+    if((*pte & PTE_W) == 0) {
+      //set write-eable
+      *pte |= PTE_W;
+      /* cprintf("DEBUG: Make RW: pgdir:%p , %p\n", pgdir, (void *) a); */
+    }
     if  (a == last) {
       break;
     }

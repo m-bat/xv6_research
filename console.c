@@ -19,7 +19,7 @@ static void consputc(int);
 
 static int panicked = 0;
 
-static struct {
+struct {
   struct spinlock lock;
   int locking;
 } cons;

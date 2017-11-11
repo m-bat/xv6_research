@@ -64,7 +64,6 @@ struct proc {
 
 // Process Table Type
 struct ptable_t {
-  int i;
   struct spinlock lock;
   struct proc proc[NPROC];
 } ptable;
