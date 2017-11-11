@@ -102,6 +102,12 @@ mpinit(void)
   struct mpproc *proc;
   struct mpioapic *ioapic;
 
+  //add manabu 11/11
+  if ((lapic = (uint *)kalloc()) == 0) {
+    panic("kalloc lapic");
+  }
+  //
+
   if((conf = mpconfig(&mp)) == 0)
     panic("Expect to run on an SMP");
   ismp = 1;
