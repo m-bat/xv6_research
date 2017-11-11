@@ -134,8 +134,8 @@ static struct kmap {
 } kmap[] = {
   { (void*)KERNBASE, 0,             EXTMEM,    PTE_W}, //     [1] I/O space 
   { (void*)KERNLINK, V2P(KERNLINK), V2P(data),     0}, //     [2] kern text+rodata
-  { (void*)data,     V2P(data),     V2P(USERINFO), PTE_W}, // [3] kern data+memory
-  { (void*)USERINFO, V2P(USERINFO), PHYSTOP,  PTE_W}, //      [4] kern userinfo
+  { (void*)data,     V2P(data),     V2P(KERNPLOCAL), PTE_W}, // [3] kern data+memory
+  { (void*)KERNPLOCAL, V2P(KERNPLOCAL), PHYSTOP,  PTE_W}, //      [4] kern userinfo
   { (void*)DEVSPACE, DEVSPACE,      0,         PTE_W}, //     [5] more devices
 };
 
@@ -353,7 +353,7 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, (char *)idt, PGSIZE, 1);
     setptew(p->pgdir, (char *)&ticks, PGSIZE, 1);
     setptew(p->pgdir, (char *)lapic, PGSIZE, 1);    
-    setptew(p->pgdir, (char *)ptable, PGSIZE, 1);    
+    //setptew(p->pgdir, (char *)ptable, PGSIZE, 1);    
     
     //set open filen array to be writable
     //set ofile[0], ofile[1], ofile[2] to be writable because parent process is init.

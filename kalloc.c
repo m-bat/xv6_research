@@ -88,7 +88,7 @@ kfree(char *v)
   r = (struct run*)v;
   //r->next = kmem.freelist;
   
-  if (v >= (char *)USERINFO) {
+  if (v >= (char *)KERNPLOCAL) {
     r->next = kmem.freelist_userinfo;
     kmem.freelist_userinfo = r;
     //Read-only set PTE_R
