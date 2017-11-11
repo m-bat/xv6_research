@@ -340,7 +340,7 @@ void
 consoleinit(void)
 {
   //add manabu 10/31
-  if ((cons = (struct cons_lk*)kalloc()) == 0) {
+  if ((cons = (struct cons_lk*)kalloc(ALLOC_KGLOBAL)) == 0) {
     panic("kuinfo_alloc");
   }
   //DEBUG

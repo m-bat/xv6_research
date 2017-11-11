@@ -90,7 +90,7 @@ startothers(void)
     // Tell entryother.S what stack to use, where to enter, and what
     // pgdir to use. We cannot use kpgdir yet, because the AP processor
     // is running in low  memory, so we use entrypgdir for the APs too.
-    stack = kalloc();
+    stack = kalloc(ALLOC_KGLOBAL);
     //DEBUG    
     //cprintf("stack %x", stack);
     //

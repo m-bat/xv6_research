@@ -30,7 +30,7 @@ tvinit(void)
   SETGATE(idt[T_SYSCALL], 1, SEG_KCODE<<3, vectors[T_SYSCALL], DPL_USER);
 
   //add manabu 11/10
-  if ((tickslock = (struct spinlock *)kalloc()) == 0) {
+  if ((tickslock = (struct spinlock *)kalloc(ALLOC_KGLOBAL)) == 0) {
     panic("kalloc: tickslock");
   }
   //

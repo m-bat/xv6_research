@@ -86,7 +86,6 @@ kfree(char *v)
   if(kmem.use_lock)
     acquire(&kmem.lock);
   r = (struct run*)v;
-  //r->next = kmem.freelist;
   
   if (v >= (char *)KERNPLOCAL) {
     r->next = kmem.freelist_plocal;
@@ -109,6 +108,7 @@ kfree(char *v)
 // Allocate one 4096-byte page of physical memory.
 // Returns a pointer that the kernel can use.
 // Returns 0 if the memory cannot be allocated.
+/*
 char*
 kalloc(void)
 {
@@ -122,11 +122,39 @@ kalloc(void)
   if(kmem.use_lock)
     release(&kmem.lock);
   return (char*)r;
+}*/
+//add manabu 11/12
+
+char*
+kalloc(alloc_flag_t flag) {
+  //struct run *r;
+  struct run *r = 0;
+
+  if(kmem.use_lock)
+    acquire(&kmem.lock);
+
+  switch(flag) {
+  case ALLOC_KGLOBAL:
+    r = kmem.freelist;
+    if(r)
+      kmem.freelist = r->next;
+    break;
+  case ALLOC_PLOCAL:
+    r = kmem.freelist_plocal;
+    if(r)
+      kmem.freelist_plocal = r->next;
+    break;
+  default:
+    panic("unknown allocation flag");
+  }
+  if(kmem.use_lock)
+    release(&kmem.lock);
+  return (char*)r;
 }
 
 
 //add function  by manabu
-
+/*
 char*
 kuinfo_alloc (void) {
   struct run *r;
@@ -143,6 +171,7 @@ kuinfo_alloc (void) {
 	
   return (char*)r;
 }
+*/
 
 //add function by manabu 10/26
 //allocate cpu array
@@ -151,7 +180,7 @@ kuinfo_alloc (void) {
 int 
 cpualloc() {
 
-  if ((cpus = (struct cpu *)kalloc()) == 0) {
+  if ((cpus = (struct cpu *)kalloc(ALLOC_KGLOBAL)) == 0) {
     return 0;
   }
   //DEBUG

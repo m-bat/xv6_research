@@ -49,7 +49,7 @@ walkpgdir(pde_t *pgdir, const void *va, int alloc)
   if(*pde & PTE_P){
     pgtab = (pte_t*)P2V(PTE_ADDR(*pde));
   } else {
-    if(!alloc || (pgtab = (pte_t*)kalloc()) == 0)
+    if(!alloc || (pgtab = (pte_t*)kalloc(ALLOC_KGLOBAL)) == 0)
       return 0;
     
     // Make sure all those PTE_P bits are zero.
@@ -146,7 +146,7 @@ setupkvm(void)
   pde_t *pgdir;
   struct kmap *k;
 
-  if((pgdir = (pde_t*)kalloc()) == 0)
+  if((pgdir = (pde_t*)kalloc(ALLOC_KGLOBAL)) == 0)
     return 0;
   memset(pgdir, 0, PGSIZE);  
 
@@ -404,7 +404,7 @@ inituvm(pde_t *pgdir, char *init, uint sz)
 
   if(sz >= PGSIZE)
     panic("inituvm: more than a page");
-  mem = kalloc();
+  mem = kalloc(ALLOC_KGLOBAL);
   //add manabu
   mem_inituvm = mem;
   //
@@ -456,7 +456,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 
   a = PGROUNDUP(oldsz);
   for(; a < newsz; a += PGSIZE){
-    mem = kalloc();
+    mem = kalloc(ALLOC_KGLOBAL);
     if(mem == 0){
       cprintf("allocuvm out of memory\n");
       deallocuvm(pgdir, newsz, oldsz);
@@ -641,7 +641,7 @@ copyuvm(pde_t *pgdir, uint sz)
       panic("copyuvm: page not present");
     pa = PTE_ADDR(*pte);
     flags = PTE_FLAGS(*pte);
-    if((mem = kalloc()) == 0)
+    if((mem = kalloc(ALLOC_KGLOBAL)) == 0)
       goto bad;
     memmove(mem, (char*)P2V(pa), PGSIZE);
     if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags) < 0)
@@ -701,7 +701,7 @@ int copy_proc(struct proc *p)
 {
   char *mem;
     
-  if ((mem = kuinfo_alloc()) == 0) {
+  if ((mem = kalloc(ALLOC_PLOCAL)) == 0) {
     panic("debug: kuinfo_alloc");
     return -1;
   }

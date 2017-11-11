@@ -69,11 +69,14 @@ extern uchar    ioapicid;
 void            ioapicinit(void);
 
 // kalloc.c
-char*           kalloc(void);
+//char*           kalloc(void);
+typedef enum ALLOC_TYPE {ALLOC_KGLOBAL, ALLOC_PLOCAL} alloc_flag_t;
+char*           kalloc(alloc_flag_t);
 void            kfree(char*);
 void            kinit1(void*, void*);
 void            kinit2(void*, void*);
-char*           kuinfo_alloc(void);
+//char*           kuinfo_alloc(void);
+
 //add manabu 10/28
 int             cpualloc(void);
 

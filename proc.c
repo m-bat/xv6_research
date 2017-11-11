@@ -49,7 +49,7 @@ void
 pinit(void)
 {
   //add manabu 11/02  
-  if ((ptable = (struct ptable_t *)kalloc()) == 0) {
+  if ((ptable = (struct ptable_t *)kalloc(ALLOC_KGLOBAL)) == 0) {
     panic("kalloc: ptable");
   }
     memset(ptable, 0, PGSIZE); //set UNUSED 0
@@ -133,7 +133,7 @@ found:
   */
  
   //Allocate kernel stack by kuinfo_alloc add manabu
-  if((p->kstack = kuinfo_alloc()) == 0){    
+  if((p->kstack = kalloc(ALLOC_PLOCAL)) == 0){    
     p->state = UNUSED;
     return 0;
   }      
@@ -162,7 +162,7 @@ found:
 
 int alloc_test_local(struct proc *p) {
 
-  if ((p->tl = (struct test_local *)kuinfo_alloc()) == 0) {
+  if ((p->tl = (struct test_local *)kalloc(ALLOC_PLOCAL)) == 0) {
     return -1;
   }
   

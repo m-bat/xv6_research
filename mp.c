@@ -103,7 +103,7 @@ mpinit(void)
   struct mpioapic *ioapic;
 
   //add manabu 11/11
-  if ((lapic = (uint *)kalloc()) == 0) {
+  if ((lapic = (uint *)kalloc(ALLOC_KGLOBAL)) == 0) {
     panic("kalloc lapic");
   }
   //

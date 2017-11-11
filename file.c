@@ -87,7 +87,7 @@ filealloc(void)
   }
   */
 
-  if ((f = (struct file *)kuinfo_alloc()) == 0) {    
+  if ((f = (struct file *)kalloc(ALLOC_PLOCAL)) == 0) {    
     panic("fileinit");
   }
   else {
