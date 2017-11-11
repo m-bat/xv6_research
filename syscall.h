@@ -1,3 +1,6 @@
+#ifndef XV6_SYSCALL_H
+#define XV6_SYSCALL_H
+
 // System call numbers
 #define SYS_fork    1
 #define SYS_exit    2
@@ -22,3 +25,5 @@
 #define SYS_close  21
 #define SYS_cps    22
 #define SYS_plocal 23
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef XV6_PARAM_H
+#define XV6_PARAM_H
+
 #define NPROC        8  // maximum number of processes
 #define KSTACKSIZE 4096  // size of per-process kernel stack
 
@@ -19,3 +22,4 @@
 ///add manabu 11/07
 //#define NPROC         8
 
+#endif
