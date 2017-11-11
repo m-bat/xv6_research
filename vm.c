@@ -550,11 +550,7 @@ clearptew(pde_t *pgdir, char *uva)
 
   //read-only
   *pte &= ~PTE_W;
-  //write-eable
-  //*pte |= PTE_W;  
-
-  //flush the TLB
-  //lcr3(V2P(pgdir));
+  
 }
 
  
