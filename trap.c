@@ -50,8 +50,7 @@ trap(struct trapframe *tf)
 {
   //add manabu 10/29
   struct proc *p;
-  //
-  
+  //  
   if(tf->trapno == T_SYSCALL){
     if(myproc()->killed)
       exit();
@@ -59,7 +58,7 @@ trap(struct trapframe *tf)
     syscall();
     if(myproc()->killed)
       exit();
-    return;
+     return;
   }
   switch(tf->trapno){
 
@@ -106,7 +105,7 @@ trap(struct trapframe *tf)
     cprintf("&lapic :%x, lapic :%x\n", &lapic, lapic);
     //force kill process
     //myproc()->killed = 1;   
-    //switchkvm();    
+    switchkvm();    
     p = myproc();
     cprintf("DEBUG INFO: in kvm, proccess name %s pid %d\n", myproc()->name, myproc()->pid);
     //cprintf("mycpu->ncli: %d\n", mycpu()->ncli);
@@ -117,11 +116,11 @@ trap(struct trapframe *tf)
     setptew_kernel(p->pgdir);
     cprintf("after setptew :%x\n", a);
     cprintf("kgflag : %x\n", &kgflag);
-    //switchuvm(p);
+    switchuvm(p);
     lcr3(V2P(p->pgdir));   
-    // kgflag = 1;
+    //kgflag = 1;
     
-    //  cprintf("T_PGFLT: kgflag = %d\n", kgflag);
+    //cprintf("T_PGFLT: kgflag = %d\n", kgflag);
     cprintf("info: proccess name %s pid %d\n", myproc()->name, myproc()->pid);
     //panic("T_PGFLT");
     //exit();    
