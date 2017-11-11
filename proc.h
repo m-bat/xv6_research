@@ -78,22 +78,16 @@ struct proc {
 };
 
 
-
 // Process memory is laid out contiguously, low addresses first:
 //   text
 //   original data and bss
 //   fixed-size stack
 //   expandable heap
 
-
 //add pmanabu 11/07
-struct ptable_t {
-  
-  //struct spinlock lock;
-  //add manabu 11/02
-  struct spinlock lock;
-  //
-  struct proc proc[NPROC];
+struct ptable_t {  
+  struct spinlock lock; 
+  struct proc proc[NPROC];  
 };
 
 #endif
