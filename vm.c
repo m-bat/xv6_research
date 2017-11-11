@@ -138,7 +138,7 @@ setupkvm(alloc_flag_t flag)
   pde_t *pgdir;
   struct kmap *k;
 
-  if((pgdir = (pde_t*)kalloc(ALLOC_KGLOBAL)) == 0)
+  if((pgdir = (pde_t*)kalloc(flag)) == 0)
     return 0;
   memset(pgdir, 0, PGSIZE);
   if (P2V(PHYSTOP) > (void*)DEVSPACE)
@@ -203,7 +203,7 @@ inituvm(pde_t *pgdir, char *init, uint sz)
 
   if(sz >= PGSIZE)
     panic("inituvm: more than a page");
-  mem = kalloc(ALLOC_KGLOBAL);
+  mem = kalloc(ALLOC_PLOCAL);
   memset(mem, 0, PGSIZE);
   mappages(pgdir, 0, PGSIZE, V2P(mem), PTE_W|PTE_U, ALLOC_PLOCAL);
   memmove(mem, init, sz);
@@ -238,7 +238,7 @@ loaduvm(pde_t *pgdir, char *addr, struct inode *ip, uint offset, uint sz)
 int
 allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 {
-  char *mem;
+  char *mem = 0;
   uint a;
 
   if(newsz >= KERNBASE)
@@ -248,7 +248,10 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 
   a = PGROUNDUP(oldsz);
   for(; a < newsz; a += PGSIZE){
-    mem = kalloc(ALLOC_KGLOBAL);
+    if(pgdir == kpgdir)
+      mem = kalloc(ALLOC_KGLOBAL);
+    else
+      mem = kalloc(ALLOC_PLOCAL);
     if(mem == 0){
       cprintf("allocuvm out of memory\n");
       deallocuvm(pgdir, newsz, oldsz);
@@ -380,7 +383,7 @@ copyuvm(pde_t *pgdir, uint sz)
       panic("copyuvm: page not present");
     pa = PTE_ADDR(*pte);
     flags = PTE_FLAGS(*pte);
-    if((mem = kalloc(ALLOC_KGLOBAL)) == 0)
+    if((mem = kalloc(ALLOC_PLOCAL)) == 0)
       goto bad;
     memmove(mem, (char*)P2V(pa), PGSIZE);
     if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags, ALLOC_PLOCAL) < 0)

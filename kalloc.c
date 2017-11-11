@@ -112,7 +112,7 @@ kalloc(alloc_flag_t flag)
 
   if(kmem.use_lock)
     release(&kmem.lock);
-  /* cprintf("DEBUG: kalloc page: %p\n", r); */
+  /* cprintf("DEBUG: kalloc page: ALLCO_FLAG:%d %p\n", flag, r); */
   return (char*)r;
 }
 
