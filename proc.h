@@ -1,6 +1,8 @@
 #ifndef XV6_PROC_H
 #define XV6_PROC_H
 
+#include "spinlock.h"
+
 // Per-CPU state
 struct cpu {
   uchar apicid;                // Local APIC ID
@@ -59,5 +61,12 @@ struct proc {
 //   original data and bss
 //   fixed-size stack
 //   expandable heap
+
+// Process Table Type
+struct ptable_t {
+  int i;
+  struct spinlock lock;
+  struct proc proc[NPROC];
+} ptable;
 
 #endif
