@@ -34,8 +34,23 @@ seginit(void)
 // that corresponds to virtual address va.  If alloc!=0,
 // create any required page table pages.
 static pte_t *
-walkpgdir(pde_t *pgdir, const void *va, int alloc)
+walkpgdir(pde_t *pgdir, const void *va)
 {
+  pde_t *pde;
+  pte_t *pgtab;
+
+  pde = &pgdir[PDX(va)];
+  if(*pde & PTE_P){
+    pgtab = (pte_t*)P2V(PTE_ADDR(*pde));
+  } else {
+    // without allocation
+    return 0;
+  }
+  return &pgtab[PTX(va)];
+}
+
+static pte_t *
+walkpgdir_with_alloc(pde_t *pgdir, const void *va, int alloc) {
   pde_t *pde;
   pte_t *pgtab;
 
@@ -67,7 +82,7 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
   a = (char*)PGROUNDDOWN((uint)va);
   last = (char*)PGROUNDDOWN(((uint)va) + size - 1);
   for(;;){
-    if((pte = walkpgdir(pgdir, a, 1)) == 0)
+    if((pte = walkpgdir_with_alloc(pgdir, a, 1)) == 0)
       return -1;
     if(*pte & PTE_P)
       panic("remap");
@@ -205,7 +220,7 @@ loaduvm(pde_t *pgdir, char *addr, struct inode *ip, uint offset, uint sz)
   if((uint) addr % PGSIZE != 0)
     panic("loaduvm: addr must be page aligned");
   for(i = 0; i < sz; i += PGSIZE){
-    if((pte = walkpgdir(pgdir, addr+i, 0)) == 0)
+    if((pte = walkpgdir(pgdir, addr+i)) == 0)
       panic("loaduvm: address should exist");
     pa = PTE_ADDR(*pte);
     if(sz - i < PGSIZE)
@@ -265,7 +280,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 
   a = PGROUNDUP(newsz);
   for(; a  < oldsz; a += PGSIZE){
-    pte = walkpgdir(pgdir, (char*)a, 0);
+    pte = walkpgdir(pgdir, (char*)a);
     if(!pte)
       a = PGADDR(PDX(a) + 1, 0, 0) - PGSIZE;
     else if((*pte & PTE_P) != 0){
@@ -306,7 +321,7 @@ clearpteu(pde_t *pgdir, char *uva)
 {
   pte_t *pte;
 
-  pte = walkpgdir(pgdir, uva, 0);
+  pte = walkpgdir(pgdir, uva);
   if(pte == 0)
     panic("clearpteu");
   *pte &= ~PTE_U;
@@ -317,7 +332,7 @@ clearptew(pde_t *pgdir, char *uva)
 {
   pte_t *pte;
 
-  pte = walkpgdir(pgdir, uva, 0);
+  pte = walkpgdir(pgdir, uva);
   if (pte == 0)
     panic("clearptew");
   *pte &= ~PTE_W;
@@ -332,7 +347,7 @@ setptew(pde_t *pgdir, char *uva, uint size)
   pte_t *pte;
 
   for (;;) {
-    pte = walkpgdir(pgdir, uva, 0);
+    pte = walkpgdir(pgdir, uva);
 
     if (pte == 0)
       panic("setptew");
@@ -359,7 +374,7 @@ copyuvm(pde_t *pgdir, uint sz)
   if((d = setupkvm()) == 0)
     return 0;
   for(i = 0; i < sz; i += PGSIZE){
-    if((pte = walkpgdir(pgdir, (void *) i, 0)) == 0)
+    if((pte = walkpgdir(pgdir, (void *) i)) == 0)
       panic("copyuvm: pte should exist");
     if(!(*pte & PTE_P))
       panic("copyuvm: page not present");
@@ -385,7 +400,7 @@ uva2ka(pde_t *pgdir, char *uva)
 {
   pte_t *pte;
 
-  pte = walkpgdir(pgdir, uva, 0);
+  pte = walkpgdir(pgdir, uva);
   if((*pte & PTE_P) == 0)
     return 0;
   if((*pte & PTE_U) == 0)
