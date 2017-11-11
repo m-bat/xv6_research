@@ -79,8 +79,9 @@ trap(struct trapframe *tf)
     break;
 
   case T_PGFLT: {
+    // Note: we cannot use cprintf() in the page fault handler
+    // because it may cause infinit fault loop
     uint a = PGROUNDDOWN(rcr2());
-    cprintf("DEBUG: page fault at %p\n", (void *) a);
     setptew(myproc()->pgdir, (char *) a, PGSIZE);
     return;
   }
