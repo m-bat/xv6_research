@@ -195,7 +195,7 @@ void            uartputc(int);
 // vm.c
 void            seginit(void);
 void            kvmalloc(void);
-pde_t*          setupkvm(void);
+pde_t*          setupkvm(alloc_flag_t);
 char*           uva2ka(pde_t*, char*);
 int             allocuvm(pde_t*, uint, uint);
 int             deallocuvm(pde_t*, uint, uint);
@@ -210,8 +210,7 @@ void            clearpteu(pde_t *pgdir, char *uva);
 void            clearptew(pde_t *pgdir, char *uvao);
 int             copy_proc(struct proc *p);
 //add manabu
-char *          walkpgdir_global(pde_t *pgdir, const void *va, int alloc);
-void            kernel_ro(pde_t *pgdir);
+void            set_kmem_readonly(pde_t *pgdir);
 void            setptew(pde_t *pgdir, char *uva, uint size, uint c);
 void            setptew_kernel(pde_t *pgdir);
 

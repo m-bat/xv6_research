@@ -105,7 +105,6 @@ trap(struct trapframe *tf)
     cprintf("&lapic :%x, lapic :%x\n", &lapic, lapic);
     //force kill process
     //myproc()->killed = 1;   
-    switchkvm();    
     p = myproc();
     cprintf("DEBUG INFO: in kvm, proccess name %s pid %d\n", myproc()->name, myproc()->pid);
     //cprintf("mycpu->ncli: %d\n", mycpu()->ncli);
@@ -116,8 +115,6 @@ trap(struct trapframe *tf)
     setptew_kernel(p->pgdir);
     cprintf("after setptew :%x\n", a);
     cprintf("kgflag : %x\n", &kgflag);
-    switchuvm(p);
-    lcr3(V2P(p->pgdir));   
     //kgflag = 1;
     
     //cprintf("T_PGFLT: kgflag = %d\n", kgflag);
