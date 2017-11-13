@@ -137,10 +137,10 @@ panic(char *s)
 
   //add manabu 10/30
   if (kgflag == 1) {
-    cprintf("kernel global crash!\n");
+    cprintf("Access KENERLGLOBAL!\n");
   }
   else {
-    cprintf("process local crash!\n");
+    cprintf("Access KENRELPLOCAL!\n");
   }
   //                      
   
