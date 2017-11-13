@@ -208,7 +208,6 @@ void            switchkvm(void);
 int             copyout(pde_t*, uint, void*, uint);
 void            clearpteu(pde_t *pgdir, char *uva);
 void            clearptew(pde_t *pgdir, char *uvao);
-int             copy_proc(struct proc *p);
 //add manabu
 void            set_kmem_readonly(pde_t *pgdir);
 void            setptew(pde_t *pgdir, char *uva, uint size, uint c);
