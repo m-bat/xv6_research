@@ -43,7 +43,7 @@ static void wakeup1(void *chan);
 
 //add manaubu
 extern pde_t *kpgdir;
-//char *plist[100];
+char *plist[100];
 
 void
 pinit(void)
@@ -180,7 +180,7 @@ userinit(void)
   p = allocproc();
   
   initproc = p;
-  if((p->pgdir = setupkvm(ALLOC_PLOCAL)) == 0)
+  if((p->pgdir = setupkvm(ALLOC_KGLOBAL)) == 0)
     panic("userinit: out of memory?");
   inituvm(p->pgdir, _binary_initcode_start, (int)_binary_initcode_size);
   p->sz = PGSIZE;
@@ -613,7 +613,7 @@ cps(void)
   //plist init
   cprintf("plist init!\n");
   for (i = 0; i < 100; i ++) {
-    //plist[i] = 0;
+    plist[i] = 0;
   }
   //  
   sti();
@@ -677,8 +677,8 @@ plocal(void)
 
   //cprintf("plocal: tglocal_pte  0x%x\n", *pte);
 
-  //int i = 0;
-  /*
+  int i = 0;
+  
   for (i = 0; i < 100; i++) {
     if (plist[i] != 0) {
       cprintf("plocal i: %d\n", i);
@@ -686,7 +686,7 @@ plocal(void)
       ((struct file *)plist[i])->ref = 0;
     }    
   }
-  */
+  
   return 23;
 }
 
@@ -712,10 +712,10 @@ strcpy(char *s, char *t)
 
 int plocal_insert(char *p)
 { 
-  //static int i = 0;
+  static int i = 0;
 
-  //plist[i++] = p;
-  cprintf("%x\n", p);
+  plist[i++] = p;
+  //cprintf("%x\n", p);
   
   return 0;
 }
