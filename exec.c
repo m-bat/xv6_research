@@ -36,7 +36,7 @@ exec(char *path, char **argv)
   if(elf.magic != ELF_MAGIC)
     goto bad;
 
-  if((pgdir = setupkvm(ALLOC_PLOCAL)) == 0)
+  if((pgdir = setupkvm(ALLOC_KGLOBAL)) == 0)
     goto bad;
 
   // Load program into memory.

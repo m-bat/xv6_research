@@ -77,7 +77,6 @@ walkpgdir(pde_t *pgdir, const void *va)
   return &pgtab[PTX(va)];
 }
 
-
 static pte_t *
 walkpgdir_with_alloc(pde_t *pgdir, const void *va, alloc_flag_t flag)
 {  
@@ -205,7 +204,7 @@ void set_kmem_readonly(pde_t *pgdir) {
   for(k = kmap; k < &kmap[NELEM(kmap)]; k++) {
     i++;
     //TODO Now make only kmap:data memory read-only
-    if (i != 3) {
+    if (i == 1 || i == 2 || i == 5) {
       continue;
     }       
     size = k->phys_end - k->phys_start;
@@ -291,24 +290,7 @@ switchuvm_ro(struct proc *p, const int n)
   mycpu()->ts.iomb = (ushort) 0xFFFF;
   ltr(SEG_TSS << 3);
 
-  // kernel Read-Only by manabu
-  /*
-    if (strcmp(path, "/init") == 0) {
-    cprintf("init hit\n");
-    }
-    else if (strcmp(path, "sh") == 0) {
-    cprintf("sh hit\n");
-    }
-    else {
-    cprintf("before: kernel_ro\n");
-    kernel_ro(p->pgdir);
-    cprintf("after: kernel_ro\n");
-    }
-  */
-   
-  lcr3(V2P(p->pgdir));  // switch to process's address space
-  
-  // add manabu 10/16  
+    // add manabu 10/16  
   if (n) {
     cprintf("init hit or sh hit\n");
   }  
@@ -318,22 +300,25 @@ switchuvm_ro(struct proc *p, const int n)
 
     set_kmem_readonly(p->pgdir);    
     //write-enable
-    //setptew(p->pgdir, p->kstack, KSTACKSIZE, 1);
     //cprintf("ptable addr: %x\n", ptable);
     //int size = PGROUNDUP(sizeof(ptable));
     //cprintf("ptable size %d\n", size);
-        
+
+    //********* Kenel Global  *********************
     setptew(p->pgdir, (char *)cpus, PGSIZE, 1);
     setptew(p->pgdir, (char *)cons, PGSIZE, 1);
     setptew(p->pgdir, (char *)mem_inituvm, PGSIZE, 1);
     setptew(p->pgdir, (char *)tickslock, PGSIZE, 1);
-    setptew(p->pgdir, (char *)idt, PGSIZE, 1);
+    //setptew(p->pgdir, (char *)idt, PGSIZE, 1);
     setptew(p->pgdir, (char *)&ticks, PGSIZE, 1);
     setptew(p->pgdir, (char *)lapic, PGSIZE, 1);        
     setptew(p->pgdir, (char *)ptable, PGSIZE, 1);
     setptew(p->pgdir, (char *)&icache, sizeof(icache), 1);
     setptew(p->pgdir, (char *)&sb, sizeof(sb), 1);
     setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 1);
+
+    //********* Kernel Process Local  *************
+    setptew(p->pgdir, p->kstack, KSTACKSIZE, 1);
         
     //set open filen array to be writable
     //set ofile[0], ofile[1], ofile[2] to be writable because parent process is init.
@@ -347,12 +332,13 @@ switchuvm_ro(struct proc *p, const int n)
     cprintf("after: kernel_ro\n");
   }
    
+  lcr3(V2P(p->pgdir));  // switch to process's address space
+    
   cprintf("after: changed lcr3\n");
   popcli();
   //cprintf("after: popcli");
   //panic after
 }
-
 
 // Load the initcode into address 0 of pgdir.
 // sz must be less than a page.
@@ -373,7 +359,7 @@ inituvm(pde_t *pgdir, char *init, uint sz)
   cprintf("mem %x", mem);
   //
   memset(mem, 0, PGSIZE);
-  mappages(pgdir, 0, PGSIZE, V2P(mem), PTE_W|PTE_U, ALLOC_PLOCAL);
+  mappages(pgdir, 0, PGSIZE, V2P(mem), PTE_W|PTE_U, ALLOC_KGLOBAL);
   memmove(mem, init, sz);
 }
 
@@ -423,7 +409,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       return 0;
     }
     memset(mem, 0, PGSIZE);
-    if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U, ALLOC_PLOCAL) < 0){
+    if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U, ALLOC_KGLOBAL) < 0){
       cprintf("allocuvm out of memory (2)\n");
       deallocuvm(pgdir, newsz, oldsz);
       kfree(mem);
@@ -536,7 +522,6 @@ setptew(pde_t *pgdir, char *uva, uint size, uint c)
     }
     a += PGSIZE;
   }
-
   //flush the TLB
   if (c == 0)
     lcr3(V2P(pgdir));
@@ -549,20 +534,16 @@ void setptew_kernel(pde_t *pgdir)
   char *a, *last;
   uint size;
   pte_t *pte;
-
   
   size = kmap[2].phys_end - kmap[2].phys_start;
 
   //DEBUG
-  //size /= 1.5;
-  
+  //size /= 1.5;  
   a = (char *)PGROUNDDOWN((uint)kmap[2].virt);
   last = (char *)PGROUNDDOWN(((uint)kmap[2].virt) + size - 1);
 
   cprintf("kernel start addr %x\n", a);
   cprintf("kernel last addr %x\n", last);
-
-
   
   for (;;) {
     pte = walkpgdir(pgdir, a);
@@ -592,7 +573,7 @@ copyuvm(pde_t *pgdir, uint sz)
   uint pa, i, flags;
   char *mem;
 
-  if((d = setupkvm(ALLOC_PLOCAL)) == 0)
+  if((d = setupkvm(ALLOC_KGLOBAL)) == 0)
     return 0;
   for(i = 0; i < sz; i += PGSIZE){
     if((pte = walkpgdir(pgdir, (void *) i)) == 0)
@@ -604,7 +585,7 @@ copyuvm(pde_t *pgdir, uint sz)
     if((mem = kalloc(ALLOC_KGLOBAL)) == 0)
       goto bad;
     memmove(mem, (char*)P2V(pa), PGSIZE);
-    if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags, ALLOC_PLOCAL) < 0)
+    if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags, ALLOC_KGLOBAL) < 0)
       goto bad;
   }
   return d;
@@ -656,28 +637,6 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 }
 
 
-//add manabu   don't use
-int copy_proc(struct proc *p)
-{
-  char *mem;
-    
-  if ((mem = kalloc(ALLOC_PLOCAL)) == 0) {
-    panic("debug: kuinfo_alloc");
-    return -1;
-  }
-	
-  memmove(mem, (char*)p, PGSIZE);
-
-  /*
-	if (mappages(d, (void*)USERINFO, PGSIZE, V2P(mem), flags) < 0) {
-    panic("debug: mappages");
-    return -1;
-	}
-  */
-  //cprintf("%d \t %d \t\n", ((struct proc *)mem)->pid, ((struct proc *)mem)->parent->pid);
-    
-  return 0;
-}
 //PAGEBREAK!
 // Blank page.
 //PAGEBREAK!
