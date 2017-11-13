@@ -92,10 +92,9 @@ filealloc(void)
   }
   else {
     setptew(p->pgdir, (char *)f, PGSIZE, 0);
-    //DEBUG
     //cprintf("filealloc: f = %x\n", f);
     f->ref = 1;
-    //proc local alloc list
+    //insert plocal alloc list
     plocal_insert((char *)f);    
     //    
     release(&ftable.lock);

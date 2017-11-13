@@ -132,12 +132,11 @@ found:
   }
   */
  
-  //Allocate kernel stack by kuinfo_alloc add manabu
+  //Allocate kernel stack by kalloc(ALLOC_PLOCAL)
   if((p->kstack = kalloc(ALLOC_PLOCAL)) == 0){    
     p->state = UNUSED;
     return 0;
-  }      
-  //
+  }
    
   sp = p->kstack + KSTACKSIZE;
 
