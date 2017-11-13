@@ -115,11 +115,14 @@ trap(struct trapframe *tf)
     if (a >= (uint)get_kplocal_addr() && a <= (uint)get_devspace_addr()) {
       //access kernel process local area
       cprintf("DEBUG: Access KERNELPLOCAL\n");
+      exit();
     }
     else {      
       //setptew(p->pgdir, (void *)a, PGSIZE, 1);
       cprintf("DEBUG: Acess KERNELGLOBAL\n") ;
+      switchkvm();
       setptew_kernel(p->pgdir);
+      switchuvm(p);
       cprintf("after setptew :%x\n", a);
       cprintf("kgflag : %x\n", &kgflag);
       kgflag = 1;
