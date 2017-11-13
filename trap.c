@@ -49,7 +49,7 @@ void
 trap(struct trapframe *tf)
 {
   //add manabu 10/29
-  struct proc *p;
+  struct proc *p;  
   //  
   if(tf->trapno == T_SYSCALL){
     if(myproc()->killed)
@@ -111,11 +111,19 @@ trap(struct trapframe *tf)
     uint a = PGROUNDDOWN(rcr2());
     cprintf("trap a: %x\n", a);
     cprintf("trap rcr2: %x\n", rcr2());
-    //setptew(p->pgdir, (void *)a, PGSIZE, 1);
-    setptew_kernel(p->pgdir);
-    cprintf("after setptew :%x\n", a);
-    cprintf("kgflag : %x\n", &kgflag);
-    //kgflag = 1;
+    
+    if (a >= (uint)get_kplocal_addr() && a <= (uint)get_devspace_addr()) {
+      //access kernel process local area
+      cprintf("DEBUG: Access KERNELPLOCAL\n");
+    }
+    else {      
+      //setptew(p->pgdir, (void *)a, PGSIZE, 1);
+      cprintf("DEBUG: Acess KERNELGLOBAL\n") ;
+      setptew_kernel(p->pgdir);
+      cprintf("after setptew :%x\n", a);
+      cprintf("kgflag : %x\n", &kgflag);
+      kgflag = 1;
+    }
     
     //cprintf("T_PGFLT: kgflag = %d\n", kgflag);
     cprintf("info: proccess name %s pid %d\n", myproc()->name, myproc()->pid);
