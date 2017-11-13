@@ -213,6 +213,8 @@ int             copy_proc(struct proc *p);
 void            set_kmem_readonly(pde_t *pgdir);
 void            setptew(pde_t *pgdir, char *uva, uint size, uint c);
 void            setptew_kernel(pde_t *pgdir);
+char*           get_kplocal_addr();
+char*           get_devspace_addr();
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))

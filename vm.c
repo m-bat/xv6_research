@@ -163,6 +163,14 @@ static struct kmap {
 
 // Set up kernel part of a page table.
 
+char * get_kplocal_addr() {    
+  return kmap[3].virt;
+}
+
+char * get_devspace_addr() {
+  return kmap[4].virt;
+}
+
 pde_t*
 setupkvm(alloc_flag_t flag)  
 {  
@@ -199,8 +207,7 @@ void set_kmem_readonly(pde_t *pgdir) {
     //TODO Now make only kmap:data memory read-only
     if (i != 3) {
       continue;
-    }
-       
+    }       
     size = k->phys_end - k->phys_start;
     a = (char*)PGROUNDDOWN((uint)k->virt);
     last = (char*)PGROUNDDOWN(((uint)k->virt) + size - 1);
@@ -311,21 +318,22 @@ switchuvm_ro(struct proc *p, const int n)
 
     set_kmem_readonly(p->pgdir);    
     //write-enable
-    setptew(p->pgdir, p->kstack, KSTACKSIZE, 1);
-    setptew(p->pgdir, (char *)cpus, PGSIZE, 1);
-    setptew(p->pgdir, (char *)cons, PGSIZE, 1);
-    cprintf("ptable addr: %x\n", ptable);
+    //setptew(p->pgdir, p->kstack, KSTACKSIZE, 1);
+    //cprintf("ptable addr: %x\n", ptable);
     //int size = PGROUNDUP(sizeof(ptable));
     //cprintf("ptable size %d\n", size);
-    setptew(p->pgdir, mem_inituvm, PGSIZE, 1);
+        
+    setptew(p->pgdir, (char *)cpus, PGSIZE, 1);
+    setptew(p->pgdir, (char *)cons, PGSIZE, 1);
+    setptew(p->pgdir, (char *)mem_inituvm, PGSIZE, 1);
     setptew(p->pgdir, (char *)tickslock, PGSIZE, 1);
     setptew(p->pgdir, (char *)idt, PGSIZE, 1);
     setptew(p->pgdir, (char *)&ticks, PGSIZE, 1);
-    setptew(p->pgdir, (char *)lapic, PGSIZE, 1);
+    setptew(p->pgdir, (char *)lapic, PGSIZE, 1);        
+    setptew(p->pgdir, (char *)ptable, PGSIZE, 1);
     setptew(p->pgdir, (char *)&icache, sizeof(icache), 1);
     setptew(p->pgdir, (char *)&sb, sizeof(sb), 1);
-    setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 1);    
-    setptew(p->pgdir, (char *)ptable, PGSIZE, 1);    
+    setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 1);
         
     //set open filen array to be writable
     //set ofile[0], ofile[1], ofile[2] to be writable because parent process is init.
