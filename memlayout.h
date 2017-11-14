@@ -20,7 +20,7 @@
 
 // Key addresses for address space layout (see kmap in vm.c for layout)
 //#define KERNBASE_U 0x7FFFFF9C
-#define KERNBASE 0x80000000        //qFirst kernel virtual address
+#define KERNBASE 0x80000000        //First kernel virtual address
 //#define KERNBASE 0x7FFFFF9C
 #define KERNLINK (KERNBASE+EXTMEM)  // Address where kernel is linked
 //#define USERINFO (EXTUSE+EXT64)
