@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>kill</title>
+<title>inode</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,17 +9,68 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/118.html#L119'>kill</a>              119 defs.h         int             kill(int);</span>
-<span class='curline'><a href='../S/84.html#L15'>kill</a>               15 kill.c             kill(atoi(argv[i]));</span>
-<span class='curline'><a href='../S/101.html#L36'>kill</a>               36 sysproc.c        return kill(pid);</span>
-<span class='curline'><a href='../S/188.html#L12'>kill</a>               12 user.h         int kill(int);</span>
-<span class='curline'><a href='../S/46.html#L393'>kill</a>              393 usertests.c      kill(pid1);</span>
-<span class='curline'><a href='../S/46.html#L394'>kill</a>              394 usertests.c      kill(pid2);</span>
-<span class='curline'><a href='../S/46.html#L395'>kill</a>              395 usertests.c      kill(pid3);</span>
-<span class='curline'><a href='../S/46.html#L449'>kill</a>              449 usertests.c          kill(ppid);</span>
-<span class='curline'><a href='../S/46.html#L1506'>kill</a>             1506 usertests.c          kill(ppid);</span>
-<span class='curline'><a href='../S/46.html#L1535'>kill</a>             1535 usertests.c        kill(pids[i]);</span>
-<span class='curline'><a href='../S/46.html#L1579'>kill</a>             1579 usertests.c        kill(pid);</span>
+<span class='curline'><a href='../S/163.html#L270'>inode</a>             270 console.c      consoleread(struct inode *ip, char *dst, int n)</span>
+<span class='curline'><a href='../S/163.html#L320'>inode</a>             320 console.c      consolewrite(struct inode *ip, char *buf, int n)</span>
+<span class='curline'><a href='../S/119.html#L9'>inode</a>               9 defs.h         struct inode;</span>
+<span class='curline'><a href='../S/119.html#L44'>inode</a>              44 defs.h         int             dirlink(struct inode*, char*, uint);</span>
+<span class='curline'><a href='../S/119.html#L45'>inode</a>              45 defs.h         struct inode*   dirlookup(struct inode*, char*, uint*);</span>
+<span class='curline'><a href='../S/119.html#L46'>inode</a>              46 defs.h         struct inode*   ialloc(uint, short);</span>
+<span class='curline'><a href='../S/119.html#L47'>inode</a>              47 defs.h         struct inode*   idup(struct inode*);</span>
+<span class='curline'><a href='../S/119.html#L49'>inode</a>              49 defs.h         void            ilock(struct inode*);</span>
+<span class='curline'><a href='../S/119.html#L50'>inode</a>              50 defs.h         void            iput(struct inode*);</span>
+<span class='curline'><a href='../S/119.html#L51'>inode</a>              51 defs.h         void            iunlock(struct inode*);</span>
+<span class='curline'><a href='../S/119.html#L52'>inode</a>              52 defs.h         void            iunlockput(struct inode*);</span>
+<span class='curline'><a href='../S/119.html#L53'>inode</a>              53 defs.h         void            iupdate(struct inode*);</span>
+<span class='curline'><a href='../S/119.html#L55'>inode</a>              55 defs.h         struct inode*   namei(char*);</span>
+<span class='curline'><a href='../S/119.html#L56'>inode</a>              56 defs.h         struct inode*   nameiparent(char*, char*);</span>
+<span class='curline'><a href='../S/119.html#L57'>inode</a>              57 defs.h         int             readi(struct inode*, char*, uint, uint);</span>
+<span class='curline'><a href='../S/119.html#L58'>inode</a>              58 defs.h         void            stati(struct inode*, struct stat*);</span>
+<span class='curline'><a href='../S/119.html#L59'>inode</a>              59 defs.h         int             writei(struct inode*, char*, uint, uint);</span>
+<span class='curline'><a href='../S/119.html#L204'>inode</a>             204 defs.h         int             loaduvm(pde_t*, char*, struct inode*, uint, uint);</span>
+<span class='curline'><a href='../S/90.html#L18'>inode</a>              18 exec.c           struct inode *ip;</span>
+<span class='curline'><a href='../S/56.html#L10'>inode</a>              10 file.h           struct inode *ip;</span>
+<span class='curline'><a href='../S/56.html#L37'>inode</a>              37 file.h           int (*read)(struct inode*, char*, int);</span>
+<span class='curline'><a href='../S/56.html#L38'>inode</a>              38 file.h           int (*write)(struct inode*, char*, int);</span>
+<span class='curline'><a href='../S/173.html#L25'>inode</a>              25 fs.c           static void itrunc(struct inode*);</span>
+<span class='curline'><a href='../S/173.html#L169'>inode</a>             169 fs.c             struct inode inode[NINODE];</span>
+<span class='curline'><a href='../S/173.html#L179'>inode</a>             179 fs.c               initsleeplock(&amp;icache.inode[i].lock, "inode");</span>
+<span class='curline'><a href='../S/173.html#L189'>inode</a>             189 fs.c           static struct inode* iget(uint dev, uint inum);</span>
+<span class='curline'><a href='../S/173.html#L195'>inode</a>             195 fs.c           struct inode*</span>
+<span class='curline'><a href='../S/173.html#L222'>inode</a>             222 fs.c           iupdate(struct inode *ip)</span>
+<span class='curline'><a href='../S/173.html#L242'>inode</a>             242 fs.c           static struct inode*</span>
+<span class='curline'><a href='../S/173.html#L245'>inode</a>             245 fs.c             struct inode *ip, *empty;</span>
+<span class='curline'><a href='../S/173.html#L251'>inode</a>             251 fs.c             for(ip = &amp;icache.inode[0]; ip &lt; &amp;icache.inode[NINODE]; ip++){</span>
+<span class='curline'><a href='../S/173.html#L277'>inode</a>             277 fs.c           struct inode*</span>
+<span class='curline'><a href='../S/173.html#L278'>inode</a>             278 fs.c           idup(struct inode *ip)</span>
+<span class='curline'><a href='../S/173.html#L289'>inode</a>             289 fs.c           ilock(struct inode *ip)</span>
+<span class='curline'><a href='../S/173.html#L317'>inode</a>             317 fs.c           iunlock(struct inode *ip)</span>
+<span class='curline'><a href='../S/173.html#L333'>inode</a>             333 fs.c           iput(struct inode *ip)</span>
+<span class='curline'><a href='../S/173.html#L357'>inode</a>             357 fs.c           iunlockput(struct inode *ip)</span>
+<span class='curline'><a href='../S/173.html#L374'>inode</a>             374 fs.c           bmap(struct inode *ip, uint bn)</span>
+<span class='curline'><a href='../S/173.html#L409'>inode</a>             409 fs.c           itrunc(struct inode *ip)</span>
+<span class='curline'><a href='../S/173.html#L441'>inode</a>             441 fs.c           stati(struct inode *ip, struct stat *st)</span>
+<span class='curline'><a href='../S/173.html#L454'>inode</a>             454 fs.c           readi(struct inode *ip, char *dst, uint off, uint n)</span>
+<span class='curline'><a href='../S/173.html#L483'>inode</a>             483 fs.c           writei(struct inode *ip, char *src, uint off, uint n)</span>
+<span class='curline'><a href='../S/173.html#L525'>inode</a>             525 fs.c           struct inode*</span>
+<span class='curline'><a href='../S/173.html#L526'>inode</a>             526 fs.c           dirlookup(struct inode *dp, char *name, uint *poff)</span>
+<span class='curline'><a href='../S/173.html#L553'>inode</a>             553 fs.c           dirlink(struct inode *dp, char *name, uint inum)</span>
+<span class='curline'><a href='../S/173.html#L557'>inode</a>             557 fs.c             struct inode *ip;</span>
+<span class='curline'><a href='../S/173.html#L625'>inode</a>             625 fs.c           static struct inode*</span>
+<span class='curline'><a href='../S/173.html#L628'>inode</a>             628 fs.c             struct inode *ip, *next;</span>
+<span class='curline'><a href='../S/173.html#L660'>inode</a>             660 fs.c           struct inode*</span>
+<span class='curline'><a href='../S/173.html#L667'>inode</a>             667 fs.c           struct inode*</span>
+<span class='curline'><a href='../S/93.html#L73'>inode</a>              73 proc.h           struct inode *cwd;           // Current directory</span>
+<span class='curline'><a href='../S/84.html#L122'>inode</a>             122 sysfile.c        struct inode *dp, *ip;</span>
+<span class='curline'><a href='../S/84.html#L169'>inode</a>             169 sysfile.c      isdirempty(struct inode *dp)</span>
+<span class='curline'><a href='../S/84.html#L187'>inode</a>             187 sysfile.c        struct inode *ip, *dp;</span>
+<span class='curline'><a href='../S/84.html#L241'>inode</a>             241 sysfile.c      static struct inode*</span>
+<span class='curline'><a href='../S/84.html#L245'>inode</a>             245 sysfile.c        struct inode *ip, *dp;</span>
+<span class='curline'><a href='../S/84.html#L292'>inode</a>             292 sysfile.c        struct inode *ip;</span>
+<span class='curline'><a href='../S/84.html#L340'>inode</a>             340 sysfile.c        struct inode *ip;</span>
+<span class='curline'><a href='../S/84.html#L355'>inode</a>             355 sysfile.c        struct inode *ip;</span>
+<span class='curline'><a href='../S/84.html#L376'>inode</a>             376 sysfile.c        struct inode *ip;</span>
+<span class='curline'><a href='../S/158.html#L28'>inode</a>              28 vm.c             struct inode inode[NINODE];</span>
+<span class='curline'><a href='../S/158.html#L369'>inode</a>             369 vm.c             memset(mem, 0, PGSIZE);</span>
 </pre>
 </body>
 </html>

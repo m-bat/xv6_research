@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>UNUSED</title>
+<title>T_IRQ0</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,12 +9,19 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/63.html#L116'>UNUSED</a>            116 proc.c             if(p-&gt;state == UNUSED)</span>
-<span class='curline'><a href='../S/63.html#L140'>UNUSED</a>            140 proc.c             p-&gt;state = UNUSED;</span>
-<span class='curline'><a href='../S/63.html#L256'>UNUSED</a>            256 proc.c             np-&gt;state = UNUSED;</span>
-<span class='curline'><a href='../S/63.html#L372'>UNUSED</a>            372 proc.c                 p-&gt;state = UNUSED;</span>
-<span class='curline'><a href='../S/63.html#L582'>UNUSED</a>            582 proc.c           [UNUSED]    "unused",</span>
-<span class='curline'><a href='../S/63.html#L595'>UNUSED</a>            595 proc.c             if(p-&gt;state == UNUSED)</span>
+<span class='curline'><a href='../S/106.html#L62'>T_IRQ0</a>             62 ioapic.c           ioapicwrite(REG_TABLE+2*i, INT_DISABLED | (T_IRQ0 + i));</span>
+<span class='curline'><a href='../S/106.html#L73'>T_IRQ0</a>             73 ioapic.c         ioapicwrite(REG_TABLE+2*irq, T_IRQ0 + irq);</span>
+<span class='curline'><a href='../S/156.html#L61'>T_IRQ0</a>             61 lapic.c          lapicw(SVR, ENABLE | (T_IRQ0 + IRQ_SPURIOUS));</span>
+<span class='curline'><a href='../S/156.html#L68'>T_IRQ0</a>             68 lapic.c          lapicw(TIMER, PERIODIC | (T_IRQ0 + IRQ_TIMER));</span>
+<span class='curline'><a href='../S/156.html#L81'>T_IRQ0</a>             81 lapic.c          lapicw(ERROR, T_IRQ0 + IRQ_ERROR);</span>
+<span class='curline'><a href='../S/162.html#L72'>T_IRQ0</a>             72 trap.c           case T_IRQ0 + IRQ_TIMER:</span>
+<span class='curline'><a href='../S/162.html#L81'>T_IRQ0</a>             81 trap.c           case T_IRQ0 + IRQ_IDE:</span>
+<span class='curline'><a href='../S/162.html#L85'>T_IRQ0</a>             85 trap.c           case T_IRQ0 + IRQ_IDE+1:</span>
+<span class='curline'><a href='../S/162.html#L88'>T_IRQ0</a>             88 trap.c           case T_IRQ0 + IRQ_KBD:</span>
+<span class='curline'><a href='../S/162.html#L92'>T_IRQ0</a>             92 trap.c           case T_IRQ0 + IRQ_COM1:</span>
+<span class='curline'><a href='../S/162.html#L96'>T_IRQ0</a>             96 trap.c           case T_IRQ0 + 7:</span>
+<span class='curline'><a href='../S/162.html#L97'>T_IRQ0</a>             97 trap.c           case T_IRQ0 + IRQ_SPURIOUS:</span>
+<span class='curline'><a href='../S/162.html#L160'>T_IRQ0</a>            160 trap.c           if(myproc() &amp;&amp; myproc()-&gt;state == RUNNING &amp;&amp;</span>
 </pre>
 </body>
 </html>

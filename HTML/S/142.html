@@ -1,134 +1,137 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>kbd.h</title>
+<title>grep.c</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
 <link rel='stylesheet' type='text/css' href='../style.css' />
 </head>
 <body>
-<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/kbd.h</h2>
-<em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/grep.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L11'>[^]</a><a href='#L99'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 <hr />
-<h2 class='header'><a href='59.html#L4' title='Included from 4 in kbd.c.'>INCLUDED FROM</a></h2>
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L11' title='Defined at 11.'>grep</a></li>
+<li><a href='#L39' title='Defined at 39.'>main</a></li>
+<li><a href='#L73' title='Defined at 73.'>match</a></li>
+<li><a href='#L85' title='Defined at 85.'>matchhere</a></li>
+<li><a href='#L99' title='Defined at 99.'>matchstar</a></li>
+</ol>
 <hr />
 <pre>
-<a id='L1' name='L1'></a><em class='comment'>// PC keyboard interface constants</em>
+<a id='L1' name='L1'></a><em class='comment'>// Simple grep.  Only supports ^ . * $ operators.</em>
 <a id='L2' name='L2'></a>
-<a id='L3' name='L3'></a><em class='sharp'>#define</em> <a href='../S/59.html#L15' title='Referred from 15 in kbd.c.'>KBSTATP</a>         0x64    <em class='comment'>// kbd controller status port(I)</em>
-<a id='L4' name='L4'></a><em class='sharp'>#define</em> <a href='../S/59.html#L16' title='Referred from 16 in kbd.c.'>KBS_DIB</a>         0x01    <em class='comment'>// kbd data in buffer</em>
-<a id='L5' name='L5'></a><em class='sharp'>#define</em> <a href='../S/59.html#L18' title='Referred from 18 in kbd.c.'>KBDATAP</a>         0x60    <em class='comment'>// kbd data port(I)</em>
+<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='126.html'>types.h</a>"
+<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='35.html'>stat.h</a>"
+<a id='L5' name='L5'></a><em class='sharp'>#include</em> "<a href='189.html'>user.h</a>"
 <a id='L6' name='L6'></a>
-<a id='L7' name='L7'></a><em class='sharp'>#define</em> <a href='../R/115.html' title='Multiple referred from 20 places.'>NO</a>              0
-<a id='L8' name='L8'></a>
-<a id='L9' name='L9'></a><em class='sharp'>#define</em> <a href='../R/167.html' title='Multiple referred from 3 places.'>SHIFT</a>           (1&lt;&lt;0)
-<a id='L10' name='L10'></a><em class='sharp'>#define</em> <a href='../R/24.html' title='Multiple referred from 3 places.'>CTL</a>             (1&lt;&lt;1)
-<a id='L11' name='L11'></a><em class='sharp'>#define</em> <a href='../R/1.html' title='Multiple referred from 2 places.'>ALT</a>             (1&lt;&lt;2)
-<a id='L12' name='L12'></a>
-<a id='L13' name='L13'></a><em class='sharp'>#define</em> <a href='../R/14.html' title='Multiple referred from 2 places.'>CAPSLOCK</a>        (1&lt;&lt;3)
-<a id='L14' name='L14'></a><em class='sharp'>#define</em> <a href='../S/142.html#L47' title='Referred from 47 in kbd.h.'>NUMLOCK</a>         (1&lt;&lt;4)
-<a id='L15' name='L15'></a><em class='sharp'>#define</em> <a href='../S/142.html#L48' title='Referred from 48 in kbd.h.'>SCROLLLOCK</a>      (1&lt;&lt;5)
-<a id='L16' name='L16'></a>
-<a id='L17' name='L17'></a><em class='sharp'>#define</em> <a href='../R/30.html' title='Multiple referred from 5 places.'>E0ESC</a>           (1&lt;&lt;6)
-<a id='L18' name='L18'></a>
-<a id='L19' name='L19'></a><em class='comment'>// Special keycodes</em>
-<a id='L20' name='L20'></a><em class='sharp'>#define</em> <a href='../R/81.html' title='Multiple referred from 3 places.'>KEY_HOME</a>        0xE0
-<a id='L21' name='L21'></a><em class='sharp'>#define</em> <a href='../R/80.html' title='Multiple referred from 3 places.'>KEY_END</a>         0xE1
-<a id='L22' name='L22'></a><em class='sharp'>#define</em> <a href='../R/87.html' title='Multiple referred from 3 places.'>KEY_UP</a>          0xE2
-<a id='L23' name='L23'></a><em class='sharp'>#define</em> <a href='../R/79.html' title='Multiple referred from 3 places.'>KEY_DN</a>          0xE3
-<a id='L24' name='L24'></a><em class='sharp'>#define</em> <a href='../R/83.html' title='Multiple referred from 3 places.'>KEY_LF</a>          0xE4
-<a id='L25' name='L25'></a><em class='sharp'>#define</em> <a href='../R/86.html' title='Multiple referred from 3 places.'>KEY_RT</a>          0xE5
-<a id='L26' name='L26'></a><em class='sharp'>#define</em> <a href='../R/85.html' title='Multiple referred from 3 places.'>KEY_PGUP</a>        0xE6
-<a id='L27' name='L27'></a><em class='sharp'>#define</em> <a href='../R/84.html' title='Multiple referred from 3 places.'>KEY_PGDN</a>        0xE7
-<a id='L28' name='L28'></a><em class='sharp'>#define</em> <a href='../R/82.html' title='Multiple referred from 3 places.'>KEY_INS</a>         0xE8
-<a id='L29' name='L29'></a><em class='sharp'>#define</em> <a href='../R/78.html' title='Multiple referred from 3 places.'>KEY_DEL</a>         0xE9
-<a id='L30' name='L30'></a>
-<a id='L31' name='L31'></a><em class='comment'>// C('A') == Control-A</em>
-<a id='L32' name='L32'></a><em class='sharp'>#define</em> <a href='../R/13.html' title='Multiple referred from 11 places.'>C</a>(x) (x - '@')
-<a id='L33' name='L33'></a>
-<a id='L34' name='L34'></a><strong class='reserved'>static</strong> <a href='../S/125.html#L3' title='Defined at 3 in types.h.'>uchar</a> shiftcode[256] =
-<a id='L35' name='L35'></a><em class='brace'>{</em>
-<a id='L36' name='L36'></a>  [0x1D] <a href='../S/142.html#L10' title='Defined at 10 in kbd.h.'>CTL</a>,
-<a id='L37' name='L37'></a>  [0x2A] <a href='../S/142.html#L9' title='Defined at 9 in kbd.h.'>SHIFT</a>,
-<a id='L38' name='L38'></a>  [0x36] <a href='../S/142.html#L9' title='Defined at 9 in kbd.h.'>SHIFT</a>,
-<a id='L39' name='L39'></a>  [0x38] <a href='../S/142.html#L11' title='Defined at 11 in kbd.h.'>ALT</a>,
-<a id='L40' name='L40'></a>  [0x9D] <a href='../S/142.html#L10' title='Defined at 10 in kbd.h.'>CTL</a>,
-<a id='L41' name='L41'></a>  [0xB8] <a href='../S/142.html#L11' title='Defined at 11 in kbd.h.'>ALT</a>
-<a id='L42' name='L42'></a><em class='brace'>}</em>;
+<a id='L7' name='L7'></a><strong class='reserved'>char</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[1024];
+<a id='L8' name='L8'></a><strong class='reserved'>int</strong> <a href='../S/142.html#L73' title='Defined at 73 in grep.c.'>match</a>(<strong class='reserved'>char</strong>*, <strong class='reserved'>char</strong>*);
+<a id='L9' name='L9'></a>
+<a id='L10' name='L10'></a><strong class='reserved'>void</strong>
+<a id='L11' name='L11'></a><a href='../R/340.html' title='Multiple referred from 2 places.'>grep</a>(<strong class='reserved'>char</strong> *pattern, <strong class='reserved'>int</strong> fd)
+<a id='L12' name='L12'></a><em class='brace'>{</em>
+<a id='L13' name='L13'></a>  <strong class='reserved'>int</strong> n, m;
+<a id='L14' name='L14'></a>  <strong class='reserved'>char</strong> *p, *q;
+<a id='L15' name='L15'></a>
+<a id='L16' name='L16'></a>  m = 0;
+<a id='L17' name='L17'></a>  <strong class='reserved'>while</strong>((n = read(fd, <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>+m, <strong class='reserved'>sizeof</strong>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>)-m-1)) &gt; 0)<em class='brace'>{</em>
+<a id='L18' name='L18'></a>    m += n;
+<a id='L19' name='L19'></a>    <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[m] = '\0';
+<a id='L20' name='L20'></a>    p = <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>;
+<a id='L21' name='L21'></a>    <strong class='reserved'>while</strong>((q = <a href='../S/83.html#L44' title='Defined at 44 in ulib.c.'>strchr</a>(p, '\n')) != 0)<em class='brace'>{</em>
+<a id='L22' name='L22'></a>      *q = 0;
+<a id='L23' name='L23'></a>      <strong class='reserved'>if</strong>(<a href='../S/142.html#L73' title='Defined at 73 in grep.c.'>match</a>(pattern, p))<em class='brace'>{</em>
+<a id='L24' name='L24'></a>        *q = '\n';
+<a id='L25' name='L25'></a>        write(1, p, q+1 - p);
+<a id='L26' name='L26'></a>      <em class='brace'>}</em>
+<a id='L27' name='L27'></a>      p = q+1;
+<a id='L28' name='L28'></a>    <em class='brace'>}</em>
+<a id='L29' name='L29'></a>    <strong class='reserved'>if</strong>(p == <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>)
+<a id='L30' name='L30'></a>      m = 0;
+<a id='L31' name='L31'></a>    <strong class='reserved'>if</strong>(m &gt; 0)<em class='brace'>{</em>
+<a id='L32' name='L32'></a>      m -= p - <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>;
+<a id='L33' name='L33'></a>      <a href='../D/508.html' title='Multiple defined in 2 places.'>memmove</a>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, p, m);
+<a id='L34' name='L34'></a>    <em class='brace'>}</em>
+<a id='L35' name='L35'></a>  <em class='brace'>}</em>
+<a id='L36' name='L36'></a><em class='brace'>}</em>
+<a id='L37' name='L37'></a>
+<a id='L38' name='L38'></a><strong class='reserved'>int</strong>
+<a id='L39' name='L39'></a>main(<strong class='reserved'>int</strong> argc, <strong class='reserved'>char</strong> *argv[])
+<a id='L40' name='L40'></a><em class='brace'>{</em>
+<a id='L41' name='L41'></a>  <strong class='reserved'>int</strong> fd, i;
+<a id='L42' name='L42'></a>  <strong class='reserved'>char</strong> *pattern;
 <a id='L43' name='L43'></a>
-<a id='L44' name='L44'></a><strong class='reserved'>static</strong> <a href='../S/125.html#L3' title='Defined at 3 in types.h.'>uchar</a> togglecode[256] =
-<a id='L45' name='L45'></a><em class='brace'>{</em>
-<a id='L46' name='L46'></a>  [0x3A] <a href='../S/142.html#L13' title='Defined at 13 in kbd.h.'>CAPSLOCK</a>,
-<a id='L47' name='L47'></a>  [0x45] <a href='../S/142.html#L14' title='Defined at 14 in kbd.h.'>NUMLOCK</a>,
-<a id='L48' name='L48'></a>  [0x46] <a href='../S/142.html#L15' title='Defined at 15 in kbd.h.'>SCROLLLOCK</a>
-<a id='L49' name='L49'></a><em class='brace'>}</em>;
-<a id='L50' name='L50'></a>
-<a id='L51' name='L51'></a><strong class='reserved'>static</strong> <a href='../S/125.html#L3' title='Defined at 3 in types.h.'>uchar</a> normalmap[256] =
-<a id='L52' name='L52'></a><em class='brace'>{</em>
-<a id='L53' name='L53'></a>  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   0x1B, '1',  '2',  '3',  '4',  '5',  '6',  <em class='comment'>// 0x00</em>
-<a id='L54' name='L54'></a>  '7',  '8',  '9',  '0',  '-',  '=',  '\b', '\t',
-<a id='L55' name='L55'></a>  'q',  'w',  'e',  'r',  't',  'y',  'u',  'i',  <em class='comment'>// 0x10</em>
-<a id='L56' name='L56'></a>  'o',  'p',  '[',  ']',  '\n', <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   'a',  's',
-<a id='L57' name='L57'></a>  'd',  'f',  'g',  'h',  'j',  'k',  'l',  ';',  <em class='comment'>// 0x20</em>
-<a id='L58' name='L58'></a>  '\'', '`',  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   '\\', 'z',  'x',  'c',  'v',
-<a id='L59' name='L59'></a>  'b',  'n',  'm',  ',',  '.',  '/',  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   '*',  <em class='comment'>// 0x30</em>
-<a id='L60' name='L60'></a>  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   ' ',  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,
-<a id='L61' name='L61'></a>  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   '7',  <em class='comment'>// 0x40</em>
-<a id='L62' name='L62'></a>  '8',  '9',  '-',  '4',  '5',  '6',  '+',  '1',
-<a id='L63' name='L63'></a>  '2',  '3',  '0',  '.',  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <em class='comment'>// 0x50</em>
-<a id='L64' name='L64'></a>  [0x9C] '\n',      <em class='comment'>// KP_Enter</em>
-<a id='L65' name='L65'></a>  [0xB5] '/',       <em class='comment'>// KP_Div</em>
-<a id='L66' name='L66'></a>  [0xC8] <a href='../S/142.html#L22' title='Defined at 22 in kbd.h.'>KEY_UP</a>,    [0xD0] <a href='../S/142.html#L23' title='Defined at 23 in kbd.h.'>KEY_DN</a>,
-<a id='L67' name='L67'></a>  [0xC9] <a href='../S/142.html#L26' title='Defined at 26 in kbd.h.'>KEY_PGUP</a>,  [0xD1] <a href='../S/142.html#L27' title='Defined at 27 in kbd.h.'>KEY_PGDN</a>,
-<a id='L68' name='L68'></a>  [0xCB] <a href='../S/142.html#L24' title='Defined at 24 in kbd.h.'>KEY_LF</a>,    [0xCD] <a href='../S/142.html#L25' title='Defined at 25 in kbd.h.'>KEY_RT</a>,
-<a id='L69' name='L69'></a>  [0x97] <a href='../S/142.html#L20' title='Defined at 20 in kbd.h.'>KEY_HOME</a>,  [0xCF] <a href='../S/142.html#L21' title='Defined at 21 in kbd.h.'>KEY_END</a>,
-<a id='L70' name='L70'></a>  [0xD2] <a href='../S/142.html#L28' title='Defined at 28 in kbd.h.'>KEY_INS</a>,   [0xD3] <a href='../S/142.html#L29' title='Defined at 29 in kbd.h.'>KEY_DEL</a>
-<a id='L71' name='L71'></a><em class='brace'>}</em>;
-<a id='L72' name='L72'></a>
-<a id='L73' name='L73'></a><strong class='reserved'>static</strong> <a href='../S/125.html#L3' title='Defined at 3 in types.h.'>uchar</a> shiftmap[256] =
+<a id='L44' name='L44'></a>  <strong class='reserved'>if</strong>(argc &lt;= 1)<em class='brace'>{</em>
+<a id='L45' name='L45'></a>    <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(2, "usage: grep pattern [file ...]\n");
+<a id='L46' name='L46'></a>    <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
+<a id='L47' name='L47'></a>  <em class='brace'>}</em>
+<a id='L48' name='L48'></a>  pattern = argv[1];
+<a id='L49' name='L49'></a>
+<a id='L50' name='L50'></a>  <strong class='reserved'>if</strong>(argc &lt;= 2)<em class='brace'>{</em>
+<a id='L51' name='L51'></a>    <a href='../S/142.html#L11' title='Defined at 11 in grep.c.'>grep</a>(pattern, 0);
+<a id='L52' name='L52'></a>    <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
+<a id='L53' name='L53'></a>  <em class='brace'>}</em>
+<a id='L54' name='L54'></a>
+<a id='L55' name='L55'></a>  <strong class='reserved'>for</strong>(i = 2; i &lt; argc; i++)<em class='brace'>{</em>
+<a id='L56' name='L56'></a>    <strong class='reserved'>if</strong>((fd = open(argv[i], 0)) &lt; 0)<em class='brace'>{</em>
+<a id='L57' name='L57'></a>      <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(1, "grep: cannot open %s\n", argv[i]);
+<a id='L58' name='L58'></a>      <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
+<a id='L59' name='L59'></a>    <em class='brace'>}</em>
+<a id='L60' name='L60'></a>    <a href='../S/142.html#L11' title='Defined at 11 in grep.c.'>grep</a>(pattern, fd);
+<a id='L61' name='L61'></a>    close(fd);
+<a id='L62' name='L62'></a>  <em class='brace'>}</em>
+<a id='L63' name='L63'></a>  <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
+<a id='L64' name='L64'></a><em class='brace'>}</em>
+<a id='L65' name='L65'></a>
+<a id='L66' name='L66'></a><em class='comment'>// Regexp matcher from Kernighan &amp; Pike,</em>
+<a id='L67' name='L67'></a><em class='comment'>// The Practice of Programming, Chapter 9.</em>
+<a id='L68' name='L68'></a>
+<a id='L69' name='L69'></a><strong class='reserved'>int</strong> <a href='../S/142.html#L85' title='Defined at 85 in grep.c.'>matchhere</a>(<strong class='reserved'>char</strong>*, <strong class='reserved'>char</strong>*);
+<a id='L70' name='L70'></a><strong class='reserved'>int</strong> <a href='../S/142.html#L99' title='Defined at 99 in grep.c.'>matchstar</a>(<strong class='reserved'>int</strong>, <strong class='reserved'>char</strong>*, <strong class='reserved'>char</strong>*);
+<a id='L71' name='L71'></a>
+<a id='L72' name='L72'></a><strong class='reserved'>int</strong>
+<a id='L73' name='L73'></a><a href='../R/407.html' title='Multiple referred from 2 places.'>match</a>(<strong class='reserved'>char</strong> *re, <strong class='reserved'>char</strong> *text)
 <a id='L74' name='L74'></a><em class='brace'>{</em>
-<a id='L75' name='L75'></a>  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   033,  '!',  '@',  '#',  '$',  '%',  '^',  <em class='comment'>// 0x00</em>
-<a id='L76' name='L76'></a>  '&amp;',  '*',  '(',  ')',  '_',  '+',  '\b', '\t',
-<a id='L77' name='L77'></a>  'Q',  'W',  'E',  'R',  'T',  'Y',  'U',  'I',  <em class='comment'>// 0x10</em>
-<a id='L78' name='L78'></a>  'O',  'P',  '{',  '}',  '\n', <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   'A',  'S',
-<a id='L79' name='L79'></a>  'D',  'F',  'G',  'H',  'J',  'K',  'L',  ':',  <em class='comment'>// 0x20</em>
-<a id='L80' name='L80'></a>  '"',  '~',  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   '|',  'Z',  'X',  'C',  'V',
-<a id='L81' name='L81'></a>  'B',  'N',  'M',  '&lt;',  '&gt;',  '?',  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   '*',  <em class='comment'>// 0x30</em>
-<a id='L82' name='L82'></a>  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   ' ',  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,
-<a id='L83' name='L83'></a>  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   '7',  <em class='comment'>// 0x40</em>
-<a id='L84' name='L84'></a>  '8',  '9',  '-',  '4',  '5',  '6',  '+',  '1',
-<a id='L85' name='L85'></a>  '2',  '3',  '0',  '.',  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,   <em class='comment'>// 0x50</em>
-<a id='L86' name='L86'></a>  [0x9C] '\n',      <em class='comment'>// KP_Enter</em>
-<a id='L87' name='L87'></a>  [0xB5] '/',       <em class='comment'>// KP_Div</em>
-<a id='L88' name='L88'></a>  [0xC8] <a href='../S/142.html#L22' title='Defined at 22 in kbd.h.'>KEY_UP</a>,    [0xD0] <a href='../S/142.html#L23' title='Defined at 23 in kbd.h.'>KEY_DN</a>,
-<a id='L89' name='L89'></a>  [0xC9] <a href='../S/142.html#L26' title='Defined at 26 in kbd.h.'>KEY_PGUP</a>,  [0xD1] <a href='../S/142.html#L27' title='Defined at 27 in kbd.h.'>KEY_PGDN</a>,
-<a id='L90' name='L90'></a>  [0xCB] <a href='../S/142.html#L24' title='Defined at 24 in kbd.h.'>KEY_LF</a>,    [0xCD] <a href='../S/142.html#L25' title='Defined at 25 in kbd.h.'>KEY_RT</a>,
-<a id='L91' name='L91'></a>  [0x97] <a href='../S/142.html#L20' title='Defined at 20 in kbd.h.'>KEY_HOME</a>,  [0xCF] <a href='../S/142.html#L21' title='Defined at 21 in kbd.h.'>KEY_END</a>,
-<a id='L92' name='L92'></a>  [0xD2] <a href='../S/142.html#L28' title='Defined at 28 in kbd.h.'>KEY_INS</a>,   [0xD3] <a href='../S/142.html#L29' title='Defined at 29 in kbd.h.'>KEY_DEL</a>
-<a id='L93' name='L93'></a><em class='brace'>}</em>;
-<a id='L94' name='L94'></a>
-<a id='L95' name='L95'></a><strong class='reserved'>static</strong> <a href='../S/125.html#L3' title='Defined at 3 in types.h.'>uchar</a> ctlmap[256] =
-<a id='L96' name='L96'></a><em class='brace'>{</em>
-<a id='L97' name='L97'></a>  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,
-<a id='L98' name='L98'></a>  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,
-<a id='L99' name='L99'></a>  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('Q'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('W'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('E'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('R'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('T'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('Y'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('U'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('I'),
-<a id='L100' name='L100'></a>  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('O'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('P'),  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      '\r',    <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('A'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('S'),
-<a id='L101' name='L101'></a>  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('D'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('F'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('G'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('H'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('J'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('K'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('L'),  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,
-<a id='L102' name='L102'></a>  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('\\'), <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('Z'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('X'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('C'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('V'),
-<a id='L103' name='L103'></a>  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('B'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('N'),  <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('M'),  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('/'),  <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,      <a href='../S/142.html#L7' title='Defined at 7 in kbd.h.'>NO</a>,
-<a id='L104' name='L104'></a>  [0x9C] '\r',      <em class='comment'>// KP_Enter</em>
-<a id='L105' name='L105'></a>  [0xB5] <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('/'),    <em class='comment'>// KP_Div</em>
-<a id='L106' name='L106'></a>  [0xC8] <a href='../S/142.html#L22' title='Defined at 22 in kbd.h.'>KEY_UP</a>,    [0xD0] <a href='../S/142.html#L23' title='Defined at 23 in kbd.h.'>KEY_DN</a>,
-<a id='L107' name='L107'></a>  [0xC9] <a href='../S/142.html#L26' title='Defined at 26 in kbd.h.'>KEY_PGUP</a>,  [0xD1] <a href='../S/142.html#L27' title='Defined at 27 in kbd.h.'>KEY_PGDN</a>,
-<a id='L108' name='L108'></a>  [0xCB] <a href='../S/142.html#L24' title='Defined at 24 in kbd.h.'>KEY_LF</a>,    [0xCD] <a href='../S/142.html#L25' title='Defined at 25 in kbd.h.'>KEY_RT</a>,
-<a id='L109' name='L109'></a>  [0x97] <a href='../S/142.html#L20' title='Defined at 20 in kbd.h.'>KEY_HOME</a>,  [0xCF] <a href='../S/142.html#L21' title='Defined at 21 in kbd.h.'>KEY_END</a>,
-<a id='L110' name='L110'></a>  [0xD2] <a href='../S/142.html#L28' title='Defined at 28 in kbd.h.'>KEY_INS</a>,   [0xD3] <a href='../S/142.html#L29' title='Defined at 29 in kbd.h.'>KEY_DEL</a>
-<a id='L111' name='L111'></a><em class='brace'>}</em>;
-<a id='L112' name='L112'></a>
+<a id='L75' name='L75'></a>  <strong class='reserved'>if</strong>(re[0] == '^')
+<a id='L76' name='L76'></a>    <strong class='reserved'>return</strong> <a href='../S/142.html#L85' title='Defined at 85 in grep.c.'>matchhere</a>(re+1, text);
+<a id='L77' name='L77'></a>  <strong class='reserved'>do</strong><em class='brace'>{</em>  <em class='comment'>// must look at empty string</em>
+<a id='L78' name='L78'></a>    <strong class='reserved'>if</strong>(<a href='../S/142.html#L85' title='Defined at 85 in grep.c.'>matchhere</a>(re, text))
+<a id='L79' name='L79'></a>      <strong class='reserved'>return</strong> 1;
+<a id='L80' name='L80'></a>  <em class='brace'>}</em><strong class='reserved'>while</strong>(*text++ != '\0');
+<a id='L81' name='L81'></a>  <strong class='reserved'>return</strong> 0;
+<a id='L82' name='L82'></a><em class='brace'>}</em>
+<a id='L83' name='L83'></a>
+<a id='L84' name='L84'></a><em class='comment'>// matchhere: search for re at beginning of text</em>
+<a id='L85' name='L85'></a><strong class='reserved'>int</strong> <a href='../R/408.html' title='Multiple referred from 5 places.'>matchhere</a>(<strong class='reserved'>char</strong> *re, <strong class='reserved'>char</strong> *text)
+<a id='L86' name='L86'></a><em class='brace'>{</em>
+<a id='L87' name='L87'></a>  <strong class='reserved'>if</strong>(re[0] == '\0')
+<a id='L88' name='L88'></a>    <strong class='reserved'>return</strong> 1;
+<a id='L89' name='L89'></a>  <strong class='reserved'>if</strong>(re[1] == '*')
+<a id='L90' name='L90'></a>    <strong class='reserved'>return</strong> <a href='../S/142.html#L99' title='Defined at 99 in grep.c.'>matchstar</a>(re[0], re+2, text);
+<a id='L91' name='L91'></a>  <strong class='reserved'>if</strong>(re[0] == '$' &amp;&amp; re[1] == '\0')
+<a id='L92' name='L92'></a>    <strong class='reserved'>return</strong> *text == '\0';
+<a id='L93' name='L93'></a>  <strong class='reserved'>if</strong>(*text!='\0' &amp;&amp; (re[0]=='.' || re[0]==*text))
+<a id='L94' name='L94'></a>    <strong class='reserved'>return</strong> <a href='../S/142.html#L85' title='Defined at 85 in grep.c.'>matchhere</a>(re+1, text+1);
+<a id='L95' name='L95'></a>  <strong class='reserved'>return</strong> 0;
+<a id='L96' name='L96'></a><em class='brace'>}</em>
+<a id='L97' name='L97'></a>
+<a id='L98' name='L98'></a><em class='comment'>// matchstar: search for c*re at beginning of text</em>
+<a id='L99' name='L99'></a><strong class='reserved'>int</strong> <a href='../R/409.html' title='Multiple referred from 2 places.'>matchstar</a>(<strong class='reserved'>int</strong> c, <strong class='reserved'>char</strong> *re, <strong class='reserved'>char</strong> *text)
+<a id='L100' name='L100'></a><em class='brace'>{</em>
+<a id='L101' name='L101'></a>  <strong class='reserved'>do</strong><em class='brace'>{</em>  <em class='comment'>// a * matches zero or more instances</em>
+<a id='L102' name='L102'></a>    <strong class='reserved'>if</strong>(<a href='../S/142.html#L85' title='Defined at 85 in grep.c.'>matchhere</a>(re, text))
+<a id='L103' name='L103'></a>      <strong class='reserved'>return</strong> 1;
+<a id='L104' name='L104'></a>  <em class='brace'>}</em><strong class='reserved'>while</strong>(*text!='\0' &amp;&amp; (*text++==c || c=='.'));
+<a id='L105' name='L105'></a>  <strong class='reserved'>return</strong> 0;
+<a id='L106' name='L106'></a><em class='brace'>}</em>
+<a id='L107' name='L107'></a>
 </pre>
 <hr />
 <a id='BOTTOM' name='BOTTOM'></a>
-<em class='comment'>/* [&lt;][&gt;][^][v]<a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L11'>[^]</a><a href='#L99'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 </body>
 </html>

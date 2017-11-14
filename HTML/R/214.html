@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>V2P</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.4' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/168.html#L80'>V2P</a>                80 kalloc.c         if((uint)v % PGSIZE || v &lt; end || V2P(v) &gt;= PHYSTOP)</span>
+<span class='curline'><a href='../S/155.html#L99'>V2P</a>                99 main.c             *(int**)(code-12) = (void *) V2P(entrypgdir);</span>
+<span class='curline'><a href='../S/155.html#L101'>V2P</a>               101 main.c             lapicstartap(c-&gt;apicid, V2P(code));</span>
+<span class='curline'><a href='../S/158.html#L97'>V2P</a>                97 vm.c               // Make sure all those PTE_P bits are zero.</span>
+<span class='curline'><a href='../S/158.html#L157'>V2P</a>               157 vm.c             uint phys_start;</span>
+<span class='curline'><a href='../S/158.html#L158'>V2P</a>               158 vm.c             uint phys_end;</span>
+<span class='curline'><a href='../S/158.html#L159'>V2P</a>               159 vm.c             int perm;</span>
+<span class='curline'><a href='../S/158.html#L239'>V2P</a>               239 vm.c           // Switch h/w page table register to the kernel-only page table,</span>
+<span class='curline'><a href='../S/158.html#L263'>V2P</a>               263 vm.c             mycpu()-&gt;ts.esp0 = (uint)p-&gt;kstack + KSTACKSIZE;</span>
+<span class='curline'><a href='../S/158.html#L335'>V2P</a>               335 vm.c               for (i = 0; i &lt; 1; i++) { // Even if i &lt; NOFILE </span>
+<span class='curline'><a href='../S/158.html#L362'>V2P</a>               362 vm.c             //add manabu</span>
+<span class='curline'><a href='../S/158.html#L412'>V2P</a>               412 vm.c             for(; a &lt; newsz; a += PGSIZE){</span>
+<span class='curline'><a href='../S/158.html#L527'>V2P</a>               527 vm.c           setptew(pde_t *pgdir, char *uva, uint size, uint c)  </span>
+<span class='curline'><a href='../S/158.html#L588'>V2P</a>               588 vm.c           // Given a parent process's page table, create a copy</span>
+</pre>
+</body>
+</html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>mycpu</title>
+<title>matchhere</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,35 +9,11 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/118.html#L120'>mycpu</a>             120 defs.h         struct cpu*     mycpu(void);</span>
-<span class='curline'><a href='../S/154.html#L64'>mycpu</a>              64 main.c           xchg(&amp;(mycpu()-&gt;started), 1); // tell startothers() we're up</span>
-<span class='curline'><a href='../S/154.html#L86'>mycpu</a>              86 main.c             if(c == mycpu())  // We've started already.</span>
-<span class='curline'><a href='../S/63.html#L66'>mycpu</a>              66 proc.c           return mycpu()-cpus;</span>
-<span class='curline'><a href='../S/63.html#L96'>mycpu</a>              96 proc.c           c = mycpu();</span>
-<span class='curline'><a href='../S/63.html#L401'>mycpu</a>             401 proc.c           struct cpu *c = mycpu();</span>
-<span class='curline'><a href='../S/63.html#L448'>mycpu</a>             448 proc.c           if(mycpu()-&gt;ncli != 1)</span>
-<span class='curline'><a href='../S/63.html#L454'>mycpu</a>             454 proc.c           intena = mycpu()-&gt;intena;</span>
-<span class='curline'><a href='../S/63.html#L455'>mycpu</a>             455 proc.c           swtch(&amp;p-&gt;context, mycpu()-&gt;scheduler);</span>
-<span class='curline'><a href='../S/63.html#L456'>mycpu</a>             456 proc.c           mycpu()-&gt;intena = intena;</span>
-<span class='curline'><a href='../S/40.html#L41'>mycpu</a>              41 spinlock.c       lk-&gt;cpu = mycpu();</span>
-<span class='curline'><a href='../S/40.html#L92'>mycpu</a>              92 spinlock.c       return lock-&gt;locked &amp;&amp; lock-&gt;cpu == mycpu();</span>
-<span class='curline'><a href='../S/40.html#L107'>mycpu</a>             107 spinlock.c       if(mycpu()-&gt;ncli == 0)</span>
-<span class='curline'><a href='../S/40.html#L108'>mycpu</a>             108 spinlock.c         mycpu()-&gt;intena = eflags &amp; FL_IF;</span>
-<span class='curline'><a href='../S/40.html#L109'>mycpu</a>             109 spinlock.c       mycpu()-&gt;ncli += 1;</span>
-<span class='curline'><a href='../S/40.html#L117'>mycpu</a>             117 spinlock.c       if(--mycpu()-&gt;ncli &lt; 0)</span>
-<span class='curline'><a href='../S/40.html#L119'>mycpu</a>             119 spinlock.c       if(mycpu()-&gt;ncli == 0 &amp;&amp; mycpu()-&gt;intena)    </span>
-<span class='curline'><a href='../S/157.html#L243'>mycpu</a>             243 vm.c             mycpu()-&gt;gdt[SEG_TSS] = SEG16(STS_T32A, &amp;mycpu()-&gt;ts,</span>
-<span class='curline'><a href='../S/157.html#L244'>mycpu</a>             244 vm.c                                           sizeof(mycpu()-&gt;ts)-1, 0);</span>
-<span class='curline'><a href='../S/157.html#L245'>mycpu</a>             245 vm.c             mycpu()-&gt;gdt[SEG_TSS].s = 0;</span>
-<span class='curline'><a href='../S/157.html#L246'>mycpu</a>             246 vm.c             mycpu()-&gt;ts.ss0 = SEG_KDATA &lt;&lt; 3;</span>
-<span class='curline'><a href='../S/157.html#L247'>mycpu</a>             247 vm.c             mycpu()-&gt;ts.esp0 = (uint)p-&gt;kstack + KSTACKSIZE;</span>
-<span class='curline'><a href='../S/157.html#L250'>mycpu</a>             250 vm.c             mycpu()-&gt;ts.iomb = (ushort) 0xFFFF;</span>
-<span class='curline'><a href='../S/157.html#L310'>mycpu</a>             310 vm.c             mycpu()-&gt;gdt[SEG_TSS] = SEG16(STS_T32A, &amp;mycpu()-&gt;ts,</span>
-<span class='curline'><a href='../S/157.html#L311'>mycpu</a>             311 vm.c                                           sizeof(mycpu()-&gt;ts)-1, 0);</span>
-<span class='curline'><a href='../S/157.html#L312'>mycpu</a>             312 vm.c             mycpu()-&gt;gdt[SEG_TSS].s = 0;</span>
-<span class='curline'><a href='../S/157.html#L313'>mycpu</a>             313 vm.c             mycpu()-&gt;ts.ss0 = SEG_KDATA &lt;&lt; 3;</span>
-<span class='curline'><a href='../S/157.html#L314'>mycpu</a>             314 vm.c             mycpu()-&gt;ts.esp0 = (uint)p-&gt;kstack + KSTACKSIZE;</span>
-<span class='curline'><a href='../S/157.html#L317'>mycpu</a>             317 vm.c             mycpu()-&gt;ts.iomb = (ushort) 0xFFFF;</span>
+<span class='curline'><a href='../S/142.html#L69'>matchhere</a>          69 grep.c         int matchhere(char*, char*);</span>
+<span class='curline'><a href='../S/142.html#L76'>matchhere</a>          76 grep.c             return matchhere(re+1, text);</span>
+<span class='curline'><a href='../S/142.html#L78'>matchhere</a>          78 grep.c             if(matchhere(re, text))</span>
+<span class='curline'><a href='../S/142.html#L94'>matchhere</a>          94 grep.c             return matchhere(re+1, text+1);</span>
+<span class='curline'><a href='../S/142.html#L102'>matchhere</a>         102 grep.c             if(matchhere(re, text))</span>
 </pre>
 </body>
 </html>

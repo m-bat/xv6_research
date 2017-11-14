@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>ALT</title>
+<title>ALLOC_KGLOBAL</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,8 +9,25 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/142.html#L39'>ALT</a>                39 kbd.h            [0x38] ALT,</span>
-<span class='curline'><a href='../S/142.html#L41'>ALT</a>                41 kbd.h            [0xB8] ALT</span>
+<span class='curline'><a href='../S/163.html#L343'>ALLOC_KGLOBAL</a>     343 console.c        if ((cons = (struct cons_lk*)kalloc(ALLOC_KGLOBAL)) == 0) {</span>
+<span class='curline'><a href='../S/90.html#L39'>ALLOC_KGLOBAL</a>      39 exec.c           if((pgdir = setupkvm(ALLOC_KGLOBAL)) == 0)</span>
+<span class='curline'><a href='../S/168.html#L137'>ALLOC_KGLOBAL</a>     137 kalloc.c         case ALLOC_KGLOBAL:</span>
+<span class='curline'><a href='../S/168.html#L183'>ALLOC_KGLOBAL</a>     183 kalloc.c         if ((cpus = (struct cpu *)kalloc(ALLOC_KGLOBAL)) == 0) {</span>
+<span class='curline'><a href='../S/155.html#L93'>ALLOC_KGLOBAL</a>      93 main.c             stack = kalloc(ALLOC_KGLOBAL);</span>
+<span class='curline'><a href='../S/100.html#L106'>ALLOC_KGLOBAL</a>     106 mp.c             if ((lapic = (uint *)kalloc(ALLOC_KGLOBAL)) == 0) {</span>
+<span class='curline'><a href='../S/95.html#L31'>ALLOC_KGLOBAL</a>      31 pipe.c           if((p = (struct pipe*)kalloc(ALLOC_KGLOBAL)) == 0)</span>
+<span class='curline'><a href='../S/64.html#L52'>ALLOC_KGLOBAL</a>      52 proc.c           if ((ptable = (struct ptable_t *)kalloc(ALLOC_KGLOBAL)) == 0) {</span>
+<span class='curline'><a href='../S/64.html#L183'>ALLOC_KGLOBAL</a>     183 proc.c           if((p-&gt;pgdir = setupkvm(ALLOC_KGLOBAL)) == 0)</span>
+<span class='curline'><a href='../S/162.html#L33'>ALLOC_KGLOBAL</a>      33 trap.c           if ((tickslock = (struct spinlock *)kalloc(ALLOC_KGLOBAL)) == 0) {</span>
+<span class='curline'><a href='../S/158.html#L179'>ALLOC_KGLOBAL</a>     179 vm.c           setupkvm(alloc_flag_t flag)  </span>
+<span class='curline'><a href='../S/158.html#L230'>ALLOC_KGLOBAL</a>     230 vm.c           // Allocate one page table for the machine for the kernel address</span>
+<span class='curline'><a href='../S/158.html#L353'>ALLOC_KGLOBAL</a>     353 vm.c           </span>
+<span class='curline'><a href='../S/158.html#L362'>ALLOC_KGLOBAL</a>     362 vm.c             //add manabu</span>
+<span class='curline'><a href='../S/158.html#L405'>ALLOC_KGLOBAL</a>     405 vm.c           </span>
+<span class='curline'><a href='../S/158.html#L412'>ALLOC_KGLOBAL</a>     412 vm.c             for(; a &lt; newsz; a += PGSIZE){</span>
+<span class='curline'><a href='../S/158.html#L576'>ALLOC_KGLOBAL</a>     576 vm.c               //set write-eable</span>
+<span class='curline'><a href='../S/158.html#L585'>ALLOC_KGLOBAL</a>     585 vm.c             //lcr3(V2P(pgdir));</span>
+<span class='curline'><a href='../S/158.html#L588'>ALLOC_KGLOBAL</a>     588 vm.c           // Given a parent process's page table, create a copy</span>
 </pre>
 </body>
 </html>

@@ -1,396 +1,195 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>console.c</title>
+<title>trap.c</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
 <link rel='stylesheet' type='text/css' href='../style.css' />
 </head>
 <body>
-<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/console.c</h2>
-<em class='comment'>/* [&lt;][&gt;]<a href='#L40'>[^]</a><a href='#L340'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/trap.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L24'>[^]</a><a href='#L49'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 <hr />
 <h2 class='header'>DEFINITIONS</h2>
 This source file includes following definitions.
 <ol>
-<li><a href='#L40' title='Defined at 40.'>printint</a></li>
-<li><a href='#L67' title='Defined at 67.'>cprintf</a></li>
-<li><a href='#L124' title='Defined at 124.'>panic</a></li>
-<li><a href='#L162' title='Defined at 162.'>cgaputc</a></li>
-<li><a href='#L196' title='Defined at 196.'>consputc</a></li>
-<li><a href='#L222' title='Defined at 222.'>consoleintr</a></li>
-<li><a href='#L270' title='Defined at 270.'>consoleread</a></li>
-<li><a href='#L320' title='Defined at 320.'>consolewrite</a></li>
-<li><a href='#L340' title='Defined at 340.'>consoleinit</a></li>
+<li><a href='#L24' title='Defined at 24.'>tvinit</a></li>
+<li><a href='#L42' title='Defined at 42.'>idtinit</a></li>
+<li><a href='#L49' title='Defined at 49.'>trap</a></li>
 </ol>
 <hr />
 <pre>
-<a id='L1' name='L1'></a><em class='comment'>// Console input and output.</em>
-<a id='L2' name='L2'></a><em class='comment'>// Input is from the keyboard or serial port.</em>
-<a id='L3' name='L3'></a><em class='comment'>// Output is written to the screen and serial port.</em>
-<a id='L4' name='L4'></a>
-<a id='L5' name='L5'></a><em class='sharp'>#include</em> "<a href='125.html'>types.h</a>"
-<a id='L6' name='L6'></a><em class='sharp'>#include</em> "<a href='118.html'>defs.h</a>"
-<a id='L7' name='L7'></a><em class='sharp'>#include</em> "<a href='28.html'>param.h</a>"
-<a id='L8' name='L8'></a><em class='sharp'>#include</em> "<a href='135.html'>traps.h</a>"
+<a id='L1' name='L1'></a><em class='sharp'>#include</em> "<a href='126.html'>types.h</a>"
+<a id='L2' name='L2'></a><em class='sharp'>#include</em> "<a href='119.html'>defs.h</a>"
+<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='29.html'>param.h</a>"
+<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='50.html'>memlayout.h</a>"
+<a id='L5' name='L5'></a><em class='sharp'>#include</em> "<a href='122.html'>mmu.h</a>"
+<a id='L6' name='L6'></a><em class='sharp'>#include</em> "<a href='93.html'>proc.h</a>"
+<a id='L7' name='L7'></a><em class='sharp'>#include</em> "<a href='68.html'>x86.h</a>"
+<a id='L8' name='L8'></a><em class='sharp'>#include</em> "<a href='136.html'>traps.h</a>"
 <a id='L9' name='L9'></a><em class='sharp'>#include</em> "<a href='9.html'>spinlock.h</a>"
-<a id='L10' name='L10'></a><em class='sharp'>#include</em> "<a href='2.html'>sleeplock.h</a>"
-<a id='L11' name='L11'></a><em class='sharp'>#include</em> "<a href='103.html'>fs.h</a>"
-<a id='L12' name='L12'></a><em class='sharp'>#include</em> "<a href='55.html'>file.h</a>"
-<a id='L13' name='L13'></a><em class='sharp'>#include</em> "<a href='49.html'>memlayout.h</a>"
-<a id='L14' name='L14'></a><em class='sharp'>#include</em> "<a href='121.html'>mmu.h</a>"
-<a id='L15' name='L15'></a><em class='sharp'>#include</em> "<a href='92.html'>proc.h</a>"
-<a id='L16' name='L16'></a><em class='sharp'>#include</em> "<a href='67.html'>x86.h</a>"
+<a id='L10' name='L10'></a>
+<a id='L11' name='L11'></a><em class='comment'>// Interrupt descriptor table (shared by all CPUs).</em>
+<a id='L12' name='L12'></a><strong class='reserved'>struct</strong> <a href='../S/122.html#L199' title='Defined at 199 in mmu.h.'>gatedesc</a> idt[256];
+<a id='L13' name='L13'></a><strong class='reserved'>extern</strong> <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> vectors[];  <em class='comment'>// in vectors.S: array of 256 entry pointers</em>
+<a id='L14' name='L14'></a><em class='comment'>//struct spinlock tickslock;</em>
+<a id='L15' name='L15'></a><em class='comment'>//add manabu 11/10</em>
+<a id='L16' name='L16'></a><strong class='reserved'>struct</strong> <a href='../S/9.html#L5' title='Defined at 5 in spinlock.h.'>spinlock</a> *tickslock;
 <a id='L17' name='L17'></a>
-<a id='L18' name='L18'></a><strong class='reserved'>static</strong> <strong class='reserved'>void</strong> <a href='../S/162.html#L196' title='Defined at 196 in console.c.'>consputc</a>(<strong class='reserved'>int</strong>);
+<a id='L18' name='L18'></a><a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> ticks;
 <a id='L19' name='L19'></a>
-<a id='L20' name='L20'></a><strong class='reserved'>static</strong> <strong class='reserved'>int</strong> panicked = 0;
-<a id='L21' name='L21'></a><strong class='reserved'>extern</strong> <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> kgflag;
+<a id='L20' name='L20'></a><em class='comment'>//add manabu 10/24</em>
+<a id='L21' name='L21'></a><a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> kgflag = 0;
 <a id='L22' name='L22'></a>
-<a id='L23' name='L23'></a><em class='comment'>/*</em>
-<a id='L24' name='L24'></a><em class='comment'>static struct {</em>
-<a id='L25' name='L25'></a><em class='comment'>   struct spinlock lock;</em>
-<a id='L26' name='L26'></a><em class='comment'>  int locking;</em>
-<a id='L27' name='L27'></a><em class='comment'>} cons;</em>
-<a id='L28' name='L28'></a><em class='comment'>*/</em>
-<a id='L29' name='L29'></a>
-<a id='L30' name='L30'></a><em class='comment'>//add manabu 10/31</em>
-<a id='L31' name='L31'></a><strong class='reserved'>struct</strong> <a href='../R/258.html' title='Multiple referred from 3 places.'>cons_lk</a> <em class='brace'>{</em>
-<a id='L32' name='L32'></a>  <strong class='reserved'>struct</strong> <a href='../S/9.html#L5' title='Defined at 5 in spinlock.h.'>spinlock</a> lock;
-<a id='L33' name='L33'></a>  <strong class='reserved'>int</strong> locking;
-<a id='L34' name='L34'></a><em class='brace'>}</em>;
-<a id='L35' name='L35'></a>
-<a id='L36' name='L36'></a><strong class='reserved'>struct</strong> <a href='../S/162.html#L31' title='Defined at 31 in console.c.'>cons_lk</a> *cons;
-<a id='L37' name='L37'></a><em class='comment'>//</em>
-<a id='L38' name='L38'></a>
-<a id='L39' name='L39'></a><strong class='reserved'>static</strong> <strong class='reserved'>void</strong>
-<a id='L40' name='L40'></a><a href='../R/442.html' title='Multiple referred from 4 places.'>printint</a>(<strong class='reserved'>int</strong> xx, <strong class='reserved'>int</strong> base, <strong class='reserved'>int</strong> sign)
-<a id='L41' name='L41'></a><em class='brace'>{</em>
-<a id='L42' name='L42'></a>  <strong class='reserved'>static</strong> <strong class='reserved'>char</strong> digits[] = "0123456789abcdef";
-<a id='L43' name='L43'></a>  <strong class='reserved'>char</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>[16];
-<a id='L44' name='L44'></a>  <strong class='reserved'>int</strong> i;
-<a id='L45' name='L45'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> x;
+<a id='L23' name='L23'></a><strong class='reserved'>void</strong>
+<a id='L24' name='L24'></a><a href='../R/548.html' title='Multiple referred from 2 places.'>tvinit</a>(<strong class='reserved'>void</strong>)
+<a id='L25' name='L25'></a><em class='brace'>{</em>
+<a id='L26' name='L26'></a>  <strong class='reserved'>int</strong> i;
+<a id='L27' name='L27'></a>
+<a id='L28' name='L28'></a>  <strong class='reserved'>for</strong>(i = 0; i &lt; 256; i++)
+<a id='L29' name='L29'></a>    <a href='../S/122.html#L219' title='Defined at 219 in mmu.h.'>SETGATE</a>(idt[i], 0, <a href='../S/122.html#L46' title='Defined at 46 in mmu.h.'>SEG_KCODE</a>&lt;&lt;3, vectors[i], 0);
+<a id='L30' name='L30'></a>  <a href='../S/122.html#L219' title='Defined at 219 in mmu.h.'>SETGATE</a>(idt[<a href='../S/136.html#L30' title='Defined at 30 in traps.h.'>T_SYSCALL</a>], 1, <a href='../S/122.html#L46' title='Defined at 46 in mmu.h.'>SEG_KCODE</a>&lt;&lt;3, vectors[<a href='../S/136.html#L30' title='Defined at 30 in traps.h.'>T_SYSCALL</a>], <a href='../S/122.html#L84' title='Defined at 84 in mmu.h.'>DPL_USER</a>);
+<a id='L31' name='L31'></a>
+<a id='L32' name='L32'></a>  <em class='comment'>//add manabu 11/10</em>
+<a id='L33' name='L33'></a>  <strong class='reserved'>if</strong> ((tickslock = (<strong class='reserved'>struct</strong> <a href='../S/9.html#L5' title='Defined at 5 in spinlock.h.'>spinlock</a> *)<a href='../S/168.html#L129' title='Defined at 129 in kalloc.c.'>kalloc</a>(<a href='../S/119.html#L73' title='Defined at 73 in defs.h.'>ALLOC_KGLOBAL</a>)) == 0) <em class='brace'>{</em>
+<a id='L34' name='L34'></a>    <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("kalloc: tickslock");
+<a id='L35' name='L35'></a>  <em class='brace'>}</em>
+<a id='L36' name='L36'></a>  <em class='comment'>//</em>
+<a id='L37' name='L37'></a>
+<a id='L38' name='L38'></a>  <a href='../S/41.html#L13' title='Defined at 13 in spinlock.c.'>initlock</a>(tickslock, "time");
+<a id='L39' name='L39'></a><em class='brace'>}</em>
+<a id='L40' name='L40'></a>
+<a id='L41' name='L41'></a><strong class='reserved'>void</strong>
+<a id='L42' name='L42'></a><a href='../R/352.html' title='Multiple referred from 2 places.'>idtinit</a>(<strong class='reserved'>void</strong>)
+<a id='L43' name='L43'></a><em class='brace'>{</em>
+<a id='L44' name='L44'></a>  <a href='../S/68.html#L80' title='Defined at 80 in x86.h.'>lidt</a>(idt, <strong class='reserved'>sizeof</strong>(idt));
+<a id='L45' name='L45'></a><em class='brace'>}</em>
 <a id='L46' name='L46'></a>
-<a id='L47' name='L47'></a>  <strong class='reserved'>if</strong>(sign &amp;&amp; (sign = xx &lt; 0))
-<a id='L48' name='L48'></a>    x = -xx;
-<a id='L49' name='L49'></a>  <strong class='reserved'>else</strong>
-<a id='L50' name='L50'></a>    x = xx;
-<a id='L51' name='L51'></a>
-<a id='L52' name='L52'></a>  i = 0;
-<a id='L53' name='L53'></a>  <strong class='reserved'>do</strong><em class='brace'>{</em>
-<a id='L54' name='L54'></a>    <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>[i++] = digits[x % base];
-<a id='L55' name='L55'></a>  <em class='brace'>}</em><strong class='reserved'>while</strong>((x /= base) != 0);
-<a id='L56' name='L56'></a>
-<a id='L57' name='L57'></a>  <strong class='reserved'>if</strong>(sign)
-<a id='L58' name='L58'></a>    <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>[i++] = '-';
-<a id='L59' name='L59'></a>
-<a id='L60' name='L60'></a>  <strong class='reserved'>while</strong>(--i &gt;= 0)
-<a id='L61' name='L61'></a>    <a href='../S/162.html#L196' title='Defined at 196 in console.c.'>consputc</a>(<a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>[i]);
-<a id='L62' name='L62'></a><em class='brace'>}</em>
-<a id='L63' name='L63'></a><em class='comment'>//PAGEBREAK: 50</em>
+<a id='L47' name='L47'></a><em class='comment'>//PAGEBREAK: 41</em>
+<a id='L48' name='L48'></a><strong class='reserved'>void</strong>
+<a id='L49' name='L49'></a>trap(<strong class='reserved'>struct</strong> <a href='../S/68.html#L153' title='Defined at 153 in x86.h.'>trapframe</a> *tf)
+<a id='L50' name='L50'></a><em class='brace'>{</em>
+<a id='L51' name='L51'></a>  <em class='comment'>//add manabu 10/29</em>
+<a id='L52' name='L52'></a>  <strong class='reserved'>struct</strong> <a href='../S/93.html#L61' title='Defined at 61 in proc.h.'>proc</a> *p;  
+<a id='L53' name='L53'></a>  <em class='comment'>//  </em>
+<a id='L54' name='L54'></a>  <strong class='reserved'>if</strong>(tf-&gt;trapno == <a href='../S/136.html#L30' title='Defined at 30 in traps.h.'>T_SYSCALL</a>)<em class='brace'>{</em>
+<a id='L55' name='L55'></a>    <strong class='reserved'>if</strong>(<a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>()-&gt;killed)
+<a id='L56' name='L56'></a>      <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
+<a id='L57' name='L57'></a>    <a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>()-&gt;tf = tf;
+<a id='L58' name='L58'></a>    <a href='../S/82.html#L136' title='Defined at 136 in syscall.c.'>syscall</a>();
+<a id='L59' name='L59'></a>    <strong class='reserved'>if</strong>(<a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>()-&gt;killed)
+<a id='L60' name='L60'></a>      <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
+<a id='L61' name='L61'></a>     <strong class='reserved'>return</strong>;
+<a id='L62' name='L62'></a>  <em class='brace'>}</em>
+<a id='L63' name='L63'></a>  <strong class='reserved'>switch</strong>(tf-&gt;trapno)<em class='brace'>{</em>
 <a id='L64' name='L64'></a>
-<a id='L65' name='L65'></a><em class='comment'>// Print to the console. only understands %d, %x, %p, %s.</em>
-<a id='L66' name='L66'></a><strong class='reserved'>void</strong>
-<a id='L67' name='L67'></a><a href='../R/268.html' title='Multiple referred from 47 places.'>cprintf</a>(<strong class='reserved'>char</strong> *fmt, ...)
-<a id='L68' name='L68'></a><em class='brace'>{</em>
-<a id='L69' name='L69'></a>  <strong class='reserved'>int</strong> i, c, locking;
-<a id='L70' name='L70'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> *argp;
-<a id='L71' name='L71'></a>  <strong class='reserved'>char</strong> *s;
-<a id='L72' name='L72'></a>
-<a id='L73' name='L73'></a>  <em class='comment'>//locking = cons.locking;</em>
-<a id='L74' name='L74'></a>  locking = cons-&gt;locking;
-<a id='L75' name='L75'></a>  
-<a id='L76' name='L76'></a>  <strong class='reserved'>if</strong>(locking)
-<a id='L77' name='L77'></a>    <em class='comment'>//acquire(&amp;cons.lock);</em>
-<a id='L78' name='L78'></a>    <a href='../S/40.html#L25' title='Defined at 25 in spinlock.c.'>acquire</a>(&amp;cons-&gt;lock);
-<a id='L79' name='L79'></a>    
-<a id='L80' name='L80'></a>
-<a id='L81' name='L81'></a>  <strong class='reserved'>if</strong> (fmt == 0)
-<a id='L82' name='L82'></a>    <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("null fmt");
-<a id='L83' name='L83'></a>
-<a id='L84' name='L84'></a>  argp = (<a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a>*)(<strong class='reserved'>void</strong>*)(&amp;fmt + 1);
-<a id='L85' name='L85'></a>  <strong class='reserved'>for</strong>(i = 0; (c = fmt[i] &amp; 0xff) != 0; i++)<em class='brace'>{</em>
-<a id='L86' name='L86'></a>    <strong class='reserved'>if</strong>(c != '%')<em class='brace'>{</em>
-<a id='L87' name='L87'></a>      <a href='../S/162.html#L196' title='Defined at 196 in console.c.'>consputc</a>(c);
-<a id='L88' name='L88'></a>      <strong class='reserved'>continue</strong>;
-<a id='L89' name='L89'></a>    <em class='brace'>}</em>
-<a id='L90' name='L90'></a>    c = fmt[++i] &amp; 0xff;
-<a id='L91' name='L91'></a>    <strong class='reserved'>if</strong>(c == 0)
-<a id='L92' name='L92'></a>      <strong class='reserved'>break</strong>;
-<a id='L93' name='L93'></a>    <strong class='reserved'>switch</strong>(c)<em class='brace'>{</em>
-<a id='L94' name='L94'></a>    <strong class='reserved'>case</strong> 'd':
-<a id='L95' name='L95'></a>      <a href='../D/538.html' title='Multiple defined in 2 places.'>printint</a>(*argp++, 10, 1);
-<a id='L96' name='L96'></a>      <strong class='reserved'>break</strong>;
-<a id='L97' name='L97'></a>    <strong class='reserved'>case</strong> 'x':
-<a id='L98' name='L98'></a>    <strong class='reserved'>case</strong> 'p':
-<a id='L99' name='L99'></a>      <a href='../D/538.html' title='Multiple defined in 2 places.'>printint</a>(*argp++, 16, 0);
-<a id='L100' name='L100'></a>      <strong class='reserved'>break</strong>;
-<a id='L101' name='L101'></a>    <strong class='reserved'>case</strong> 's':
-<a id='L102' name='L102'></a>      <strong class='reserved'>if</strong>((s = (<strong class='reserved'>char</strong>*)*argp++) == 0)
-<a id='L103' name='L103'></a>        s = "(null)";
-<a id='L104' name='L104'></a>      <strong class='reserved'>for</strong>(; *s; s++)
-<a id='L105' name='L105'></a>        <a href='../S/162.html#L196' title='Defined at 196 in console.c.'>consputc</a>(*s);
-<a id='L106' name='L106'></a>      <strong class='reserved'>break</strong>;
-<a id='L107' name='L107'></a>    <strong class='reserved'>case</strong> '%':
-<a id='L108' name='L108'></a>      <a href='../S/162.html#L196' title='Defined at 196 in console.c.'>consputc</a>('%');
-<a id='L109' name='L109'></a>      <strong class='reserved'>break</strong>;
-<a id='L110' name='L110'></a>    <strong class='reserved'>default</strong>:
-<a id='L111' name='L111'></a>      <em class='comment'>// Print unknown % sequence to draw attention.</em>
-<a id='L112' name='L112'></a>      <a href='../S/162.html#L196' title='Defined at 196 in console.c.'>consputc</a>('%');
-<a id='L113' name='L113'></a>      <a href='../S/162.html#L196' title='Defined at 196 in console.c.'>consputc</a>(c);
-<a id='L114' name='L114'></a>      <strong class='reserved'>break</strong>;
-<a id='L115' name='L115'></a>    <em class='brace'>}</em>
-<a id='L116' name='L116'></a>  <em class='brace'>}</em>
-<a id='L117' name='L117'></a>
-<a id='L118' name='L118'></a>  <strong class='reserved'>if</strong>(locking)
-<a id='L119' name='L119'></a>    <em class='comment'>//release(&amp;cons.lock);</em>
-<a id='L120' name='L120'></a>    <a href='../S/40.html#L47' title='Defined at 47 in spinlock.c.'>release</a>(&amp;cons-&gt;lock);
-<a id='L121' name='L121'></a><em class='brace'>}</em>
-<a id='L122' name='L122'></a>
-<a id='L123' name='L123'></a><strong class='reserved'>void</strong>
-<a id='L124' name='L124'></a><a href='../R/419.html' title='Multiple referred from 97 places.'>panic</a>(<strong class='reserved'>char</strong> *s)
-<a id='L125' name='L125'></a><em class='brace'>{</em>
-<a id='L126' name='L126'></a>  <strong class='reserved'>int</strong> i;
-<a id='L127' name='L127'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> pcs[10];
-<a id='L128' name='L128'></a>  
-<a id='L129' name='L129'></a>  <a href='../S/67.html#L109' title='Defined at 109 in x86.h.'>cli</a>();
-<a id='L130' name='L130'></a>  <em class='comment'>//cons.locking = 0;</em>
-<a id='L131' name='L131'></a>  cons-&gt;locking = 0;
-<a id='L132' name='L132'></a>
-<a id='L133' name='L133'></a>  <em class='comment'>// use lapiccpunum so that we can call panic from mycpu()  </em>
-<a id='L134' name='L134'></a>  <a href='../S/162.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("lapicid %d: panic: ", <a href='../S/155.html#L101' title='Defined at 101 in lapic.c.'>lapicid</a>());
-<a id='L135' name='L135'></a>  <a href='../S/162.html#L67' title='Defined at 67 in console.c.'>cprintf</a>(s);
-<a id='L136' name='L136'></a>  <a href='../S/162.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("\n");
-<a id='L137' name='L137'></a>
-<a id='L138' name='L138'></a>  <em class='comment'>//add manabu 10/30</em>
-<a id='L139' name='L139'></a>  <strong class='reserved'>if</strong> (kgflag == 1) <em class='brace'>{</em>
-<a id='L140' name='L140'></a>    <a href='../S/162.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("kernel global crash!\n");
-<a id='L141' name='L141'></a>  <em class='brace'>}</em>
-<a id='L142' name='L142'></a>  <strong class='reserved'>else</strong> <em class='brace'>{</em>
-<a id='L143' name='L143'></a>    <a href='../S/162.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("process local crash!\n");
-<a id='L144' name='L144'></a>  <em class='brace'>}</em>
-<a id='L145' name='L145'></a>  <em class='comment'>//                      </em>
-<a id='L146' name='L146'></a>  
-<a id='L147' name='L147'></a>  <a href='../S/40.html#L72' title='Defined at 72 in spinlock.c.'>getcallerpcs</a>(&amp;s, pcs);
-<a id='L148' name='L148'></a>  
-<a id='L149' name='L149'></a>  <strong class='reserved'>for</strong>(i=0; i&lt;10; i++)
-<a id='L150' name='L150'></a>    <a href='../S/162.html#L67' title='Defined at 67 in console.c.'>cprintf</a>(" %p", pcs[i]);
-<a id='L151' name='L151'></a>  panicked = 1; <em class='comment'>// freeze other CPU</em>
-<a id='L152' name='L152'></a>  <strong class='reserved'>for</strong>(;;)
-<a id='L153' name='L153'></a>    ;
-<a id='L154' name='L154'></a><em class='brace'>}</em>
-<a id='L155' name='L155'></a>
-<a id='L156' name='L156'></a><em class='comment'>//PAGEBREAK: 50</em>
-<a id='L157' name='L157'></a><em class='sharp'>#define</em> <a href='../R/5.html' title='Multiple referred from 4 places.'>BACKSPACE</a> 0x100
-<a id='L158' name='L158'></a><em class='sharp'>#define</em> <a href='../R/23.html' title='Multiple referred from 8 places.'>CRTPORT</a> 0x3d4
-<a id='L159' name='L159'></a><strong class='reserved'>static</strong> <a href='../S/125.html#L2' title='Defined at 2 in types.h.'>ushort</a> *crt = (<a href='../S/125.html#L2' title='Defined at 2 in types.h.'>ushort</a>*)<a href='../S/49.html#L29' title='Defined at 29 in memlayout.h.'>P2V</a>(0xb8000);  <em class='comment'>// CGA memory</em>
-<a id='L160' name='L160'></a>
-<a id='L161' name='L161'></a><strong class='reserved'>static</strong> <strong class='reserved'>void</strong>
-<a id='L162' name='L162'></a><a href='../S/162.html#L208' title='Referred from 208 in console.c.'>cgaputc</a>(<strong class='reserved'>int</strong> c)
-<a id='L163' name='L163'></a><em class='brace'>{</em>
-<a id='L164' name='L164'></a>  <strong class='reserved'>int</strong> pos;
-<a id='L165' name='L165'></a>
-<a id='L166' name='L166'></a>  <em class='comment'>// Cursor position: col + 80*row.</em>
-<a id='L167' name='L167'></a>  <a href='../S/67.html#L22' title='Defined at 22 in x86.h.'>outb</a>(<a href='../S/162.html#L158' title='Defined at 158 in console.c.'>CRTPORT</a>, 14);
-<a id='L168' name='L168'></a>  pos = <a href='../S/67.html#L4' title='Defined at 4 in x86.h.'>inb</a>(<a href='../S/162.html#L158' title='Defined at 158 in console.c.'>CRTPORT</a>+1) &lt;&lt; 8;
-<a id='L169' name='L169'></a>  <a href='../S/67.html#L22' title='Defined at 22 in x86.h.'>outb</a>(<a href='../S/162.html#L158' title='Defined at 158 in console.c.'>CRTPORT</a>, 15);
-<a id='L170' name='L170'></a>  pos |= <a href='../S/67.html#L4' title='Defined at 4 in x86.h.'>inb</a>(<a href='../S/162.html#L158' title='Defined at 158 in console.c.'>CRTPORT</a>+1);
-<a id='L171' name='L171'></a>
-<a id='L172' name='L172'></a>  <strong class='reserved'>if</strong>(c == '\n')
-<a id='L173' name='L173'></a>    pos += 80 - pos%80;
-<a id='L174' name='L174'></a>  <strong class='reserved'>else</strong> <strong class='reserved'>if</strong>(c == <a href='../S/162.html#L157' title='Defined at 157 in console.c.'>BACKSPACE</a>)<em class='brace'>{</em>
-<a id='L175' name='L175'></a>    <strong class='reserved'>if</strong>(pos &gt; 0) --pos;
-<a id='L176' name='L176'></a>  <em class='brace'>}</em> <strong class='reserved'>else</strong>
-<a id='L177' name='L177'></a>    crt[pos++] = (c&amp;0xff) | 0x0700;  <em class='comment'>// black on white</em>
-<a id='L178' name='L178'></a>
-<a id='L179' name='L179'></a>  <strong class='reserved'>if</strong>(pos &lt; 0 || pos &gt; 25*80)
-<a id='L180' name='L180'></a>    <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("pos under/overflow");
-<a id='L181' name='L181'></a>
-<a id='L182' name='L182'></a>  <strong class='reserved'>if</strong>((pos/80) &gt;= 24)<em class='brace'>{</em>  <em class='comment'>// Scroll up.</em>
-<a id='L183' name='L183'></a>    <a href='../D/488.html' title='Multiple defined in 2 places.'>memmove</a>(crt, crt+80, <strong class='reserved'>sizeof</strong>(crt[0])*23*80);
-<a id='L184' name='L184'></a>    pos -= 80;
-<a id='L185' name='L185'></a>    <a href='../D/489.html' title='Multiple defined in 2 places.'>memset</a>(crt+pos, 0, <strong class='reserved'>sizeof</strong>(crt[0])*(24*80 - pos));
-<a id='L186' name='L186'></a>  <em class='brace'>}</em>
-<a id='L187' name='L187'></a>
-<a id='L188' name='L188'></a>  <a href='../S/67.html#L22' title='Defined at 22 in x86.h.'>outb</a>(<a href='../S/162.html#L158' title='Defined at 158 in console.c.'>CRTPORT</a>, 14);
-<a id='L189' name='L189'></a>  <a href='../S/67.html#L22' title='Defined at 22 in x86.h.'>outb</a>(<a href='../S/162.html#L158' title='Defined at 158 in console.c.'>CRTPORT</a>+1, pos&gt;&gt;8);
-<a id='L190' name='L190'></a>  <a href='../S/67.html#L22' title='Defined at 22 in x86.h.'>outb</a>(<a href='../S/162.html#L158' title='Defined at 158 in console.c.'>CRTPORT</a>, 15);
-<a id='L191' name='L191'></a>  <a href='../S/67.html#L22' title='Defined at 22 in x86.h.'>outb</a>(<a href='../S/162.html#L158' title='Defined at 158 in console.c.'>CRTPORT</a>+1, pos);
-<a id='L192' name='L192'></a>  crt[pos] = ' ' | 0x0700;
-<a id='L193' name='L193'></a><em class='brace'>}</em>
-<a id='L194' name='L194'></a>
-<a id='L195' name='L195'></a><strong class='reserved'>void</strong>
-<a id='L196' name='L196'></a><a href='../R/263.html' title='Multiple referred from 11 places.'>consputc</a>(<strong class='reserved'>int</strong> c)
-<a id='L197' name='L197'></a><em class='brace'>{</em>
-<a id='L198' name='L198'></a>  <strong class='reserved'>if</strong>(panicked)<em class='brace'>{</em>
-<a id='L199' name='L199'></a>    <a href='../S/67.html#L109' title='Defined at 109 in x86.h.'>cli</a>();
-<a id='L200' name='L200'></a>    <strong class='reserved'>for</strong>(;;)
-<a id='L201' name='L201'></a>      ;
-<a id='L202' name='L202'></a>  <em class='brace'>}</em>
-<a id='L203' name='L203'></a>
-<a id='L204' name='L204'></a>  <strong class='reserved'>if</strong>(c == <a href='../S/162.html#L157' title='Defined at 157 in console.c.'>BACKSPACE</a>)<em class='brace'>{</em>
-<a id='L205' name='L205'></a>    <a href='../S/193.html#L52' title='Defined at 52 in uart.c.'>uartputc</a>('\b'); <a href='../S/193.html#L52' title='Defined at 52 in uart.c.'>uartputc</a>(' '); <a href='../S/193.html#L52' title='Defined at 52 in uart.c.'>uartputc</a>('\b');
-<a id='L206' name='L206'></a>  <em class='brace'>}</em> <strong class='reserved'>else</strong>
-<a id='L207' name='L207'></a>    <a href='../S/193.html#L52' title='Defined at 52 in uart.c.'>uartputc</a>(c);
-<a id='L208' name='L208'></a>  <a href='../S/162.html#L162' title='Defined at 162 in console.c.'>cgaputc</a>(c);
-<a id='L209' name='L209'></a><em class='brace'>}</em>
-<a id='L210' name='L210'></a>
-<a id='L211' name='L211'></a><em class='sharp'>#define</em> <a href='../R/61.html' title='Multiple referred from 6 places.'>INPUT_BUF</a> 128
-<a id='L212' name='L212'></a><strong class='reserved'>struct</strong> <em class='brace'>{</em>
-<a id='L213' name='L213'></a>  <strong class='reserved'>char</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>[<a href='../S/162.html#L211' title='Defined at 211 in console.c.'>INPUT_BUF</a>];
-<a id='L214' name='L214'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> r;  <em class='comment'>// Read index</em>
-<a id='L215' name='L215'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> w;  <em class='comment'>// Write index</em>
-<a id='L216' name='L216'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> e;  <em class='comment'>// Edit index</em>
-<a id='L217' name='L217'></a><em class='brace'>}</em> input;
-<a id='L218' name='L218'></a>
-<a id='L219' name='L219'></a><em class='sharp'>#define</em> <a href='../R/13.html' title='Multiple referred from 11 places.'>C</a>(x)  ((x)-'@')  <em class='comment'>// Control-x</em>
-<a id='L220' name='L220'></a>
-<a id='L221' name='L221'></a><strong class='reserved'>void</strong>
-<a id='L222' name='L222'></a><a href='../R/260.html' title='Multiple referred from 3 places.'>consoleintr</a>(<strong class='reserved'>int</strong> (*getc)(<strong class='reserved'>void</strong>))
-<a id='L223' name='L223'></a><em class='brace'>{</em>
-<a id='L224' name='L224'></a>  <strong class='reserved'>int</strong> c, doprocdump = 0;
-<a id='L225' name='L225'></a>
-<a id='L226' name='L226'></a>  <em class='comment'>//acquire(&amp;cons.lock);</em>
-<a id='L227' name='L227'></a>  <a href='../S/40.html#L25' title='Defined at 25 in spinlock.c.'>acquire</a>(&amp;cons-&gt;lock);
-<a id='L228' name='L228'></a>  
-<a id='L229' name='L229'></a>  <strong class='reserved'>while</strong>((c = getc()) &gt;= 0)<em class='brace'>{</em>
-<a id='L230' name='L230'></a>    <strong class='reserved'>switch</strong>(c)<em class='brace'>{</em>
-<a id='L231' name='L231'></a>    <strong class='reserved'>case</strong> <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('P'):  <em class='comment'>// Process listing.</em>
-<a id='L232' name='L232'></a>      <em class='comment'>// procdump() locks cons.lock indirectly; invoke later</em>
-<a id='L233' name='L233'></a>      doprocdump = 1;
-<a id='L234' name='L234'></a>      <strong class='reserved'>break</strong>;
-<a id='L235' name='L235'></a>    <strong class='reserved'>case</strong> <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('U'):  <em class='comment'>// Kill line.</em>
-<a id='L236' name='L236'></a>      <strong class='reserved'>while</strong>(input.e != input.w &amp;&amp;
-<a id='L237' name='L237'></a>            input.<a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>[(input.e-1) % <a href='../S/162.html#L211' title='Defined at 211 in console.c.'>INPUT_BUF</a>] != '\n')<em class='brace'>{</em>
-<a id='L238' name='L238'></a>        input.e--;
-<a id='L239' name='L239'></a>        <a href='../S/162.html#L196' title='Defined at 196 in console.c.'>consputc</a>(<a href='../S/162.html#L157' title='Defined at 157 in console.c.'>BACKSPACE</a>);
-<a id='L240' name='L240'></a>      <em class='brace'>}</em>
-<a id='L241' name='L241'></a>      <strong class='reserved'>break</strong>;
-<a id='L242' name='L242'></a>    <strong class='reserved'>case</strong> <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('H'): <strong class='reserved'>case</strong> '\x7f':  <em class='comment'>// Backspace</em>
-<a id='L243' name='L243'></a>      <strong class='reserved'>if</strong>(input.e != input.w)<em class='brace'>{</em>
-<a id='L244' name='L244'></a>        input.e--;
-<a id='L245' name='L245'></a>        <a href='../S/162.html#L196' title='Defined at 196 in console.c.'>consputc</a>(<a href='../S/162.html#L157' title='Defined at 157 in console.c.'>BACKSPACE</a>);
-<a id='L246' name='L246'></a>      <em class='brace'>}</em>
-<a id='L247' name='L247'></a>      <strong class='reserved'>break</strong>;
-<a id='L248' name='L248'></a>    <strong class='reserved'>default</strong>:
-<a id='L249' name='L249'></a>      <strong class='reserved'>if</strong>(c != 0 &amp;&amp; input.e-input.r &lt; <a href='../S/162.html#L211' title='Defined at 211 in console.c.'>INPUT_BUF</a>)<em class='brace'>{</em>
-<a id='L250' name='L250'></a>        c = (c == '\r') ? '\n' : c;
-<a id='L251' name='L251'></a>        input.<a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>[input.e++ % <a href='../S/162.html#L211' title='Defined at 211 in console.c.'>INPUT_BUF</a>] = c;
-<a id='L252' name='L252'></a>        <a href='../S/162.html#L196' title='Defined at 196 in console.c.'>consputc</a>(c);
-<a id='L253' name='L253'></a>        <strong class='reserved'>if</strong>(c == '\n' || c == <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('D') || input.e == input.r+<a href='../S/162.html#L211' title='Defined at 211 in console.c.'>INPUT_BUF</a>)<em class='brace'>{</em>
-<a id='L254' name='L254'></a>          input.w = input.e;
-<a id='L255' name='L255'></a>          <a href='../S/63.html#L544' title='Defined at 544 in proc.c.'>wakeup</a>(&amp;input.r);
-<a id='L256' name='L256'></a>        <em class='brace'>}</em>
-<a id='L257' name='L257'></a>      <em class='brace'>}</em>
-<a id='L258' name='L258'></a>      <strong class='reserved'>break</strong>;
-<a id='L259' name='L259'></a>    <em class='brace'>}</em>
-<a id='L260' name='L260'></a>  <em class='brace'>}</em>
-<a id='L261' name='L261'></a>  <em class='comment'>//release(&amp;cons.lock);</em>
-<a id='L262' name='L262'></a>  <a href='../S/40.html#L47' title='Defined at 47 in spinlock.c.'>release</a>(&amp;cons-&gt;lock);
-<a id='L263' name='L263'></a>  
-<a id='L264' name='L264'></a>  <strong class='reserved'>if</strong>(doprocdump) <em class='brace'>{</em>
-<a id='L265' name='L265'></a>    <a href='../S/63.html#L579' title='Defined at 579 in proc.c.'>procdump</a>();  <em class='comment'>// now call procdump() wo. cons.lock held</em>
-<a id='L266' name='L266'></a>  <em class='brace'>}</em>
-<a id='L267' name='L267'></a><em class='brace'>}</em>
-<a id='L268' name='L268'></a>
-<a id='L269' name='L269'></a><strong class='reserved'>int</strong>
-<a id='L270' name='L270'></a><a href='../S/162.html#L355' title='Referred from 355 in console.c.'>consoleread</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip, <strong class='reserved'>char</strong> *dst, <strong class='reserved'>int</strong> n)
-<a id='L271' name='L271'></a><em class='brace'>{</em>
-<a id='L272' name='L272'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> target;
-<a id='L273' name='L273'></a>  <strong class='reserved'>int</strong> c;
-<a id='L274' name='L274'></a>
-<a id='L275' name='L275'></a>  <a href='../S/172.html#L317' title='Defined at 317 in fs.c.'>iunlock</a>(ip);
-<a id='L276' name='L276'></a>  target = n;
-<a id='L277' name='L277'></a>  
-<a id='L278' name='L278'></a>  <em class='comment'>//acquire(&amp;cons.lock);</em>
-<a id='L279' name='L279'></a>  <a href='../S/40.html#L25' title='Defined at 25 in spinlock.c.'>acquire</a>(&amp;cons-&gt;lock);
-<a id='L280' name='L280'></a>  
-<a id='L281' name='L281'></a>  <strong class='reserved'>while</strong>(n &gt; 0)<em class='brace'>{</em>
-<a id='L282' name='L282'></a>    <strong class='reserved'>while</strong>(input.r == input.w)<em class='brace'>{</em>
-<a id='L283' name='L283'></a>      <strong class='reserved'>if</strong>(<a href='../S/63.html#L92' title='Defined at 92 in proc.c.'>myproc</a>()-&gt;killed)<em class='brace'>{</em>
-<a id='L284' name='L284'></a>        
-<a id='L285' name='L285'></a>        <em class='comment'>//release(&amp;cons.lock);</em>
-<a id='L286' name='L286'></a>        <a href='../S/40.html#L47' title='Defined at 47 in spinlock.c.'>release</a>(&amp;cons-&gt;lock);
-<a id='L287' name='L287'></a>        
-<a id='L288' name='L288'></a>        <a href='../S/172.html#L289' title='Defined at 289 in fs.c.'>ilock</a>(ip);
-<a id='L289' name='L289'></a>        <strong class='reserved'>return</strong> -1;
-<a id='L290' name='L290'></a>      <em class='brace'>}</em>
-<a id='L291' name='L291'></a>      
-<a id='L292' name='L292'></a>      <em class='comment'>//sleep(&amp;input.r, &amp;cons.lock);</em>
-<a id='L293' name='L293'></a>      <a href='../S/63.html#L493' title='Defined at 493 in proc.c.'>sleep</a>(&amp;input.r, &amp;cons-&gt;lock);
-<a id='L294' name='L294'></a>      
-<a id='L295' name='L295'></a>    <em class='brace'>}</em>
-<a id='L296' name='L296'></a>    c = input.<a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>[input.r++ % <a href='../S/162.html#L211' title='Defined at 211 in console.c.'>INPUT_BUF</a>];
-<a id='L297' name='L297'></a>    <strong class='reserved'>if</strong>(c == <a href='../D/14.html' title='Multiple defined in 2 places.'>C</a>('D'))<em class='brace'>{</em>  <em class='comment'>// EOF</em>
-<a id='L298' name='L298'></a>      <strong class='reserved'>if</strong>(n &lt; target)<em class='brace'>{</em>
-<a id='L299' name='L299'></a>        <em class='comment'>// Save ^D for next time, to make sure</em>
-<a id='L300' name='L300'></a>        <em class='comment'>// caller gets a 0-byte result.</em>
-<a id='L301' name='L301'></a>        input.r--;
-<a id='L302' name='L302'></a>      <em class='brace'>}</em>
-<a id='L303' name='L303'></a>      <strong class='reserved'>break</strong>;
-<a id='L304' name='L304'></a>    <em class='brace'>}</em>
-<a id='L305' name='L305'></a>    *dst++ = c;
-<a id='L306' name='L306'></a>    --n;
-<a id='L307' name='L307'></a>    <strong class='reserved'>if</strong>(c == '\n')
-<a id='L308' name='L308'></a>      <strong class='reserved'>break</strong>;
-<a id='L309' name='L309'></a>  <em class='brace'>}</em>
-<a id='L310' name='L310'></a>  
-<a id='L311' name='L311'></a>  <em class='comment'>//release(&amp;cons.lock);</em>
-<a id='L312' name='L312'></a>  <a href='../S/40.html#L47' title='Defined at 47 in spinlock.c.'>release</a>(&amp;cons-&gt;lock);
-<a id='L313' name='L313'></a>  
-<a id='L314' name='L314'></a>  <a href='../S/172.html#L289' title='Defined at 289 in fs.c.'>ilock</a>(ip);
-<a id='L315' name='L315'></a>
-<a id='L316' name='L316'></a>  <strong class='reserved'>return</strong> target - n;
-<a id='L317' name='L317'></a><em class='brace'>}</em>
-<a id='L318' name='L318'></a>
-<a id='L319' name='L319'></a><strong class='reserved'>int</strong>
-<a id='L320' name='L320'></a><a href='../S/162.html#L354' title='Referred from 354 in console.c.'>consolewrite</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip, <strong class='reserved'>char</strong> *<a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>, <strong class='reserved'>int</strong> n)
-<a id='L321' name='L321'></a><em class='brace'>{</em>
-<a id='L322' name='L322'></a>  <strong class='reserved'>int</strong> i;
-<a id='L323' name='L323'></a>
-<a id='L324' name='L324'></a>  <a href='../S/172.html#L317' title='Defined at 317 in fs.c.'>iunlock</a>(ip);
-<a id='L325' name='L325'></a>  <em class='comment'>//acquire(&amp;cons.lock);</em>
-<a id='L326' name='L326'></a>  <a href='../S/40.html#L25' title='Defined at 25 in spinlock.c.'>acquire</a>(&amp;cons-&gt;lock);
-<a id='L327' name='L327'></a>  
-<a id='L328' name='L328'></a>  <strong class='reserved'>for</strong>(i = 0; i &lt; n; i++)
-<a id='L329' name='L329'></a>    <a href='../S/162.html#L196' title='Defined at 196 in console.c.'>consputc</a>(<a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a>[i] &amp; 0xff);
-<a id='L330' name='L330'></a>
-<a id='L331' name='L331'></a>  <em class='comment'>//release(&amp;cons.lock);</em>
-<a id='L332' name='L332'></a>  <a href='../S/40.html#L47' title='Defined at 47 in spinlock.c.'>release</a>(&amp;cons-&gt;lock);
-<a id='L333' name='L333'></a>  
-<a id='L334' name='L334'></a>  <a href='../S/172.html#L289' title='Defined at 289 in fs.c.'>ilock</a>(ip);
-<a id='L335' name='L335'></a>
-<a id='L336' name='L336'></a>  <strong class='reserved'>return</strong> n;
-<a id='L337' name='L337'></a><em class='brace'>}</em>
-<a id='L338' name='L338'></a>
-<a id='L339' name='L339'></a><strong class='reserved'>void</strong>
-<a id='L340' name='L340'></a><a href='../R/259.html' title='Multiple referred from 2 places.'>consoleinit</a>(<strong class='reserved'>void</strong>)
-<a id='L341' name='L341'></a><em class='brace'>{</em>
-<a id='L342' name='L342'></a>  <em class='comment'>//add manabu 10/31</em>
-<a id='L343' name='L343'></a>  <strong class='reserved'>if</strong> ((cons = (<strong class='reserved'>struct</strong> <a href='../S/162.html#L31' title='Defined at 31 in console.c.'>cons_lk</a>*)<a href='../S/167.html#L113' title='Defined at 113 in kalloc.c.'>kalloc</a>()) == 0) <em class='brace'>{</em>
-<a id='L344' name='L344'></a>    <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("kuinfo_alloc");
-<a id='L345' name='L345'></a>  <em class='brace'>}</em>
-<a id='L346' name='L346'></a>  <em class='comment'>//DEBUG</em>
-<a id='L347' name='L347'></a>  <em class='comment'>//`cprintf("cons %x\n", cons);</em>
-<a id='L348' name='L348'></a>  <em class='comment'>//</em>
-<a id='L349' name='L349'></a>  
-<a id='L350' name='L350'></a>  
-<a id='L351' name='L351'></a>  <em class='comment'>//initlock(&amp;cons.lock, "console");</em>
-<a id='L352' name='L352'></a>  <a href='../S/40.html#L13' title='Defined at 13 in spinlock.c.'>initlock</a>(&amp;cons-&gt;lock, "console");
-<a id='L353' name='L353'></a>
-<a id='L354' name='L354'></a>  <a href='../S/55.html#L33' title='Defined at 33 in file.h.'>devsw</a>[<a href='../S/55.html#L40' title='Defined at 40 in file.h.'>CONSOLE</a>].write = <a href='../S/162.html#L320' title='Defined at 320 in console.c.'>consolewrite</a>;
-<a id='L355' name='L355'></a>  <a href='../S/55.html#L33' title='Defined at 33 in file.h.'>devsw</a>[<a href='../S/55.html#L40' title='Defined at 40 in file.h.'>CONSOLE</a>].read = <a href='../S/162.html#L270' title='Defined at 270 in console.c.'>consoleread</a>;
-<a id='L356' name='L356'></a>
-<a id='L357' name='L357'></a>  <em class='comment'>//cons.locking = 1;</em>
-<a id='L358' name='L358'></a>  cons-&gt;locking = 1;
-<a id='L359' name='L359'></a>
-<a id='L360' name='L360'></a>  <a href='../S/105.html#L68' title='Defined at 68 in ioapic.c.'>ioapicenable</a>(<a href='../S/135.html#L33' title='Defined at 33 in traps.h.'>IRQ_KBD</a>, 0);
-<a id='L361' name='L361'></a><em class='brace'>}</em>
-<a id='L362' name='L362'></a>
+<a id='L65' name='L65'></a>    <em class='comment'>/*</em>
+<a id='L66' name='L66'></a><em class='comment'>    switchkvm();    </em>
+<a id='L67' name='L67'></a><em class='comment'>    p = myproc();</em>
+<a id='L68' name='L68'></a><em class='comment'>    setptew_kernel(p-&gt;pgdir);</em>
+<a id='L69' name='L69'></a><em class='comment'>    switchuvm(p);</em>
+<a id='L70' name='L70'></a><em class='comment'>    */</em>
+<a id='L71' name='L71'></a>    
+<a id='L72' name='L72'></a>  <strong class='reserved'>case</strong> <a href='../S/136.html#L33' title='Defined at 33 in traps.h.'>T_IRQ0</a> + <a href='../S/136.html#L35' title='Defined at 35 in traps.h.'>IRQ_TIMER</a>:
+<a id='L73' name='L73'></a>    <strong class='reserved'>if</strong>(<a href='../S/64.html#L63' title='Defined at 63 in proc.c.'>cpuid</a>() == 0)<em class='brace'>{</em>
+<a id='L74' name='L74'></a>      <a href='../S/41.html#L25' title='Defined at 25 in spinlock.c.'>acquire</a>(tickslock);
+<a id='L75' name='L75'></a>      ticks++;
+<a id='L76' name='L76'></a>      <a href='../S/64.html#L539' title='Defined at 539 in proc.c.'>wakeup</a>(&amp;ticks);
+<a id='L77' name='L77'></a>      <a href='../S/41.html#L47' title='Defined at 47 in spinlock.c.'>release</a>(tickslock);
+<a id='L78' name='L78'></a>    <em class='brace'>}</em>
+<a id='L79' name='L79'></a>    <a href='../S/156.html#L110' title='Defined at 110 in lapic.c.'>lapiceoi</a>();
+<a id='L80' name='L80'></a>    <strong class='reserved'>break</strong>;
+<a id='L81' name='L81'></a>  <strong class='reserved'>case</strong> <a href='../S/136.html#L33' title='Defined at 33 in traps.h.'>T_IRQ0</a> + <a href='../S/136.html#L38' title='Defined at 38 in traps.h.'>IRQ_IDE</a>:
+<a id='L82' name='L82'></a>    <a href='../D/441.html' title='Multiple defined in 2 places.'>ideintr</a>();
+<a id='L83' name='L83'></a>    <a href='../S/156.html#L110' title='Defined at 110 in lapic.c.'>lapiceoi</a>();
+<a id='L84' name='L84'></a>    <strong class='reserved'>break</strong>;
+<a id='L85' name='L85'></a>  <strong class='reserved'>case</strong> <a href='../S/136.html#L33' title='Defined at 33 in traps.h.'>T_IRQ0</a> + <a href='../S/136.html#L38' title='Defined at 38 in traps.h.'>IRQ_IDE</a>+1:
+<a id='L86' name='L86'></a>    <em class='comment'>// Bochs generates spurious IDE1 interrupts.</em>
+<a id='L87' name='L87'></a>    <strong class='reserved'>break</strong>;
+<a id='L88' name='L88'></a>  <strong class='reserved'>case</strong> <a href='../S/136.html#L33' title='Defined at 33 in traps.h.'>T_IRQ0</a> + <a href='../S/136.html#L36' title='Defined at 36 in traps.h.'>IRQ_KBD</a>:
+<a id='L89' name='L89'></a>    <a href='../S/60.html#L47' title='Defined at 47 in kbd.c.'>kbdintr</a>();
+<a id='L90' name='L90'></a>    <a href='../S/156.html#L110' title='Defined at 110 in lapic.c.'>lapiceoi</a>();
+<a id='L91' name='L91'></a>    <strong class='reserved'>break</strong>;
+<a id='L92' name='L92'></a>  <strong class='reserved'>case</strong> <a href='../S/136.html#L33' title='Defined at 33 in traps.h.'>T_IRQ0</a> + <a href='../S/136.html#L37' title='Defined at 37 in traps.h.'>IRQ_COM1</a>:
+<a id='L93' name='L93'></a>    <a href='../S/194.html#L74' title='Defined at 74 in uart.c.'>uartintr</a>();
+<a id='L94' name='L94'></a>    <a href='../S/156.html#L110' title='Defined at 110 in lapic.c.'>lapiceoi</a>();
+<a id='L95' name='L95'></a>    <strong class='reserved'>break</strong>;
+<a id='L96' name='L96'></a>  <strong class='reserved'>case</strong> <a href='../S/136.html#L33' title='Defined at 33 in traps.h.'>T_IRQ0</a> + 7:
+<a id='L97' name='L97'></a>  <strong class='reserved'>case</strong> <a href='../S/136.html#L33' title='Defined at 33 in traps.h.'>T_IRQ0</a> + <a href='../S/136.html#L40' title='Defined at 40 in traps.h.'>IRQ_SPURIOUS</a>:
+<a id='L98' name='L98'></a>    <a href='../S/163.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("cpu%d: spurious interrupt at %x:%x\n",            
+<a id='L99' name='L99'></a>            <a href='../S/64.html#L63' title='Defined at 63 in proc.c.'>cpuid</a>(), tf-&gt;cs, tf-&gt;eip);
+<a id='L100' name='L100'></a>    <a href='../S/156.html#L110' title='Defined at 110 in lapic.c.'>lapiceoi</a>();
+<a id='L101' name='L101'></a>    <strong class='reserved'>break</strong>;
+<a id='L102' name='L102'></a>
+<a id='L103' name='L103'></a>  <em class='comment'>//add manabu 9/22 :page table entry writeable</em>
+<a id='L104' name='L104'></a>  <strong class='reserved'>case</strong> <a href='../S/136.html#L21' title='Defined at 21 in traps.h.'>T_PGFLT</a>:
+<a id='L105' name='L105'></a>    <a href='../S/163.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("&amp;lapic :%x, lapic :%x\n", &amp;lapic, lapic);
+<a id='L106' name='L106'></a>    <em class='comment'>//force kill process</em>
+<a id='L107' name='L107'></a>    <em class='comment'>//myproc()-&gt;killed = 1;   </em>
+<a id='L108' name='L108'></a>    p = <a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>();
+<a id='L109' name='L109'></a>    <a href='../S/163.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("DEBUG INFO: in kvm, proccess name %s pid %d\n", <a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>()-&gt;name, <a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>()-&gt;pid);
+<a id='L110' name='L110'></a>    <em class='comment'>//cprintf("mycpu-&gt;ncli: %d\n", mycpu()-&gt;ncli);</em>
+<a id='L111' name='L111'></a>    <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> a = <a href='../S/122.html#L135' title='Defined at 135 in mmu.h.'>PGROUNDDOWN</a>(<a href='../S/68.html#L137' title='Defined at 137 in x86.h.'>rcr2</a>());
+<a id='L112' name='L112'></a>    <a href='../S/163.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("trap a: %x\n", a);
+<a id='L113' name='L113'></a>    <a href='../S/163.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("trap rcr2: %x\n", <a href='../S/68.html#L137' title='Defined at 137 in x86.h.'>rcr2</a>());
+<a id='L114' name='L114'></a>    
+<a id='L115' name='L115'></a>    <strong class='reserved'>if</strong> (a &gt;= (<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a>)<a href='../S/158.html#L165' title='Defined at 165 in vm.c.'>get_kplocal_addr</a>() &amp;&amp; a &lt;= (<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a>)<a href='../S/158.html#L169' title='Defined at 169 in vm.c.'>get_devspace_addr</a>()) <em class='brace'>{</em>
+<a id='L116' name='L116'></a>      <em class='comment'>//access kernel process local area</em>
+<a id='L117' name='L117'></a>      <a href='../S/163.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("DEBUG: Access KERNELPLOCAL\n");
+<a id='L118' name='L118'></a>      <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
+<a id='L119' name='L119'></a>    <em class='brace'>}</em>
+<a id='L120' name='L120'></a>    <strong class='reserved'>else</strong> <em class='brace'>{</em>      
+<a id='L121' name='L121'></a>      <em class='comment'>//setptew(p-&gt;pgdir, (void *)a, PGSIZE, 1);</em>
+<a id='L122' name='L122'></a>      <a href='../S/163.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("DEBUG: Acess KERNELGLOBAL\n") ;
+<a id='L123' name='L123'></a>      <a href='../S/158.html#L237' title='Defined at 237 in vm.c.'>switchkvm</a>();
+<a id='L124' name='L124'></a>      <a href='../S/158.html#L532' title='Defined at 532 in vm.c.'>setptew_kernel</a>(p-&gt;pgdir);
+<a id='L125' name='L125'></a>      <a href='../S/158.html#L244' title='Defined at 244 in vm.c.'>switchuvm</a>(p);
+<a id='L126' name='L126'></a>      <a href='../S/163.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("after setptew :%x\n", a);
+<a id='L127' name='L127'></a>      <a href='../S/163.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("kgflag : %x\n", &amp;kgflag);
+<a id='L128' name='L128'></a>      kgflag = 1;
+<a id='L129' name='L129'></a>    <em class='brace'>}</em>
+<a id='L130' name='L130'></a>    
+<a id='L131' name='L131'></a>    <em class='comment'>//cprintf("T_PGFLT: kgflag = %d\n", kgflag);</em>
+<a id='L132' name='L132'></a>    <a href='../S/163.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("info: proccess name %s pid %d\n", <a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>()-&gt;name, <a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>()-&gt;pid);
+<a id='L133' name='L133'></a>    <em class='comment'>//panic("T_PGFLT");</em>
+<a id='L134' name='L134'></a>    <em class='comment'>//exit();    </em>
+<a id='L135' name='L135'></a>    <strong class='reserved'>break</strong>;
+<a id='L136' name='L136'></a>    
+<a id='L137' name='L137'></a>  <em class='comment'>//PAGEBREAK: 13</em>
+<a id='L138' name='L138'></a>  <strong class='reserved'>default</strong>:
+<a id='L139' name='L139'></a>    <strong class='reserved'>if</strong>(<a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>() == 0 || (tf-&gt;cs&amp;3) == 0)<em class='brace'>{</em>
+<a id='L140' name='L140'></a>      <em class='comment'>// In kernel, it must be our mistake.</em>
+<a id='L141' name='L141'></a>      <a href='../S/163.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("unexpected trap %d from cpu %d eip %x (cr2=0x%x)\n",
+<a id='L142' name='L142'></a>              tf-&gt;trapno, <a href='../S/64.html#L63' title='Defined at 63 in proc.c.'>cpuid</a>(), tf-&gt;eip, <a href='../S/68.html#L137' title='Defined at 137 in x86.h.'>rcr2</a>());
+<a id='L143' name='L143'></a>      <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("trap");
+<a id='L144' name='L144'></a>    <em class='brace'>}</em>
+<a id='L145' name='L145'></a>    <em class='comment'>// In user space, assume process misbehaved.</em>
+<a id='L146' name='L146'></a>    <a href='../S/163.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("pid %d %s: trap %d err %d on cpu %d "
+<a id='L147' name='L147'></a>            "eip 0x%x addr 0x%x--kill proc\n",
+<a id='L148' name='L148'></a>            <a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>()-&gt;pid, <a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>()-&gt;name, tf-&gt;trapno,
+<a id='L149' name='L149'></a>            tf-&gt;err, <a href='../S/64.html#L63' title='Defined at 63 in proc.c.'>cpuid</a>(), tf-&gt;eip, <a href='../S/68.html#L137' title='Defined at 137 in x86.h.'>rcr2</a>());
+<a id='L150' name='L150'></a>    <a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>()-&gt;killed = 1;
+<a id='L151' name='L151'></a>  <em class='brace'>}</em>
+<a id='L152' name='L152'></a>  <em class='comment'>// Force process exit if it has been killed and is in user space.</em>
+<a id='L153' name='L153'></a>  <em class='comment'>// (If it is still executing in the kernel, let it keep running</em>
+<a id='L154' name='L154'></a>  <em class='comment'>// until it gets to the regular system call return.)</em>
+<a id='L155' name='L155'></a>  <strong class='reserved'>if</strong>(<a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>() &amp;&amp; <a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>()-&gt;killed &amp;&amp; (tf-&gt;cs&amp;3) == <a href='../S/122.html#L84' title='Defined at 84 in mmu.h.'>DPL_USER</a>)
+<a id='L156' name='L156'></a>    <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
+<a id='L157' name='L157'></a>
+<a id='L158' name='L158'></a>  <em class='comment'>// Force process to give up CPU on clock tick.</em>
+<a id='L159' name='L159'></a>  <em class='comment'>// If interrupts were on while locks held, would need to check nlock.</em>
+<a id='L160' name='L160'></a>  <strong class='reserved'>if</strong>(<a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>() &amp;&amp; <a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>()-&gt;state == <a href='../S/93.html#L42' title='Defined at 42 in proc.h.'>RUNNING</a> &amp;&amp;
+<a id='L161' name='L161'></a>     tf-&gt;trapno == <a href='../S/136.html#L33' title='Defined at 33 in traps.h.'>T_IRQ0</a>+<a href='../S/136.html#L35' title='Defined at 35 in traps.h.'>IRQ_TIMER</a>)
+<a id='L162' name='L162'></a>    <a href='../S/64.html#L456' title='Defined at 456 in proc.c.'>yield</a>();
+<a id='L163' name='L163'></a>
+<a id='L164' name='L164'></a>  <em class='comment'>// Check if the process has been killed since we yielded</em>
+<a id='L165' name='L165'></a>  <strong class='reserved'>if</strong>(<a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>() &amp;&amp; <a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>()-&gt;killed &amp;&amp; (tf-&gt;cs&amp;3) == <a href='../S/122.html#L84' title='Defined at 84 in mmu.h.'>DPL_USER</a>)
+<a id='L166' name='L166'></a>    <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
+<a id='L167' name='L167'></a><em class='brace'>}</em>
 </pre>
 <hr />
 <a id='BOTTOM' name='BOTTOM'></a>
-<em class='comment'>/* [&lt;][&gt;]<a href='#L40'>[^]</a><a href='#L340'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L24'>[^]</a><a href='#L49'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 </body>
 </html>

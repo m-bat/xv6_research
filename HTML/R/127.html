@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>PDX</title>
+<title>P2V</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,8 +9,22 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/157.html#L48'>PDX</a>                48 vm.c             pde = &amp;pgdir[PDX(va)];</span>
-<span class='curline'><a href='../S/157.html#L492'>PDX</a>               492 vm.c                 a = PGADDR(PDX(a) + 1, 0, 0) - PGSIZE;</span>
+<span class='curline'><a href='../S/163.html#L159'>P2V</a>               159 console.c      static ushort *crt = (ushort*)P2V(0xb8000);  // CGA memory</span>
+<span class='curline'><a href='../S/156.html#L139'>P2V</a>               139 lapic.c          wrv = (ushort*)P2V((0x40&lt;&lt;4 | 0x67));  // Warm reset vector</span>
+<span class='curline'><a href='../S/155.html#L20'>P2V</a>                20 main.c           kinit1(end, P2V(4*1024*1024)); // phys page allocator</span>
+<span class='curline'><a href='../S/155.html#L39'>P2V</a>                39 main.c           kinit2(P2V(4*1024*1024), P2V(PHYSTOP)); // must come after startothers()</span>
+<span class='curline'><a href='../S/155.html#L83'>P2V</a>                83 main.c           code = P2V(0x7000);</span>
+<span class='curline'><a href='../S/100.html#L39'>P2V</a>                39 mp.c             addr = P2V(a);</span>
+<span class='curline'><a href='../S/100.html#L59'>P2V</a>                59 mp.c             bda = (uchar *) P2V(0x400);</span>
+<span class='curline'><a href='../S/100.html#L84'>P2V</a>                84 mp.c             conf = (struct mpconf*) P2V((uint) mp-&gt;physaddr);</span>
+<span class='curline'><a href='../S/158.html#L73'>P2V</a>                73 vm.c             pde_t *pde;</span>
+<span class='curline'><a href='../S/158.html#L88'>P2V</a>                88 vm.c             pde_t *pde;</span>
+<span class='curline'><a href='../S/158.html#L183'>P2V</a>               183 vm.c           </span>
+<span class='curline'><a href='../S/158.html#L384'>P2V</a>               384 vm.c             for(i = 0; i &lt; sz; i += PGSIZE){</span>
+<span class='curline'><a href='../S/158.html#L444'>P2V</a>               444 vm.c             a = PGROUNDUP(newsz);</span>
+<span class='curline'><a href='../S/158.html#L464'>P2V</a>               464 vm.c                 switchuvm(myproc());</span>
+<span class='curline'><a href='../S/158.html#L587'>P2V</a>               587 vm.c           </span>
+<span class='curline'><a href='../S/158.html#L610'>P2V</a>               610 vm.c               if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags, ALLOC_KGLOBAL) &lt; 0)</span>
 </pre>
 </body>
 </html>

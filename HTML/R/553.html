@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>uchar</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.4' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/86.html#L15'>uchar</a>              15 bootmain.c     void readseg(uchar*, uint, uint);</span>
+<span class='curline'><a href='../S/86.html#L23'>uchar</a>              23 bootmain.c       uchar* pa;</span>
+<span class='curline'><a href='../S/86.html#L28'>uchar</a>              28 bootmain.c       readseg((uchar*)elf, 4096, 0);</span>
+<span class='curline'><a href='../S/86.html#L35'>uchar</a>              35 bootmain.c       ph = (struct proghdr*)((uchar*)elf + elf-&gt;phoff);</span>
+<span class='curline'><a href='../S/86.html#L38'>uchar</a>              38 bootmain.c         pa = (uchar*)ph-&gt;paddr;</span>
+<span class='curline'><a href='../S/86.html#L79'>uchar</a>              79 bootmain.c     readseg(uchar* pa, uint count, uint offset)</span>
+<span class='curline'><a href='../S/86.html#L81'>uchar</a>              81 bootmain.c       uchar* epa;</span>
+<span class='curline'><a href='../S/181.html#L14'>uchar</a>              14 buf.h            uchar data[BSIZE];</span>
+<span class='curline'><a href='../S/119.html#L68'>uchar</a>              68 defs.h         extern uchar    ioapicid;</span>
+<span class='curline'><a href='../S/119.html#L93'>uchar</a>              93 defs.h         void            lapicstartap(uchar, uint);</span>
+<span class='curline'><a href='../S/74.html#L11'>uchar</a>              11 elf.h            uchar elf[12];</span>
+<span class='curline'><a href='../S/60.html#L10'>uchar</a>              10 kbd.c            static uchar *charcode[4] = {</span>
+<span class='curline'><a href='../S/143.html#L37'>uchar</a>              37 kbd.h          static uchar shiftcode[256] =</span>
+<span class='curline'><a href='../S/143.html#L47'>uchar</a>              47 kbd.h          static uchar togglecode[256] =</span>
+<span class='curline'><a href='../S/143.html#L54'>uchar</a>              54 kbd.h          static uchar normalmap[256] =</span>
+<span class='curline'><a href='../S/143.html#L76'>uchar</a>              76 kbd.h          static uchar shiftmap[256] =</span>
+<span class='curline'><a href='../S/143.html#L98'>uchar</a>              98 kbd.h          static uchar ctlmap[256] =</span>
+<span class='curline'><a href='../S/156.html#L129'>uchar</a>             129 lapic.c        lapicstartap(uchar apicid, uint addr)</span>
+<span class='curline'><a href='../S/155.html#L75'>uchar</a>              75 main.c           extern uchar _binary_entryother_start[], _binary_entryother_size[];</span>
+<span class='curline'><a href='../S/155.html#L76'>uchar</a>              76 main.c           uchar *code;</span>
+<span class='curline'><a href='../S/140.html#L16'>uchar</a>              16 memide.c       extern uchar _binary_fs_img_start[], _binary_fs_img_size[];</span>
+<span class='curline'><a href='../S/140.html#L19'>uchar</a>              19 memide.c       static uchar *memdisk;</span>
+<span class='curline'><a href='../S/140.html#L41'>uchar</a>              41 memide.c         uchar *p;</span>
+<span class='curline'><a href='../S/36.html#L49'>uchar</a>              49 mkfs.c           uchar *a = (uchar*)&amp;y;</span>
+<span class='curline'><a href='../S/36.html#L59'>uchar</a>              59 mkfs.c           uchar *a = (uchar*)&amp;y;</span>
+<span class='curline'><a href='../S/36.html#L240'>uchar</a>             240 mkfs.c           uchar buf[BSIZE];</span>
+<span class='curline'><a href='../S/100.html#L20'>uchar</a>              20 mp.c           uchar ioapicid;</span>
+<span class='curline'><a href='../S/100.html#L22'>uchar</a>              22 mp.c           static uchar</span>
+<span class='curline'><a href='../S/100.html#L23'>uchar</a>              23 mp.c           sum(uchar *addr, int len)</span>
+<span class='curline'><a href='../S/100.html#L37'>uchar</a>              37 mp.c             uchar *e, *p, *addr;</span>
+<span class='curline'><a href='../S/100.html#L55'>uchar</a>              55 mp.c             uchar *bda;</span>
+<span class='curline'><a href='../S/100.html#L59'>uchar</a>              59 mp.c             bda = (uchar *) P2V(0x400);</span>
+<span class='curline'><a href='../S/100.html#L89'>uchar</a>              89 mp.c             if(sum((uchar*)conf, conf-&gt;length) != 0)</span>
+<span class='curline'><a href='../S/100.html#L98'>uchar</a>              98 mp.c             uchar *p, *e;</span>
+<span class='curline'><a href='../S/100.html#L115'>uchar</a>             115 mp.c             for(p=(uchar*)(conf+1), e=(uchar*)conf+conf-&gt;length; p&lt;e; ){</span>
+<span class='curline'><a href='../S/177.html#L7'>uchar</a>               7 mp.h             uchar signature[4];           // "_MP_"</span>
+<span class='curline'><a href='../S/177.html#L9'>uchar</a>               9 mp.h             uchar length;                 // 1</span>
+<span class='curline'><a href='../S/177.html#L10'>uchar</a>              10 mp.h             uchar specrev;                // [14]</span>
+<span class='curline'><a href='../S/177.html#L11'>uchar</a>              11 mp.h             uchar checksum;               // all bytes must add up to 0</span>
+<span class='curline'><a href='../S/177.html#L12'>uchar</a>              12 mp.h             uchar type;                   // MP system config type</span>
+<span class='curline'><a href='../S/177.html#L13'>uchar</a>              13 mp.h             uchar imcrp;</span>
+<span class='curline'><a href='../S/177.html#L14'>uchar</a>              14 mp.h             uchar reserved[3];</span>
+<span class='curline'><a href='../S/177.html#L18'>uchar</a>              18 mp.h             uchar signature[4];           // "PCMP"</span>
+<span class='curline'><a href='../S/177.html#L20'>uchar</a>              20 mp.h             uchar version;                // [14]</span>
+<span class='curline'><a href='../S/177.html#L21'>uchar</a>              21 mp.h             uchar checksum;               // all bytes must add up to 0</span>
+<span class='curline'><a href='../S/177.html#L22'>uchar</a>              22 mp.h             uchar product[20];            // product id</span>
+<span class='curline'><a href='../S/177.html#L28'>uchar</a>              28 mp.h             uchar xchecksum;              // extended table checksum</span>
+<span class='curline'><a href='../S/177.html#L29'>uchar</a>              29 mp.h             uchar reserved;</span>
+<span class='curline'><a href='../S/177.html#L33'>uchar</a>              33 mp.h             uchar type;                   // entry type (0)</span>
+<span class='curline'><a href='../S/177.html#L34'>uchar</a>              34 mp.h             uchar apicid;                 // local APIC id</span>
+<span class='curline'><a href='../S/177.html#L35'>uchar</a>              35 mp.h             uchar version;                // local APIC verison</span>
+<span class='curline'><a href='../S/177.html#L36'>uchar</a>              36 mp.h             uchar flags;                  // CPU flags</span>
+<span class='curline'><a href='../S/177.html#L38'>uchar</a>              38 mp.h             uchar signature[4];           // CPU signature</span>
+<span class='curline'><a href='../S/177.html#L40'>uchar</a>              40 mp.h             uchar reserved[8];</span>
+<span class='curline'><a href='../S/177.html#L44'>uchar</a>              44 mp.h             uchar type;                   // entry type (2)</span>
+<span class='curline'><a href='../S/177.html#L45'>uchar</a>              45 mp.h             uchar apicno;                 // I/O APIC id</span>
+<span class='curline'><a href='../S/177.html#L46'>uchar</a>              46 mp.h             uchar version;                // I/O APIC version</span>
+<span class='curline'><a href='../S/177.html#L47'>uchar</a>              47 mp.h             uchar flags;                  // I/O APIC flags</span>
+<span class='curline'><a href='../S/64.html#L698'>uchar</a>             698 proc.c           return (uchar)*p - (uchar)*q;</span>
+<span class='curline'><a href='../S/93.html#L7'>uchar</a>               7 proc.h           uchar apicid;                // Local APIC ID</span>
+<span class='curline'><a href='../S/11.html#L18'>uchar</a>              18 string.c         const uchar *s1, *s2;</span>
+<span class='curline'><a href='../S/11.html#L65'>uchar</a>              65 string.c         return (uchar)*p - (uchar)*q;</span>
+<span class='curline'><a href='../S/83.html#L23'>uchar</a>              23 ulib.c           return (uchar)*p - (uchar)*q;</span>
+<span class='curline'><a href='../S/47.html#L1705'>uchar</a>            1705 usertests.c      uchar val = 0;</span>
+<span class='curline'><a href='../S/68.html#L6'>uchar</a>               6 x86.h          static inline uchar</span>
+<span class='curline'><a href='../S/68.html#L9'>uchar</a>               9 x86.h            uchar data;</span>
+<span class='curline'><a href='../S/68.html#L25'>uchar</a>              25 x86.h          outb(ushort port, uchar data)</span>
+</pre>
+</body>
+</html>

@@ -25,24 +25,24 @@ This source file includes following definitions.
 </ol>
 <hr />
 <pre>
-<a id='L1' name='L1'></a><em class='sharp'>#include</em> "<a href='125.html'>types.h</a>"
-<a id='L2' name='L2'></a><em class='sharp'>#include</em> "<a href='67.html'>x86.h</a>"
+<a id='L1' name='L1'></a><em class='sharp'>#include</em> "<a href='126.html'>types.h</a>"
+<a id='L2' name='L2'></a><em class='sharp'>#include</em> "<a href='68.html'>x86.h</a>"
 <a id='L3' name='L3'></a>
 <a id='L4' name='L4'></a><strong class='reserved'>void</strong>*
-<a id='L5' name='L5'></a><a href='../R/394.html' title='Multiple referred from 28 places.'>memset</a>(<strong class='reserved'>void</strong> *dst, <strong class='reserved'>int</strong> c, <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> n)
+<a id='L5' name='L5'></a><a href='../R/413.html' title='Multiple referred from 29 places.'>memset</a>(<strong class='reserved'>void</strong> *dst, <strong class='reserved'>int</strong> c, <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> n)
 <a id='L6' name='L6'></a><em class='brace'>{</em>
 <a id='L7' name='L7'></a>  <strong class='reserved'>if</strong> ((<strong class='reserved'>int</strong>)dst%4 == 0 &amp;&amp; n%4 == 0)<em class='brace'>{</em>
 <a id='L8' name='L8'></a>    c &amp;= 0xFF;
-<a id='L9' name='L9'></a>    <a href='../S/67.html#L52' title='Defined at 52 in x86.h.'>stosl</a>(dst, (c&lt;&lt;24)|(c&lt;&lt;16)|(c&lt;&lt;8)|c, n/4);
+<a id='L9' name='L9'></a>    <a href='../S/68.html#L55' title='Defined at 55 in x86.h.'>stosl</a>(dst, (c&lt;&lt;24)|(c&lt;&lt;16)|(c&lt;&lt;8)|c, n/4);
 <a id='L10' name='L10'></a>  <em class='brace'>}</em> <strong class='reserved'>else</strong>
-<a id='L11' name='L11'></a>    <a href='../S/67.html#L43' title='Defined at 43 in x86.h.'>stosb</a>(dst, c, n);
+<a id='L11' name='L11'></a>    <a href='../S/68.html#L46' title='Defined at 46 in x86.h.'>stosb</a>(dst, c, n);
 <a id='L12' name='L12'></a>  <strong class='reserved'>return</strong> dst;
 <a id='L13' name='L13'></a><em class='brace'>}</em>
 <a id='L14' name='L14'></a>
 <a id='L15' name='L15'></a><strong class='reserved'>int</strong>
-<a id='L16' name='L16'></a><a href='../R/392.html' title='Multiple referred from 4 places.'>memcmp</a>(<strong class='reserved'>const</strong> <strong class='reserved'>void</strong> *v1, <strong class='reserved'>const</strong> <strong class='reserved'>void</strong> *v2, <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> n)
+<a id='L16' name='L16'></a><a href='../R/411.html' title='Multiple referred from 4 places.'>memcmp</a>(<strong class='reserved'>const</strong> <strong class='reserved'>void</strong> *v1, <strong class='reserved'>const</strong> <strong class='reserved'>void</strong> *v2, <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> n)
 <a id='L17' name='L17'></a><em class='brace'>{</em>
-<a id='L18' name='L18'></a>  <strong class='reserved'>const</strong> <a href='../S/125.html#L3' title='Defined at 3 in types.h.'>uchar</a> *s1, *s2;
+<a id='L18' name='L18'></a>  <strong class='reserved'>const</strong> <a href='../S/126.html#L6' title='Defined at 6 in types.h.'>uchar</a> *s1, *s2;
 <a id='L19' name='L19'></a>
 <a id='L20' name='L20'></a>  s1 = v1;
 <a id='L21' name='L21'></a>  s2 = v2;
@@ -56,7 +56,7 @@ This source file includes following definitions.
 <a id='L29' name='L29'></a><em class='brace'>}</em>
 <a id='L30' name='L30'></a>
 <a id='L31' name='L31'></a><strong class='reserved'>void</strong>*
-<a id='L32' name='L32'></a><a href='../R/393.html' title='Multiple referred from 24 places.'>memmove</a>(<strong class='reserved'>void</strong> *dst, <strong class='reserved'>const</strong> <strong class='reserved'>void</strong> *src, <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> n)
+<a id='L32' name='L32'></a><a href='../R/412.html' title='Multiple referred from 23 places.'>memmove</a>(<strong class='reserved'>void</strong> *dst, <strong class='reserved'>const</strong> <strong class='reserved'>void</strong> *src, <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> n)
 <a id='L33' name='L33'></a><em class='brace'>{</em>
 <a id='L34' name='L34'></a>  <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *s;
 <a id='L35' name='L35'></a>  <strong class='reserved'>char</strong> *d;
@@ -77,23 +77,23 @@ This source file includes following definitions.
 <a id='L50' name='L50'></a>
 <a id='L51' name='L51'></a><em class='comment'>// memcpy exists to placate GCC.  Use memmove.</em>
 <a id='L52' name='L52'></a><strong class='reserved'>void</strong>*
-<a id='L53' name='L53'></a>memcpy(<strong class='reserved'>void</strong> *dst, <strong class='reserved'>const</strong> <strong class='reserved'>void</strong> *src, <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> n)
+<a id='L53' name='L53'></a>memcpy(<strong class='reserved'>void</strong> *dst, <strong class='reserved'>const</strong> <strong class='reserved'>void</strong> *src, <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> n)
 <a id='L54' name='L54'></a><em class='brace'>{</em>
-<a id='L55' name='L55'></a>  <strong class='reserved'>return</strong> <a href='../D/488.html' title='Multiple defined in 2 places.'>memmove</a>(dst, src, n);
+<a id='L55' name='L55'></a>  <strong class='reserved'>return</strong> <a href='../D/508.html' title='Multiple defined in 2 places.'>memmove</a>(dst, src, n);
 <a id='L56' name='L56'></a><em class='brace'>}</em>
 <a id='L57' name='L57'></a>
 <a id='L58' name='L58'></a><strong class='reserved'>int</strong>
-<a id='L59' name='L59'></a><a href='../R/493.html' title='Multiple referred from 2 places.'>strncmp</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *p, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *q, <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> n)
+<a id='L59' name='L59'></a><a href='../R/513.html' title='Multiple referred from 2 places.'>strncmp</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *p, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *q, <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> n)
 <a id='L60' name='L60'></a><em class='brace'>{</em>
 <a id='L61' name='L61'></a>  <strong class='reserved'>while</strong>(n &gt; 0 &amp;&amp; *p &amp;&amp; *p == *q)
 <a id='L62' name='L62'></a>    n--, p++, q++;
 <a id='L63' name='L63'></a>  <strong class='reserved'>if</strong>(n == 0)
 <a id='L64' name='L64'></a>    <strong class='reserved'>return</strong> 0;
-<a id='L65' name='L65'></a>  <strong class='reserved'>return</strong> (<a href='../S/125.html#L3' title='Defined at 3 in types.h.'>uchar</a>)*p - (<a href='../S/125.html#L3' title='Defined at 3 in types.h.'>uchar</a>)*q;
+<a id='L65' name='L65'></a>  <strong class='reserved'>return</strong> (<a href='../S/126.html#L6' title='Defined at 6 in types.h.'>uchar</a>)*p - (<a href='../S/126.html#L6' title='Defined at 6 in types.h.'>uchar</a>)*q;
 <a id='L66' name='L66'></a><em class='brace'>}</em>
 <a id='L67' name='L67'></a>
 <a id='L68' name='L68'></a><strong class='reserved'>char</strong>*
-<a id='L69' name='L69'></a><a href='../R/494.html' title='Multiple referred from 3 places.'>strncpy</a>(<strong class='reserved'>char</strong> *s, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *t, <strong class='reserved'>int</strong> n)
+<a id='L69' name='L69'></a><a href='../R/514.html' title='Multiple referred from 3 places.'>strncpy</a>(<strong class='reserved'>char</strong> *s, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *t, <strong class='reserved'>int</strong> n)
 <a id='L70' name='L70'></a><em class='brace'>{</em>
 <a id='L71' name='L71'></a>  <strong class='reserved'>char</strong> *os;
 <a id='L72' name='L72'></a>
@@ -107,7 +107,7 @@ This source file includes following definitions.
 <a id='L80' name='L80'></a>
 <a id='L81' name='L81'></a><em class='comment'>// Like strncpy but guaranteed to NUL-terminate.</em>
 <a id='L82' name='L82'></a><strong class='reserved'>char</strong>*
-<a id='L83' name='L83'></a><a href='../R/468.html' title='Multiple referred from 4 places.'>safestrcpy</a>(<strong class='reserved'>char</strong> *s, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *t, <strong class='reserved'>int</strong> n)
+<a id='L83' name='L83'></a><a href='../R/487.html' title='Multiple referred from 4 places.'>safestrcpy</a>(<strong class='reserved'>char</strong> *s, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *t, <strong class='reserved'>int</strong> n)
 <a id='L84' name='L84'></a><em class='brace'>{</em>
 <a id='L85' name='L85'></a>  <strong class='reserved'>char</strong> *os;
 <a id='L86' name='L86'></a>
@@ -121,7 +121,7 @@ This source file includes following definitions.
 <a id='L94' name='L94'></a><em class='brace'>}</em>
 <a id='L95' name='L95'></a>
 <a id='L96' name='L96'></a><strong class='reserved'>int</strong>
-<a id='L97' name='L97'></a><a href='../R/492.html' title='Multiple referred from 13 places.'>strlen</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *s)
+<a id='L97' name='L97'></a><a href='../R/512.html' title='Multiple referred from 13 places.'>strlen</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *s)
 <a id='L98' name='L98'></a><em class='brace'>{</em>
 <a id='L99' name='L99'></a>  <strong class='reserved'>int</strong> n;
 <a id='L100' name='L100'></a>

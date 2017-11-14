@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>segdesc</title>
+<title>readeflags</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,11 +9,10 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/121.html#L74'>segdesc</a>            74 mmu.h          #define SEG(type, base, lim, dpl) (struct segdesc)    \</span>
-<span class='curline'><a href='../S/121.html#L78'>segdesc</a>            78 mmu.h          #define SEG16(type, base, lim, dpl) (struct segdesc)  \</span>
-<span class='curline'><a href='../S/92.html#L10'>segdesc</a>            10 proc.h           struct segdesc gdt[NSEGS];   // x86 global descriptor table</span>
-<span class='curline'><a href='../S/67.html#L60'>segdesc</a>            60 x86.h          struct segdesc;</span>
-<span class='curline'><a href='../S/67.html#L63'>segdesc</a>            63 x86.h          lgdt(struct segdesc *p, int size)</span>
+<span class='curline'><a href='../S/64.html#L74'>readeflags</a>         74 proc.c           if(readeflags()&amp;FL_IF)</span>
+<span class='curline'><a href='../S/64.html#L447'>readeflags</a>        447 proc.c           if(readeflags()&amp;FL_IF)</span>
+<span class='curline'><a href='../S/41.html#L105'>readeflags</a>        105 spinlock.c       eflags = readeflags();</span>
+<span class='curline'><a href='../S/41.html#L115'>readeflags</a>        115 spinlock.c       if(readeflags()&amp;FL_IF)</span>
 </pre>
 </body>
 </html>

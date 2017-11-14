@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>holding</title>
+<title>flags</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,10 +9,29 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/118.html#L144'>holding</a>           144 defs.h         int             holding(struct spinlock*);</span>
-<span class='curline'><a href='../S/63.html#L446'>holding</a>           446 proc.c           if(!holding(&amp;ptable-&gt;lock))</span>
-<span class='curline'><a href='../S/40.html#L28'>holding</a>            28 spinlock.c       if(holding(lk))</span>
-<span class='curline'><a href='../S/40.html#L49'>holding</a>            49 spinlock.c       if(!holding(lk))</span>
+<span class='curline'><a href='../S/38.html#L82'>flags</a>              82 bio.c              if(b-&gt;refcnt == 0 &amp;&amp; (b-&gt;flags &amp; B_DIRTY) == 0) {</span>
+<span class='curline'><a href='../S/38.html#L85'>flags</a>              85 bio.c                b-&gt;flags = 0;</span>
+<span class='curline'><a href='../S/38.html#L102'>flags</a>             102 bio.c            if((b-&gt;flags &amp; B_VALID) == 0) {</span>
+<span class='curline'><a href='../S/38.html#L114'>flags</a>             114 bio.c            b-&gt;flags |= B_DIRTY;</span>
+<span class='curline'><a href='../S/181.html#L6'>flags</a>               6 buf.h            int flags;</span>
+<span class='curline'><a href='../S/74.html#L18'>flags</a>              18 elf.h            uint flags;</span>
+<span class='curline'><a href='../S/74.html#L35'>flags</a>              35 elf.h            uint flags;</span>
+<span class='curline'><a href='../S/144.html#L94'>flags</a>              94 ide.c            if(b-&gt;flags &amp; B_DIRTY){</span>
+<span class='curline'><a href='../S/144.html#L118'>flags</a>             118 ide.c            if(!(b-&gt;flags &amp; B_DIRTY) &amp;&amp; idewait(1) &gt;= 0)</span>
+<span class='curline'><a href='../S/144.html#L122'>flags</a>             122 ide.c            b-&gt;flags |= B_VALID;</span>
+<span class='curline'><a href='../S/144.html#L123'>flags</a>             123 ide.c            b-&gt;flags &amp;= ~B_DIRTY;</span>
+<span class='curline'><a href='../S/144.html#L144'>flags</a>             144 ide.c            if((b-&gt;flags &amp; (B_VALID|B_DIRTY)) == B_VALID)</span>
+<span class='curline'><a href='../S/144.html#L162'>flags</a>             162 ide.c            while((b-&gt;flags &amp; (B_VALID|B_DIRTY)) != B_VALID){</span>
+<span class='curline'><a href='../S/196.html#L231'>flags</a>             231 log.c            b-&gt;flags |= B_DIRTY; // prevent eviction</span>
+<span class='curline'><a href='../S/140.html#L45'>flags</a>              45 memide.c         if((b-&gt;flags &amp; (B_VALID|B_DIRTY)) == B_VALID)</span>
+<span class='curline'><a href='../S/140.html#L54'>flags</a>              54 memide.c         if(b-&gt;flags &amp; B_DIRTY){</span>
+<span class='curline'><a href='../S/140.html#L55'>flags</a>              55 memide.c           b-&gt;flags &amp;= ~B_DIRTY;</span>
+<span class='curline'><a href='../S/140.html#L59'>flags</a>              59 memide.c         b-&gt;flags |= B_VALID;</span>
+<span class='curline'><a href='../S/177.html#L36'>flags</a>              36 mp.h             uchar flags;                  // CPU flags</span>
+<span class='curline'><a href='../S/177.html#L47'>flags</a>              47 mp.h             uchar flags;                  // I/O APIC flags</span>
+<span class='curline'><a href='../S/158.html#L573'>flags</a>             573 vm.c               if (pte == 0)</span>
+<span class='curline'><a href='../S/158.html#L584'>flags</a>             584 vm.c             //flush the TLB</span>
+<span class='curline'><a href='../S/158.html#L588'>flags</a>             588 vm.c           // Given a parent process's page table, create a copy</span>
 </pre>
 </body>
 </html>

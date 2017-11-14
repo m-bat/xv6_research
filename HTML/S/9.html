@@ -18,13 +18,13 @@
 <a id='L2' name='L2'></a><em class='sharp'>#define</em> <a href='../S/9.html#L1' title='Referred from 1 in spinlock.h.'>XV6_SPINLOCK_H</a>
 <a id='L3' name='L3'></a>
 <a id='L4' name='L4'></a><em class='comment'>// Mutual exclusion lock.</em>
-<a id='L5' name='L5'></a><strong class='reserved'>struct</strong> <a href='../R/481.html' title='Multiple referred from 24 places.'>spinlock</a> <em class='brace'>{</em>
-<a id='L6' name='L6'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> locked;       <em class='comment'>// Is the lock held?</em>
+<a id='L5' name='L5'></a><strong class='reserved'>struct</strong> <a href='../R/501.html' title='Multiple referred from 26 places.'>spinlock</a> <em class='brace'>{</em>
+<a id='L6' name='L6'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> locked;       <em class='comment'>// Is the lock held?</em>
 <a id='L7' name='L7'></a>
 <a id='L8' name='L8'></a>  <em class='comment'>// For debugging:</em>
 <a id='L9' name='L9'></a>  <strong class='reserved'>char</strong> *name;        <em class='comment'>// Name of lock.</em>
-<a id='L10' name='L10'></a>  <strong class='reserved'>struct</strong> <a href='../S/92.html#L6' title='Defined at 6 in proc.h.'>cpu</a> *<a href='../S/92.html#L6' title='Defined at 6 in proc.h.'>cpu</a>;   <em class='comment'>// The cpu holding the lock.</em>
-<a id='L11' name='L11'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> pcs[10];      <em class='comment'>// The call stack (an array of program counters)</em>
+<a id='L10' name='L10'></a>  <strong class='reserved'>struct</strong> <a href='../S/93.html#L6' title='Defined at 6 in proc.h.'>cpu</a> *<a href='../S/93.html#L6' title='Defined at 6 in proc.h.'>cpu</a>;   <em class='comment'>// The cpu holding the lock.</em>
+<a id='L11' name='L11'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> pcs[10];      <em class='comment'>// The call stack (an array of program counters)</em>
 <a id='L12' name='L12'></a>                     <em class='comment'>// that locked the lock.</em>
 <a id='L13' name='L13'></a><em class='brace'>}</em>;
 <a id='L14' name='L14'></a>

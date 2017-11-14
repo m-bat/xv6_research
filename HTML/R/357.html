@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>kalloc</title>
+<title>inb</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,18 +9,21 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/162.html#L343'>kalloc</a>            343 console.c        if ((cons = (struct cons_lk*)kalloc()) == 0) {</span>
-<span class='curline'><a href='../S/118.html#L72'>kalloc</a>             72 defs.h         char*           kalloc(void);</span>
-<span class='curline'><a href='../S/167.html#L154'>kalloc</a>            154 kalloc.c         if ((cpus = (struct cpu *)kalloc()) == 0) {</span>
-<span class='curline'><a href='../S/154.html#L92'>kalloc</a>             92 main.c             stack = kalloc();</span>
-<span class='curline'><a href='../S/94.html#L31'>kalloc</a>             31 pipe.c           if((p = (struct pipe*)kalloc()) == 0)</span>
-<span class='curline'><a href='../S/63.html#L53'>kalloc</a>             53 proc.c           if ((ptable = (struct ptable_t *)kalloc()) == 0) {</span>
-<span class='curline'><a href='../S/161.html#L33'>kalloc</a>             33 trap.c           if ((tickslock = (struct spinlock *)kalloc()) == 0) {</span>
-<span class='curline'><a href='../S/157.html#L52'>kalloc</a>             52 vm.c               if(!alloc || (pgtab = (pte_t*)kalloc()) == 0)</span>
-<span class='curline'><a href='../S/157.html#L149'>kalloc</a>            149 vm.c             if((pgdir = (pde_t*)kalloc()) == 0)</span>
-<span class='curline'><a href='../S/157.html#L406'>kalloc</a>            406 vm.c             mem = kalloc();</span>
-<span class='curline'><a href='../S/157.html#L458'>kalloc</a>            458 vm.c               mem = kalloc();</span>
-<span class='curline'><a href='../S/157.html#L647'>kalloc</a>            647 vm.c               if((mem = kalloc()) == 0)</span>
+<span class='curline'><a href='../S/86.html#L54'>inb</a>                54 bootmain.c       while((inb(0x1F7) &amp; 0xC0) != 0x40)</span>
+<span class='curline'><a href='../S/163.html#L168'>inb</a>               168 console.c        pos = inb(CRTPORT+1) &lt;&lt; 8;</span>
+<span class='curline'><a href='../S/163.html#L170'>inb</a>               170 console.c        pos |= inb(CRTPORT+1);</span>
+<span class='curline'><a href='../S/144.html#L43'>inb</a>                43 ide.c            while(((r = inb(0x1f7)) &amp; (IDE_BSY|IDE_DRDY)) != IDE_DRDY)</span>
+<span class='curline'><a href='../S/144.html#L62'>inb</a>                62 ide.c              if(inb(0x1f7) != 0){</span>
+<span class='curline'><a href='../S/60.html#L15'>inb</a>                15 kbd.c            st = inb(KBSTATP);</span>
+<span class='curline'><a href='../S/60.html#L18'>inb</a>                18 kbd.c            data = inb(KBDATAP);</span>
+<span class='curline'><a href='../S/156.html#L179'>inb</a>               179 lapic.c          return inb(CMOS_RETURN);</span>
+<span class='curline'><a href='../S/100.html#L147'>inb</a>               147 mp.c               outb(0x23, inb(0x23) | 1);  // Mask external interrupts.</span>
+<span class='curline'><a href='../S/194.html#L36'>inb</a>                36 uart.c           if(inb(COM1+5) == 0xFF)</span>
+<span class='curline'><a href='../S/194.html#L42'>inb</a>                42 uart.c           inb(COM1+2);</span>
+<span class='curline'><a href='../S/194.html#L43'>inb</a>                43 uart.c           inb(COM1+0);</span>
+<span class='curline'><a href='../S/194.html#L58'>inb</a>                58 uart.c           for(i = 0; i &lt; 128 &amp;&amp; !(inb(COM1+5) &amp; 0x20); i++)</span>
+<span class='curline'><a href='../S/194.html#L68'>inb</a>                68 uart.c           if(!(inb(COM1+5) &amp; 0x01))</span>
+<span class='curline'><a href='../S/194.html#L70'>inb</a>                70 uart.c           return inb(COM1+0);</span>
 </pre>
 </body>
 </html>

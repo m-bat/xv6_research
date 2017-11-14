@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>ELF_MAGIC</title>
+<title>DPL_USER</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,8 +9,13 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/85.html#L31'>ELF_MAGIC</a>          31 bootmain.c       if(elf-&gt;magic != ELF_MAGIC)</span>
-<span class='curline'><a href='../S/89.html#L36'>ELF_MAGIC</a>          36 exec.c           if(elf.magic != ELF_MAGIC)</span>
+<span class='curline'><a href='../S/64.html#L188'>DPL_USER</a>          188 proc.c           p-&gt;tf-&gt;cs = (SEG_UCODE &lt;&lt; 3) | DPL_USER;</span>
+<span class='curline'><a href='../S/64.html#L189'>DPL_USER</a>          189 proc.c           p-&gt;tf-&gt;ds = (SEG_UDATA &lt;&lt; 3) | DPL_USER;</span>
+<span class='curline'><a href='../S/162.html#L30'>DPL_USER</a>           30 trap.c           SETGATE(idt[T_SYSCALL], 1, SEG_KCODE&lt;&lt;3, vectors[T_SYSCALL], DPL_USER);</span>
+<span class='curline'><a href='../S/162.html#L154'>DPL_USER</a>          154 trap.c           // until it gets to the regular system call return.)</span>
+<span class='curline'><a href='../S/162.html#L164'>DPL_USER</a>          164 trap.c           // Check if the process has been killed since we yielded</span>
+<span class='curline'><a href='../S/158.html#L56'>DPL_USER</a>           56 vm.c             // because it would have to have DPL_USR, but the CPU forbids</span>
+<span class='curline'><a href='../S/158.html#L57'>DPL_USER</a>           57 vm.c             // an interrupt from CPL=0 to DPL=3.</span>
 </pre>
 </body>
 </html>

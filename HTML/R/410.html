@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>namecmp</title>
+<title>mem</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,9 +9,24 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/118.html#L54'>namecmp</a>            54 defs.h         int             namecmp(const char*, const char*);</span>
-<span class='curline'><a href='../S/172.html#L539'>namecmp</a>           539 fs.c               if(namecmp(name, de.name) == 0){</span>
-<span class='curline'><a href='../S/83.html#L204'>namecmp</a>           204 sysfile.c        if(namecmp(name, ".") == 0 || namecmp(name, "..") == 0)</span>
+<span class='curline'><a href='../S/47.html#L1782'>mem</a>              1782 usertests.c      mem();</span>
+<span class='curline'><a href='../S/158.html#L349'>mem</a>               349 vm.c           }</span>
+<span class='curline'><a href='../S/158.html#L353'>mem</a>               353 vm.c           </span>
+<span class='curline'><a href='../S/158.html#L355'>mem</a>               355 vm.c           inituvm(pde_t *pgdir, char *init, uint sz)</span>
+<span class='curline'><a href='../S/158.html#L359'>mem</a>               359 vm.c             if(sz &gt;= PGSIZE)</span>
+<span class='curline'><a href='../S/158.html#L361'>mem</a>               361 vm.c             mem = kalloc(ALLOC_KGLOBAL);</span>
+<span class='curline'><a href='../S/158.html#L362'>mem</a>               362 vm.c             //add manabu</span>
+<span class='curline'><a href='../S/158.html#L363'>mem</a>               363 vm.c             mem_inituvm = mem;</span>
+<span class='curline'><a href='../S/158.html#L395'>mem</a>               395 vm.c             return 0;</span>
+<span class='curline'><a href='../S/158.html#L405'>mem</a>               405 vm.c           </span>
+<span class='curline'><a href='../S/158.html#L406'>mem</a>               406 vm.c             if(newsz &gt;= KERNBASE)</span>
+<span class='curline'><a href='../S/158.html#L411'>mem</a>               411 vm.c             a = PGROUNDUP(oldsz);</span>
+<span class='curline'><a href='../S/158.html#L412'>mem</a>               412 vm.c             for(; a &lt; newsz; a += PGSIZE){</span>
+<span class='curline'><a href='../S/158.html#L415'>mem</a>               415 vm.c                 cprintf("allocuvm out of memory\n");</span>
+<span class='curline'><a href='../S/158.html#L574'>mem</a>               574 vm.c                 panic("setptew");</span>
+<span class='curline'><a href='../S/158.html#L585'>mem</a>               585 vm.c             //lcr3(V2P(pgdir));</span>
+<span class='curline'><a href='../S/158.html#L587'>mem</a>               587 vm.c           </span>
+<span class='curline'><a href='../S/158.html#L588'>mem</a>               588 vm.c           // Given a parent process's page table, create a copy</span>
 </pre>
 </body>
 </html>

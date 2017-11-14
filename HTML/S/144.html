@@ -1,43 +1,198 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>asm.h</title>
+<title>ide.c</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
 <link rel='stylesheet' type='text/css' href='../style.css' />
 </head>
 <body>
-<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/asm.h</h2>
-<em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/ide.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L39'>[^]</a><a href='#L138'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 <hr />
-<h2 class='header'><a href='../J/1.html' title='Multiple included from 3 places.'>INCLUDED FROM</a></h2>
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L39' title='Defined at 39.'>idewait</a></li>
+<li><a href='#L51' title='Defined at 51.'>ideinit</a></li>
+<li><a href='#L74' title='Defined at 74.'>idestart</a></li>
+<li><a href='#L104' title='Defined at 104.'>ideintr</a></li>
+<li><a href='#L138' title='Defined at 138.'>iderw</a></li>
+</ol>
 <hr />
 <pre>
-<a id='L1' name='L1'></a><em class='comment'>//</em>
-<a id='L2' name='L2'></a><em class='comment'>// assembler macros to create x86 segments</em>
-<a id='L3' name='L3'></a><em class='comment'>//</em>
-<a id='L4' name='L4'></a>
-<a id='L5' name='L5'></a><em class='sharp'>#define</em> SEG_NULLASM                                             \
-<a id='L6' name='L6'></a>        .word 0, 0;                                             \
-<a id='L7' name='L7'></a>        .byte 0, 0, 0, 0
-<a id='L8' name='L8'></a>
-<a id='L9' name='L9'></a><em class='comment'>// The 0xC0 means the limit is in 4096-byte units</em>
-<a id='L10' name='L10'></a><em class='comment'>// and (for executable segments) 32-bit mode.</em>
-<a id='L11' name='L11'></a><em class='sharp'>#define</em> SEG_ASM(type,base,lim)                                  \
-<a id='L12' name='L12'></a>        .word (((lim) &gt;&gt; 12) &amp; 0xffff), ((base) &amp; 0xffff);      \
-<a id='L13' name='L13'></a>        .byte (((base) &gt;&gt; 16) &amp; 0xff), (0x90 | (type)),         \
-<a id='L14' name='L14'></a>                (0xC0 | (((lim) &gt;&gt; 28) &amp; 0xf)), (((base) &gt;&gt; 24) &amp; 0xff)
+<a id='L1' name='L1'></a><em class='comment'>// Simple PIO-based (non-DMA) IDE driver code.</em>
+<a id='L2' name='L2'></a>
+<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='126.html'>types.h</a>"
+<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='119.html'>defs.h</a>"
+<a id='L5' name='L5'></a><em class='sharp'>#include</em> "<a href='29.html'>param.h</a>"
+<a id='L6' name='L6'></a><em class='sharp'>#include</em> "<a href='50.html'>memlayout.h</a>"
+<a id='L7' name='L7'></a><em class='sharp'>#include</em> "<a href='122.html'>mmu.h</a>"
+<a id='L8' name='L8'></a><em class='sharp'>#include</em> "<a href='93.html'>proc.h</a>"
+<a id='L9' name='L9'></a><em class='sharp'>#include</em> "<a href='68.html'>x86.h</a>"
+<a id='L10' name='L10'></a><em class='sharp'>#include</em> "<a href='136.html'>traps.h</a>"
+<a id='L11' name='L11'></a><em class='sharp'>#include</em> "<a href='9.html'>spinlock.h</a>"
+<a id='L12' name='L12'></a><em class='sharp'>#include</em> "<a href='2.html'>sleeplock.h</a>"
+<a id='L13' name='L13'></a><em class='sharp'>#include</em> "<a href='104.html'>fs.h</a>"
+<a id='L14' name='L14'></a><em class='sharp'>#include</em> "<a href='181.html'>buf.h</a>"
 <a id='L15' name='L15'></a>
-<a id='L16' name='L16'></a><em class='sharp'>#define</em> <a href='../R/172.html' title='Multiple referred from 2 places.'>STA_X</a>     0x8       <em class='comment'>// Executable segment</em>
-<a id='L17' name='L17'></a><em class='sharp'>#define</em> STA_E     0x4       <em class='comment'>// Expand down (non-executable segments)</em>
-<a id='L18' name='L18'></a><em class='sharp'>#define</em> STA_C     0x4       <em class='comment'>// Conforming code segment (executable only)</em>
-<a id='L19' name='L19'></a><em class='sharp'>#define</em> <a href='../R/171.html' title='Multiple referred from 2 places.'>STA_W</a>     0x2       <em class='comment'>// Writeable (non-executable segments)</em>
-<a id='L20' name='L20'></a><em class='sharp'>#define</em> <a href='../R/170.html' title='Multiple referred from 2 places.'>STA_R</a>     0x2       <em class='comment'>// Readable (executable segments)</em>
-<a id='L21' name='L21'></a><em class='sharp'>#define</em> STA_A     0x1       <em class='comment'>// Accessed</em>
+<a id='L16' name='L16'></a><em class='sharp'>#define</em> <a href='../S/144.html#L80' title='Referred from 80 in ide.c.'>SECTOR_SIZE</a>   512
+<a id='L17' name='L17'></a><em class='sharp'>#define</em> <a href='../S/144.html#L43' title='Referred from 43 in ide.c.'>IDE_BSY</a>       0x80
+<a id='L18' name='L18'></a><em class='sharp'>#define</em> <a href='../S/144.html#L43' title='Referred from 43 in ide.c.'>IDE_DRDY</a>      0x40
+<a id='L19' name='L19'></a><em class='sharp'>#define</em> <a href='../S/144.html#L45' title='Referred from 45 in ide.c.'>IDE_DF</a>        0x20
+<a id='L20' name='L20'></a><em class='sharp'>#define</em> <a href='../S/144.html#L45' title='Referred from 45 in ide.c.'>IDE_ERR</a>       0x01
+<a id='L21' name='L21'></a>
+<a id='L22' name='L22'></a><em class='sharp'>#define</em> <a href='../S/144.html#L82' title='Referred from 82 in ide.c.'>IDE_CMD_READ</a>  0x20
+<a id='L23' name='L23'></a><em class='sharp'>#define</em> <a href='../S/144.html#L83' title='Referred from 83 in ide.c.'>IDE_CMD_WRITE</a> 0x30
+<a id='L24' name='L24'></a><em class='sharp'>#define</em> <a href='../S/144.html#L82' title='Referred from 82 in ide.c.'>IDE_CMD_RDMUL</a> 0xc4
+<a id='L25' name='L25'></a><em class='sharp'>#define</em> <a href='../S/144.html#L83' title='Referred from 83 in ide.c.'>IDE_CMD_WRMUL</a> 0xc5
+<a id='L26' name='L26'></a>
+<a id='L27' name='L27'></a><em class='comment'>// idequeue points to the buf now being read/written to the disk.</em>
+<a id='L28' name='L28'></a><em class='comment'>// idequeue-&gt;qnext points to the next buf to be processed.</em>
+<a id='L29' name='L29'></a><em class='comment'>// You must hold idelock while manipulating queue.</em>
+<a id='L30' name='L30'></a>
+<a id='L31' name='L31'></a><strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/9.html#L5' title='Defined at 5 in spinlock.h.'>spinlock</a> idelock;
+<a id='L32' name='L32'></a><strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a> *idequeue;
+<a id='L33' name='L33'></a>
+<a id='L34' name='L34'></a><strong class='reserved'>static</strong> <strong class='reserved'>int</strong> havedisk1;
+<a id='L35' name='L35'></a><strong class='reserved'>static</strong> <strong class='reserved'>void</strong> <a href='../S/144.html#L74' title='Defined at 74 in ide.c.'>idestart</a>(<strong class='reserved'>struct</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>*);
+<a id='L36' name='L36'></a>
+<a id='L37' name='L37'></a><em class='comment'>// Wait for IDE disk to become ready.</em>
+<a id='L38' name='L38'></a><strong class='reserved'>static</strong> <strong class='reserved'>int</strong>
+<a id='L39' name='L39'></a><a href='../R/351.html' title='Multiple referred from 3 places.'>idewait</a>(<strong class='reserved'>int</strong> checkerr)
+<a id='L40' name='L40'></a><em class='brace'>{</em>
+<a id='L41' name='L41'></a>  <strong class='reserved'>int</strong> r;
+<a id='L42' name='L42'></a>
+<a id='L43' name='L43'></a>  <strong class='reserved'>while</strong>(((r = <a href='../S/68.html#L7' title='Defined at 7 in x86.h.'>inb</a>(0x1f7)) &amp; (<a href='../S/144.html#L17' title='Defined at 17 in ide.c.'>IDE_BSY</a>|<a href='../S/144.html#L18' title='Defined at 18 in ide.c.'>IDE_DRDY</a>)) != <a href='../S/144.html#L18' title='Defined at 18 in ide.c.'>IDE_DRDY</a>)
+<a id='L44' name='L44'></a>    ;
+<a id='L45' name='L45'></a>  <strong class='reserved'>if</strong>(checkerr &amp;&amp; (r &amp; (<a href='../S/144.html#L19' title='Defined at 19 in ide.c.'>IDE_DF</a>|<a href='../S/144.html#L20' title='Defined at 20 in ide.c.'>IDE_ERR</a>)) != 0)
+<a id='L46' name='L46'></a>    <strong class='reserved'>return</strong> -1;
+<a id='L47' name='L47'></a>  <strong class='reserved'>return</strong> 0;
+<a id='L48' name='L48'></a><em class='brace'>}</em>
+<a id='L49' name='L49'></a>
+<a id='L50' name='L50'></a><strong class='reserved'>void</strong>
+<a id='L51' name='L51'></a><a href='../R/347.html' title='Multiple referred from 2 places.'>ideinit</a>(<strong class='reserved'>void</strong>)
+<a id='L52' name='L52'></a><em class='brace'>{</em>
+<a id='L53' name='L53'></a>  <strong class='reserved'>int</strong> i;
+<a id='L54' name='L54'></a>
+<a id='L55' name='L55'></a>  <a href='../S/41.html#L13' title='Defined at 13 in spinlock.c.'>initlock</a>(&amp;idelock, "ide");
+<a id='L56' name='L56'></a>  <a href='../S/106.html#L68' title='Defined at 68 in ioapic.c.'>ioapicenable</a>(<a href='../S/136.html#L38' title='Defined at 38 in traps.h.'>IRQ_IDE</a>, ncpu - 1);
+<a id='L57' name='L57'></a>  <a href='../S/144.html#L39' title='Defined at 39 in ide.c.'>idewait</a>(0);
+<a id='L58' name='L58'></a>
+<a id='L59' name='L59'></a>  <em class='comment'>// Check if disk 1 is present</em>
+<a id='L60' name='L60'></a>  <a href='../S/68.html#L25' title='Defined at 25 in x86.h.'>outb</a>(0x1f6, 0xe0 | (1&lt;&lt;4));
+<a id='L61' name='L61'></a>  <strong class='reserved'>for</strong>(i=0; i&lt;1000; i++)<em class='brace'>{</em>
+<a id='L62' name='L62'></a>    <strong class='reserved'>if</strong>(<a href='../S/68.html#L7' title='Defined at 7 in x86.h.'>inb</a>(0x1f7) != 0)<em class='brace'>{</em>
+<a id='L63' name='L63'></a>      havedisk1 = 1;
+<a id='L64' name='L64'></a>      <strong class='reserved'>break</strong>;
+<a id='L65' name='L65'></a>    <em class='brace'>}</em>
+<a id='L66' name='L66'></a>  <em class='brace'>}</em>
+<a id='L67' name='L67'></a>
+<a id='L68' name='L68'></a>  <em class='comment'>// Switch back to disk 0.</em>
+<a id='L69' name='L69'></a>  <a href='../S/68.html#L25' title='Defined at 25 in x86.h.'>outb</a>(0x1f6, 0xe0 | (0&lt;&lt;4));
+<a id='L70' name='L70'></a><em class='brace'>}</em>
+<a id='L71' name='L71'></a>
+<a id='L72' name='L72'></a><em class='comment'>// Start the request for b.  Caller must hold idelock.</em>
+<a id='L73' name='L73'></a><strong class='reserved'>static</strong> <strong class='reserved'>void</strong>
+<a id='L74' name='L74'></a><a href='../R/350.html' title='Multiple referred from 3 places.'>idestart</a>(<strong class='reserved'>struct</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a> *b)
+<a id='L75' name='L75'></a><em class='brace'>{</em>
+<a id='L76' name='L76'></a>  <strong class='reserved'>if</strong>(b == 0)
+<a id='L77' name='L77'></a>    <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("idestart");
+<a id='L78' name='L78'></a>  <strong class='reserved'>if</strong>(b-&gt;blockno &gt;= <a href='../S/29.html#L21' title='Defined at 21 in param.h.'>FSSIZE</a>)
+<a id='L79' name='L79'></a>    <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("incorrect blockno");
+<a id='L80' name='L80'></a>  <strong class='reserved'>int</strong> sector_per_block =  <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>/<a href='../S/144.html#L16' title='Defined at 16 in ide.c.'>SECTOR_SIZE</a>;
+<a id='L81' name='L81'></a>  <strong class='reserved'>int</strong> sector = b-&gt;blockno * sector_per_block;
+<a id='L82' name='L82'></a>  <strong class='reserved'>int</strong> read_cmd = (sector_per_block == 1) ? <a href='../S/144.html#L22' title='Defined at 22 in ide.c.'>IDE_CMD_READ</a> :  <a href='../S/144.html#L24' title='Defined at 24 in ide.c.'>IDE_CMD_RDMUL</a>;
+<a id='L83' name='L83'></a>  <strong class='reserved'>int</strong> write_cmd = (sector_per_block == 1) ? <a href='../S/144.html#L23' title='Defined at 23 in ide.c.'>IDE_CMD_WRITE</a> : <a href='../S/144.html#L25' title='Defined at 25 in ide.c.'>IDE_CMD_WRMUL</a>;
+<a id='L84' name='L84'></a>
+<a id='L85' name='L85'></a>  <strong class='reserved'>if</strong> (sector_per_block &gt; 7) <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("idestart");
+<a id='L86' name='L86'></a>
+<a id='L87' name='L87'></a>  <a href='../S/144.html#L39' title='Defined at 39 in ide.c.'>idewait</a>(0);
+<a id='L88' name='L88'></a>  <a href='../S/68.html#L25' title='Defined at 25 in x86.h.'>outb</a>(0x3f6, 0);  <em class='comment'>// generate interrupt</em>
+<a id='L89' name='L89'></a>  <a href='../S/68.html#L25' title='Defined at 25 in x86.h.'>outb</a>(0x1f2, sector_per_block);  <em class='comment'>// number of sectors</em>
+<a id='L90' name='L90'></a>  <a href='../S/68.html#L25' title='Defined at 25 in x86.h.'>outb</a>(0x1f3, sector &amp; 0xff);
+<a id='L91' name='L91'></a>  <a href='../S/68.html#L25' title='Defined at 25 in x86.h.'>outb</a>(0x1f4, (sector &gt;&gt; 8) &amp; 0xff);
+<a id='L92' name='L92'></a>  <a href='../S/68.html#L25' title='Defined at 25 in x86.h.'>outb</a>(0x1f5, (sector &gt;&gt; 16) &amp; 0xff);
+<a id='L93' name='L93'></a>  <a href='../S/68.html#L25' title='Defined at 25 in x86.h.'>outb</a>(0x1f6, 0xe0 | ((b-&gt;dev&amp;1)&lt;&lt;4) | ((sector&gt;&gt;24)&amp;0x0f));
+<a id='L94' name='L94'></a>  <strong class='reserved'>if</strong>(b-&gt;<a href='../S/141.html#L32' title='Defined at 32 in entry.S.'>flags</a> &amp; <a href='../S/181.html#L17' title='Defined at 17 in buf.h.'>B_DIRTY</a>)<em class='brace'>{</em>
+<a id='L95' name='L95'></a>    <a href='../S/68.html#L25' title='Defined at 25 in x86.h.'>outb</a>(0x1f7, write_cmd);
+<a id='L96' name='L96'></a>    <a href='../S/68.html#L37' title='Defined at 37 in x86.h.'>outsl</a>(0x1f0, b-&gt;data, <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>/4);
+<a id='L97' name='L97'></a>  <em class='brace'>}</em> <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L98' name='L98'></a>    <a href='../S/68.html#L25' title='Defined at 25 in x86.h.'>outb</a>(0x1f7, read_cmd);
+<a id='L99' name='L99'></a>  <em class='brace'>}</em>
+<a id='L100' name='L100'></a><em class='brace'>}</em>
+<a id='L101' name='L101'></a>
+<a id='L102' name='L102'></a><em class='comment'>// Interrupt handler.</em>
+<a id='L103' name='L103'></a><strong class='reserved'>void</strong>
+<a id='L104' name='L104'></a><a href='../R/348.html' title='Multiple referred from 2 places.'>ideintr</a>(<strong class='reserved'>void</strong>)
+<a id='L105' name='L105'></a><em class='brace'>{</em>
+<a id='L106' name='L106'></a>  <strong class='reserved'>struct</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a> *b;
+<a id='L107' name='L107'></a>
+<a id='L108' name='L108'></a>  <em class='comment'>// First queued buffer is the active request.</em>
+<a id='L109' name='L109'></a>  <a href='../S/41.html#L25' title='Defined at 25 in spinlock.c.'>acquire</a>(&amp;idelock);
+<a id='L110' name='L110'></a>
+<a id='L111' name='L111'></a>  <strong class='reserved'>if</strong>((b = idequeue) == 0)<em class='brace'>{</em>
+<a id='L112' name='L112'></a>    <a href='../S/41.html#L47' title='Defined at 47 in spinlock.c.'>release</a>(&amp;idelock);
+<a id='L113' name='L113'></a>    <strong class='reserved'>return</strong>;
+<a id='L114' name='L114'></a>  <em class='brace'>}</em>
+<a id='L115' name='L115'></a>  idequeue = b-&gt;qnext;
+<a id='L116' name='L116'></a>
+<a id='L117' name='L117'></a>  <em class='comment'>// Read data if needed.</em>
+<a id='L118' name='L118'></a>  <strong class='reserved'>if</strong>(!(b-&gt;<a href='../S/141.html#L32' title='Defined at 32 in entry.S.'>flags</a> &amp; <a href='../S/181.html#L17' title='Defined at 17 in buf.h.'>B_DIRTY</a>) &amp;&amp; <a href='../S/144.html#L39' title='Defined at 39 in ide.c.'>idewait</a>(1) &gt;= 0)
+<a id='L119' name='L119'></a>    <a href='../S/68.html#L16' title='Defined at 16 in x86.h.'>insl</a>(0x1f0, b-&gt;data, <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>/4);
+<a id='L120' name='L120'></a>
+<a id='L121' name='L121'></a>  <em class='comment'>// Wake process waiting for this buf.</em>
+<a id='L122' name='L122'></a>  b-&gt;<a href='../S/141.html#L32' title='Defined at 32 in entry.S.'>flags</a> |= <a href='../S/181.html#L16' title='Defined at 16 in buf.h.'>B_VALID</a>;
+<a id='L123' name='L123'></a>  b-&gt;<a href='../S/141.html#L32' title='Defined at 32 in entry.S.'>flags</a> &amp;= ~<a href='../S/181.html#L17' title='Defined at 17 in buf.h.'>B_DIRTY</a>;
+<a id='L124' name='L124'></a>  <a href='../S/64.html#L539' title='Defined at 539 in proc.c.'>wakeup</a>(b);
+<a id='L125' name='L125'></a>
+<a id='L126' name='L126'></a>  <em class='comment'>// Start disk on next buf in queue.</em>
+<a id='L127' name='L127'></a>  <strong class='reserved'>if</strong>(idequeue != 0)
+<a id='L128' name='L128'></a>    <a href='../S/144.html#L74' title='Defined at 74 in ide.c.'>idestart</a>(idequeue);
+<a id='L129' name='L129'></a>
+<a id='L130' name='L130'></a>  <a href='../S/41.html#L47' title='Defined at 47 in spinlock.c.'>release</a>(&amp;idelock);
+<a id='L131' name='L131'></a><em class='brace'>}</em>
+<a id='L132' name='L132'></a>
+<a id='L133' name='L133'></a><em class='comment'>//PAGEBREAK!</em>
+<a id='L134' name='L134'></a><em class='comment'>// Sync buf with disk.</em>
+<a id='L135' name='L135'></a><em class='comment'>// If B_DIRTY is set, write buf to disk, clear B_DIRTY, set B_VALID.</em>
+<a id='L136' name='L136'></a><em class='comment'>// Else if B_VALID is not set, read buf from disk, set B_VALID.</em>
+<a id='L137' name='L137'></a><strong class='reserved'>void</strong>
+<a id='L138' name='L138'></a><a href='../R/349.html' title='Multiple referred from 3 places.'>iderw</a>(<strong class='reserved'>struct</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a> *b)
+<a id='L139' name='L139'></a><em class='brace'>{</em>
+<a id='L140' name='L140'></a>  <strong class='reserved'>struct</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a> **pp;
+<a id='L141' name='L141'></a>
+<a id='L142' name='L142'></a>  <strong class='reserved'>if</strong>(!<a href='../S/138.html#L45' title='Defined at 45 in sleeplock.c.'>holdingsleep</a>(&amp;b-&gt;lock))
+<a id='L143' name='L143'></a>    <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("iderw: buf not locked");
+<a id='L144' name='L144'></a>  <strong class='reserved'>if</strong>((b-&gt;<a href='../S/141.html#L32' title='Defined at 32 in entry.S.'>flags</a> &amp; (<a href='../S/181.html#L16' title='Defined at 16 in buf.h.'>B_VALID</a>|<a href='../S/181.html#L17' title='Defined at 17 in buf.h.'>B_DIRTY</a>)) == <a href='../S/181.html#L16' title='Defined at 16 in buf.h.'>B_VALID</a>)
+<a id='L145' name='L145'></a>    <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("iderw: nothing to do");
+<a id='L146' name='L146'></a>  <strong class='reserved'>if</strong>(b-&gt;dev != 0 &amp;&amp; !havedisk1)
+<a id='L147' name='L147'></a>    <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("iderw: ide disk 1 not present");
+<a id='L148' name='L148'></a>
+<a id='L149' name='L149'></a>  <a href='../S/41.html#L25' title='Defined at 25 in spinlock.c.'>acquire</a>(&amp;idelock);  <em class='comment'>//DOC:acquire-lock</em>
+<a id='L150' name='L150'></a>
+<a id='L151' name='L151'></a>  <em class='comment'>// Append b to idequeue.</em>
+<a id='L152' name='L152'></a>  b-&gt;qnext = 0;
+<a id='L153' name='L153'></a>  <strong class='reserved'>for</strong>(pp=&amp;idequeue; *pp; pp=&amp;(*pp)-&gt;qnext)  <em class='comment'>//DOC:insert-queue</em>
+<a id='L154' name='L154'></a>    ;
+<a id='L155' name='L155'></a>  *pp = b;
+<a id='L156' name='L156'></a>
+<a id='L157' name='L157'></a>  <em class='comment'>// Start disk if necessary.</em>
+<a id='L158' name='L158'></a>  <strong class='reserved'>if</strong>(idequeue == b)
+<a id='L159' name='L159'></a>    <a href='../S/144.html#L74' title='Defined at 74 in ide.c.'>idestart</a>(b);
+<a id='L160' name='L160'></a>
+<a id='L161' name='L161'></a>  <em class='comment'>// Wait for request to finish.</em>
+<a id='L162' name='L162'></a>  <strong class='reserved'>while</strong>((b-&gt;<a href='../S/141.html#L32' title='Defined at 32 in entry.S.'>flags</a> &amp; (<a href='../S/181.html#L16' title='Defined at 16 in buf.h.'>B_VALID</a>|<a href='../S/181.html#L17' title='Defined at 17 in buf.h.'>B_DIRTY</a>)) != <a href='../S/181.html#L16' title='Defined at 16 in buf.h.'>B_VALID</a>)<em class='brace'>{</em>
+<a id='L163' name='L163'></a>    <a href='../S/64.html#L488' title='Defined at 488 in proc.c.'>sleep</a>(b, &amp;idelock);
+<a id='L164' name='L164'></a>  <em class='brace'>}</em>
+<a id='L165' name='L165'></a>
+<a id='L166' name='L166'></a>
+<a id='L167' name='L167'></a>  <a href='../S/41.html#L47' title='Defined at 47 in spinlock.c.'>release</a>(&amp;idelock);
+<a id='L168' name='L168'></a><em class='brace'>}</em>
 </pre>
 <hr />
 <a id='BOTTOM' name='BOTTOM'></a>
-<em class='comment'>/* [&lt;][&gt;][^][v]<a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L39'>[^]</a><a href='#L138'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 </body>
 </html>

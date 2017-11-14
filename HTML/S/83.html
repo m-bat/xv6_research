@@ -1,487 +1,139 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>sysfile.c</title>
+<title>ulib.c</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
 <link rel='stylesheet' type='text/css' href='../style.css' />
 </head>
 <body>
-<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/sysfile.c</h2>
-<em class='comment'>/* [&lt;][&gt;]<a href='#L22'>[^]</a><a href='#L424'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/ulib.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L8'>[^]</a><a href='#L96'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 <hr />
 <h2 class='header'>DEFINITIONS</h2>
 This source file includes following definitions.
 <ol>
-<li><a href='#L22' title='Defined at 22.'>argfd</a></li>
-<li><a href='#L41' title='Defined at 41.'>fdalloc</a></li>
-<li><a href='#L56' title='Defined at 56.'>sys_dup</a></li>
-<li><a href='#L70' title='Defined at 70.'>sys_read</a></li>
-<li><a href='#L82' title='Defined at 82.'>sys_write</a></li>
-<li><a href='#L94' title='Defined at 94.'>sys_close</a></li>
-<li><a href='#L107' title='Defined at 107.'>sys_fstat</a></li>
-<li><a href='#L119' title='Defined at 119.'>sys_link</a></li>
-<li><a href='#L169' title='Defined at 169.'>isdirempty</a></li>
-<li><a href='#L185' title='Defined at 185.'>sys_unlink</a></li>
-<li><a href='#L242' title='Defined at 242.'>create</a></li>
-<li><a href='#L287' title='Defined at 287.'>sys_open</a></li>
-<li><a href='#L337' title='Defined at 337.'>sys_mkdir</a></li>
-<li><a href='#L353' title='Defined at 353.'>sys_mknod</a></li>
-<li><a href='#L373' title='Defined at 373.'>sys_chdir</a></li>
-<li><a href='#L398' title='Defined at 398.'>sys_exec</a></li>
-<li><a href='#L424' title='Defined at 424.'>sys_pipe</a></li>
+<li><a href='#L8' title='Defined at 8.'>strcpy</a></li>
+<li><a href='#L19' title='Defined at 19.'>strcmp</a></li>
+<li><a href='#L27' title='Defined at 27.'>strlen</a></li>
+<li><a href='#L37' title='Defined at 37.'>memset</a></li>
+<li><a href='#L44' title='Defined at 44.'>strchr</a></li>
+<li><a href='#L53' title='Defined at 53.'>gets</a></li>
+<li><a href='#L71' title='Defined at 71.'>stat</a></li>
+<li><a href='#L85' title='Defined at 85.'>atoi</a></li>
+<li><a href='#L96' title='Defined at 96.'>memmove</a></li>
 </ol>
 <hr />
 <pre>
-<a id='L1' name='L1'></a><em class='comment'>//</em>
-<a id='L2' name='L2'></a><em class='comment'>// File-system system calls.</em>
-<a id='L3' name='L3'></a><em class='comment'>// Mostly argument checking, since we don't trust</em>
-<a id='L4' name='L4'></a><em class='comment'>// user code, and calls into file.c and fs.c.</em>
-<a id='L5' name='L5'></a><em class='comment'>//</em>
+<a id='L1' name='L1'></a><em class='sharp'>#include</em> "<a href='126.html'>types.h</a>"
+<a id='L2' name='L2'></a><em class='sharp'>#include</em> "<a href='35.html'>stat.h</a>"
+<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='59.html'>fcntl.h</a>"
+<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='189.html'>user.h</a>"
+<a id='L5' name='L5'></a><em class='sharp'>#include</em> "<a href='68.html'>x86.h</a>"
 <a id='L6' name='L6'></a>
-<a id='L7' name='L7'></a><em class='sharp'>#include</em> "<a href='125.html'>types.h</a>"
-<a id='L8' name='L8'></a><em class='sharp'>#include</em> "<a href='118.html'>defs.h</a>"
-<a id='L9' name='L9'></a><em class='sharp'>#include</em> "<a href='28.html'>param.h</a>"
-<a id='L10' name='L10'></a><em class='sharp'>#include</em> "<a href='34.html'>stat.h</a>"
-<a id='L11' name='L11'></a><em class='sharp'>#include</em> "<a href='121.html'>mmu.h</a>"
-<a id='L12' name='L12'></a><em class='sharp'>#include</em> "<a href='92.html'>proc.h</a>"
-<a id='L13' name='L13'></a><em class='sharp'>#include</em> "<a href='103.html'>fs.h</a>"
-<a id='L14' name='L14'></a><em class='sharp'>#include</em> "<a href='9.html'>spinlock.h</a>"
-<a id='L15' name='L15'></a><em class='sharp'>#include</em> "<a href='2.html'>sleeplock.h</a>"
-<a id='L16' name='L16'></a><em class='sharp'>#include</em> "<a href='55.html'>file.h</a>"
-<a id='L17' name='L17'></a><em class='sharp'>#include</em> "<a href='58.html'>fcntl.h</a>"
-<a id='L18' name='L18'></a>
-<a id='L19' name='L19'></a><em class='comment'>// Fetch the nth word-sized system call argument as a file descriptor</em>
-<a id='L20' name='L20'></a><em class='comment'>// and return both the descriptor and the corresponding struct file.</em>
-<a id='L21' name='L21'></a><strong class='reserved'>static</strong> <strong class='reserved'>int</strong>
-<a id='L22' name='L22'></a><a href='../R/225.html' title='Multiple referred from 5 places.'>argfd</a>(<strong class='reserved'>int</strong> n, <strong class='reserved'>int</strong> *pfd, <strong class='reserved'>struct</strong> <a href='../S/55.html#L1' title='Defined at 1 in file.h.'>file</a> **pf)
-<a id='L23' name='L23'></a><em class='brace'>{</em>
-<a id='L24' name='L24'></a>  <strong class='reserved'>int</strong> fd;
-<a id='L25' name='L25'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L1' title='Defined at 1 in file.h.'>file</a> *f;
-<a id='L26' name='L26'></a>
-<a id='L27' name='L27'></a>  <strong class='reserved'>if</strong>(<a href='../S/81.html#L50' title='Defined at 50 in syscall.c.'>argint</a>(n, &amp;fd) &lt; 0)
-<a id='L28' name='L28'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L29' name='L29'></a>  <strong class='reserved'>if</strong>(fd &lt; 0 || fd &gt;= <a href='../S/28.html#L8' title='Defined at 8 in param.h.'>NOFILE</a> || (f=<a href='../S/63.html#L92' title='Defined at 92 in proc.c.'>myproc</a>()-&gt;ofile[fd]) == 0)
-<a id='L30' name='L30'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L31' name='L31'></a>  <strong class='reserved'>if</strong>(pfd)
-<a id='L32' name='L32'></a>    *pfd = fd;
-<a id='L33' name='L33'></a>  <strong class='reserved'>if</strong>(pf)
-<a id='L34' name='L34'></a>    *pf = f;
-<a id='L35' name='L35'></a>  <strong class='reserved'>return</strong> 0;
-<a id='L36' name='L36'></a><em class='brace'>}</em>
-<a id='L37' name='L37'></a>
-<a id='L38' name='L38'></a><em class='comment'>// Allocate a file descriptor for the given file.</em>
-<a id='L39' name='L39'></a><em class='comment'>// Takes over file reference from caller on success.</em>
-<a id='L40' name='L40'></a><strong class='reserved'>static</strong> <strong class='reserved'>int</strong>
-<a id='L41' name='L41'></a><a href='../R/291.html' title='Multiple referred from 3 places.'>fdalloc</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L1' title='Defined at 1 in file.h.'>file</a> *f)
-<a id='L42' name='L42'></a><em class='brace'>{</em>
-<a id='L43' name='L43'></a>  <strong class='reserved'>int</strong> fd;
-<a id='L44' name='L44'></a>  <strong class='reserved'>struct</strong> <a href='../S/92.html#L61' title='Defined at 61 in proc.h.'>proc</a> *curproc = <a href='../S/63.html#L92' title='Defined at 92 in proc.c.'>myproc</a>();
-<a id='L45' name='L45'></a>
-<a id='L46' name='L46'></a>  <strong class='reserved'>for</strong>(fd = 0; fd &lt; <a href='../S/28.html#L8' title='Defined at 8 in param.h.'>NOFILE</a>; fd++)<em class='brace'>{</em>
-<a id='L47' name='L47'></a>    <strong class='reserved'>if</strong>(curproc-&gt;ofile[fd] == 0)<em class='brace'>{</em>
-<a id='L48' name='L48'></a>      curproc-&gt;ofile[fd] = f;
-<a id='L49' name='L49'></a>      <strong class='reserved'>return</strong> fd;
-<a id='L50' name='L50'></a>    <em class='brace'>}</em>
-<a id='L51' name='L51'></a>  <em class='brace'>}</em>
-<a id='L52' name='L52'></a>  <strong class='reserved'>return</strong> -1;
-<a id='L53' name='L53'></a><em class='brace'>}</em>
-<a id='L54' name='L54'></a>
-<a id='L55' name='L55'></a><strong class='reserved'>int</strong>
-<a id='L56' name='L56'></a><a href='../R/504.html' title='Multiple referred from 2 places.'>sys_dup</a>(<strong class='reserved'>void</strong>)
-<a id='L57' name='L57'></a><em class='brace'>{</em>
-<a id='L58' name='L58'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L1' title='Defined at 1 in file.h.'>file</a> *f;
-<a id='L59' name='L59'></a>  <strong class='reserved'>int</strong> fd;
-<a id='L60' name='L60'></a>
-<a id='L61' name='L61'></a>  <strong class='reserved'>if</strong>(<a href='../S/83.html#L22' title='Defined at 22 in sysfile.c.'>argfd</a>(0, 0, &amp;f) &lt; 0)
-<a id='L62' name='L62'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L63' name='L63'></a>  <strong class='reserved'>if</strong>((fd=<a href='../S/83.html#L41' title='Defined at 41 in sysfile.c.'>fdalloc</a>(f)) &lt; 0)
-<a id='L64' name='L64'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L65' name='L65'></a>  <a href='../S/15.html#L112' title='Defined at 112 in file.c.'>filedup</a>(f);
-<a id='L66' name='L66'></a>  <strong class='reserved'>return</strong> fd;
-<a id='L67' name='L67'></a><em class='brace'>}</em>
-<a id='L68' name='L68'></a>
-<a id='L69' name='L69'></a><strong class='reserved'>int</strong>
-<a id='L70' name='L70'></a><a href='../R/517.html' title='Multiple referred from 2 places.'>sys_read</a>(<strong class='reserved'>void</strong>)
-<a id='L71' name='L71'></a><em class='brace'>{</em>
-<a id='L72' name='L72'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L1' title='Defined at 1 in file.h.'>file</a> *f;
-<a id='L73' name='L73'></a>  <strong class='reserved'>int</strong> n;
-<a id='L74' name='L74'></a>  <strong class='reserved'>char</strong> *p;
+<a id='L7' name='L7'></a><strong class='reserved'>char</strong>*
+<a id='L8' name='L8'></a><a href='../R/511.html' title='Multiple referred from 5 places.'>strcpy</a>(<strong class='reserved'>char</strong> *s, <strong class='reserved'>char</strong> *t)
+<a id='L9' name='L9'></a><em class='brace'>{</em>
+<a id='L10' name='L10'></a>  <strong class='reserved'>char</strong> *os;
+<a id='L11' name='L11'></a>
+<a id='L12' name='L12'></a>  os = s;
+<a id='L13' name='L13'></a>  <strong class='reserved'>while</strong>((*s++ = *t++) != 0)
+<a id='L14' name='L14'></a>    ;
+<a id='L15' name='L15'></a>  <strong class='reserved'>return</strong> os;
+<a id='L16' name='L16'></a><em class='brace'>}</em>
+<a id='L17' name='L17'></a>
+<a id='L18' name='L18'></a><strong class='reserved'>int</strong>
+<a id='L19' name='L19'></a><a href='../R/510.html' title='Multiple referred from 4 places.'>strcmp</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *p, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *q)
+<a id='L20' name='L20'></a><em class='brace'>{</em>
+<a id='L21' name='L21'></a>  <strong class='reserved'>while</strong>(*p &amp;&amp; *p == *q)
+<a id='L22' name='L22'></a>    p++, q++;
+<a id='L23' name='L23'></a>  <strong class='reserved'>return</strong> (<a href='../S/126.html#L6' title='Defined at 6 in types.h.'>uchar</a>)*p - (<a href='../S/126.html#L6' title='Defined at 6 in types.h.'>uchar</a>)*q;
+<a id='L24' name='L24'></a><em class='brace'>}</em>
+<a id='L25' name='L25'></a>
+<a id='L26' name='L26'></a><a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a>
+<a id='L27' name='L27'></a><a href='../R/512.html' title='Multiple referred from 13 places.'>strlen</a>(<strong class='reserved'>char</strong> *s)
+<a id='L28' name='L28'></a><em class='brace'>{</em>
+<a id='L29' name='L29'></a>  <strong class='reserved'>int</strong> n;
+<a id='L30' name='L30'></a>
+<a id='L31' name='L31'></a>  <strong class='reserved'>for</strong>(n = 0; s[n]; n++)
+<a id='L32' name='L32'></a>    ;
+<a id='L33' name='L33'></a>  <strong class='reserved'>return</strong> n;
+<a id='L34' name='L34'></a><em class='brace'>}</em>
+<a id='L35' name='L35'></a>
+<a id='L36' name='L36'></a><strong class='reserved'>void</strong>*
+<a id='L37' name='L37'></a><a href='../R/413.html' title='Multiple referred from 29 places.'>memset</a>(<strong class='reserved'>void</strong> *dst, <strong class='reserved'>int</strong> c, <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> n)
+<a id='L38' name='L38'></a><em class='brace'>{</em>
+<a id='L39' name='L39'></a>  <a href='../S/68.html#L46' title='Defined at 46 in x86.h.'>stosb</a>(dst, c, n);
+<a id='L40' name='L40'></a>  <strong class='reserved'>return</strong> dst;
+<a id='L41' name='L41'></a><em class='brace'>}</em>
+<a id='L42' name='L42'></a>
+<a id='L43' name='L43'></a><strong class='reserved'>char</strong>*
+<a id='L44' name='L44'></a><a href='../R/509.html' title='Multiple referred from 8 places.'>strchr</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *s, <strong class='reserved'>char</strong> c)
+<a id='L45' name='L45'></a><em class='brace'>{</em>
+<a id='L46' name='L46'></a>  <strong class='reserved'>for</strong>(; *s; s++)
+<a id='L47' name='L47'></a>    <strong class='reserved'>if</strong>(*s == c)
+<a id='L48' name='L48'></a>      <strong class='reserved'>return</strong> (<strong class='reserved'>char</strong>*)s;
+<a id='L49' name='L49'></a>  <strong class='reserved'>return</strong> 0;
+<a id='L50' name='L50'></a><em class='brace'>}</em>
+<a id='L51' name='L51'></a>
+<a id='L52' name='L52'></a><strong class='reserved'>char</strong>*
+<a id='L53' name='L53'></a><a href='../R/338.html' title='Multiple referred from 2 places.'>gets</a>(<strong class='reserved'>char</strong> *<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <strong class='reserved'>int</strong> max)
+<a id='L54' name='L54'></a><em class='brace'>{</em>
+<a id='L55' name='L55'></a>  <strong class='reserved'>int</strong> i, cc;
+<a id='L56' name='L56'></a>  <strong class='reserved'>char</strong> c;
+<a id='L57' name='L57'></a>
+<a id='L58' name='L58'></a>  <strong class='reserved'>for</strong>(i=0; i+1 &lt; max; )<em class='brace'>{</em>
+<a id='L59' name='L59'></a>    cc = read(0, &amp;c, 1);
+<a id='L60' name='L60'></a>    <strong class='reserved'>if</strong>(cc &lt; 1)
+<a id='L61' name='L61'></a>      <strong class='reserved'>break</strong>;
+<a id='L62' name='L62'></a>    <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[i++] = c;
+<a id='L63' name='L63'></a>    <strong class='reserved'>if</strong>(c == '\n' || c == '\r')
+<a id='L64' name='L64'></a>      <strong class='reserved'>break</strong>;
+<a id='L65' name='L65'></a>  <em class='brace'>}</em>
+<a id='L66' name='L66'></a>  <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[i] = '\0';
+<a id='L67' name='L67'></a>  <strong class='reserved'>return</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>;
+<a id='L68' name='L68'></a><em class='brace'>}</em>
+<a id='L69' name='L69'></a>
+<a id='L70' name='L70'></a><strong class='reserved'>int</strong>
+<a id='L71' name='L71'></a><a href='../R/503.html' title='Multiple referred from 12 places.'>stat</a>(<strong class='reserved'>char</strong> *n, <strong class='reserved'>struct</strong> <a href='../D/601.html' title='Multiple defined in 3 places.'>stat</a> *st)
+<a id='L72' name='L72'></a><em class='brace'>{</em>
+<a id='L73' name='L73'></a>  <strong class='reserved'>int</strong> fd;
+<a id='L74' name='L74'></a>  <strong class='reserved'>int</strong> r;
 <a id='L75' name='L75'></a>
-<a id='L76' name='L76'></a>  <strong class='reserved'>if</strong>(<a href='../S/83.html#L22' title='Defined at 22 in sysfile.c.'>argfd</a>(0, 0, &amp;f) &lt; 0 || <a href='../S/81.html#L50' title='Defined at 50 in syscall.c.'>argint</a>(2, &amp;n) &lt; 0 || <a href='../S/81.html#L59' title='Defined at 59 in syscall.c.'>argptr</a>(1, &amp;p, n) &lt; 0)
-<a id='L77' name='L77'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L78' name='L78'></a>  <strong class='reserved'>return</strong> <a href='../S/15.html#L170' title='Defined at 170 in file.c.'>fileread</a>(f, p, n);
-<a id='L79' name='L79'></a><em class='brace'>}</em>
-<a id='L80' name='L80'></a>
-<a id='L81' name='L81'></a><strong class='reserved'>int</strong>
-<a id='L82' name='L82'></a><a href='../R/523.html' title='Multiple referred from 2 places.'>sys_write</a>(<strong class='reserved'>void</strong>)
-<a id='L83' name='L83'></a><em class='brace'>{</em>
-<a id='L84' name='L84'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L1' title='Defined at 1 in file.h.'>file</a> *f;
-<a id='L85' name='L85'></a>  <strong class='reserved'>int</strong> n;
-<a id='L86' name='L86'></a>  <strong class='reserved'>char</strong> *p;
-<a id='L87' name='L87'></a>
-<a id='L88' name='L88'></a>  <strong class='reserved'>if</strong>(<a href='../S/83.html#L22' title='Defined at 22 in sysfile.c.'>argfd</a>(0, 0, &amp;f) &lt; 0 || <a href='../S/81.html#L50' title='Defined at 50 in syscall.c.'>argint</a>(2, &amp;n) &lt; 0 || <a href='../S/81.html#L59' title='Defined at 59 in syscall.c.'>argptr</a>(1, &amp;p, n) &lt; 0)
-<a id='L89' name='L89'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L90' name='L90'></a>  <strong class='reserved'>return</strong> <a href='../S/15.html#L191' title='Defined at 191 in file.c.'>filewrite</a>(f, p, n);
-<a id='L91' name='L91'></a><em class='brace'>}</em>
-<a id='L92' name='L92'></a>
-<a id='L93' name='L93'></a><strong class='reserved'>int</strong>
-<a id='L94' name='L94'></a><a href='../R/502.html' title='Multiple referred from 2 places.'>sys_close</a>(<strong class='reserved'>void</strong>)
-<a id='L95' name='L95'></a><em class='brace'>{</em>
-<a id='L96' name='L96'></a>  <strong class='reserved'>int</strong> fd;
-<a id='L97' name='L97'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L1' title='Defined at 1 in file.h.'>file</a> *f;
-<a id='L98' name='L98'></a>
-<a id='L99' name='L99'></a>  <strong class='reserved'>if</strong>(<a href='../S/83.html#L22' title='Defined at 22 in sysfile.c.'>argfd</a>(0, &amp;fd, &amp;f) &lt; 0)
-<a id='L100' name='L100'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L101' name='L101'></a>  <a href='../S/63.html#L92' title='Defined at 92 in proc.c.'>myproc</a>()-&gt;ofile[fd] = 0;
-<a id='L102' name='L102'></a>  <a href='../S/15.html#L124' title='Defined at 124 in file.c.'>fileclose</a>(f);
-<a id='L103' name='L103'></a>  <strong class='reserved'>return</strong> 0;
-<a id='L104' name='L104'></a><em class='brace'>}</em>
-<a id='L105' name='L105'></a>
-<a id='L106' name='L106'></a><strong class='reserved'>int</strong>
-<a id='L107' name='L107'></a><a href='../R/508.html' title='Multiple referred from 2 places.'>sys_fstat</a>(<strong class='reserved'>void</strong>)
-<a id='L108' name='L108'></a><em class='brace'>{</em>
-<a id='L109' name='L109'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L1' title='Defined at 1 in file.h.'>file</a> *f;
-<a id='L110' name='L110'></a>  <strong class='reserved'>struct</strong> <a href='../D/581.html' title='Multiple defined in 3 places.'>stat</a> *st;
-<a id='L111' name='L111'></a>
-<a id='L112' name='L112'></a>  <strong class='reserved'>if</strong>(<a href='../S/83.html#L22' title='Defined at 22 in sysfile.c.'>argfd</a>(0, 0, &amp;f) &lt; 0 || <a href='../S/81.html#L59' title='Defined at 59 in syscall.c.'>argptr</a>(1, (<strong class='reserved'>void</strong>*)&amp;st, <strong class='reserved'>sizeof</strong>(*st)) &lt; 0)
-<a id='L113' name='L113'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L114' name='L114'></a>  <strong class='reserved'>return</strong> <a href='../S/15.html#L157' title='Defined at 157 in file.c.'>filestat</a>(f, st);
-<a id='L115' name='L115'></a><em class='brace'>}</em>
-<a id='L116' name='L116'></a>
-<a id='L117' name='L117'></a><em class='comment'>// Create the path new as a link to the same inode as old.</em>
-<a id='L118' name='L118'></a><strong class='reserved'>int</strong>
-<a id='L119' name='L119'></a><a href='../R/511.html' title='Multiple referred from 2 places.'>sys_link</a>(<strong class='reserved'>void</strong>)
-<a id='L120' name='L120'></a><em class='brace'>{</em>
-<a id='L121' name='L121'></a>  <strong class='reserved'>char</strong> name[<a href='../S/103.html#L51' title='Defined at 51 in fs.h.'>DIRSIZ</a>], *new, *old;
-<a id='L122' name='L122'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *dp, *ip;
-<a id='L123' name='L123'></a>
-<a id='L124' name='L124'></a>  <strong class='reserved'>if</strong>(<a href='../S/81.html#L77' title='Defined at 77 in syscall.c.'>argstr</a>(0, &amp;old) &lt; 0 || <a href='../S/81.html#L77' title='Defined at 77 in syscall.c.'>argstr</a>(1, &amp;new) &lt; 0)
-<a id='L125' name='L125'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L126' name='L126'></a>
-<a id='L127' name='L127'></a>  <a href='../S/195.html#L126' title='Defined at 126 in log.c.'>begin_op</a>();
-<a id='L128' name='L128'></a>  <strong class='reserved'>if</strong>((ip = <a href='../S/172.html#L661' title='Defined at 661 in fs.c.'>namei</a>(old)) == 0)<em class='brace'>{</em>
-<a id='L129' name='L129'></a>    <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L130' name='L130'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L131' name='L131'></a>  <em class='brace'>}</em>
-<a id='L132' name='L132'></a>
-<a id='L133' name='L133'></a>  <a href='../S/172.html#L289' title='Defined at 289 in fs.c.'>ilock</a>(ip);
-<a id='L134' name='L134'></a>  <strong class='reserved'>if</strong>(ip-&gt;type == <a href='../S/34.html#L1' title='Defined at 1 in stat.h.'>T_DIR</a>)<em class='brace'>{</em>
-<a id='L135' name='L135'></a>    <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
-<a id='L136' name='L136'></a>    <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L137' name='L137'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L138' name='L138'></a>  <em class='brace'>}</em>
-<a id='L139' name='L139'></a>
-<a id='L140' name='L140'></a>  ip-&gt;nlink++;
-<a id='L141' name='L141'></a>  <a href='../S/172.html#L222' title='Defined at 222 in fs.c.'>iupdate</a>(ip);
-<a id='L142' name='L142'></a>  <a href='../S/172.html#L317' title='Defined at 317 in fs.c.'>iunlock</a>(ip);
-<a id='L143' name='L143'></a>
-<a id='L144' name='L144'></a>  <strong class='reserved'>if</strong>((dp = <a href='../S/172.html#L668' title='Defined at 668 in fs.c.'>nameiparent</a>(new, name)) == 0)
-<a id='L145' name='L145'></a>    <strong class='reserved'>goto</strong> bad;
-<a id='L146' name='L146'></a>  <a href='../S/172.html#L289' title='Defined at 289 in fs.c.'>ilock</a>(dp);
-<a id='L147' name='L147'></a>  <strong class='reserved'>if</strong>(dp-&gt;dev != ip-&gt;dev || <a href='../S/172.html#L553' title='Defined at 553 in fs.c.'>dirlink</a>(dp, name, ip-&gt;inum) &lt; 0)<em class='brace'>{</em>
-<a id='L148' name='L148'></a>    <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(dp);
-<a id='L149' name='L149'></a>    <strong class='reserved'>goto</strong> bad;
-<a id='L150' name='L150'></a>  <em class='brace'>}</em>
-<a id='L151' name='L151'></a>  <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(dp);
-<a id='L152' name='L152'></a>  <a href='../S/172.html#L333' title='Defined at 333 in fs.c.'>iput</a>(ip);
-<a id='L153' name='L153'></a>
-<a id='L154' name='L154'></a>  <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L155' name='L155'></a>
-<a id='L156' name='L156'></a>  <strong class='reserved'>return</strong> 0;
-<a id='L157' name='L157'></a>
-<a id='L158' name='L158'></a>bad:
-<a id='L159' name='L159'></a>  <a href='../S/172.html#L289' title='Defined at 289 in fs.c.'>ilock</a>(ip);
-<a id='L160' name='L160'></a>  ip-&gt;nlink--;
-<a id='L161' name='L161'></a>  <a href='../S/172.html#L222' title='Defined at 222 in fs.c.'>iupdate</a>(ip);
-<a id='L162' name='L162'></a>  <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
-<a id='L163' name='L163'></a>  <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L164' name='L164'></a>  <strong class='reserved'>return</strong> -1;
-<a id='L165' name='L165'></a><em class='brace'>}</em>
-<a id='L166' name='L166'></a>
-<a id='L167' name='L167'></a><em class='comment'>// Is the directory dp empty except for "." and ".." ?</em>
-<a id='L168' name='L168'></a><strong class='reserved'>static</strong> <strong class='reserved'>int</strong>
-<a id='L169' name='L169'></a><a href='../S/83.html#L213' title='Referred from 213 in sysfile.c.'>isdirempty</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *dp)
-<a id='L170' name='L170'></a><em class='brace'>{</em>
-<a id='L171' name='L171'></a>  <strong class='reserved'>int</strong> off;
-<a id='L172' name='L172'></a>  <strong class='reserved'>struct</strong> <a href='../S/103.html#L53' title='Defined at 53 in fs.h.'>dirent</a> de;
-<a id='L173' name='L173'></a>
-<a id='L174' name='L174'></a>  <strong class='reserved'>for</strong>(off=2*<strong class='reserved'>sizeof</strong>(de); off&lt;dp-&gt;size; off+=<strong class='reserved'>sizeof</strong>(de))<em class='brace'>{</em>
-<a id='L175' name='L175'></a>    <strong class='reserved'>if</strong>(<a href='../S/172.html#L454' title='Defined at 454 in fs.c.'>readi</a>(dp, (<strong class='reserved'>char</strong>*)&amp;de, off, <strong class='reserved'>sizeof</strong>(de)) != <strong class='reserved'>sizeof</strong>(de))
-<a id='L176' name='L176'></a>      <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("isdirempty: readi");
-<a id='L177' name='L177'></a>    <strong class='reserved'>if</strong>(de.inum != 0)
-<a id='L178' name='L178'></a>      <strong class='reserved'>return</strong> 0;
-<a id='L179' name='L179'></a>  <em class='brace'>}</em>
-<a id='L180' name='L180'></a>  <strong class='reserved'>return</strong> 1;
-<a id='L181' name='L181'></a><em class='brace'>}</em>
-<a id='L182' name='L182'></a>
-<a id='L183' name='L183'></a><em class='comment'>//PAGEBREAK!</em>
-<a id='L184' name='L184'></a><strong class='reserved'>int</strong>
-<a id='L185' name='L185'></a><a href='../R/520.html' title='Multiple referred from 2 places.'>sys_unlink</a>(<strong class='reserved'>void</strong>)
-<a id='L186' name='L186'></a><em class='brace'>{</em>
-<a id='L187' name='L187'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip, *dp;
-<a id='L188' name='L188'></a>  <strong class='reserved'>struct</strong> <a href='../S/103.html#L53' title='Defined at 53 in fs.h.'>dirent</a> de;
-<a id='L189' name='L189'></a>  <strong class='reserved'>char</strong> name[<a href='../S/103.html#L51' title='Defined at 51 in fs.h.'>DIRSIZ</a>], *path;
-<a id='L190' name='L190'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> off;
-<a id='L191' name='L191'></a>
-<a id='L192' name='L192'></a>  <strong class='reserved'>if</strong>(<a href='../S/81.html#L77' title='Defined at 77 in syscall.c.'>argstr</a>(0, &amp;path) &lt; 0)
-<a id='L193' name='L193'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L194' name='L194'></a>
-<a id='L195' name='L195'></a>  <a href='../S/195.html#L126' title='Defined at 126 in log.c.'>begin_op</a>();
-<a id='L196' name='L196'></a>  <strong class='reserved'>if</strong>((dp = <a href='../S/172.html#L668' title='Defined at 668 in fs.c.'>nameiparent</a>(path, name)) == 0)<em class='brace'>{</em>
-<a id='L197' name='L197'></a>    <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L198' name='L198'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L199' name='L199'></a>  <em class='brace'>}</em>
-<a id='L200' name='L200'></a>
-<a id='L201' name='L201'></a>  <a href='../S/172.html#L289' title='Defined at 289 in fs.c.'>ilock</a>(dp);
-<a id='L202' name='L202'></a>
-<a id='L203' name='L203'></a>  <em class='comment'>// Cannot unlink "." or "..".</em>
-<a id='L204' name='L204'></a>  <strong class='reserved'>if</strong>(<a href='../S/172.html#L518' title='Defined at 518 in fs.c.'>namecmp</a>(name, ".") == 0 || <a href='../S/172.html#L518' title='Defined at 518 in fs.c.'>namecmp</a>(name, "..") == 0)
-<a id='L205' name='L205'></a>    <strong class='reserved'>goto</strong> bad;
-<a id='L206' name='L206'></a>
-<a id='L207' name='L207'></a>  <strong class='reserved'>if</strong>((ip = <a href='../S/172.html#L526' title='Defined at 526 in fs.c.'>dirlookup</a>(dp, name, &amp;off)) == 0)
-<a id='L208' name='L208'></a>    <strong class='reserved'>goto</strong> bad;
-<a id='L209' name='L209'></a>  <a href='../S/172.html#L289' title='Defined at 289 in fs.c.'>ilock</a>(ip);
-<a id='L210' name='L210'></a>
-<a id='L211' name='L211'></a>  <strong class='reserved'>if</strong>(ip-&gt;nlink &lt; 1)
-<a id='L212' name='L212'></a>    <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("unlink: nlink &lt; 1");
-<a id='L213' name='L213'></a>  <strong class='reserved'>if</strong>(ip-&gt;type == <a href='../S/34.html#L1' title='Defined at 1 in stat.h.'>T_DIR</a> &amp;&amp; !<a href='../S/83.html#L169' title='Defined at 169 in sysfile.c.'>isdirempty</a>(ip))<em class='brace'>{</em>
-<a id='L214' name='L214'></a>    <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
-<a id='L215' name='L215'></a>    <strong class='reserved'>goto</strong> bad;
-<a id='L216' name='L216'></a>  <em class='brace'>}</em>
-<a id='L217' name='L217'></a>
-<a id='L218' name='L218'></a>  <a href='../D/489.html' title='Multiple defined in 2 places.'>memset</a>(&amp;de, 0, <strong class='reserved'>sizeof</strong>(de));
-<a id='L219' name='L219'></a>  <strong class='reserved'>if</strong>(<a href='../S/172.html#L483' title='Defined at 483 in fs.c.'>writei</a>(dp, (<strong class='reserved'>char</strong>*)&amp;de, off, <strong class='reserved'>sizeof</strong>(de)) != <strong class='reserved'>sizeof</strong>(de))
-<a id='L220' name='L220'></a>    <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("unlink: writei");
-<a id='L221' name='L221'></a>  <strong class='reserved'>if</strong>(ip-&gt;type == <a href='../S/34.html#L1' title='Defined at 1 in stat.h.'>T_DIR</a>)<em class='brace'>{</em>
-<a id='L222' name='L222'></a>    dp-&gt;nlink--;
-<a id='L223' name='L223'></a>    <a href='../S/172.html#L222' title='Defined at 222 in fs.c.'>iupdate</a>(dp);
-<a id='L224' name='L224'></a>  <em class='brace'>}</em>
-<a id='L225' name='L225'></a>  <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(dp);
-<a id='L226' name='L226'></a>
-<a id='L227' name='L227'></a>  ip-&gt;nlink--;
-<a id='L228' name='L228'></a>  <a href='../S/172.html#L222' title='Defined at 222 in fs.c.'>iupdate</a>(ip);
-<a id='L229' name='L229'></a>  <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
-<a id='L230' name='L230'></a>
-<a id='L231' name='L231'></a>  <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L232' name='L232'></a>
-<a id='L233' name='L233'></a>  <strong class='reserved'>return</strong> 0;
-<a id='L234' name='L234'></a>
-<a id='L235' name='L235'></a>bad:
-<a id='L236' name='L236'></a>  <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(dp);
-<a id='L237' name='L237'></a>  <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L238' name='L238'></a>  <strong class='reserved'>return</strong> -1;
-<a id='L239' name='L239'></a><em class='brace'>}</em>
-<a id='L240' name='L240'></a>
-<a id='L241' name='L241'></a><strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a>*
-<a id='L242' name='L242'></a><a href='../R/273.html' title='Multiple referred from 3 places.'>create</a>(<strong class='reserved'>char</strong> *path, <strong class='reserved'>short</strong> type, <strong class='reserved'>short</strong> major, <strong class='reserved'>short</strong> minor)
-<a id='L243' name='L243'></a><em class='brace'>{</em>
-<a id='L244' name='L244'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> off;
-<a id='L245' name='L245'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip, *dp;
-<a id='L246' name='L246'></a>  <strong class='reserved'>char</strong> name[<a href='../S/103.html#L51' title='Defined at 51 in fs.h.'>DIRSIZ</a>];
-<a id='L247' name='L247'></a>
-<a id='L248' name='L248'></a>  <strong class='reserved'>if</strong>((dp = <a href='../S/172.html#L668' title='Defined at 668 in fs.c.'>nameiparent</a>(path, name)) == 0)
-<a id='L249' name='L249'></a>    <strong class='reserved'>return</strong> 0;
-<a id='L250' name='L250'></a>  <a href='../S/172.html#L289' title='Defined at 289 in fs.c.'>ilock</a>(dp);
-<a id='L251' name='L251'></a>
-<a id='L252' name='L252'></a>  <strong class='reserved'>if</strong>((ip = <a href='../S/172.html#L526' title='Defined at 526 in fs.c.'>dirlookup</a>(dp, name, &amp;off)) != 0)<em class='brace'>{</em>
-<a id='L253' name='L253'></a>    <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(dp);
-<a id='L254' name='L254'></a>    <a href='../S/172.html#L289' title='Defined at 289 in fs.c.'>ilock</a>(ip);
-<a id='L255' name='L255'></a>    <strong class='reserved'>if</strong>(type == <a href='../S/34.html#L2' title='Defined at 2 in stat.h.'>T_FILE</a> &amp;&amp; ip-&gt;type == <a href='../S/34.html#L2' title='Defined at 2 in stat.h.'>T_FILE</a>)
-<a id='L256' name='L256'></a>      <strong class='reserved'>return</strong> ip;
-<a id='L257' name='L257'></a>    <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
-<a id='L258' name='L258'></a>    <strong class='reserved'>return</strong> 0;
-<a id='L259' name='L259'></a>  <em class='brace'>}</em>
-<a id='L260' name='L260'></a>
-<a id='L261' name='L261'></a>  <strong class='reserved'>if</strong>((ip = <a href='../D/416.html' title='Multiple defined in 2 places.'>ialloc</a>(dp-&gt;dev, type)) == 0)
-<a id='L262' name='L262'></a>    <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("create: ialloc");
-<a id='L263' name='L263'></a>
-<a id='L264' name='L264'></a>  <a href='../S/172.html#L289' title='Defined at 289 in fs.c.'>ilock</a>(ip);
-<a id='L265' name='L265'></a>  ip-&gt;major = major;
-<a id='L266' name='L266'></a>  ip-&gt;minor = minor;
-<a id='L267' name='L267'></a>  ip-&gt;nlink = 1;
-<a id='L268' name='L268'></a>  <a href='../S/172.html#L222' title='Defined at 222 in fs.c.'>iupdate</a>(ip);
-<a id='L269' name='L269'></a>
-<a id='L270' name='L270'></a>  <strong class='reserved'>if</strong>(type == <a href='../S/34.html#L1' title='Defined at 1 in stat.h.'>T_DIR</a>)<em class='brace'>{</em>  <em class='comment'>// Create . and .. entries.</em>
-<a id='L271' name='L271'></a>    dp-&gt;nlink++;  <em class='comment'>// for ".."</em>
-<a id='L272' name='L272'></a>    <a href='../S/172.html#L222' title='Defined at 222 in fs.c.'>iupdate</a>(dp);
-<a id='L273' name='L273'></a>    <em class='comment'>// No ip-&gt;nlink++ for ".": avoid cyclic ref count.</em>
-<a id='L274' name='L274'></a>    <strong class='reserved'>if</strong>(<a href='../S/172.html#L553' title='Defined at 553 in fs.c.'>dirlink</a>(ip, ".", ip-&gt;inum) &lt; 0 || <a href='../S/172.html#L553' title='Defined at 553 in fs.c.'>dirlink</a>(ip, "..", dp-&gt;inum) &lt; 0)
-<a id='L275' name='L275'></a>      <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("create dots");
-<a id='L276' name='L276'></a>  <em class='brace'>}</em>
-<a id='L277' name='L277'></a>
-<a id='L278' name='L278'></a>  <strong class='reserved'>if</strong>(<a href='../S/172.html#L553' title='Defined at 553 in fs.c.'>dirlink</a>(dp, name, ip-&gt;inum) &lt; 0)
-<a id='L279' name='L279'></a>    <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("create: dirlink");
-<a id='L280' name='L280'></a>
-<a id='L281' name='L281'></a>  <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(dp);
-<a id='L282' name='L282'></a>
-<a id='L283' name='L283'></a>  <strong class='reserved'>return</strong> ip;
-<a id='L284' name='L284'></a><em class='brace'>}</em>
-<a id='L285' name='L285'></a>
-<a id='L286' name='L286'></a><strong class='reserved'>int</strong>
-<a id='L287' name='L287'></a><a href='../R/514.html' title='Multiple referred from 2 places.'>sys_open</a>(<strong class='reserved'>void</strong>)
-<a id='L288' name='L288'></a><em class='brace'>{</em>
-<a id='L289' name='L289'></a>  <strong class='reserved'>char</strong> *path;
-<a id='L290' name='L290'></a>  <strong class='reserved'>int</strong> fd, omode;
-<a id='L291' name='L291'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L1' title='Defined at 1 in file.h.'>file</a> *f;
-<a id='L292' name='L292'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip;
-<a id='L293' name='L293'></a>
-<a id='L294' name='L294'></a>  <strong class='reserved'>if</strong>(<a href='../S/81.html#L77' title='Defined at 77 in syscall.c.'>argstr</a>(0, &amp;path) &lt; 0 || <a href='../S/81.html#L50' title='Defined at 50 in syscall.c.'>argint</a>(1, &amp;omode) &lt; 0)
-<a id='L295' name='L295'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L296' name='L296'></a>
-<a id='L297' name='L297'></a>  <a href='../S/195.html#L126' title='Defined at 126 in log.c.'>begin_op</a>();
-<a id='L298' name='L298'></a>
-<a id='L299' name='L299'></a>  <strong class='reserved'>if</strong>(omode &amp; <a href='../S/58.html#L4' title='Defined at 4 in fcntl.h.'>O_CREATE</a>)<em class='brace'>{</em>
-<a id='L300' name='L300'></a>    ip = <a href='../S/83.html#L242' title='Defined at 242 in sysfile.c.'>create</a>(path, <a href='../S/34.html#L2' title='Defined at 2 in stat.h.'>T_FILE</a>, 0, 0);
-<a id='L301' name='L301'></a>    <strong class='reserved'>if</strong>(ip == 0)<em class='brace'>{</em>
-<a id='L302' name='L302'></a>      <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L303' name='L303'></a>      <strong class='reserved'>return</strong> -1;
-<a id='L304' name='L304'></a>    <em class='brace'>}</em>
-<a id='L305' name='L305'></a>  <em class='brace'>}</em> <strong class='reserved'>else</strong> <em class='brace'>{</em>
-<a id='L306' name='L306'></a>    <strong class='reserved'>if</strong>((ip = <a href='../S/172.html#L661' title='Defined at 661 in fs.c.'>namei</a>(path)) == 0)<em class='brace'>{</em>
-<a id='L307' name='L307'></a>      <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L308' name='L308'></a>      <strong class='reserved'>return</strong> -1;
-<a id='L309' name='L309'></a>    <em class='brace'>}</em>
-<a id='L310' name='L310'></a>    <a href='../S/172.html#L289' title='Defined at 289 in fs.c.'>ilock</a>(ip);
-<a id='L311' name='L311'></a>    <strong class='reserved'>if</strong>(ip-&gt;type == <a href='../S/34.html#L1' title='Defined at 1 in stat.h.'>T_DIR</a> &amp;&amp; omode != <a href='../S/58.html#L1' title='Defined at 1 in fcntl.h.'>O_RDONLY</a>)<em class='brace'>{</em>
-<a id='L312' name='L312'></a>      <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
-<a id='L313' name='L313'></a>      <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L314' name='L314'></a>      <strong class='reserved'>return</strong> -1;
-<a id='L315' name='L315'></a>    <em class='brace'>}</em>
-<a id='L316' name='L316'></a>  <em class='brace'>}</em>
-<a id='L317' name='L317'></a>
-<a id='L318' name='L318'></a>  <strong class='reserved'>if</strong>((f = <a href='../S/15.html#L58' title='Defined at 58 in file.c.'>filealloc</a>()) == 0 || (fd = <a href='../S/83.html#L41' title='Defined at 41 in sysfile.c.'>fdalloc</a>(f)) &lt; 0)<em class='brace'>{</em>
-<a id='L319' name='L319'></a>    <strong class='reserved'>if</strong>(f)
-<a id='L320' name='L320'></a>      <a href='../S/15.html#L124' title='Defined at 124 in file.c.'>fileclose</a>(f);
-<a id='L321' name='L321'></a>    <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
-<a id='L322' name='L322'></a>    <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L323' name='L323'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L324' name='L324'></a>  <em class='brace'>}</em>
-<a id='L325' name='L325'></a>  <a href='../S/172.html#L317' title='Defined at 317 in fs.c.'>iunlock</a>(ip);
-<a id='L326' name='L326'></a>  <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L327' name='L327'></a>
-<a id='L328' name='L328'></a>  f-&gt;type = <a href='../S/55.html#L2' title='Defined at 2 in file.h.'>FD_INODE</a>;
-<a id='L329' name='L329'></a>  f-&gt;ip = ip;
-<a id='L330' name='L330'></a>  f-&gt;off = 0;
-<a id='L331' name='L331'></a>  f-&gt;readable = !(omode &amp; <a href='../S/58.html#L2' title='Defined at 2 in fcntl.h.'>O_WRONLY</a>);
-<a id='L332' name='L332'></a>  f-&gt;writable = (omode &amp; <a href='../S/58.html#L2' title='Defined at 2 in fcntl.h.'>O_WRONLY</a>) || (omode &amp; <a href='../S/58.html#L3' title='Defined at 3 in fcntl.h.'>O_RDWR</a>);
-<a id='L333' name='L333'></a>  <strong class='reserved'>return</strong> fd;
-<a id='L334' name='L334'></a><em class='brace'>}</em>
-<a id='L335' name='L335'></a>
-<a id='L336' name='L336'></a><strong class='reserved'>int</strong>
-<a id='L337' name='L337'></a><a href='../R/512.html' title='Multiple referred from 2 places.'>sys_mkdir</a>(<strong class='reserved'>void</strong>)
-<a id='L338' name='L338'></a><em class='brace'>{</em>
-<a id='L339' name='L339'></a>  <strong class='reserved'>char</strong> *path;
-<a id='L340' name='L340'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip;
-<a id='L341' name='L341'></a>
-<a id='L342' name='L342'></a>  <a href='../S/195.html#L126' title='Defined at 126 in log.c.'>begin_op</a>();
-<a id='L343' name='L343'></a>  <strong class='reserved'>if</strong>(<a href='../S/81.html#L77' title='Defined at 77 in syscall.c.'>argstr</a>(0, &amp;path) &lt; 0 || (ip = <a href='../S/83.html#L242' title='Defined at 242 in sysfile.c.'>create</a>(path, <a href='../S/34.html#L1' title='Defined at 1 in stat.h.'>T_DIR</a>, 0, 0)) == 0)<em class='brace'>{</em>
-<a id='L344' name='L344'></a>    <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L345' name='L345'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L346' name='L346'></a>  <em class='brace'>}</em>
-<a id='L347' name='L347'></a>  <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
-<a id='L348' name='L348'></a>  <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L349' name='L349'></a>  <strong class='reserved'>return</strong> 0;
-<a id='L350' name='L350'></a><em class='brace'>}</em>
-<a id='L351' name='L351'></a>
-<a id='L352' name='L352'></a><strong class='reserved'>int</strong>
-<a id='L353' name='L353'></a><a href='../R/513.html' title='Multiple referred from 2 places.'>sys_mknod</a>(<strong class='reserved'>void</strong>)
-<a id='L354' name='L354'></a><em class='brace'>{</em>
-<a id='L355' name='L355'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip;
-<a id='L356' name='L356'></a>  <strong class='reserved'>char</strong> *path;
-<a id='L357' name='L357'></a>  <strong class='reserved'>int</strong> major, minor;
-<a id='L358' name='L358'></a>
-<a id='L359' name='L359'></a>  <a href='../S/195.html#L126' title='Defined at 126 in log.c.'>begin_op</a>();
-<a id='L360' name='L360'></a>  <strong class='reserved'>if</strong>((<a href='../S/81.html#L77' title='Defined at 77 in syscall.c.'>argstr</a>(0, &amp;path)) &lt; 0 ||
-<a id='L361' name='L361'></a>     <a href='../S/81.html#L50' title='Defined at 50 in syscall.c.'>argint</a>(1, &amp;major) &lt; 0 ||
-<a id='L362' name='L362'></a>     <a href='../S/81.html#L50' title='Defined at 50 in syscall.c.'>argint</a>(2, &amp;minor) &lt; 0 ||
-<a id='L363' name='L363'></a>     (ip = <a href='../S/83.html#L242' title='Defined at 242 in sysfile.c.'>create</a>(path, <a href='../S/34.html#L3' title='Defined at 3 in stat.h.'>T_DEV</a>, major, minor)) == 0)<em class='brace'>{</em>
-<a id='L364' name='L364'></a>    <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L365' name='L365'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L366' name='L366'></a>  <em class='brace'>}</em>
-<a id='L367' name='L367'></a>  <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
-<a id='L368' name='L368'></a>  <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L369' name='L369'></a>  <strong class='reserved'>return</strong> 0;
-<a id='L370' name='L370'></a><em class='brace'>}</em>
-<a id='L371' name='L371'></a>
-<a id='L372' name='L372'></a><strong class='reserved'>int</strong>
-<a id='L373' name='L373'></a><a href='../R/501.html' title='Multiple referred from 2 places.'>sys_chdir</a>(<strong class='reserved'>void</strong>)
-<a id='L374' name='L374'></a><em class='brace'>{</em>
-<a id='L375' name='L375'></a>  <strong class='reserved'>char</strong> *path;
-<a id='L376' name='L376'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip;
-<a id='L377' name='L377'></a>  <strong class='reserved'>struct</strong> <a href='../S/92.html#L61' title='Defined at 61 in proc.h.'>proc</a> *curproc = <a href='../S/63.html#L92' title='Defined at 92 in proc.c.'>myproc</a>();
-<a id='L378' name='L378'></a>  
-<a id='L379' name='L379'></a>  <a href='../S/195.html#L126' title='Defined at 126 in log.c.'>begin_op</a>();
-<a id='L380' name='L380'></a>  <strong class='reserved'>if</strong>(<a href='../S/81.html#L77' title='Defined at 77 in syscall.c.'>argstr</a>(0, &amp;path) &lt; 0 || (ip = <a href='../S/172.html#L661' title='Defined at 661 in fs.c.'>namei</a>(path)) == 0)<em class='brace'>{</em>
-<a id='L381' name='L381'></a>    <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L382' name='L382'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L383' name='L383'></a>  <em class='brace'>}</em>
-<a id='L384' name='L384'></a>  <a href='../S/172.html#L289' title='Defined at 289 in fs.c.'>ilock</a>(ip);
-<a id='L385' name='L385'></a>  <strong class='reserved'>if</strong>(ip-&gt;type != <a href='../S/34.html#L1' title='Defined at 1 in stat.h.'>T_DIR</a>)<em class='brace'>{</em>
-<a id='L386' name='L386'></a>    <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
-<a id='L387' name='L387'></a>    <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L388' name='L388'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L389' name='L389'></a>  <em class='brace'>}</em>
-<a id='L390' name='L390'></a>  <a href='../S/172.html#L317' title='Defined at 317 in fs.c.'>iunlock</a>(ip);
-<a id='L391' name='L391'></a>  <a href='../S/172.html#L333' title='Defined at 333 in fs.c.'>iput</a>(curproc-&gt;cwd);
-<a id='L392' name='L392'></a>  <a href='../S/195.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L393' name='L393'></a>  curproc-&gt;cwd = ip;
-<a id='L394' name='L394'></a>  <strong class='reserved'>return</strong> 0;
-<a id='L395' name='L395'></a><em class='brace'>}</em>
-<a id='L396' name='L396'></a>
-<a id='L397' name='L397'></a><strong class='reserved'>int</strong>
-<a id='L398' name='L398'></a><a href='../R/505.html' title='Multiple referred from 2 places.'>sys_exec</a>(<strong class='reserved'>void</strong>)
-<a id='L399' name='L399'></a><em class='brace'>{</em>
-<a id='L400' name='L400'></a>  <strong class='reserved'>char</strong> *path, *argv[<a href='../S/28.html#L13' title='Defined at 13 in param.h.'>MAXARG</a>];
-<a id='L401' name='L401'></a>  <strong class='reserved'>int</strong> i;
-<a id='L402' name='L402'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> uargv, uarg;
-<a id='L403' name='L403'></a>
-<a id='L404' name='L404'></a>  <strong class='reserved'>if</strong>(<a href='../S/81.html#L77' title='Defined at 77 in syscall.c.'>argstr</a>(0, &amp;path) &lt; 0 || <a href='../S/81.html#L50' title='Defined at 50 in syscall.c.'>argint</a>(1, (<strong class='reserved'>int</strong>*)&amp;uargv) &lt; 0)<em class='brace'>{</em>
-<a id='L405' name='L405'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L406' name='L406'></a>  <em class='brace'>}</em>
-<a id='L407' name='L407'></a>  <a href='../D/489.html' title='Multiple defined in 2 places.'>memset</a>(argv, 0, <strong class='reserved'>sizeof</strong>(argv));
-<a id='L408' name='L408'></a>  <strong class='reserved'>for</strong>(i=0;; i++)<em class='brace'>{</em>
-<a id='L409' name='L409'></a>    <strong class='reserved'>if</strong>(i &gt;= <a href='../S/118.html#L216' title='Defined at 216 in defs.h.'>NELEM</a>(argv))
-<a id='L410' name='L410'></a>      <strong class='reserved'>return</strong> -1;
-<a id='L411' name='L411'></a>    <strong class='reserved'>if</strong>(<a href='../S/81.html#L18' title='Defined at 18 in syscall.c.'>fetchint</a>(uargv+4*i, (<strong class='reserved'>int</strong>*)&amp;uarg) &lt; 0)
-<a id='L412' name='L412'></a>      <strong class='reserved'>return</strong> -1;
-<a id='L413' name='L413'></a>    <strong class='reserved'>if</strong>(uarg == 0)<em class='brace'>{</em>
-<a id='L414' name='L414'></a>      argv[i] = 0;
-<a id='L415' name='L415'></a>      <strong class='reserved'>break</strong>;
-<a id='L416' name='L416'></a>    <em class='brace'>}</em>
-<a id='L417' name='L417'></a>    <strong class='reserved'>if</strong>(<a href='../S/81.html#L32' title='Defined at 32 in syscall.c.'>fetchstr</a>(uarg, &amp;argv[i]) &lt; 0)
-<a id='L418' name='L418'></a>      <strong class='reserved'>return</strong> -1;
-<a id='L419' name='L419'></a>  <em class='brace'>}</em>
-<a id='L420' name='L420'></a>  <strong class='reserved'>return</strong> <a href='../S/89.html#L12' title='Defined at 12 in exec.c.'>exec</a>(path, argv);
-<a id='L421' name='L421'></a><em class='brace'>}</em>
-<a id='L422' name='L422'></a>
-<a id='L423' name='L423'></a><strong class='reserved'>int</strong>
-<a id='L424' name='L424'></a><a href='../R/515.html' title='Multiple referred from 2 places.'>sys_pipe</a>(<strong class='reserved'>void</strong>)
-<a id='L425' name='L425'></a><em class='brace'>{</em>
-<a id='L426' name='L426'></a>  <strong class='reserved'>int</strong> *fd;
-<a id='L427' name='L427'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L1' title='Defined at 1 in file.h.'>file</a> *rf, *wf;
-<a id='L428' name='L428'></a>  <strong class='reserved'>int</strong> fd0, fd1;
-<a id='L429' name='L429'></a>
-<a id='L430' name='L430'></a>  <strong class='reserved'>if</strong>(<a href='../S/81.html#L59' title='Defined at 59 in syscall.c.'>argptr</a>(0, (<strong class='reserved'>void</strong>*)&amp;fd, 2*<strong class='reserved'>sizeof</strong>(fd[0])) &lt; 0)
-<a id='L431' name='L431'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L432' name='L432'></a>  <strong class='reserved'>if</strong>(<a href='../S/94.html#L23' title='Defined at 23 in pipe.c.'>pipealloc</a>(&amp;rf, &amp;wf) &lt; 0)
-<a id='L433' name='L433'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L434' name='L434'></a>  fd0 = -1;
-<a id='L435' name='L435'></a>  <strong class='reserved'>if</strong>((fd0 = <a href='../S/83.html#L41' title='Defined at 41 in sysfile.c.'>fdalloc</a>(rf)) &lt; 0 || (fd1 = <a href='../S/83.html#L41' title='Defined at 41 in sysfile.c.'>fdalloc</a>(wf)) &lt; 0)<em class='brace'>{</em>
-<a id='L436' name='L436'></a>    <strong class='reserved'>if</strong>(fd0 &gt;= 0)
-<a id='L437' name='L437'></a>      <a href='../S/63.html#L92' title='Defined at 92 in proc.c.'>myproc</a>()-&gt;ofile[fd0] = 0;
-<a id='L438' name='L438'></a>    <a href='../S/15.html#L124' title='Defined at 124 in file.c.'>fileclose</a>(rf);
-<a id='L439' name='L439'></a>    <a href='../S/15.html#L124' title='Defined at 124 in file.c.'>fileclose</a>(wf);
-<a id='L440' name='L440'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L441' name='L441'></a>  <em class='brace'>}</em>
-<a id='L442' name='L442'></a>  fd[0] = fd0;
-<a id='L443' name='L443'></a>  fd[1] = fd1;
-<a id='L444' name='L444'></a>  <strong class='reserved'>return</strong> 0;
-<a id='L445' name='L445'></a><em class='brace'>}</em>
+<a id='L76' name='L76'></a>  fd = open(n, <a href='../S/59.html#L4' title='Defined at 4 in fcntl.h.'>O_RDONLY</a>);
+<a id='L77' name='L77'></a>  <strong class='reserved'>if</strong>(fd &lt; 0)
+<a id='L78' name='L78'></a>    <strong class='reserved'>return</strong> -1;
+<a id='L79' name='L79'></a>  r = fstat(fd, st);
+<a id='L80' name='L80'></a>  close(fd);
+<a id='L81' name='L81'></a>  <strong class='reserved'>return</strong> r;
+<a id='L82' name='L82'></a><em class='brace'>}</em>
+<a id='L83' name='L83'></a>
+<a id='L84' name='L84'></a><strong class='reserved'>int</strong>
+<a id='L85' name='L85'></a><a href='../R/250.html' title='Multiple referred from 3 places.'>atoi</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *s)
+<a id='L86' name='L86'></a><em class='brace'>{</em>
+<a id='L87' name='L87'></a>  <strong class='reserved'>int</strong> n;
+<a id='L88' name='L88'></a>
+<a id='L89' name='L89'></a>  n = 0;
+<a id='L90' name='L90'></a>  <strong class='reserved'>while</strong>('0' &lt;= *s &amp;&amp; *s &lt;= '9')
+<a id='L91' name='L91'></a>    n = n*10 + *s++ - '0';
+<a id='L92' name='L92'></a>  <strong class='reserved'>return</strong> n;
+<a id='L93' name='L93'></a><em class='brace'>}</em>
+<a id='L94' name='L94'></a>
+<a id='L95' name='L95'></a><strong class='reserved'>void</strong>*
+<a id='L96' name='L96'></a><a href='../R/412.html' title='Multiple referred from 23 places.'>memmove</a>(<strong class='reserved'>void</strong> *vdst, <strong class='reserved'>void</strong> *vsrc, <strong class='reserved'>int</strong> n)
+<a id='L97' name='L97'></a><em class='brace'>{</em>
+<a id='L98' name='L98'></a>  <strong class='reserved'>char</strong> *dst, *src;
+<a id='L99' name='L99'></a>
+<a id='L100' name='L100'></a>  dst = vdst;
+<a id='L101' name='L101'></a>  src = vsrc;
+<a id='L102' name='L102'></a>  <strong class='reserved'>while</strong>(n-- &gt; 0)
+<a id='L103' name='L103'></a>    *dst++ = *src++;
+<a id='L104' name='L104'></a>  <strong class='reserved'>return</strong> vdst;
+<a id='L105' name='L105'></a><em class='brace'>}</em>
 </pre>
 <hr />
 <a id='BOTTOM' name='BOTTOM'></a>
-<em class='comment'>/* [&lt;][&gt;]<a href='#L22'>[^]</a><a href='#L424'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L8'>[^]</a><a href='#L96'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 </body>
 </html>

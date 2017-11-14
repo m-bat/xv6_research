@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>mem</title>
+<title>lapicw</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,27 +9,26 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/46.html#L1782'>mem</a>              1782 usertests.c      mem();</span>
-<span class='curline'><a href='../S/157.html#L402'>mem</a>               402 vm.c             char *mem;</span>
-<span class='curline'><a href='../S/157.html#L406'>mem</a>               406 vm.c             mem = kalloc();</span>
-<span class='curline'><a href='../S/157.html#L408'>mem</a>               408 vm.c             mem_inituvm = mem;</span>
-<span class='curline'><a href='../S/157.html#L412'>mem</a>               412 vm.c             cprintf("mem %x", mem);</span>
-<span class='curline'><a href='../S/157.html#L414'>mem</a>               414 vm.c             memset(mem, 0, PGSIZE);</span>
-<span class='curline'><a href='../S/157.html#L415'>mem</a>               415 vm.c             mappages(pgdir, 0, PGSIZE, V2P(mem), PTE_W|PTE_U);</span>
-<span class='curline'><a href='../S/157.html#L416'>mem</a>               416 vm.c             memmove(mem, init, sz);</span>
-<span class='curline'><a href='../S/157.html#L448'>mem</a>               448 vm.c             char *mem;</span>
-<span class='curline'><a href='../S/157.html#L458'>mem</a>               458 vm.c               mem = kalloc();</span>
-<span class='curline'><a href='../S/157.html#L459'>mem</a>               459 vm.c               if(mem == 0){</span>
-<span class='curline'><a href='../S/157.html#L464'>mem</a>               464 vm.c               memset(mem, 0, PGSIZE);</span>
-<span class='curline'><a href='../S/157.html#L465'>mem</a>               465 vm.c               if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U) &lt; 0){</span>
-<span class='curline'><a href='../S/157.html#L468'>mem</a>               468 vm.c                 kfree(mem);</span>
-<span class='curline'><a href='../S/157.html#L636'>mem</a>               636 vm.c             char *mem;</span>
-<span class='curline'><a href='../S/157.html#L647'>mem</a>               647 vm.c               if((mem = kalloc()) == 0)</span>
-<span class='curline'><a href='../S/157.html#L649'>mem</a>               649 vm.c               memmove(mem, (char*)P2V(pa), PGSIZE);</span>
-<span class='curline'><a href='../S/157.html#L650'>mem</a>               650 vm.c               if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags) &lt; 0)</span>
-<span class='curline'><a href='../S/157.html#L705'>mem</a>               705 vm.c             char *mem;</span>
-<span class='curline'><a href='../S/157.html#L707'>mem</a>               707 vm.c             if ((mem = kuinfo_alloc()) == 0) {</span>
-<span class='curline'><a href='../S/157.html#L712'>mem</a>               712 vm.c             memmove(mem, (char*)p, PGSIZE);</span>
+<span class='curline'><a href='../S/156.html#L61'>lapicw</a>             61 lapic.c          lapicw(SVR, ENABLE | (T_IRQ0 + IRQ_SPURIOUS));</span>
+<span class='curline'><a href='../S/156.html#L67'>lapicw</a>             67 lapic.c          lapicw(TDCR, X1);</span>
+<span class='curline'><a href='../S/156.html#L68'>lapicw</a>             68 lapic.c          lapicw(TIMER, PERIODIC | (T_IRQ0 + IRQ_TIMER));</span>
+<span class='curline'><a href='../S/156.html#L69'>lapicw</a>             69 lapic.c          lapicw(TICR, 10000000);</span>
+<span class='curline'><a href='../S/156.html#L72'>lapicw</a>             72 lapic.c          lapicw(LINT0, MASKED);</span>
+<span class='curline'><a href='../S/156.html#L73'>lapicw</a>             73 lapic.c          lapicw(LINT1, MASKED);</span>
+<span class='curline'><a href='../S/156.html#L78'>lapicw</a>             78 lapic.c            lapicw(PCINT, MASKED);</span>
+<span class='curline'><a href='../S/156.html#L81'>lapicw</a>             81 lapic.c          lapicw(ERROR, T_IRQ0 + IRQ_ERROR);</span>
+<span class='curline'><a href='../S/156.html#L84'>lapicw</a>             84 lapic.c          lapicw(ESR, 0);</span>
+<span class='curline'><a href='../S/156.html#L85'>lapicw</a>             85 lapic.c          lapicw(ESR, 0);</span>
+<span class='curline'><a href='../S/156.html#L88'>lapicw</a>             88 lapic.c          lapicw(EOI, 0);</span>
+<span class='curline'><a href='../S/156.html#L91'>lapicw</a>             91 lapic.c          lapicw(ICRHI, 0);</span>
+<span class='curline'><a href='../S/156.html#L92'>lapicw</a>             92 lapic.c          lapicw(ICRLO, BCAST | INIT | LEVEL);</span>
+<span class='curline'><a href='../S/156.html#L97'>lapicw</a>             97 lapic.c          lapicw(TPR, 0);</span>
+<span class='curline'><a href='../S/156.html#L113'>lapicw</a>            113 lapic.c            lapicw(EOI, 0);</span>
+<span class='curline'><a href='../S/156.html#L145'>lapicw</a>            145 lapic.c          lapicw(ICRHI, apicid&lt;&lt;24);</span>
+<span class='curline'><a href='../S/156.html#L146'>lapicw</a>            146 lapic.c          lapicw(ICRLO, INIT | LEVEL | ASSERT);</span>
+<span class='curline'><a href='../S/156.html#L148'>lapicw</a>            148 lapic.c          lapicw(ICRLO, INIT | LEVEL);</span>
+<span class='curline'><a href='../S/156.html#L157'>lapicw</a>            157 lapic.c            lapicw(ICRHI, apicid&lt;&lt;24);</span>
+<span class='curline'><a href='../S/156.html#L158'>lapicw</a>            158 lapic.c            lapicw(ICRLO, STARTUP | (addr&gt;&gt;12));</span>
 </pre>
 </body>
 </html>

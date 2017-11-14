@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>CMOS_PORT</title>
+<title>C</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,9 +9,17 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/155.html#L137'>CMOS_PORT</a>         137 lapic.c          outb(CMOS_PORT, 0xF);  // offset 0xF is shutdown code</span>
-<span class='curline'><a href='../S/155.html#L138'>CMOS_PORT</a>         138 lapic.c          outb(CMOS_PORT+1, 0x0A);</span>
-<span class='curline'><a href='../S/155.html#L176'>CMOS_PORT</a>         176 lapic.c          outb(CMOS_PORT,  reg);</span>
+<span class='curline'><a href='../S/163.html#L231'>C</a>                 231 console.c          case C('P'):  // Process listing.</span>
+<span class='curline'><a href='../S/163.html#L235'>C</a>                 235 console.c          case C('U'):  // Kill line.</span>
+<span class='curline'><a href='../S/163.html#L242'>C</a>                 242 console.c          case C('H'): case '\x7f':  // Backspace</span>
+<span class='curline'><a href='../S/163.html#L253'>C</a>                 253 console.c              if(c == '\n' || c == C('D') || input.e == input.r+INPUT_BUF){</span>
+<span class='curline'><a href='../S/163.html#L297'>C</a>                 297 console.c          if(c == C('D')){  // EOF</span>
+<span class='curline'><a href='../S/143.html#L102'>C</a>                 102 kbd.h            C('Q'),  C('W'),  C('E'),  C('R'),  C('T'),  C('Y'),  C('U'),  C('I'),</span>
+<span class='curline'><a href='../S/143.html#L103'>C</a>                 103 kbd.h            C('O'),  C('P'),  NO,      NO,      '\r',    NO,      C('A'),  C('S'),</span>
+<span class='curline'><a href='../S/143.html#L104'>C</a>                 104 kbd.h            C('D'),  C('F'),  C('G'),  C('H'),  C('J'),  C('K'),  C('L'),  NO,</span>
+<span class='curline'><a href='../S/143.html#L105'>C</a>                 105 kbd.h            NO,      NO,      NO,      C('\\'), C('Z'),  C('X'),  C('C'),  C('V'),</span>
+<span class='curline'><a href='../S/143.html#L106'>C</a>                 106 kbd.h            C('B'),  C('N'),  C('M'),  NO,      NO,      C('/'),  NO,      NO,</span>
+<span class='curline'><a href='../S/143.html#L108'>C</a>                 108 kbd.h            [0xB5] C('/'),    // KP_Div</span>
 </pre>
 </body>
 </html>

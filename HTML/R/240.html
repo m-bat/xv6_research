@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>binit</title>
+<title>acquire</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,8 +9,49 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/118.html#L19'>binit</a>              19 defs.h         void            binit(void);</span>
-<span class='curline'><a href='../S/154.html#L34'>binit</a>              34 main.c           binit();         // buffer cache</span>
+<span class='curline'><a href='../S/38.html#L66'>acquire</a>            66 bio.c            acquire(&amp;bcache.lock);</span>
+<span class='curline'><a href='../S/38.html#L128'>acquire</a>           128 bio.c            acquire(&amp;bcache.lock);</span>
+<span class='curline'><a href='../S/163.html#L78'>acquire</a>            78 console.c          acquire(&amp;cons-&gt;lock);</span>
+<span class='curline'><a href='../S/163.html#L227'>acquire</a>           227 console.c        acquire(&amp;cons-&gt;lock);</span>
+<span class='curline'><a href='../S/163.html#L279'>acquire</a>           279 console.c        acquire(&amp;cons-&gt;lock);</span>
+<span class='curline'><a href='../S/163.html#L326'>acquire</a>           326 console.c        acquire(&amp;cons-&gt;lock);</span>
+<span class='curline'><a href='../S/119.html#L145'>acquire</a>           145 defs.h         void            acquire(struct spinlock*);</span>
+<span class='curline'><a href='../S/15.html#L67'>acquire</a>            67 file.c           acquire(&amp;ftable.lock);</span>
+<span class='curline'><a href='../S/15.html#L113'>acquire</a>           113 file.c           acquire(&amp;ftable.lock);</span>
+<span class='curline'><a href='../S/15.html#L127'>acquire</a>           127 file.c           acquire(&amp;ftable.lock);</span>
+<span class='curline'><a href='../S/173.html#L247'>acquire</a>           247 fs.c             acquire(&amp;icache.lock);</span>
+<span class='curline'><a href='../S/173.html#L280'>acquire</a>           280 fs.c             acquire(&amp;icache.lock);</span>
+<span class='curline'><a href='../S/173.html#L337'>acquire</a>           337 fs.c               acquire(&amp;icache.lock);</span>
+<span class='curline'><a href='../S/173.html#L350'>acquire</a>           350 fs.c             acquire(&amp;icache.lock);</span>
+<span class='curline'><a href='../S/144.html#L109'>acquire</a>           109 ide.c            acquire(&amp;idelock);</span>
+<span class='curline'><a href='../S/144.html#L149'>acquire</a>           149 ide.c            acquire(&amp;idelock);  //DOC:acquire-lock</span>
+<span class='curline'><a href='../S/168.html#L87'>acquire</a>            87 kalloc.c           acquire(&amp;kmem.lock);</span>
+<span class='curline'><a href='../S/168.html#L134'>acquire</a>           134 kalloc.c           acquire(&amp;kmem.lock);</span>
+<span class='curline'><a href='../S/196.html#L128'>acquire</a>           128 log.c            acquire(&amp;log.lock);</span>
+<span class='curline'><a href='../S/196.html#L150'>acquire</a>           150 log.c            acquire(&amp;log.lock);</span>
+<span class='curline'><a href='../S/196.html#L169'>acquire</a>           169 log.c              acquire(&amp;log.lock);</span>
+<span class='curline'><a href='../S/196.html#L223'>acquire</a>           223 log.c            acquire(&amp;log.lock);</span>
+<span class='curline'><a href='../S/95.html#L65'>acquire</a>            65 pipe.c           acquire(&amp;p-&gt;lock);</span>
+<span class='curline'><a href='../S/95.html#L86'>acquire</a>            86 pipe.c           acquire(&amp;p-&gt;lock);</span>
+<span class='curline'><a href='../S/95.html#L108'>acquire</a>           108 pipe.c           acquire(&amp;p-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L111'>acquire</a>           111 proc.c           acquire(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L203'>acquire</a>           203 proc.c           acquire(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L270'>acquire</a>           270 proc.c           acquire(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L318'>acquire</a>           318 proc.c           acquire(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L348'>acquire</a>           348 proc.c           acquire(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L404'>acquire</a>           404 proc.c             acquire(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L458'>acquire</a>           458 proc.c           acquire(&amp;ptable-&gt;lock);  //DOC: yieldlock</span>
+<span class='curline'><a href='../S/64.html#L505'>acquire</a>           505 proc.c             acquire(&amp;ptable-&gt;lock);  //DOC: sleeplock1</span>
+<span class='curline'><a href='../S/64.html#L520'>acquire</a>           520 proc.c             acquire(lk);</span>
+<span class='curline'><a href='../S/64.html#L541'>acquire</a>           541 proc.c           acquire(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L554'>acquire</a>           554 proc.c           acquire(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L620'>acquire</a>           620 proc.c           acquire(&amp;ptable-&gt;lock);    </span>
+<span class='curline'><a href='../S/138.html#L25'>acquire</a>            25 sleeplock.c      acquire(&amp;lk-&gt;lk);</span>
+<span class='curline'><a href='../S/138.html#L37'>acquire</a>            37 sleeplock.c      acquire(&amp;lk-&gt;lk);</span>
+<span class='curline'><a href='../S/138.html#L49'>acquire</a>            49 sleeplock.c      acquire(&amp;lk-&gt;lk);</span>
+<span class='curline'><a href='../S/102.html#L67'>acquire</a>            67 sysproc.c        acquire(tickslock);</span>
+<span class='curline'><a href='../S/102.html#L87'>acquire</a>            87 sysproc.c        acquire(tickslock);</span>
+<span class='curline'><a href='../S/162.html#L74'>acquire</a>            74 trap.c               acquire(tickslock);</span>
 </pre>
 </body>
 </html>

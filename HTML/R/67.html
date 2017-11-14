@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>IRQ_COM1</title>
+<title>IPB</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,8 +9,13 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/161.html#L93'>IRQ_COM1</a>           93 trap.c           case T_IRQ0 + IRQ_COM1:</span>
-<span class='curline'><a href='../S/193.html#L44'>IRQ_COM1</a>           44 uart.c           ioapicenable(IRQ_COM1, 0);</span>
+<span class='curline'><a href='../S/173.html#L204'>IPB</a>               204 fs.c               dip = (struct dinode*)bp-&gt;data + inum%IPB;</span>
+<span class='curline'><a href='../S/173.html#L228'>IPB</a>               228 fs.c             dip = (struct dinode*)bp-&gt;data + ip-&gt;inum%IPB;</span>
+<span class='curline'><a href='../S/173.html#L301'>IPB</a>               301 fs.c               dip = (struct dinode*)bp-&gt;data + ip-&gt;inum%IPB;</span>
+<span class='curline'><a href='../S/104.html#L45'>IPB</a>                45 fs.h           #define IBLOCK(i, sb)     ((i) / IPB + sb.inodestart)</span>
+<span class='curline'><a href='../S/36.html#L24'>IPB</a>                24 mkfs.c         int ninodeblocks = NINODES / IPB + 1;</span>
+<span class='curline'><a href='../S/36.html#L192'>IPB</a>               192 mkfs.c           dip = ((struct dinode*)buf) + (inum % IPB);</span>
+<span class='curline'><a href='../S/36.html#L206'>IPB</a>               206 mkfs.c           dip = ((struct dinode*)buf) + (inum % IPB);</span>
 </pre>
 </body>
 </html>

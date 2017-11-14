@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>STA_W</title>
+<title>SLEEPING</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,8 +9,12 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/157.html#L33'>STA_W</a>              33 vm.c             c-&gt;gdt[SEG_KDATA] = SEG(STA_W, 0, 0xffffffff, 0);</span>
-<span class='curline'><a href='../S/157.html#L35'>STA_W</a>              35 vm.c             c-&gt;gdt[SEG_UDATA] = SEG(STA_W, 0, 0xffffffff, DPL_USER);</span>
+<span class='curline'><a href='../S/64.html#L510'>SLEEPING</a>          510 proc.c           p-&gt;state = SLEEPING;</span>
+<span class='curline'><a href='../S/64.html#L533'>SLEEPING</a>          533 proc.c             if(p-&gt;state == SLEEPING &amp;&amp; p-&gt;chan == chan)</span>
+<span class='curline'><a href='../S/64.html#L559'>SLEEPING</a>          559 proc.c               if(p-&gt;state == SLEEPING)</span>
+<span class='curline'><a href='../S/64.html#L579'>SLEEPING</a>          579 proc.c           [SLEEPING]  "sleep ",</span>
+<span class='curline'><a href='../S/64.html#L597'>SLEEPING</a>          597 proc.c             if(p-&gt;state == SLEEPING){</span>
+<span class='curline'><a href='../S/64.html#L624'>SLEEPING</a>          624 proc.c             if (p-&gt;state == SLEEPING)</span>
 </pre>
 </body>
 </html>

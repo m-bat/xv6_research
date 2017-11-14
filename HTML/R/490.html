@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>strcmp</title>
+<title>scheduler</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,10 +9,11 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/118.html#L134'>strcmp</a>            134 defs.h         int             strcmp(const char *p, const char *q);</span>
-<span class='curline'><a href='../S/89.html#L130'>strcmp</a>            130 exec.c           if (strcmp(path, "/init") == 0) {</span>
-<span class='curline'><a href='../S/89.html#L133'>strcmp</a>            133 exec.c           else if (strcmp(path, "sh") == 0) {</span>
-<span class='curline'><a href='../S/188.html#L34'>strcmp</a>             34 user.h         int strcmp(const char*, const char*);</span>
+<span class='curline'><a href='../S/119.html#L127'>scheduler</a>         127 defs.h         void            scheduler(void) __attribute__((noreturn));</span>
+<span class='curline'><a href='../S/155.html#L66'>scheduler</a>          66 main.c           scheduler();     // start running processes</span>
+<span class='curline'><a href='../S/64.html#L416'>scheduler</a>         416 proc.c               swtch(&amp;(c-&gt;scheduler), p-&gt;context);</span>
+<span class='curline'><a href='../S/64.html#L450'>scheduler</a>         450 proc.c           swtch(&amp;p-&gt;context, mycpu()-&gt;scheduler);</span>
+<span class='curline'><a href='../S/93.html#L8'>scheduler</a>           8 proc.h           struct context *scheduler;   // swtch() here to enter scheduler</span>
 </pre>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>fileclose</title>
+<title>devsw</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,14 +9,14 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/118.html#L35'>fileclose</a>          35 defs.h         void            fileclose(struct file*);</span>
-<span class='curline'><a href='../S/94.html#L56'>fileclose</a>          56 pipe.c             fileclose(*f0);</span>
-<span class='curline'><a href='../S/94.html#L58'>fileclose</a>          58 pipe.c             fileclose(*f1);</span>
-<span class='curline'><a href='../S/63.html#L313'>fileclose</a>         313 proc.c               fileclose(curproc-&gt;ofile[fd]);</span>
-<span class='curline'><a href='../S/83.html#L102'>fileclose</a>         102 sysfile.c        fileclose(f);</span>
-<span class='curline'><a href='../S/83.html#L320'>fileclose</a>         320 sysfile.c            fileclose(f);</span>
-<span class='curline'><a href='../S/83.html#L438'>fileclose</a>         438 sysfile.c          fileclose(rf);</span>
-<span class='curline'><a href='../S/83.html#L439'>fileclose</a>         439 sysfile.c          fileclose(wf);</span>
+<span class='curline'><a href='../S/163.html#L354'>devsw</a>             354 console.c        devsw[CONSOLE].write = consolewrite;</span>
+<span class='curline'><a href='../S/163.html#L355'>devsw</a>             355 console.c        devsw[CONSOLE].read = consoleread;</span>
+<span class='curline'><a href='../S/15.html#L19'>devsw</a>              19 file.c         struct devsw devsw[NDEV];</span>
+<span class='curline'><a href='../S/56.html#L41'>devsw</a>              41 file.h         extern struct devsw devsw[];</span>
+<span class='curline'><a href='../S/173.html#L460'>devsw</a>             460 fs.c               if(ip-&gt;major &lt; 0 || ip-&gt;major &gt;= NDEV || !devsw[ip-&gt;major].read)</span>
+<span class='curline'><a href='../S/173.html#L462'>devsw</a>             462 fs.c               return devsw[ip-&gt;major].read(ip, dst, n);</span>
+<span class='curline'><a href='../S/173.html#L489'>devsw</a>             489 fs.c               if(ip-&gt;major &lt; 0 || ip-&gt;major &gt;= NDEV || !devsw[ip-&gt;major].write)</span>
+<span class='curline'><a href='../S/173.html#L491'>devsw</a>             491 fs.c               return devsw[ip-&gt;major].write(ip, src, n);</span>
 </pre>
 </body>
 </html>

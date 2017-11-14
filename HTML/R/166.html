@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>SETGATE</title>
+<title>SEG_TSS</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,8 +9,12 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/161.html#L29'>SETGATE</a>            29 trap.c             SETGATE(idt[i], 0, SEG_KCODE&lt;&lt;3, vectors[i], 0);</span>
-<span class='curline'><a href='../S/161.html#L30'>SETGATE</a>            30 trap.c           SETGATE(idt[T_SYSCALL], 1, SEG_KCODE&lt;&lt;3, vectors[T_SYSCALL], DPL_USER);</span>
+<span class='curline'><a href='../S/158.html#L254'>SEG_TSS</a>           254 vm.c               panic("switchuvm: no kstack");</span>
+<span class='curline'><a href='../S/158.html#L256'>SEG_TSS</a>           256 vm.c               panic("switchuvm: no pgdir");</span>
+<span class='curline'><a href='../S/158.html#L262'>SEG_TSS</a>           262 vm.c             mycpu()-&gt;ts.ss0 = SEG_KDATA &lt;&lt; 3;</span>
+<span class='curline'><a href='../S/158.html#L283'>SEG_TSS</a>           283 vm.c               panic("switchuvm: no kstack");</span>
+<span class='curline'><a href='../S/158.html#L285'>SEG_TSS</a>           285 vm.c               panic("switchuvm: no pgdir");</span>
+<span class='curline'><a href='../S/158.html#L291'>SEG_TSS</a>           291 vm.c             mycpu()-&gt;ts.ss0 = SEG_KDATA &lt;&lt; 3;</span>
 </pre>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>strcpy</title>
+<title>segdesc</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,11 +9,11 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/118.html#L135'>strcpy</a>            135 defs.h         char*           strcpy(char *s, char *t);</span>
-<span class='curline'><a href='../S/110.html#L54'>strcpy</a>             54 ls.c               strcpy(buf, path);</span>
-<span class='curline'><a href='../S/35.html#L122'>strcpy</a>            122 mkfs.c           strcpy(de.name, ".");</span>
-<span class='curline'><a href='../S/35.html#L127'>strcpy</a>            127 mkfs.c           strcpy(de.name, "..");</span>
-<span class='curline'><a href='../S/188.html#L31'>strcpy</a>             31 user.h         char* strcpy(char*, char*);</span>
+<span class='curline'><a href='../S/122.html#L74'>segdesc</a>            74 mmu.h          #define SEG(type, base, lim, dpl) (struct segdesc)    \</span>
+<span class='curline'><a href='../S/122.html#L78'>segdesc</a>            78 mmu.h          #define SEG16(type, base, lim, dpl) (struct segdesc)  \</span>
+<span class='curline'><a href='../S/93.html#L10'>segdesc</a>            10 proc.h           struct segdesc gdt[NSEGS];   // x86 global descriptor table</span>
+<span class='curline'><a href='../S/68.html#L63'>segdesc</a>            63 x86.h          struct segdesc;</span>
+<span class='curline'><a href='../S/68.html#L66'>segdesc</a>            66 x86.h          lgdt(struct segdesc *p, int size)</span>
 </pre>
 </body>
 </html>

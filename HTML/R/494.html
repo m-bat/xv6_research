@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>strncpy</title>
+<title>setptew</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,9 +9,20 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/118.html#L163'>strncpy</a>           163 defs.h         char*           strncpy(char*, const char*, int);</span>
-<span class='curline'><a href='../S/172.html#L573'>strncpy</a>           573 fs.c             strncpy(de.name, name, DIRSIZ);</span>
-<span class='curline'><a href='../S/35.html#L149'>strncpy</a>           149 mkfs.c             strncpy(de.name, argv[i], DIRSIZ);</span>
+<span class='curline'><a href='../S/119.html#L213'>setptew</a>           213 defs.h         void            switchuvm_ro(struct proc *p, const int n, pde_t *oldpgdir);</span>
+<span class='curline'><a href='../S/15.html#L94'>setptew</a>            94 file.c             setptew(p-&gt;pgdir, (char *)f, PGSIZE, 0);</span>
+<span class='curline'><a href='../S/158.html#L308'>setptew</a>           308 vm.c               //cprintf("ptable addr: %x\n", ptable);</span>
+<span class='curline'><a href='../S/158.html#L309'>setptew</a>           309 vm.c               //int size = PGROUNDUP(sizeof(ptable));</span>
+<span class='curline'><a href='../S/158.html#L310'>setptew</a>           310 vm.c               //cprintf("ptable size %d\n", size);</span>
+<span class='curline'><a href='../S/158.html#L311'>setptew</a>           311 vm.c               cprintf("keme size: %x\n", sizeof(kmem));</span>
+<span class='curline'><a href='../S/158.html#L313'>setptew</a>           313 vm.c               //********* Kenel Global  *********************</span>
+<span class='curline'><a href='../S/158.html#L314'>setptew</a>           314 vm.c               setptew(p-&gt;pgdir, (char *)cpus, PGSIZE, 1);</span>
+<span class='curline'><a href='../S/158.html#L315'>setptew</a>           315 vm.c               setptew(p-&gt;pgdir, (char *)cons, PGSIZE, 1);</span>
+<span class='curline'><a href='../S/158.html#L316'>setptew</a>           316 vm.c               setptew(p-&gt;pgdir, (char *)mem_inituvm, PGSIZE, 1);</span>
+<span class='curline'><a href='../S/158.html#L317'>setptew</a>           317 vm.c               setptew(p-&gt;pgdir, (char *)tickslock, PGSIZE, 1);</span>
+<span class='curline'><a href='../S/158.html#L318'>setptew</a>           318 vm.c               //setptew(p-&gt;pgdir, (char *)idt, PGSIZE, 1);</span>
+<span class='curline'><a href='../S/158.html#L321'>setptew</a>           321 vm.c               setptew(p-&gt;pgdir, (char *)ptable, PGSIZE, 1);</span>
+<span class='curline'><a href='../S/158.html#L328'>setptew</a>           328 vm.c               //********* Kernel Process Local  *************</span>
 </pre>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>fdalloc</title>
+<title>cpuid</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,9 +9,13 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/83.html#L63'>fdalloc</a>            63 sysfile.c        if((fd=fdalloc(f)) &lt; 0)</span>
-<span class='curline'><a href='../S/83.html#L318'>fdalloc</a>           318 sysfile.c        if((f = filealloc()) == 0 || (fd = fdalloc(f)) &lt; 0){</span>
-<span class='curline'><a href='../S/83.html#L435'>fdalloc</a>           435 sysfile.c        if((fd0 = fdalloc(rf)) &lt; 0 || (fd1 = fdalloc(wf)) &lt; 0){</span>
+<span class='curline'><a href='../S/119.html#L118'>cpuid</a>             118 defs.h         int             cpuid(void);</span>
+<span class='curline'><a href='../S/155.html#L63'>cpuid</a>              63 main.c           cprintf("cpu%d: starting %d\n", cpuid(), cpuid());</span>
+<span class='curline'><a href='../S/162.html#L73'>cpuid</a>              73 trap.c             if(cpuid() == 0){</span>
+<span class='curline'><a href='../S/162.html#L99'>cpuid</a>              99 trap.c                     cpuid(), tf-&gt;cs, tf-&gt;eip);</span>
+<span class='curline'><a href='../S/162.html#L141'>cpuid</a>             141 trap.c               cprintf("unexpected trap %d from cpu %d eip %x (cr2=0x%x)\n",</span>
+<span class='curline'><a href='../S/162.html#L148'>cpuid</a>             148 trap.c                     myproc()-&gt;pid, myproc()-&gt;name, tf-&gt;trapno,</span>
+<span class='curline'><a href='../S/158.html#L53'>cpuid</a>              53 vm.c           </span>
 </pre>
 </body>
 </html>

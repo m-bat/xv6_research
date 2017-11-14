@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>SEG_KDATA</title>
+<title>SEG</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,9 +9,10 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/157.html#L33'>SEG_KDATA</a>          33 vm.c             c-&gt;gdt[SEG_KDATA] = SEG(STA_W, 0, 0xffffffff, 0);</span>
-<span class='curline'><a href='../S/157.html#L246'>SEG_KDATA</a>         246 vm.c             mycpu()-&gt;ts.ss0 = SEG_KDATA &lt;&lt; 3;</span>
-<span class='curline'><a href='../S/157.html#L313'>SEG_KDATA</a>         313 vm.c             mycpu()-&gt;ts.ss0 = SEG_KDATA &lt;&lt; 3;</span>
+<span class='curline'><a href='../S/158.html#L54'>SEG</a>                54 vm.c             // Map "logical" addresses to virtual addresses using identity map.</span>
+<span class='curline'><a href='../S/158.html#L55'>SEG</a>                55 vm.c             // Cannot share a CODE descriptor for both kernel and user</span>
+<span class='curline'><a href='../S/158.html#L56'>SEG</a>                56 vm.c             // because it would have to have DPL_USR, but the CPU forbids</span>
+<span class='curline'><a href='../S/158.html#L57'>SEG</a>                57 vm.c             // an interrupt from CPL=0 to DPL=3.</span>
 </pre>
 </body>
 </html>

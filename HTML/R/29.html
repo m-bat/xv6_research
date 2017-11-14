@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>DPL_USER</title>
+<title>DEVSPACE</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,13 +9,8 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/63.html#L193'>DPL_USER</a>          193 proc.c           p-&gt;tf-&gt;cs = (SEG_UCODE &lt;&lt; 3) | DPL_USER;</span>
-<span class='curline'><a href='../S/63.html#L194'>DPL_USER</a>          194 proc.c           p-&gt;tf-&gt;ds = (SEG_UDATA &lt;&lt; 3) | DPL_USER;</span>
-<span class='curline'><a href='../S/161.html#L30'>DPL_USER</a>           30 trap.c           SETGATE(idt[T_SYSCALL], 1, SEG_KCODE&lt;&lt;3, vectors[T_SYSCALL], DPL_USER);</span>
-<span class='curline'><a href='../S/161.html#L148'>DPL_USER</a>          148 trap.c           if(myproc() &amp;&amp; myproc()-&gt;killed &amp;&amp; (tf-&gt;cs&amp;3) == DPL_USER)</span>
-<span class='curline'><a href='../S/161.html#L158'>DPL_USER</a>          158 trap.c           if(myproc() &amp;&amp; myproc()-&gt;killed &amp;&amp; (tf-&gt;cs&amp;3) == DPL_USER)</span>
-<span class='curline'><a href='../S/157.html#L34'>DPL_USER</a>           34 vm.c             c-&gt;gdt[SEG_UCODE] = SEG(STA_X|STA_R, 0, 0xffffffff, DPL_USER);</span>
-<span class='curline'><a href='../S/157.html#L35'>DPL_USER</a>           35 vm.c             c-&gt;gdt[SEG_UDATA] = SEG(STA_W, 0, 0xffffffff, DPL_USER);</span>
+<span class='curline'><a href='../S/158.html#L160'>DEVSPACE</a>          160 vm.c           } kmap[] = {</span>
+<span class='curline'><a href='../S/158.html#L183'>DEVSPACE</a>          183 vm.c           </span>
 </pre>
 </body>
 </html>
