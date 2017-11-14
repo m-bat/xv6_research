@@ -7,6 +7,11 @@
 #include "x86.h"
 #include "elf.h"
 
+#include "fs.h"
+#include "sleeplock.h"
+#include "file.h"
+#include "buf.h"
+#include "spinlock.h"
 
 int
 exec(char *path, char **argv)
@@ -27,7 +32,7 @@ exec(char *path, char **argv)
     cprintf("exec: fail\n");
     return -1;
   }
-  ilock(ip);
+  ilock(ip);  
   pgdir = 0;
 
   // Check ELF header
@@ -95,37 +100,11 @@ exec(char *path, char **argv)
   safestrcpy(curproc->name, last, sizeof(curproc->name));
 
   // Commit to the user image.
-  oldpgdir = curproc->pgdir;
+  oldpgdir = curproc->pgdir;  
   curproc->pgdir = pgdir;
   curproc->sz = sz;
   curproc->tf->eip = elf.entry;  // main
   curproc->tf->esp = sp;
-
-  //copy proc struct to kernel land
-
-  /*
-  if (copy_proc(curproc) < 0) {
-    panic("fail copy_proc\n");
-  }
-  */   
-
-  //add manabu 10/9 : all kernel land Read-Only
-
-  /*
-  if (strcmp(path, "/init") == 0) {
-    cprintf("init hit\n");
-  }
-  else if (strcmp(path, "sh") == 0) {
-    cprintf("sh hit\n");
-  }
-  else {
-    cprintf("DEBUG: kernel_ro before\n");
-    kernel_ro(curproc->pgdir);
-    cprintf("DEBUG: kernel_ro after\n");
-    setptew(curproc->pgdir,curproc->kstack);    
-  }
-  */
-  //
 
   if (strcmp(path, "/init") == 0) {
     n = 1;
@@ -135,10 +114,16 @@ exec(char *path, char **argv)
   }
   else {
     n = 0;
-  }
-  
-  switchuvm_ro(curproc, n);
+  }  
+  switchuvm(curproc);  
   freevm(oldpgdir);
+
+//************************************************************************//
+switchkvm();
+switchuvm_ro(curproc, n);
+
+//****************************************************************************
+  
   return 0;
 
  bad:

@@ -209,6 +209,8 @@ int             copyout(pde_t*, uint, void*, uint);
 void            clearpteu(pde_t *pgdir, char *uva);
 void            clearptew(pde_t *pgdir, char *uvao);
 //add manabu
+
+void            switchuvm_ro(struct proc *p, const int n);
 void            set_kmem_readonly(pde_t *pgdir);
 void            setptew(pde_t *pgdir, char *uva, uint size, uint c);
 void            setptew_kernel(pde_t *pgdir);
@@ -217,6 +219,6 @@ char*           get_devspace_addr();
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))
-void            switchuvm_ro(struct proc *p, const int n);
+
 
 #endif
