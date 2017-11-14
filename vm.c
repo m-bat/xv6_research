@@ -28,7 +28,6 @@ extern struct {
   struct inode inode[NINODE];
 } icache;
 
-
 extern struct {
   struct spinlock lock;
   struct buf buf[NBUF];
@@ -38,6 +37,12 @@ extern struct {
   struct buf head;
 } bcache;
 
+extern struct {
+  struct spinlock lock;
+  int use_lock;
+  struct run *freelist;
+  struct run *freelist_plocal;
+} kmem;
 
 // Set up CPU's kernel segment descriptors.
 // Run once on entry on each CPU.
@@ -270,7 +275,7 @@ switchuvm(struct proc *p)
 char *mem_inituvm;
 
 void
-switchuvm_ro(struct proc *p, const int n)  
+switchuvm_ro(struct proc *p, const int n)
 {
   if(p == 0)
     panic("switchuvm: no process");
@@ -303,6 +308,7 @@ switchuvm_ro(struct proc *p, const int n)
     //cprintf("ptable addr: %x\n", ptable);
     //int size = PGROUNDUP(sizeof(ptable));
     //cprintf("ptable size %d\n", size);
+    cprintf("keme size: %x\n", sizeof(kmem));
 
     //********* Kenel Global  *********************
     setptew(p->pgdir, (char *)cpus, PGSIZE, 1);
@@ -316,6 +322,7 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, (char *)&icache, sizeof(icache), 1);
     setptew(p->pgdir, (char *)&sb, sizeof(sb), 1);
     setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 1);
+    setptew(p->pgdir, (char *)&kmem, sizeof(kmem), 1);    
 
     //********* Kernel Process Local  *************
     setptew(p->pgdir, p->kstack, KSTACKSIZE, 1);
@@ -431,17 +438,28 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 
   if(newsz >= oldsz)
     return oldsz;
-
+  
   a = PGROUNDUP(newsz);
-  for(; a  < oldsz; a += PGSIZE){
+  for(; a  < oldsz; a += PGSIZE) {
+    //cprintf("DEBUG: deallocuvm %x\n", (char *)tmp);
+    
     pte = walkpgdir(pgdir, (char*)a);
     if(!pte)
       a = PGADDR(PDX(a) + 1, 0, 0) - PGSIZE;
-    else if((*pte & PTE_P) != 0){
+    else if((*pte & PTE_P) != 0) {
       pa = PTE_ADDR(*pte);
       if(pa == 0)
         panic("kfree");
       char *v = P2V(pa);
+      cprintf("deallocuvm: v %x\n", v);
+
+      /*
+      switchkvm(); 
+      setptew(myproc()->pgdir, (char *)pte, PGSIZE, 1);      
+      setptew(myproc()->pgdir, (char *)v, PGSIZE, 1);      
+      switchuvm(myproc());           
+      */
+      
       kfree(v);
       *pte = 0;
     }
@@ -455,8 +473,7 @@ void
 freevm(pde_t *pgdir)
 {
   uint i;
-
-  if(pgdir == 0)
+  if (pgdir == 0)
     panic("freevm: no pgdir");
   deallocuvm(pgdir, KERNBASE, 0);
   for(i = 0; i < NPDENTRIES; i++){
