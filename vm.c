@@ -31,7 +31,6 @@ extern struct {
 extern struct {
   struct spinlock lock;
   struct buf buf[NBUF];
-
   // Linked list of all buffers, through prev/next.
   // head.next is most recently used.
   struct buf head;
@@ -297,18 +296,17 @@ switchuvm_ro(struct proc *p, const int n)
 
     // add manabu 10/16  
   if (n) {
-    cprintf("init hit or sh hit\n");
+    cprintf("DEBUG: init hit or sh hit\n");
   }  
   else {
-    cprintf("before: kernel_ro\n");
-    cprintf("ptable addr %x\n", &ptable);
+    cprintf("DEBUG: before: kernel_ro\n");
+    //cprintf("ptable addr %x\n", &ptable);
 
     set_kmem_readonly(p->pgdir);    
-    //write-enable
     //cprintf("ptable addr: %x\n", ptable);
     //int size = PGROUNDUP(sizeof(ptable));
     //cprintf("ptable size %d\n", size);
-    cprintf("keme size: %x\n", sizeof(kmem));
+    //cprintf("DEBUG: keme size: %x\n", sizeof(kmem));
 
     //********* Kenel Global  *********************
     setptew(p->pgdir, (char *)cpus, PGSIZE, 1);
@@ -322,7 +320,9 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, (char *)&icache, sizeof(icache), 1);
     setptew(p->pgdir, (char *)&sb, sizeof(sb), 1);
     setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 1);
-    setptew(p->pgdir, (char *)&kmem, sizeof(kmem), 1);    
+    setptew(p->pgdir, (char *)&kmem, sizeof(kmem), 1);
+    
+    cprintf("DEBUG: bcache size %d\n", sizeof(bcache));
 
     //********* Kernel Process Local  *************
     setptew(p->pgdir, p->kstack, KSTACKSIZE, 1);
@@ -336,12 +336,12 @@ switchuvm_ro(struct proc *p, const int n)
       //DEBUG
       //cprintf("p->ofile[%d] = %x\n", i, p->ofile[i]);
     }    
-    cprintf("after: kernel_ro\n");
+    cprintf("DEBUG: after: kernel_ro\n");
   }
    
   lcr3(V2P(p->pgdir));  // switch to process's address space
     
-  cprintf("after: changed lcr3\n");
+  cprintf("DEBUG: after: changed lcr3\n");
   popcli();
   //cprintf("after: popcli");
   //panic after
@@ -512,8 +512,7 @@ clearptew(pde_t *pgdir, char *uva)
     panic("clearptew");
 
   //read-only
-  *pte &= ~PTE_W;
-  
+  *pte &= ~PTE_W;  
 }
 
  
@@ -527,7 +526,7 @@ setptew(pde_t *pgdir, char *uva, uint size, uint c)
   pte_t *pte;
 
   for (;;) {
-    pte = walkpgdir(pgdir, uva);
+    pte = walkpgdir(pgdir, a);
   
     if (pte == 0)
       panic("setptew");
