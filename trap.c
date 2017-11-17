@@ -119,7 +119,7 @@ trap(struct trapframe *tf)
     }
     else {      
       //setptew(p->pgdir, (void *)a, PGSIZE, 1);
-      cprintf("DEBUG: Acess KERNELGLOBAL\n") ;
+      cprintf("DEBUG: Access KERNELGLOBAL\n") ;
       switchkvm();
       setptew_kernel(p->pgdir);
       switchuvm(p);
