@@ -44,6 +44,7 @@ static void wakeup1(void *chan);
 //add manaubu
 extern pde_t *kpgdir;
 char *plist[100];
+int plist_index = 0;
 
 void
 pinit(void)
@@ -272,7 +273,6 @@ fork(void)
   np->state = RUNNABLE;
 
   //add alloc_test
-
   /*
   if (alloc_test_local(np) < 0) {
     panic("alloc_test_local");
@@ -280,10 +280,8 @@ fork(void)
 
   np->tl->pid = np->pid;
   np->tl->ppid = np->parent->pid;
-  */
-  
-  //
-    
+  */  
+  //    
   release(&ptable->lock);
 
   return pid;
@@ -610,9 +608,9 @@ cps(void)
   
   struct proc *p;
 
-  //plist init
+  //init plist
   cprintf("plist init!\n");
-  for (i = 0; i < 100; i ++) {
+  for (i = 0; i < 100; i++) {
     plist[i] = 0;
   }
   //  
@@ -632,13 +630,8 @@ cps(void)
     else if (p->state == ZOMBIE) {
       cprintf("%d \t %d \t %s \t %d \t %d \t ZOMBIE \t \n", p->pid, p->parent->pid, p->name, p->tl->pid, p->tl->ppid);
       
-    }
-
-    
-  }
-  //wakeup(&cons.lock);
-  //sleep(myproc(), &ptable.lock);
-  
+    }    
+  }  
   release(&ptable->lock);
 
   return 22;
@@ -651,7 +644,6 @@ plocal(void)
   struct proc *curproc = myproc();  
   struct test_global *plocal;
   */
-
 
   //switchkvm();
   
@@ -709,12 +701,13 @@ strcpy(char *s, char *t)
   return os;
 }
 
-
 int plocal_insert(char *p)
 { 
-  static int i = 0;
 
-  plist[i++] = p;
+  //cprintf("DEBUG: plocal_insert &plist[%d] %x\n", i, &plist[i]);
+  plist[plist_index] = p;
+  plist_index++;
+  
   //cprintf("%x\n", p);
   
   return 0;

@@ -14,8 +14,6 @@
 #include "mmu.h"
 #include "proc.h"
 
-
-
 struct devsw devsw[NDEV];
 struct {
   struct spinlock lock;
@@ -94,11 +92,9 @@ filealloc(void)
     setptew(p->pgdir, (char *)f, PGSIZE, 0);
     switchuvm(p);
     
-    //cprintf("filealloc: f = %x\n", f);
     f->ref = 1;
-    //insert plocal alloc list
-    //plocal_insert((char *)f);    
-    //    
+    plocal_insert((char *)f); //insert plocal alloc list
+    
     release(&ftable.lock);
     return f;
   }  

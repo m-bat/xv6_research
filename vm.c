@@ -25,6 +25,8 @@ extern struct superblock sb;
 //add manabu 11/17
 extern struct spinlock idelock;
 extern struct buf *idequeue;
+extern char *plist[100];
+extern int plist_index;
 //
 
 extern struct {
@@ -280,6 +282,8 @@ char *mem_inituvm;
 void
 switchuvm_ro(struct proc *p, const int n)
 {
+  int i;
+  
   if(p == 0)
     panic("switchuvm: no process");
   if(p->kstack == 0)
@@ -313,11 +317,11 @@ switchuvm_ro(struct proc *p, const int n)
     //cprintf("DEBUG: keme size: %x\n", sizeof(kmem));
 
     //********* Kenel Global  *********************
+    //setptew(p->pgdir, (char *)idt, PGSIZE, 1);
     setptew(p->pgdir, (char *)cpus, PGSIZE, 1);
     setptew(p->pgdir, (char *)cons, PGSIZE, 1);
     setptew(p->pgdir, (char *)mem_inituvm, PGSIZE, 1);
     setptew(p->pgdir, (char *)tickslock, PGSIZE, 1);
-    //setptew(p->pgdir, (char *)idt, PGSIZE, 1);
     setptew(p->pgdir, (char *)&ticks, PGSIZE, 1);
     setptew(p->pgdir, (char *)lapic, PGSIZE, 1);        
     setptew(p->pgdir, (char *)ptable, PGSIZE, 1);
@@ -327,13 +331,20 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, (char *)&kmem, sizeof(kmem), 1);
     setptew(p->pgdir, (char *)idequeue, sizeof(idequeue), 1);
     setptew(p->pgdir, (char *)&idelock, sizeof(idelock), 1);
-    
-    
+    setptew(p->pgdir, (char *)&plist_index, sizeof(plist_index), 1);
+    for (i = 0; i < 100; i++) {
+      //cprintf("DEBUG: setptew &plist[%d] %x\n", i, &plist[i]);
+      setptew(p->pgdir, (char *)&plist[i], sizeof(&plist), 1);
+    }
+          
     cprintf("DEBUG: bcache size %d\n", sizeof(bcache));
+    cprintf("DEBUG: plist size %d\n", sizeof(&plist));
 
     //********* Kernel Process Local  *************
     setptew(p->pgdir, p->kstack, KSTACKSIZE, 1);
-        
+
+    //*********************************************
+    
     //set open filen array to be writable
     //set ofile[0], ofile[1], ofile[2] to be writable because parent process is init.
     //ofile[0] == ofile[1] == ofile[2] Even if i < 1
@@ -458,8 +469,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       if(pa == 0)
         panic("kfree");
       char *v = P2V(pa);
-      cprintf("deallocuvm: v %x\n", v);
-
+      //printf("DEBUG: deallocuvm: v %x\n", v);
       /*
       switchkvm(); 
       setptew(myproc()->pgdir, (char *)pte, PGSIZE, 1);      
@@ -504,7 +514,6 @@ clearpteu(pde_t *pgdir, char *uva)
     panic("clearpteu");
   *pte &= ~PTE_U;
 }
-
 
 //add manabu 9/22: set read-only
 void
