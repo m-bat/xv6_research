@@ -86,16 +86,18 @@ filealloc(void)
     }
   }
   */
-
   if ((f = (struct file *)kalloc(ALLOC_PLOCAL)) == 0) {    
     panic("fileinit");
   }
   else {
+    switchkvm();
     setptew(p->pgdir, (char *)f, PGSIZE, 0);
+    switchuvm(p);
+    
     //cprintf("filealloc: f = %x\n", f);
     f->ref = 1;
     //insert plocal alloc list
-    plocal_insert((char *)f);    
+    //plocal_insert((char *)f);    
     //    
     release(&ftable.lock);
     return f;
