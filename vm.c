@@ -20,8 +20,12 @@ extern struct cons_lk *cons;
 
 //add manabu 11/2
 extern struct ptable_t *ptable;
-
 extern struct superblock sb;
+
+//add manabu 11/17
+extern struct spinlock idelock;
+extern struct buf *idequeue;
+//
 
 extern struct {
   struct spinlock lock;
@@ -321,6 +325,9 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, (char *)&sb, sizeof(sb), 1);
     setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 1);
     setptew(p->pgdir, (char *)&kmem, sizeof(kmem), 1);
+    setptew(p->pgdir, (char *)idequeue, sizeof(idequeue), 1);
+    setptew(p->pgdir, (char *)&idelock, sizeof(idelock), 1);
+    
     
     cprintf("DEBUG: bcache size %d\n", sizeof(bcache));
 

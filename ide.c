@@ -28,8 +28,10 @@
 // idequeue->qnext points to the next buf to be processed.
 // You must hold idelock while manipulating queue.
 
-static struct spinlock idelock;
-static struct buf *idequeue;
+//static struct spinlock idelock;
+struct spinlock idelock;
+//static struct buf *idequeue;
+struct buf *idequeue;
 
 static int havedisk1;
 static void idestart(struct buf*);
