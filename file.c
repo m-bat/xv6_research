@@ -84,13 +84,19 @@ filealloc(void)
     }
   }
   */
+
   if ((f = (struct file *)kalloc(ALLOC_PLOCAL)) == 0) {    
     panic("fileinit");
   }
   else {
     switchkvm();
-    setptew(p->pgdir, (char *)f, PGSIZE, 0);
+    setptew(p->pgdir, (char *)f, PGSIZE, 1);
     switchuvm(p);
+
+    //DEBUG START
+    //cprintf("DEBUG: fillalloc p->name %s f addr %x\n", p->name, f);
+    //cprintf("DEBUG: fillalloc f->off addr %x\n", &(f->off));
+    //DEBUG FINISH
     
     f->ref = 1;
     plocal_insert((char *)f); //insert plocal alloc list
@@ -188,6 +194,12 @@ int
 filewrite(struct file *f, char *addr, int n)
 {
   int r;
+
+  //DEBUG START
+  //struct proc *p;
+  //p = myproc();
+  //cprintf("DEBUG: filewrite p->name %s\n", p->name);
+  //DEBUG FINISH
 
   if(f->writable == 0)
     return -1;
