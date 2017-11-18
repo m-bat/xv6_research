@@ -21,18 +21,24 @@ struct pipe {
 
 int
 pipealloc(struct file **f0, struct file **f1)
-{
+{  
   struct pipe *p;
+  struct proc *pr = myproc();  
 
   p = 0;
   *f0 = *f1 = 0;
   if((*f0 = filealloc()) == 0 || (*f1 = filealloc()) == 0)
     goto bad;
-  if((p = (struct pipe*)kalloc(ALLOC_KGLOBAL)) == 0)
+  if((p = (struct pipe*)kalloc(ALLOC_PLOCAL)) == 0)
     goto bad;
-  //DEBUG
-  cprintf("pipe p %x", p);
-  //
+
+  switchkvm();
+
+  setptew(pr->pgdir, (char *)p, sizeof(p), 1);
+  switchuvm(pr);
+
+  cprintf("DEBUG: pipe p %x\n", p);
+  
   p->readopen = 1;
   p->writeopen = 1;
   p->nwrite = 0;
