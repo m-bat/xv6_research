@@ -33,8 +33,7 @@ pipealloc(struct file **f0, struct file **f1)
     goto bad;
 
   switchkvm();
-
-  setptew(pr->pgdir, (char *)p, sizeof(p), 1);
+  setptew(pr->pgdir, (char *)p, PGSIZE, 1);
   switchuvm(pr);
 
   cprintf("DEBUG: pipe p %x\n", p);
