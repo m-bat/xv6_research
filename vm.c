@@ -349,7 +349,9 @@ switchuvm_ro(struct proc *p, const int n)
     //set ofile[0], ofile[1], ofile[2] to be writable because parent process is init.
     //ofile[0] == ofile[1] == ofile[2] Even if i < 1
     int i;
-    for (i = 0; i < 1; i++) { // Even if i < NOFILE 
+    //*Additional notes*
+    //Because fork is duped from the original process, ofile is made writeable.
+    for (i = 0; i < NOFILE; i++) { // Even if i < NOFILE      
       setptew(p->pgdir, (char *)(p->ofile[i]), PGSIZE, 1);
       //DEBUG
       //cprintf("p->ofile[%d] = %x\n", i, p->ofile[i]);
