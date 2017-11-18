@@ -344,6 +344,8 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, p->kstack, KSTACKSIZE, 1);
 
     //*********************************************
+
+    cprintf("DEBUG: process name %s\n", p->name);
     
     //set open filen array to be writable
     //set ofile[0], ofile[1], ofile[2] to be writable because parent process is init.
@@ -353,9 +355,12 @@ switchuvm_ro(struct proc *p, const int n)
     //Because fork is duped from the original process, ofile is made writeable.
     for (i = 0; i < NOFILE; i++) { // Even if i < NOFILE      
       setptew(p->pgdir, (char *)(p->ofile[i]), PGSIZE, 1);
-      //DEBUG
-      //cprintf("p->ofile[%d] = %x\n", i, p->ofile[i]);
-    }    
+      //Make the pipe structure writeable
+      if (p->ofile[i]->type == FD_PIPE) {
+        setptew(p->pgdir, (char *)(p->ofile[i]->pipe), PGSIZE, 1);
+      }
+    }
+
     cprintf("DEBUG: after: kernel_ro\n");
   }
    
