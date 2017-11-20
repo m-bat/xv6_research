@@ -114,17 +114,18 @@ trap(struct trapframe *tf)
     
     if (a >= (uint)get_kplocal_addr() && a <= (uint)get_devspace_addr()) {
       //access kernel process local area
-      cprintf("DEBUG: Access KERNELPLOCAL\n");
+      cprintf("LOG: Access KERNELPLOCAL! exit process %s\n", p->name);
       exit();
     }
     else {      
       //setptew(p->pgdir, (void *)a, PGSIZE, 1);
-      cprintf("DEBUG: Access KERNELGLOBAL\n") ;
+      cprintf("LOG: Access KERNELGLOBAL!  set kgflag\n");
       switchkvm();
       setptew_kernel(p->pgdir);
       switchuvm(p);
-      cprintf("after setptew :%x\n", a);
-      cprintf("kgflag : %x\n", &kgflag);
+      cprintf("LOG: Make the whole kernel space writeable\n");
+      //cprintf("after setptew :%x\n", a);
+      //cprintf("kgflag : %x\n", &kgflag);
       kgflag = 1;
     }
     
