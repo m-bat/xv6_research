@@ -141,8 +141,10 @@ kalloc(alloc_flag_t flag) {
     break;
   case ALLOC_PLOCAL:
     r = kmem.freelist_plocal;
-    if(r)
+    if(r) {
       kmem.freelist_plocal = r->next;
+      //cprintf("DEBUG: kalloc(ALLOC_PLOCAL) r %x\n", r);
+    }
     break;
   default:
     panic("unknown allocation flag");
