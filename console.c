@@ -126,6 +126,7 @@ panic(char *s)
   int i;
   uint pcs[10];
   
+  
   cli();
   //cons.locking = 0;
   cons->locking = 0;
@@ -140,17 +141,18 @@ panic(char *s)
     cprintf("Access KENERLGLOBAL!\n");
   }
   else {
-    cprintf("Access KENRELPLOCAL!\n");
+    cprintf("LOG: LIFE EXTENSION! As kgflag is not set, exit process %s\n", myproc()->name);
+    exit_plocal();
+    
   }
-  //                      
-  
+  //                      `
   getcallerpcs(&s, pcs);
   
   for(i=0; i<10; i++)
     cprintf(" %p", pcs[i]);
   panicked = 1; // freeze other CPU
   for(;;)
-    ;
+    ;  
 }
 
 //PAGEBREAK: 50

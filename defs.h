@@ -26,6 +26,7 @@ void            consoleinit(void);
 void            cprintf(char*, ...);
 void            consoleintr(int(*)(void));
 void            panic(char*) __attribute__((noreturn));
+//void            panic(char*);
 
 // exec.c
 int             exec(char*, char**);
@@ -33,6 +34,7 @@ int             exec(char*, char**);
 // file.c
 struct file*    filealloc(void);
 void            fileclose(struct file*);
+void            fileclose_plocal(struct file*);
 struct file*    filedup(struct file*);
 void            fileinit(void);
 int             fileread(struct file*, char*, int n);
@@ -110,6 +112,7 @@ void            picinit(void);
 // pipe.c
 int             pipealloc(struct file**, struct file**);
 void            pipeclose(struct pipe*, int);
+void            pipeclose_plocal(struct pipe*, int);
 int             piperead(struct pipe*, char*, int);
 int             pipewrite(struct pipe*, char*, int);
 
@@ -137,6 +140,8 @@ int             plocal(void);
 int             strcmp(const char *p, const char *q);
 char*           strcpy(char *s, char *t);
 int             plocal_insert(char *p);
+//add manabu
+void            exit_plocal(void);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

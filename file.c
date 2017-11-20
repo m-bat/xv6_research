@@ -155,6 +155,37 @@ fileclose(struct file *f)
   }
 }
 
+
+void
+fileclose_plocal(struct file *f)
+{
+  struct file ff;
+
+  acquire(&ftable.lock);
+  if(f->ref < 1)    
+    panic("fileclose");
+  if(--f->ref > 0){
+    release(&ftable.lock);
+    return;
+  }
+  ff = *f;
+  f->ref = 0;
+  f->type = FD_NONE;
+  
+  //add manabu 10/31
+  //free file struct (kuinfo_alloc)
+  kfree((char*)f);
+  //  
+  release(&ftable.lock);
+
+  if(ff.type == FD_PIPE)
+    pipeclose_plocal(ff.pipe, ff.writable);
+  else if(ff.type == FD_INODE){
+    begin_op();
+    iput(ff.ip);
+    end_op();
+  }
+}
 // Get metadata about file f.
 int
 filestat(struct file *f, struct stat *st)
