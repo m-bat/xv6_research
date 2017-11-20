@@ -721,7 +721,7 @@ plocal(void)
   
   for (i = 0; i < 100; i++) {
     if (plist[i] != 0) {
-      cprintf("plocal i: %d\n", i);
+      //cprintf("DEBUG: plocal i: %d\n", i);
       //write : occur page falt 
       ((struct file *)plist[i])->ref = 0;
     }    

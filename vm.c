@@ -220,7 +220,7 @@ void set_kmem_readonly(pde_t *pgdir) {
     size = k->phys_end - k->phys_start;
     a = (char*)PGROUNDDOWN((uint)k->virt);
     last = (char*)PGROUNDDOWN(((uint)k->virt) + size - 1);
-    cprintf("i: %d, start %x, last %x\n", i, a, last);
+    //cprintf("DEBUG: i: %d, start %x, last %x\n", i, a, last);
    
     for(;;){
       clearptew(pgdir, a);

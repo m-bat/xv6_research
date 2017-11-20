@@ -102,15 +102,15 @@ trap(struct trapframe *tf)
 
   //add manabu 9/22 :page table entry writeable
   case T_PGFLT:
-    cprintf("&lapic :%x, lapic :%x\n", &lapic, lapic);
+    //cprintf("&lapic :%x, lapic :%x\n", &lapic, lapic);
     //force kill process
     //myproc()->killed = 1;   
     p = myproc();
     cprintf("DEBUG INFO: in kvm, proccess name %s pid %d\n", myproc()->name, myproc()->pid);
     //cprintf("mycpu->ncli: %d\n", mycpu()->ncli);
     uint a = PGROUNDDOWN(rcr2());
-    cprintf("trap a: %x\n", a);
-    cprintf("trap rcr2: %x\n", rcr2());
+    cprintf("DEBUG: Fault addr: %x\n", a);
+    cprintf("DEBUG: Fault addr rcr2: %x\n", rcr2());
     
     if (a >= (uint)get_kplocal_addr() && a <= (uint)get_devspace_addr()) {
       //access kernel process local area
