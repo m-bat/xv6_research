@@ -353,10 +353,12 @@ switchuvm_ro(struct proc *p, const int n)
     int i;
     //*Additional notes*
     //Because fork is duped from the original process, ofile is made writeable.
-    for (i = 0; i < NOFILE; i++) { // Even if i < NOFILE      
+    for (i = 0; i < NOFILE; i++) { // Even if i < NOFILE
+      if (!p->ofile[i])
+        continue;
       setptew(p->pgdir, (char *)(p->ofile[i]), PGSIZE, 1);
       //Make the pipe structure writeable
-      if (p->ofile[i]->type == FD_PIPE) {
+      if (p->ofile[i]->type == FD_PIPE) {        
         setptew(p->pgdir, (char *)(p->ofile[i]->pipe), PGSIZE, 1);
       }
     }
