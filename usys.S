@@ -31,5 +31,6 @@ SYSCALL(sleep)
 SYSCALL(uptime)
 SYSCALL(cps)
 SYSCALL(plocal)
+SYSCALL(plist_init)
 	
 	

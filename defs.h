@@ -140,7 +140,7 @@ int             plocal(void);
 int             strcmp(const char *p, const char *q);
 char*           strcpy(char *s, char *t);
 int             plocal_insert(char *p);
-//add manabu
+int             plist_init(void);          
 void            exit_plocal(void);
 
 // swtch.S

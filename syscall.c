@@ -105,6 +105,7 @@ extern int sys_write(void);
 extern int sys_uptime(void);
 extern int sys_cps(void);
 extern int sys_plocal(void);
+extern int sys_plist_init(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -130,6 +131,7 @@ static int (*syscalls[])(void) = {
 [SYS_close]   sys_close,
 [SYS_cps]     sys_cps,
 [SYS_plocal]  sys_plocal,
+[SYS_plist_init] sys_plist_init,
 };
 
 void

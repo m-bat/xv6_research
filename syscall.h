@@ -25,5 +25,6 @@
 #define SYS_close  21
 #define SYS_cps    22
 #define SYS_plocal 23
+#define SYS_plist_init 24
 
 #endif

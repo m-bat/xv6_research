@@ -175,6 +175,7 @@ UPROGS=\
 	_wc\
 	_ps\
 	_plocal\
+	_plist_init\
 	_mysleep\
 	_zombie\
 	_manabu_program\
@@ -246,7 +247,7 @@ qemu-nox-gdb: fs.img xv6.img .gdbinit
 
 EXTRA=\
 	mkfs.c ulib.c user.h cat.c echo.c forktest.c grep.c kill.c\
-	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c ps.c plocal.c mysleep.c zombie.c\
+	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c ps.c plocal.c mysleep.c zombie.c plist_init.c\
 	manabu_program.c printf.c umalloc.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
 	.gdbinit.tmpl gdbutil\

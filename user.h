@@ -28,6 +28,7 @@ int sleep(int);
 int uptime(void);
 int cps(void);
 int plocal(void);
+int plist_init(void);
 
 // ulib.c
 int stat(char*, struct stat*);

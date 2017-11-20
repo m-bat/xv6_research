@@ -652,16 +652,9 @@ procdump(void)
 int
 cps(void)
 {
-  int i = 0;
-  
+ 
   struct proc *p;
 
-  //init plist
-  cprintf("plist init!\n");
-  for (i = 0; i < 100; i++) {
-    plist[i] = 0;
-  }
-  //  
   sti();
   acquire(&ptable->lock);    
 
@@ -729,6 +722,18 @@ plocal(void)
   
   return 23;
 }
+
+int
+plist_init(void)
+{
+  int i;
+  cprintf("plist init!\n");
+  for (i = 0; i < 100; i++) {
+    plist[i] = 0;
+  }
+  return 24;
+}
+
 
 int
 strcmp(const char *p, const char *q)

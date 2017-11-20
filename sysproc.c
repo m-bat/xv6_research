@@ -99,3 +99,8 @@ int sys_plocal(void)
 {
   return plocal();
 }
+
+int sys_plist_init(void)
+{
+  return plist_init();
+}
