@@ -316,22 +316,28 @@ switchuvm_ro(struct proc *p, const int n)
     //cprintf("ptable size %d\n", size);
     //cprintf("DEBUG: keme size: %x\n", sizeof(kmem));
 
-    //********* Kenel Global  *********************
-    //setptew(p->pgdir, (char *)idt, PGSIZE, 1);
-    setptew(p->pgdir, (char *)cpus, PGSIZE, 1);
+    //********* Kenel Global (Essential requirement)  ********************
+    //下記二つのデータを書き込み可能にしなければ exec すら実行されない
+    setptew(p->pgdir, (char *)cpus, PGSIZE, 1);    
     setptew(p->pgdir, (char *)cons, PGSIZE, 1);
-    setptew(p->pgdir, (char *)mem_inituvm, PGSIZE, 1);
     setptew(p->pgdir, (char *)tickslock, PGSIZE, 1);
-    setptew(p->pgdir, (char *)&ticks, PGSIZE, 1);
-    setptew(p->pgdir, (char *)lapic, PGSIZE, 1);        
     setptew(p->pgdir, (char *)ptable, PGSIZE, 1);
-    setptew(p->pgdir, (char *)&icache, sizeof(icache), 1);
-    setptew(p->pgdir, (char *)&sb, sizeof(sb), 1);
-    setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 1);
-    setptew(p->pgdir, (char *)&kmem, sizeof(kmem), 1);
-    setptew(p->pgdir, (char *)idequeue, sizeof(idequeue), 1);
-    setptew(p->pgdir, (char *)&idelock, sizeof(idelock), 1);
+    //setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 1);
+    //setptew(p->pgdir, (char *)idt, PGSIZE, 1);
+    //setptew(p->pgdir, (char *)mem_inituvm, PGSIZE, 1);;      
+    //setptew(p->pgdir, (char *)&ticks, PGSIZE, 1);
+    //setptew(p->pgdir, (char *)&icache, sizeof(icache), 1);
+    //setptew(p->pgdir, (char *)idequeue, sizeof(idequeue), 1);        
+    //setptew(p->pgdir, (char *)lapic, PGSIZE, 1);        
+    //setptew(p->pgdir, (char *)&sb, sizeof(sb), 1);    
+    //setptew(p->pgdir, (char *)&kmem, sizeof(kmem), 1);    
+    //setptew(p->pgdir, (char *)&idelock, sizeof(idelock), 1);
+    
+    //index of test array    
     setptew(p->pgdir, (char *)&plist_index, sizeof(plist_index), 1);
+
+    //********* Kenel Global (Optimisation)  *********************
+    
     for (i = 0; i < 100; i++) {
       //cprintf("DEBUG: setptew &plist[%d] %x\n", i, &plist[i]);
       setptew(p->pgdir, (char *)&plist[i], sizeof(&plist), 1);
@@ -346,7 +352,6 @@ switchuvm_ro(struct proc *p, const int n)
     //*********************************************
 
     cprintf("DEBUG: process name %s\n", p->name);
-    
     //set open filen array to be writable
     //set ofile[0], ofile[1], ofile[2] to be writable because parent process is init.
     //ofile[0] == ofile[1] == ofile[2] Even if i < 1
