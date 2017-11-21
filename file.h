@@ -10,8 +10,7 @@ struct file {
   struct inode *ip;
   uint off;
   //add manabu 10/17
-  struct file *next;
-  struct file *prev;
+
 };
 
 
