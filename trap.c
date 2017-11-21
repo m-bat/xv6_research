@@ -106,7 +106,7 @@ trap(struct trapframe *tf)
     //force kill process
     //myproc()->killed = 1;   
     p = myproc();
-    cprintf("DEBUG INFO: in kvm, proccess name %s pid %d\n", myproc()->name, myproc()->pid);
+    cprintf("DEBUG INFO: page fault proccess name %s, pid %d\n", myproc()->name, myproc()->pid);
     //cprintf("mycpu->ncli: %d\n", mycpu()->ncli);
     uint a = PGROUNDDOWN(rcr2());
     cprintf("DEBUG: Fault addr: %x\n", a);
@@ -114,7 +114,7 @@ trap(struct trapframe *tf)
     
     if (a >= (uint)get_kplocal_addr() && a <= (uint)get_devspace_addr()) {
       //access kernel process local area
-      cprintf("LOG: Access KERNELPLOCAL! exit process %s\n", p->name);
+      //cprintf("LOG: Access KERNELPLOCAL! exit process %s\n", p->name);
       exit();
     }
     else {      
@@ -130,7 +130,7 @@ trap(struct trapframe *tf)
     }
     
     //cprintf("T_PGFLT: kgflag = %d\n", kgflag);
-    cprintf("info: proccess name %s pid %d\n", myproc()->name, myproc()->pid);
+    //cprintf("DEBUG info: proccess name %s pid %d\n", myproc()->name, myproc()->pid);
     //panic("T_PGFLT");
     //exit();    
     break;
@@ -159,8 +159,11 @@ trap(struct trapframe *tf)
   // Force process to give up CPU on clock tick.
   // If interrupts were on while locks held, would need to check nlock.
   if(myproc() && myproc()->state == RUNNING &&
-     tf->trapno == T_IRQ0+IRQ_TIMER)
+     tf->trapno == T_IRQ0+IRQ_TIMER) {
     yield();
+    //DEBUG
+    //cprintf("DEBUG manabu\n");
+  }
 
   // Check if the process has been killed since we yielded
   if(myproc() && myproc()->killed && (tf->cs&3) == DPL_USER)
