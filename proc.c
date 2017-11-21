@@ -59,7 +59,7 @@ pinit(void)
   initlock(&ptable->lock, "ptable");  
 }
 
-// Must be called with interrupts disabled
+// Must be ca1lled with interrupts disabled
 int
 cpuid() {
   return mycpu()-cpus;
@@ -154,6 +154,8 @@ found:
   p->context = (struct context*)sp;
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
+
+  //plocal_insert((char *)p->context);
 
   return p;
 }
@@ -681,45 +683,16 @@ cps(void)
 int
 plocal(void)
 {
-  /*
-  struct proc *curproc = myproc();  
-  struct test_global *plocal;
-  */
-
-  //switchkvm();
-  
-  /*
-  if((plocal = (struct test_global *)kuinfo_alloc()) == 0) {          
-    return 0;
-  }
-  */
-  
-  //switchuvm(curproc);
-  //pte_t *pte;
-
-  //kernel global is read-only (test)  
-  //clearptew(kpgdir, (char *)&tglobal); 
-  
-  //clearptew(curproc->pgdir, (char *)plocal);
-
-  /*
-  plocal->pid = 0;
-  cprintf("process name : %s\n", curproc->name);
-  */  
-  //cprintf("plocal: tglocal 0x%x\n", &tglobal);
-
-  //cprintf("plocal: tglocal_pte  0x%x\n", *pte);
-
   int i = 0;
   
   for (i = 0; i < 100; i++) {
     if (plist[i] != 0) {
-      //cprintf("DEBUG: plocal i: %d\n", i);
+      cprintf("DEBUG: plocal plist_index: %d\n", i);
       //write : occur page falt 
       ((struct file *)plist[i])->ref = 0;
+      //((struct context *)plist[i])->eip = 0;      
     }    
-  }
-  
+  }  
   return 23;
 }
 
@@ -758,6 +731,7 @@ int plocal_insert(char *p)
 { 
 
   //cprintf("DEBUG: plocal_insert &plist[%d] %x\n", i, &plist[i]);
+  //cprintf("DEBUG: plocal_insert plist_index %d\n", plist_index);
   plist[plist_index] = p;
   plist_index++;
   
