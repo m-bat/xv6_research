@@ -85,7 +85,7 @@ filealloc(void)
   }
   */
 
-  if ((f = (struct file *)kalloc(ALLOC_PLOCAL)) == 0) {    
+  if ((f = (struct file *)kalloc(ALLOC_PLOCAL)) == 0) {
     panic("fileinit");
   }
   else {
@@ -99,7 +99,7 @@ filealloc(void)
     //DEBUG FINISH
     
     f->ref = 1;
-    plocal_insert((char *)f); //insert plocal alloc list
+    plocal_insert((char *)f); //insert plocal alloc list    
     
     release(&ftable.lock);
     return f;
@@ -160,23 +160,28 @@ void
 fileclose_plocal(struct file *f)
 {
   struct file ff;
+  
+  //acquire(&ftable.lock);
 
-  acquire(&ftable.lock);
+  cprintf("DEBUG: f->ref %d\n", f->ref);
   if(f->ref < 1)    
-    panic("fileclose");
+    panic("fileclose_plocal");
+      
   if(--f->ref > 0){
-    release(&ftable.lock);
+    //release(&ftable.lock);
     return;
-  }
+  } 
+  
+    
   ff = *f;
   f->ref = 0;
   f->type = FD_NONE;
   
   //add manabu 10/31
   //free file struct (kuinfo_alloc)
-  kfree((char*)f);
+  kfree((char*)f);  
   //  
-  release(&ftable.lock);
+  //release(&ftable.lock);
 
   if(ff.type == FD_PIPE)
     pipeclose_plocal(ff.pipe, ff.writable);
