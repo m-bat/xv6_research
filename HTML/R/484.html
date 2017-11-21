@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>rtcdate</title>
+<title>release</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,12 +9,64 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/119.html#L12'>rtcdate</a>            12 defs.h         struct rtcdate;</span>
-<span class='curline'><a href='../S/119.html#L88'>rtcdate</a>            88 defs.h         void            cmostime(struct rtcdate *r);</span>
-<span class='curline'><a href='../S/156.html#L182'>rtcdate</a>           182 lapic.c        static void fill_rtcdate(struct rtcdate *r)</span>
-<span class='curline'><a href='../S/156.html#L193'>rtcdate</a>           193 lapic.c        void cmostime(struct rtcdate *r)</span>
-<span class='curline'><a href='../S/156.html#L195'>rtcdate</a>           195 lapic.c          struct rtcdate t1, t2;</span>
-<span class='curline'><a href='../S/189.html#L5'>rtcdate</a>             5 user.h         struct rtcdate;</span>
+<span class='curline'><a href='../S/38.html#L72'>release</a>            72 bio.c                release(&amp;bcache.lock);</span>
+<span class='curline'><a href='../S/38.html#L87'>release</a>            87 bio.c                release(&amp;bcache.lock);</span>
+<span class='curline'><a href='../S/38.html#L140'>release</a>           140 bio.c            release(&amp;bcache.lock);</span>
+<span class='curline'><a href='../S/167.html#L120'>release</a>           120 console.c          release(&amp;cons-&gt;lock);</span>
+<span class='curline'><a href='../S/167.html#L264'>release</a>           264 console.c        release(&amp;cons-&gt;lock);</span>
+<span class='curline'><a href='../S/167.html#L288'>release</a>           288 console.c              release(&amp;cons-&gt;lock);</span>
+<span class='curline'><a href='../S/167.html#L314'>release</a>           314 console.c        release(&amp;cons-&gt;lock);</span>
+<span class='curline'><a href='../S/167.html#L334'>release</a>           334 console.c        release(&amp;cons-&gt;lock);</span>
+<span class='curline'><a href='../S/120.html#L154'>release</a>           154 defs.h         void            release(struct spinlock*);</span>
+<span class='curline'><a href='../S/15.html#L104'>release</a>           104 file.c             release(&amp;ftable.lock);</span>
+<span class='curline'><a href='../S/15.html#L109'>release</a>           109 file.c           release(&amp;ftable.lock);</span>
+<span class='curline'><a href='../S/15.html#L121'>release</a>           121 file.c           release(&amp;ftable.lock);</span>
+<span class='curline'><a href='../S/15.html#L135'>release</a>           135 file.c             release(&amp;ftable.lock);</span>
+<span class='curline'><a href='../S/15.html#L147'>release</a>           147 file.c           release(&amp;ftable.lock);</span>
+<span class='curline'><a href='../S/177.html#L254'>release</a>           254 fs.c                 release(&amp;icache.lock);</span>
+<span class='curline'><a href='../S/177.html#L270'>release</a>           270 fs.c             release(&amp;icache.lock);</span>
+<span class='curline'><a href='../S/177.html#L282'>release</a>           282 fs.c             release(&amp;icache.lock);</span>
+<span class='curline'><a href='../S/177.html#L339'>release</a>           339 fs.c               release(&amp;icache.lock);</span>
+<span class='curline'><a href='../S/177.html#L352'>release</a>           352 fs.c             release(&amp;icache.lock);</span>
+<span class='curline'><a href='../S/146.html#L114'>release</a>           114 ide.c              release(&amp;idelock);</span>
+<span class='curline'><a href='../S/146.html#L132'>release</a>           132 ide.c            release(&amp;idelock);</span>
+<span class='curline'><a href='../S/146.html#L169'>release</a>           169 ide.c            release(&amp;idelock);</span>
+<span class='curline'><a href='../S/172.html#L105'>release</a>           105 kalloc.c           release(&amp;kmem.lock);</span>
+<span class='curline'><a href='../S/172.html#L153'>release</a>           153 kalloc.c           release(&amp;kmem.lock);</span>
+<span class='curline'><a href='../S/200.html#L137'>release</a>           137 log.c                release(&amp;log.lock);</span>
+<span class='curline'><a href='../S/200.html#L163'>release</a>           163 log.c            release(&amp;log.lock);</span>
+<span class='curline'><a href='../S/200.html#L172'>release</a>           172 log.c              release(&amp;log.lock);</span>
+<span class='curline'><a href='../S/200.html#L232'>release</a>           232 log.c            release(&amp;log.lock);</span>
+<span class='curline'><a href='../S/95.html#L79'>release</a>            79 pipe.c             release(&amp;p-&gt;lock);</span>
+<span class='curline'><a href='../S/95.html#L82'>release</a>            82 pipe.c             release(&amp;p-&gt;lock);</span>
+<span class='curline'><a href='../S/95.html#L97'>release</a>            97 pipe.c             release(&amp;p-&gt;lock);</span>
+<span class='curline'><a href='../S/95.html#L100'>release</a>           100 pipe.c             release(&amp;p-&gt;lock);</span>
+<span class='curline'><a href='../S/95.html#L113'>release</a>           113 pipe.c                 release(&amp;p-&gt;lock);</span>
+<span class='curline'><a href='../S/95.html#L125'>release</a>           125 pipe.c           return n;</span>
+<span class='curline'><a href='../S/95.html#L137'>release</a>           137 pipe.c               return -1;</span>
+<span class='curline'><a href='../S/95.html#L148'>release</a>           148 pipe.c           release(&amp;p-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L118'>release</a>           118 proc.c           release(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L125'>release</a>           125 proc.c           release(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L210'>release</a>           210 proc.c           release(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L287'>release</a>           287 proc.c           release(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L416'>release</a>           416 proc.c                 release(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L423'>release</a>           423 proc.c               release(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L471'>release</a>           471 proc.c             release(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L509'>release</a>           509 proc.c           release(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L519'>release</a>           519 proc.c           release(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L554'>release</a>           554 proc.c             release(lk);</span>
+<span class='curline'><a href='../S/64.html#L567'>release</a>           567 proc.c             release(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L591'>release</a>           591 proc.c           release(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L609'>release</a>           609 proc.c               release(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L613'>release</a>           613 proc.c           release(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/64.html#L678'>release</a>           678 proc.c           release(&amp;ptable-&gt;lock);</span>
+<span class='curline'><a href='../S/140.html#L31'>release</a>            31 sleeplock.c      release(&amp;lk-&gt;lk);</span>
+<span class='curline'><a href='../S/140.html#L41'>release</a>            41 sleeplock.c      release(&amp;lk-&gt;lk);</span>
+<span class='curline'><a href='../S/140.html#L51'>release</a>            51 sleeplock.c      release(&amp;lk-&gt;lk);</span>
+<span class='curline'><a href='../S/102.html#L71'>release</a>            71 sysproc.c            release(tickslock);</span>
+<span class='curline'><a href='../S/102.html#L76'>release</a>            76 sysproc.c        release(tickslock);</span>
+<span class='curline'><a href='../S/102.html#L89'>release</a>            89 sysproc.c        release(tickslock);</span>
+<span class='curline'><a href='../S/166.html#L77'>release</a>            77 trap.c               release(tickslock);</span>
 </pre>
 </body>
 </html>

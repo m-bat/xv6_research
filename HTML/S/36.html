@@ -34,14 +34,14 @@ This source file includes following definitions.
 <a id='L5' name='L5'></a><em class='sharp'>#include</em> &lt;<a href='59.html'>fcntl.h</a>&gt;
 <a id='L6' name='L6'></a><em class='sharp'>#include</em> &lt;assert.h&gt;
 <a id='L7' name='L7'></a>
-<a id='L8' name='L8'></a><em class='sharp'>#define</em> <a href='../R/503.html' title='Multiple referred from 12 places.'>stat</a> xv6_stat  <em class='comment'>// avoid clash with host struct stat</em>
-<a id='L9' name='L9'></a><em class='sharp'>#include</em> "<a href='126.html'>types.h</a>"
+<a id='L8' name='L8'></a><em class='sharp'>#define</em> <a href='../R/508.html' title='Multiple referred from 12 places.'>stat</a> xv6_stat  <em class='comment'>// avoid clash with host struct stat</em>
+<a id='L9' name='L9'></a><em class='sharp'>#include</em> "<a href='127.html'>types.h</a>"
 <a id='L10' name='L10'></a><em class='sharp'>#include</em> "<a href='104.html'>fs.h</a>"
 <a id='L11' name='L11'></a><em class='sharp'>#include</em> "<a href='35.html'>stat.h</a>"
 <a id='L12' name='L12'></a><em class='sharp'>#include</em> "<a href='29.html'>param.h</a>"
 <a id='L13' name='L13'></a>
 <a id='L14' name='L14'></a><em class='sharp'>#ifndef</em> <a href='../S/36.html#L15' title='Defined at 15 in mkfs.c.'>static_assert</a>
-<a id='L15' name='L15'></a><em class='sharp'>#define</em> <a href='../R/505.html' title='Multiple referred from 2 places.'>static_assert</a>(a, b) <strong class='reserved'>do</strong> <em class='brace'>{</em> <strong class='reserved'>switch</strong> (0) <strong class='reserved'>case</strong> 0: <strong class='reserved'>case</strong> (a): ; <em class='brace'>}</em> <strong class='reserved'>while</strong> (0)
+<a id='L15' name='L15'></a><em class='sharp'>#define</em> <a href='../R/510.html' title='Multiple referred from 2 places.'>static_assert</a>(a, b) <strong class='reserved'>do</strong> <em class='brace'>{</em> <strong class='reserved'>switch</strong> (0) <strong class='reserved'>case</strong> 0: <strong class='reserved'>case</strong> (a): ; <em class='brace'>}</em> <strong class='reserved'>while</strong> (0)
 <a id='L16' name='L16'></a><em class='sharp'>#endif</em>
 <a id='L17' name='L17'></a>
 <a id='L18' name='L18'></a><em class='sharp'>#define</em> <a href='../R/116.html' title='Multiple referred from 2 places.'>NINODES</a> 200
@@ -58,34 +58,34 @@ This source file includes following definitions.
 <a id='L29' name='L29'></a><strong class='reserved'>int</strong> fsfd;
 <a id='L30' name='L30'></a><strong class='reserved'>struct</strong> <a href='../S/104.html#L17' title='Defined at 17 in fs.h.'>superblock</a> sb;
 <a id='L31' name='L31'></a><strong class='reserved'>char</strong> zeroes[<a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>];
-<a id='L32' name='L32'></a><a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> freeinode = 1;
-<a id='L33' name='L33'></a><a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> freeblock;
+<a id='L32' name='L32'></a><a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> freeinode = 1;
+<a id='L33' name='L33'></a><a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> freeblock;
 <a id='L34' name='L34'></a>
 <a id='L35' name='L35'></a>
-<a id='L36' name='L36'></a><strong class='reserved'>void</strong> <a href='../D/342.html' title='Multiple defined in 2 places.'>balloc</a>(<strong class='reserved'>int</strong>);
-<a id='L37' name='L37'></a><strong class='reserved'>void</strong> <a href='../S/36.html#L171' title='Defined at 171 in mkfs.c.'>wsect</a>(<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a>, <strong class='reserved'>void</strong>*);
-<a id='L38' name='L38'></a><strong class='reserved'>void</strong> <a href='../S/36.html#L184' title='Defined at 184 in mkfs.c.'>winode</a>(<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a>, <strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a>*);
-<a id='L39' name='L39'></a><strong class='reserved'>void</strong> <a href='../S/36.html#L198' title='Defined at 198 in mkfs.c.'>rinode</a>(<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> inum, <strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a> *ip);
-<a id='L40' name='L40'></a><strong class='reserved'>void</strong> <a href='../S/36.html#L211' title='Defined at 211 in mkfs.c.'>rsect</a>(<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> sec, <strong class='reserved'>void</strong> *<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>);
-<a id='L41' name='L41'></a><a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> <a href='../D/438.html' title='Multiple defined in 2 places.'>ialloc</a>(<a href='../S/126.html#L5' title='Defined at 5 in types.h.'>ushort</a> type);
-<a id='L42' name='L42'></a><strong class='reserved'>void</strong> <a href='../S/36.html#L256' title='Defined at 256 in mkfs.c.'>iappend</a>(<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> inum, <strong class='reserved'>void</strong> *p, <strong class='reserved'>int</strong> n);
+<a id='L36' name='L36'></a><strong class='reserved'>void</strong> <a href='../D/343.html' title='Multiple defined in 2 places.'>balloc</a>(<strong class='reserved'>int</strong>);
+<a id='L37' name='L37'></a><strong class='reserved'>void</strong> <a href='../S/36.html#L171' title='Defined at 171 in mkfs.c.'>wsect</a>(<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a>, <strong class='reserved'>void</strong>*);
+<a id='L38' name='L38'></a><strong class='reserved'>void</strong> <a href='../S/36.html#L184' title='Defined at 184 in mkfs.c.'>winode</a>(<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a>, <strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a>*);
+<a id='L39' name='L39'></a><strong class='reserved'>void</strong> <a href='../S/36.html#L198' title='Defined at 198 in mkfs.c.'>rinode</a>(<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> inum, <strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a> *ip);
+<a id='L40' name='L40'></a><strong class='reserved'>void</strong> <a href='../S/36.html#L211' title='Defined at 211 in mkfs.c.'>rsect</a>(<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> sec, <strong class='reserved'>void</strong> *<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>);
+<a id='L41' name='L41'></a><a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> <a href='../D/441.html' title='Multiple defined in 2 places.'>ialloc</a>(<a href='../S/127.html#L5' title='Defined at 5 in types.h.'>ushort</a> type);
+<a id='L42' name='L42'></a><strong class='reserved'>void</strong> <a href='../S/36.html#L256' title='Defined at 256 in mkfs.c.'>iappend</a>(<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> inum, <strong class='reserved'>void</strong> *p, <strong class='reserved'>int</strong> n);
 <a id='L43' name='L43'></a>
 <a id='L44' name='L44'></a><em class='comment'>// convert to intel byte order</em>
-<a id='L45' name='L45'></a><a href='../S/126.html#L5' title='Defined at 5 in types.h.'>ushort</a>
-<a id='L46' name='L46'></a><a href='../R/578.html' title='Multiple referred from 5 places.'>xshort</a>(<a href='../S/126.html#L5' title='Defined at 5 in types.h.'>ushort</a> x)
+<a id='L45' name='L45'></a><a href='../S/127.html#L5' title='Defined at 5 in types.h.'>ushort</a>
+<a id='L46' name='L46'></a><a href='../R/584.html' title='Multiple referred from 5 places.'>xshort</a>(<a href='../S/127.html#L5' title='Defined at 5 in types.h.'>ushort</a> x)
 <a id='L47' name='L47'></a><em class='brace'>{</em>
-<a id='L48' name='L48'></a>  <a href='../S/126.html#L5' title='Defined at 5 in types.h.'>ushort</a> y;
-<a id='L49' name='L49'></a>  <a href='../S/126.html#L6' title='Defined at 6 in types.h.'>uchar</a> *a = (<a href='../S/126.html#L6' title='Defined at 6 in types.h.'>uchar</a>*)&amp;y;
+<a id='L48' name='L48'></a>  <a href='../S/127.html#L5' title='Defined at 5 in types.h.'>ushort</a> y;
+<a id='L49' name='L49'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> *a = (<a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a>*)&amp;y;
 <a id='L50' name='L50'></a>  a[0] = x;
 <a id='L51' name='L51'></a>  a[1] = x &gt;&gt; 8;
 <a id='L52' name='L52'></a>  <strong class='reserved'>return</strong> y;
 <a id='L53' name='L53'></a><em class='brace'>}</em>
 <a id='L54' name='L54'></a>
-<a id='L55' name='L55'></a><a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a>
-<a id='L56' name='L56'></a><a href='../R/577.html' title='Multiple referred from 21 places.'>xint</a>(<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> x)
+<a id='L55' name='L55'></a><a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a>
+<a id='L56' name='L56'></a><a href='../R/583.html' title='Multiple referred from 21 places.'>xint</a>(<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> x)
 <a id='L57' name='L57'></a><em class='brace'>{</em>
-<a id='L58' name='L58'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> y;
-<a id='L59' name='L59'></a>  <a href='../S/126.html#L6' title='Defined at 6 in types.h.'>uchar</a> *a = (<a href='../S/126.html#L6' title='Defined at 6 in types.h.'>uchar</a>*)&amp;y;
+<a id='L58' name='L58'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> y;
+<a id='L59' name='L59'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> *a = (<a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a>*)&amp;y;
 <a id='L60' name='L60'></a>  a[0] = x;
 <a id='L61' name='L61'></a>  a[1] = x &gt;&gt; 8;
 <a id='L62' name='L62'></a>  a[2] = x &gt;&gt; 16;
@@ -97,9 +97,9 @@ This source file includes following definitions.
 <a id='L68' name='L68'></a>main(<strong class='reserved'>int</strong> argc, <strong class='reserved'>char</strong> *argv[])
 <a id='L69' name='L69'></a><em class='brace'>{</em>
 <a id='L70' name='L70'></a>  <strong class='reserved'>int</strong> i, cc, fd;
-<a id='L71' name='L71'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> rootino, inum, off;
+<a id='L71' name='L71'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> rootino, inum, off;
 <a id='L72' name='L72'></a>  <strong class='reserved'>struct</strong> <a href='../S/104.html#L56' title='Defined at 56 in fs.h.'>dirent</a> de;
-<a id='L73' name='L73'></a>  <strong class='reserved'>char</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[<a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>];
+<a id='L73' name='L73'></a>  <strong class='reserved'>char</strong> <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>[<a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>];
 <a id='L74' name='L74'></a>  <strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a> din;
 <a id='L75' name='L75'></a>
 <a id='L76' name='L76'></a>
@@ -131,7 +131,7 @@ This source file includes following definitions.
 <a id='L102' name='L102'></a>  sb.inodestart = <a href='../S/36.html#L56' title='Defined at 56 in mkfs.c.'>xint</a>(2+nlog);
 <a id='L103' name='L103'></a>  sb.bmapstart = <a href='../S/36.html#L56' title='Defined at 56 in mkfs.c.'>xint</a>(2+nlog+ninodeblocks);
 <a id='L104' name='L104'></a>
-<a id='L105' name='L105'></a>  <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>("nmeta %d (boot, super, log blocks %u inode blocks %u, bitmap blocks %u) blocks %d total %d\n",
+<a id='L105' name='L105'></a>  <a href='../D/562.html' title='Multiple defined in 2 places.'>printf</a>("nmeta %d (boot, super, log blocks %u inode blocks %u, bitmap blocks %u) blocks %d total %d\n",
 <a id='L106' name='L106'></a>         nmeta, nlog, ninodeblocks, nbitmap, nblocks, <a href='../S/29.html#L21' title='Defined at 21 in param.h.'>FSSIZE</a>);
 <a id='L107' name='L107'></a>
 <a id='L108' name='L108'></a>  freeblock = nmeta;     <em class='comment'>// the first free block that we can allocate</em>
@@ -139,21 +139,21 @@ This source file includes following definitions.
 <a id='L110' name='L110'></a>  <strong class='reserved'>for</strong>(i = 0; i &lt; <a href='../S/29.html#L21' title='Defined at 21 in param.h.'>FSSIZE</a>; i++)
 <a id='L111' name='L111'></a>    <a href='../S/36.html#L171' title='Defined at 171 in mkfs.c.'>wsect</a>(i, zeroes);
 <a id='L112' name='L112'></a>
-<a id='L113' name='L113'></a>  <a href='../D/509.html' title='Multiple defined in 2 places.'>memset</a>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, 0, <strong class='reserved'>sizeof</strong>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>));
-<a id='L114' name='L114'></a>  <a href='../D/508.html' title='Multiple defined in 2 places.'>memmove</a>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, &amp;sb, <strong class='reserved'>sizeof</strong>(sb));
-<a id='L115' name='L115'></a>  <a href='../S/36.html#L171' title='Defined at 171 in mkfs.c.'>wsect</a>(1, <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>);
+<a id='L113' name='L113'></a>  <a href='../D/512.html' title='Multiple defined in 2 places.'>memset</a>(<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>, 0, <strong class='reserved'>sizeof</strong>(<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>));
+<a id='L114' name='L114'></a>  <a href='../D/511.html' title='Multiple defined in 2 places.'>memmove</a>(<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>, &amp;sb, <strong class='reserved'>sizeof</strong>(sb));
+<a id='L115' name='L115'></a>  <a href='../S/36.html#L171' title='Defined at 171 in mkfs.c.'>wsect</a>(1, <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>);
 <a id='L116' name='L116'></a>
-<a id='L117' name='L117'></a>  rootino = <a href='../D/438.html' title='Multiple defined in 2 places.'>ialloc</a>(<a href='../S/35.html#L1' title='Defined at 1 in stat.h.'>T_DIR</a>);
+<a id='L117' name='L117'></a>  rootino = <a href='../D/441.html' title='Multiple defined in 2 places.'>ialloc</a>(<a href='../S/35.html#L1' title='Defined at 1 in stat.h.'>T_DIR</a>);
 <a id='L118' name='L118'></a>  assert(rootino == <a href='../S/104.html#L8' title='Defined at 8 in fs.h.'>ROOTINO</a>);
 <a id='L119' name='L119'></a>
-<a id='L120' name='L120'></a>  <a href='../S/173.html#L43' title='Defined at 43 in fs.c.'>bzero</a>(&amp;de, <strong class='reserved'>sizeof</strong>(de));
+<a id='L120' name='L120'></a>  <a href='../S/177.html#L43' title='Defined at 43 in fs.c.'>bzero</a>(&amp;de, <strong class='reserved'>sizeof</strong>(de));
 <a id='L121' name='L121'></a>  de.inum = <a href='../S/36.html#L46' title='Defined at 46 in mkfs.c.'>xshort</a>(rootino);
-<a id='L122' name='L122'></a>  <a href='../D/609.html' title='Multiple defined in 2 places.'>strcpy</a>(de.name, ".");
+<a id='L122' name='L122'></a>  <a href='../D/614.html' title='Multiple defined in 2 places.'>strcpy</a>(de.name, ".");
 <a id='L123' name='L123'></a>  <a href='../S/36.html#L256' title='Defined at 256 in mkfs.c.'>iappend</a>(rootino, &amp;de, <strong class='reserved'>sizeof</strong>(de));
 <a id='L124' name='L124'></a>
-<a id='L125' name='L125'></a>  <a href='../S/173.html#L43' title='Defined at 43 in fs.c.'>bzero</a>(&amp;de, <strong class='reserved'>sizeof</strong>(de));
+<a id='L125' name='L125'></a>  <a href='../S/177.html#L43' title='Defined at 43 in fs.c.'>bzero</a>(&amp;de, <strong class='reserved'>sizeof</strong>(de));
 <a id='L126' name='L126'></a>  de.inum = <a href='../S/36.html#L46' title='Defined at 46 in mkfs.c.'>xshort</a>(rootino);
-<a id='L127' name='L127'></a>  <a href='../D/609.html' title='Multiple defined in 2 places.'>strcpy</a>(de.name, "..");
+<a id='L127' name='L127'></a>  <a href='../D/614.html' title='Multiple defined in 2 places.'>strcpy</a>(de.name, "..");
 <a id='L128' name='L128'></a>  <a href='../S/36.html#L256' title='Defined at 256 in mkfs.c.'>iappend</a>(rootino, &amp;de, <strong class='reserved'>sizeof</strong>(de));
 <a id='L129' name='L129'></a>
 <a id='L130' name='L130'></a>  <strong class='reserved'>for</strong>(i = 2; i &lt; argc; i++)<em class='brace'>{</em>
@@ -171,15 +171,15 @@ This source file includes following definitions.
 <a id='L142' name='L142'></a>    <strong class='reserved'>if</strong>(argv[i][0] == '_')
 <a id='L143' name='L143'></a>      ++argv[i];
 <a id='L144' name='L144'></a>
-<a id='L145' name='L145'></a>    inum = <a href='../D/438.html' title='Multiple defined in 2 places.'>ialloc</a>(<a href='../S/35.html#L2' title='Defined at 2 in stat.h.'>T_FILE</a>);
+<a id='L145' name='L145'></a>    inum = <a href='../D/441.html' title='Multiple defined in 2 places.'>ialloc</a>(<a href='../S/35.html#L2' title='Defined at 2 in stat.h.'>T_FILE</a>);
 <a id='L146' name='L146'></a>
-<a id='L147' name='L147'></a>    <a href='../S/173.html#L43' title='Defined at 43 in fs.c.'>bzero</a>(&amp;de, <strong class='reserved'>sizeof</strong>(de));
+<a id='L147' name='L147'></a>    <a href='../S/177.html#L43' title='Defined at 43 in fs.c.'>bzero</a>(&amp;de, <strong class='reserved'>sizeof</strong>(de));
 <a id='L148' name='L148'></a>    de.inum = <a href='../S/36.html#L46' title='Defined at 46 in mkfs.c.'>xshort</a>(inum);
 <a id='L149' name='L149'></a>    <a href='../S/11.html#L69' title='Defined at 69 in string.c.'>strncpy</a>(de.name, argv[i], <a href='../S/104.html#L54' title='Defined at 54 in fs.h.'>DIRSIZ</a>);
 <a id='L150' name='L150'></a>    <a href='../S/36.html#L256' title='Defined at 256 in mkfs.c.'>iappend</a>(rootino, &amp;de, <strong class='reserved'>sizeof</strong>(de));
 <a id='L151' name='L151'></a>
-<a id='L152' name='L152'></a>    <strong class='reserved'>while</strong>((cc = read(fd, <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <strong class='reserved'>sizeof</strong>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>))) &gt; 0)
-<a id='L153' name='L153'></a>      <a href='../S/36.html#L256' title='Defined at 256 in mkfs.c.'>iappend</a>(inum, <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, cc);
+<a id='L152' name='L152'></a>    <strong class='reserved'>while</strong>((cc = read(fd, <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <strong class='reserved'>sizeof</strong>(<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>))) &gt; 0)
+<a id='L153' name='L153'></a>      <a href='../S/36.html#L256' title='Defined at 256 in mkfs.c.'>iappend</a>(inum, <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>, cc);
 <a id='L154' name='L154'></a>
 <a id='L155' name='L155'></a>    close(fd);
 <a id='L156' name='L156'></a>  <em class='brace'>}</em>
@@ -191,71 +191,71 @@ This source file includes following definitions.
 <a id='L162' name='L162'></a>  din.size = <a href='../S/36.html#L56' title='Defined at 56 in mkfs.c.'>xint</a>(off);
 <a id='L163' name='L163'></a>  <a href='../S/36.html#L184' title='Defined at 184 in mkfs.c.'>winode</a>(rootino, &amp;din);
 <a id='L164' name='L164'></a>
-<a id='L165' name='L165'></a>  <a href='../D/342.html' title='Multiple defined in 2 places.'>balloc</a>(freeblock);
+<a id='L165' name='L165'></a>  <a href='../D/343.html' title='Multiple defined in 2 places.'>balloc</a>(freeblock);
 <a id='L166' name='L166'></a>
 <a id='L167' name='L167'></a>  <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>(0);
 <a id='L168' name='L168'></a><em class='brace'>}</em>
 <a id='L169' name='L169'></a>
 <a id='L170' name='L170'></a><strong class='reserved'>void</strong>
-<a id='L171' name='L171'></a><a href='../R/575.html' title='Multiple referred from 7 places.'>wsect</a>(<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> sec, <strong class='reserved'>void</strong> *<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>)
+<a id='L171' name='L171'></a><a href='../R/581.html' title='Multiple referred from 7 places.'>wsect</a>(<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> sec, <strong class='reserved'>void</strong> *<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>)
 <a id='L172' name='L172'></a><em class='brace'>{</em>
 <a id='L173' name='L173'></a>  <strong class='reserved'>if</strong>(lseek(fsfd, sec * <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>, 0) != sec * <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>)<em class='brace'>{</em>
 <a id='L174' name='L174'></a>    perror("lseek");
 <a id='L175' name='L175'></a>    <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>(1);
 <a id='L176' name='L176'></a>  <em class='brace'>}</em>
-<a id='L177' name='L177'></a>  <strong class='reserved'>if</strong>(write(fsfd, <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>) != <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>)<em class='brace'>{</em>
+<a id='L177' name='L177'></a>  <strong class='reserved'>if</strong>(write(fsfd, <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>) != <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>)<em class='brace'>{</em>
 <a id='L178' name='L178'></a>    perror("write");
 <a id='L179' name='L179'></a>    <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>(1);
 <a id='L180' name='L180'></a>  <em class='brace'>}</em>
 <a id='L181' name='L181'></a><em class='brace'>}</em>
 <a id='L182' name='L182'></a>
 <a id='L183' name='L183'></a><strong class='reserved'>void</strong>
-<a id='L184' name='L184'></a><a href='../R/569.html' title='Multiple referred from 4 places.'>winode</a>(<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> inum, <strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a> *ip)
+<a id='L184' name='L184'></a><a href='../R/575.html' title='Multiple referred from 4 places.'>winode</a>(<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> inum, <strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a> *ip)
 <a id='L185' name='L185'></a><em class='brace'>{</em>
-<a id='L186' name='L186'></a>  <strong class='reserved'>char</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[<a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>];
-<a id='L187' name='L187'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> bn;
+<a id='L186' name='L186'></a>  <strong class='reserved'>char</strong> <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>[<a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>];
+<a id='L187' name='L187'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> bn;
 <a id='L188' name='L188'></a>  <strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a> *dip;
 <a id='L189' name='L189'></a>
 <a id='L190' name='L190'></a>  bn = <a href='../S/104.html#L45' title='Defined at 45 in fs.h.'>IBLOCK</a>(inum, sb);
-<a id='L191' name='L191'></a>  <a href='../S/36.html#L211' title='Defined at 211 in mkfs.c.'>rsect</a>(bn, <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>);
-<a id='L192' name='L192'></a>  dip = ((<strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a>*)<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>) + (inum % <a href='../S/104.html#L42' title='Defined at 42 in fs.h.'>IPB</a>);
+<a id='L191' name='L191'></a>  <a href='../S/36.html#L211' title='Defined at 211 in mkfs.c.'>rsect</a>(bn, <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>);
+<a id='L192' name='L192'></a>  dip = ((<strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a>*)<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>) + (inum % <a href='../S/104.html#L42' title='Defined at 42 in fs.h.'>IPB</a>);
 <a id='L193' name='L193'></a>  *dip = *ip;
-<a id='L194' name='L194'></a>  <a href='../S/36.html#L171' title='Defined at 171 in mkfs.c.'>wsect</a>(bn, <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>);
+<a id='L194' name='L194'></a>  <a href='../S/36.html#L171' title='Defined at 171 in mkfs.c.'>wsect</a>(bn, <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>);
 <a id='L195' name='L195'></a><em class='brace'>}</em>
 <a id='L196' name='L196'></a>
 <a id='L197' name='L197'></a><strong class='reserved'>void</strong>
-<a id='L198' name='L198'></a><a href='../R/481.html' title='Multiple referred from 3 places.'>rinode</a>(<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> inum, <strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a> *ip)
+<a id='L198' name='L198'></a><a href='../R/486.html' title='Multiple referred from 3 places.'>rinode</a>(<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> inum, <strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a> *ip)
 <a id='L199' name='L199'></a><em class='brace'>{</em>
-<a id='L200' name='L200'></a>  <strong class='reserved'>char</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[<a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>];
-<a id='L201' name='L201'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> bn;
+<a id='L200' name='L200'></a>  <strong class='reserved'>char</strong> <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>[<a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>];
+<a id='L201' name='L201'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> bn;
 <a id='L202' name='L202'></a>  <strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a> *dip;
 <a id='L203' name='L203'></a>
 <a id='L204' name='L204'></a>  bn = <a href='../S/104.html#L45' title='Defined at 45 in fs.h.'>IBLOCK</a>(inum, sb);
-<a id='L205' name='L205'></a>  <a href='../S/36.html#L211' title='Defined at 211 in mkfs.c.'>rsect</a>(bn, <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>);
-<a id='L206' name='L206'></a>  dip = ((<strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a>*)<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>) + (inum % <a href='../S/104.html#L42' title='Defined at 42 in fs.h.'>IPB</a>);
+<a id='L205' name='L205'></a>  <a href='../S/36.html#L211' title='Defined at 211 in mkfs.c.'>rsect</a>(bn, <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>);
+<a id='L206' name='L206'></a>  dip = ((<strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a>*)<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>) + (inum % <a href='../S/104.html#L42' title='Defined at 42 in fs.h.'>IPB</a>);
 <a id='L207' name='L207'></a>  *ip = *dip;
 <a id='L208' name='L208'></a><em class='brace'>}</em>
 <a id='L209' name='L209'></a>
 <a id='L210' name='L210'></a><strong class='reserved'>void</strong>
-<a id='L211' name='L211'></a><a href='../R/483.html' title='Multiple referred from 5 places.'>rsect</a>(<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> sec, <strong class='reserved'>void</strong> *<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>)
+<a id='L211' name='L211'></a><a href='../R/488.html' title='Multiple referred from 5 places.'>rsect</a>(<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> sec, <strong class='reserved'>void</strong> *<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>)
 <a id='L212' name='L212'></a><em class='brace'>{</em>
 <a id='L213' name='L213'></a>  <strong class='reserved'>if</strong>(lseek(fsfd, sec * <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>, 0) != sec * <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>)<em class='brace'>{</em>
 <a id='L214' name='L214'></a>    perror("lseek");
 <a id='L215' name='L215'></a>    <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>(1);
 <a id='L216' name='L216'></a>  <em class='brace'>}</em>
-<a id='L217' name='L217'></a>  <strong class='reserved'>if</strong>(read(fsfd, <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>) != <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>)<em class='brace'>{</em>
+<a id='L217' name='L217'></a>  <strong class='reserved'>if</strong>(read(fsfd, <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>) != <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>)<em class='brace'>{</em>
 <a id='L218' name='L218'></a>    perror("read");
 <a id='L219' name='L219'></a>    <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>(1);
 <a id='L220' name='L220'></a>  <em class='brace'>}</em>
 <a id='L221' name='L221'></a><em class='brace'>}</em>
 <a id='L222' name='L222'></a>
-<a id='L223' name='L223'></a><a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a>
-<a id='L224' name='L224'></a><a href='../R/345.html' title='Multiple referred from 5 places.'>ialloc</a>(<a href='../S/126.html#L5' title='Defined at 5 in types.h.'>ushort</a> type)
+<a id='L223' name='L223'></a><a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a>
+<a id='L224' name='L224'></a><a href='../R/348.html' title='Multiple referred from 5 places.'>ialloc</a>(<a href='../S/127.html#L5' title='Defined at 5 in types.h.'>ushort</a> type)
 <a id='L225' name='L225'></a><em class='brace'>{</em>
-<a id='L226' name='L226'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> inum = freeinode++;
+<a id='L226' name='L226'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> inum = freeinode++;
 <a id='L227' name='L227'></a>  <strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a> din;
 <a id='L228' name='L228'></a>
-<a id='L229' name='L229'></a>  <a href='../S/173.html#L43' title='Defined at 43 in fs.c.'>bzero</a>(&amp;din, <strong class='reserved'>sizeof</strong>(din));
+<a id='L229' name='L229'></a>  <a href='../S/177.html#L43' title='Defined at 43 in fs.c.'>bzero</a>(&amp;din, <strong class='reserved'>sizeof</strong>(din));
 <a id='L230' name='L230'></a>  din.type = <a href='../S/36.html#L46' title='Defined at 46 in mkfs.c.'>xshort</a>(type);
 <a id='L231' name='L231'></a>  din.nlink = <a href='../S/36.html#L46' title='Defined at 46 in mkfs.c.'>xshort</a>(1);
 <a id='L232' name='L232'></a>  din.size = <a href='../S/36.html#L56' title='Defined at 56 in mkfs.c.'>xint</a>(0);
@@ -264,32 +264,32 @@ This source file includes following definitions.
 <a id='L235' name='L235'></a><em class='brace'>}</em>
 <a id='L236' name='L236'></a>
 <a id='L237' name='L237'></a><strong class='reserved'>void</strong>
-<a id='L238' name='L238'></a><a href='../R/252.html' title='Multiple referred from 5 places.'>balloc</a>(<strong class='reserved'>int</strong> used)
+<a id='L238' name='L238'></a><a href='../R/253.html' title='Multiple referred from 5 places.'>balloc</a>(<strong class='reserved'>int</strong> used)
 <a id='L239' name='L239'></a><em class='brace'>{</em>
-<a id='L240' name='L240'></a>  <a href='../S/126.html#L6' title='Defined at 6 in types.h.'>uchar</a> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[<a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>];
+<a id='L240' name='L240'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>[<a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>];
 <a id='L241' name='L241'></a>  <strong class='reserved'>int</strong> i;
 <a id='L242' name='L242'></a>
-<a id='L243' name='L243'></a>  <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>("balloc: first %d blocks have been allocated\n", used);
+<a id='L243' name='L243'></a>  <a href='../D/562.html' title='Multiple defined in 2 places.'>printf</a>("balloc: first %d blocks have been allocated\n", used);
 <a id='L244' name='L244'></a>  assert(used &lt; <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>*8);
-<a id='L245' name='L245'></a>  <a href='../S/173.html#L43' title='Defined at 43 in fs.c.'>bzero</a>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>);
+<a id='L245' name='L245'></a>  <a href='../S/177.html#L43' title='Defined at 43 in fs.c.'>bzero</a>(<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>);
 <a id='L246' name='L246'></a>  <strong class='reserved'>for</strong>(i = 0; i &lt; used; i++)<em class='brace'>{</em>
-<a id='L247' name='L247'></a>    <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[i/8] = <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[i/8] | (0x1 &lt;&lt; (i%8));
+<a id='L247' name='L247'></a>    <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>[i/8] = <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>[i/8] | (0x1 &lt;&lt; (i%8));
 <a id='L248' name='L248'></a>  <em class='brace'>}</em>
-<a id='L249' name='L249'></a>  <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>("balloc: write bitmap block at sector %d\n", sb.bmapstart);
-<a id='L250' name='L250'></a>  <a href='../S/36.html#L171' title='Defined at 171 in mkfs.c.'>wsect</a>(sb.bmapstart, <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>);
+<a id='L249' name='L249'></a>  <a href='../D/562.html' title='Multiple defined in 2 places.'>printf</a>("balloc: write bitmap block at sector %d\n", sb.bmapstart);
+<a id='L250' name='L250'></a>  <a href='../S/36.html#L171' title='Defined at 171 in mkfs.c.'>wsect</a>(sb.bmapstart, <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>);
 <a id='L251' name='L251'></a><em class='brace'>}</em>
 <a id='L252' name='L252'></a>
-<a id='L253' name='L253'></a><em class='sharp'>#define</em> <a href='../R/415.html' title='Multiple referred from 3 places.'>min</a>(a, b) ((a) &lt; (b) ? (a) : (b))
+<a id='L253' name='L253'></a><em class='sharp'>#define</em> <a href='../R/418.html' title='Multiple referred from 3 places.'>min</a>(a, b) ((a) &lt; (b) ? (a) : (b))
 <a id='L254' name='L254'></a>
 <a id='L255' name='L255'></a><strong class='reserved'>void</strong>
-<a id='L256' name='L256'></a><a href='../R/346.html' title='Multiple referred from 5 places.'>iappend</a>(<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> inum, <strong class='reserved'>void</strong> *xp, <strong class='reserved'>int</strong> n)
+<a id='L256' name='L256'></a><a href='../R/349.html' title='Multiple referred from 5 places.'>iappend</a>(<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> inum, <strong class='reserved'>void</strong> *xp, <strong class='reserved'>int</strong> n)
 <a id='L257' name='L257'></a><em class='brace'>{</em>
 <a id='L258' name='L258'></a>  <strong class='reserved'>char</strong> *p = (<strong class='reserved'>char</strong>*)xp;
-<a id='L259' name='L259'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> fbn, off, n1;
+<a id='L259' name='L259'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> fbn, off, n1;
 <a id='L260' name='L260'></a>  <strong class='reserved'>struct</strong> <a href='../S/104.html#L32' title='Defined at 32 in fs.h.'>dinode</a> din;
-<a id='L261' name='L261'></a>  <strong class='reserved'>char</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[<a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>];
-<a id='L262' name='L262'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> indirect[<a href='../S/104.html#L28' title='Defined at 28 in fs.h.'>NINDIRECT</a>];
-<a id='L263' name='L263'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> x;
+<a id='L261' name='L261'></a>  <strong class='reserved'>char</strong> <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>[<a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>];
+<a id='L262' name='L262'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> indirect[<a href='../S/104.html#L28' title='Defined at 28 in fs.h.'>NINDIRECT</a>];
+<a id='L263' name='L263'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> x;
 <a id='L264' name='L264'></a>
 <a id='L265' name='L265'></a>  <a href='../S/36.html#L198' title='Defined at 198 in mkfs.c.'>rinode</a>(inum, &amp;din);
 <a id='L266' name='L266'></a>  off = <a href='../S/36.html#L56' title='Defined at 56 in mkfs.c.'>xint</a>(din.size);
@@ -313,10 +313,10 @@ This source file includes following definitions.
 <a id='L284' name='L284'></a>      <em class='brace'>}</em>
 <a id='L285' name='L285'></a>      x = <a href='../S/36.html#L56' title='Defined at 56 in mkfs.c.'>xint</a>(indirect[fbn-<a href='../S/104.html#L27' title='Defined at 27 in fs.h.'>NDIRECT</a>]);
 <a id='L286' name='L286'></a>    <em class='brace'>}</em>
-<a id='L287' name='L287'></a>    n1 = <a href='../D/511.html' title='Multiple defined in 2 places.'>min</a>(n, (fbn + 1) * <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a> - off);
-<a id='L288' name='L288'></a>    <a href='../S/36.html#L211' title='Defined at 211 in mkfs.c.'>rsect</a>(x, <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>);
-<a id='L289' name='L289'></a>    bcopy(p, <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a> + off - (fbn * <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>), n1);
-<a id='L290' name='L290'></a>    <a href='../S/36.html#L171' title='Defined at 171 in mkfs.c.'>wsect</a>(x, <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>);
+<a id='L287' name='L287'></a>    n1 = <a href='../D/514.html' title='Multiple defined in 2 places.'>min</a>(n, (fbn + 1) * <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a> - off);
+<a id='L288' name='L288'></a>    <a href='../S/36.html#L211' title='Defined at 211 in mkfs.c.'>rsect</a>(x, <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>);
+<a id='L289' name='L289'></a>    bcopy(p, <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a> + off - (fbn * <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>), n1);
+<a id='L290' name='L290'></a>    <a href='../S/36.html#L171' title='Defined at 171 in mkfs.c.'>wsect</a>(x, <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>);
 <a id='L291' name='L291'></a>    n -= n1;
 <a id='L292' name='L292'></a>    off += n1;
 <a id='L293' name='L293'></a>    p += n1;

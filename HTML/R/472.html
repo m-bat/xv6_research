@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>readeflags</title>
+<title>pte_t</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,10 +9,22 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/64.html#L74'>readeflags</a>         74 proc.c           if(readeflags()&amp;FL_IF)</span>
-<span class='curline'><a href='../S/64.html#L447'>readeflags</a>        447 proc.c           if(readeflags()&amp;FL_IF)</span>
-<span class='curline'><a href='../S/41.html#L105'>readeflags</a>        105 spinlock.c       eflags = readeflags();</span>
-<span class='curline'><a href='../S/41.html#L115'>readeflags</a>        115 spinlock.c       if(readeflags()&amp;FL_IF)</span>
+<span class='curline'><a href='../S/162.html#L75'>pte_t</a>              75 vm.c           static pte_t *</span>
+<span class='curline'><a href='../S/162.html#L79'>pte_t</a>              79 vm.c             pte_t *pgtab;</span>
+<span class='curline'><a href='../S/162.html#L83'>pte_t</a>              83 vm.c               pgtab = (pte_t*)P2V(PTE_ADDR(*pde));</span>
+<span class='curline'><a href='../S/162.html#L90'>pte_t</a>              90 vm.c           static pte_t *</span>
+<span class='curline'><a href='../S/162.html#L94'>pte_t</a>              94 vm.c             pte_t *pgtab;</span>
+<span class='curline'><a href='../S/162.html#L98'>pte_t</a>              98 vm.c               pgtab = (pte_t*)P2V(PTE_ADDR(*pde));</span>
+<span class='curline'><a href='../S/162.html#L100'>pte_t</a>             100 vm.c               if((pgtab = (pte_t*)kalloc(flag)) == 0)</span>
+<span class='curline'><a href='../S/162.html#L119'>pte_t</a>             119 vm.c             pte_t *pte;</span>
+<span class='curline'><a href='../S/162.html#L407'>pte_t</a>             407 vm.c           int</span>
+<span class='curline'><a href='../S/162.html#L464'>pte_t</a>             464 vm.c           // process size.  Returns the new process size.</span>
+<span class='curline'><a href='../S/162.html#L520'>pte_t</a>             520 vm.c           // page beneath the user stack.</span>
+<span class='curline'><a href='../S/162.html#L533'>pte_t</a>             533 vm.c           void</span>
+<span class='curline'><a href='../S/162.html#L552'>pte_t</a>             552 vm.c           {</span>
+<span class='curline'><a href='../S/162.html#L578'>pte_t</a>             578 vm.c           void setptew_kernel(pde_t *pgdir)</span>
+<span class='curline'><a href='../S/162.html#L614'>pte_t</a>             614 vm.c           pde_t*</span>
+<span class='curline'><a href='../S/162.html#L645'>pte_t</a>             645 vm.c           // Map user virtual address to kernel address.</span>
 </pre>
 </body>
 </html>

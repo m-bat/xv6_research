@@ -9,17 +9,17 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/155.html#L117'>PTE_P</a>             117 main.c           [0] = (0) | PTE_P | PTE_W | PTE_PS,</span>
-<span class='curline'><a href='../S/155.html#L119'>PTE_P</a>             119 main.c           [KERNBASE&gt;&gt;PDXSHIFT] = (0) | PTE_P | PTE_W | PTE_PS,</span>
-<span class='curline'><a href='../S/158.html#L72'>PTE_P</a>              72 vm.c           {  </span>
-<span class='curline'><a href='../S/158.html#L87'>PTE_P</a>              87 vm.c           {  </span>
-<span class='curline'><a href='../S/158.html#L97'>PTE_P</a>              97 vm.c               // Make sure all those PTE_P bits are zero.</span>
-<span class='curline'><a href='../S/158.html#L116'>PTE_P</a>             116 vm.c             a = (char*)PGROUNDDOWN((uint)va);</span>
-<span class='curline'><a href='../S/158.html#L118'>PTE_P</a>             118 vm.c             for(;;){</span>
-<span class='curline'><a href='../S/158.html#L440'>PTE_P</a>             440 vm.c           </span>
-<span class='curline'><a href='../S/158.html#L463'>PTE_P</a>             463 vm.c                 setptew(myproc()-&gt;pgdir, (char *)v, PGSIZE, 1);      </span>
-<span class='curline'><a href='../S/158.html#L581'>PTE_P</a>             581 vm.c               //cprintf("a %x\n", a);</span>
-<span class='curline'><a href='../S/158.html#L606'>PTE_P</a>             606 vm.c               flags = PTE_FLAGS(*pte);</span>
+<span class='curline'><a href='../S/158.html#L117'>PTE_P</a>             117 main.c           [0] = (0) | PTE_P | PTE_W | PTE_PS,</span>
+<span class='curline'><a href='../S/158.html#L119'>PTE_P</a>             119 main.c           [KERNBASE&gt;&gt;PDXSHIFT] = (0) | PTE_P | PTE_W | PTE_PS,</span>
+<span class='curline'><a href='../S/162.html#L82'>PTE_P</a>              82 vm.c             if(*pde &amp; PTE_P){</span>
+<span class='curline'><a href='../S/162.html#L97'>PTE_P</a>              97 vm.c             if(*pde &amp; PTE_P){</span>
+<span class='curline'><a href='../S/162.html#L107'>PTE_P</a>             107 vm.c               *pde = V2P(pgtab) | PTE_P | PTE_W | PTE_U;</span>
+<span class='curline'><a href='../S/162.html#L126'>PTE_P</a>             126 vm.c               if(*pte &amp; PTE_P)</span>
+<span class='curline'><a href='../S/162.html#L128'>PTE_P</a>             128 vm.c               *pte = pa | perm | PTE_P;</span>
+<span class='curline'><a href='../S/162.html#L477'>PTE_P</a>             477 vm.c               </span>
+<span class='curline'><a href='../S/162.html#L507'>PTE_P</a>             507 vm.c             if (pgdir == 0)</span>
+<span class='curline'><a href='../S/162.html#L623'>PTE_P</a>             623 vm.c               return 0;</span>
+<span class='curline'><a href='../S/162.html#L648'>PTE_P</a>             648 vm.c           {</span>
 </pre>
 </body>
 </html>

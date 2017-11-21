@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>dirent</title>
+<title>dinode</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,13 +9,25 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/173.html#L529'>dirent</a>            529 fs.c             struct dirent de;</span>
-<span class='curline'><a href='../S/173.html#L556'>dirent</a>            556 fs.c             struct dirent de;</span>
-<span class='curline'><a href='../S/111.html#L30'>dirent</a>             30 ls.c             struct dirent de;</span>
-<span class='curline'><a href='../S/36.html#L72'>dirent</a>             72 mkfs.c           struct dirent de;</span>
-<span class='curline'><a href='../S/36.html#L85'>dirent</a>             85 mkfs.c           assert((BSIZE % sizeof(struct dirent)) == 0);</span>
-<span class='curline'><a href='../S/84.html#L172'>dirent</a>            172 sysfile.c        struct dirent de;</span>
-<span class='curline'><a href='../S/84.html#L188'>dirent</a>            188 sysfile.c        struct dirent de;</span>
+<span class='curline'><a href='../S/177.html#L200'>dinode</a>            200 fs.c             struct dinode *dip;</span>
+<span class='curline'><a href='../S/177.html#L204'>dinode</a>            204 fs.c               dip = (struct dinode*)bp-&gt;data + inum%IPB;</span>
+<span class='curline'><a href='../S/177.html#L225'>dinode</a>            225 fs.c             struct dinode *dip;</span>
+<span class='curline'><a href='../S/177.html#L228'>dinode</a>            228 fs.c             dip = (struct dinode*)bp-&gt;data + ip-&gt;inum%IPB;</span>
+<span class='curline'><a href='../S/177.html#L292'>dinode</a>            292 fs.c             struct dinode *dip;</span>
+<span class='curline'><a href='../S/177.html#L301'>dinode</a>            301 fs.c               dip = (struct dinode*)bp-&gt;data + ip-&gt;inum%IPB;</span>
+<span class='curline'><a href='../S/104.html#L42'>dinode</a>             42 fs.h           #define IPB           (BSIZE / sizeof(struct dinode))</span>
+<span class='curline'><a href='../S/36.html#L38'>dinode</a>             38 mkfs.c         void winode(uint, struct dinode*);</span>
+<span class='curline'><a href='../S/36.html#L39'>dinode</a>             39 mkfs.c         void rinode(uint inum, struct dinode *ip);</span>
+<span class='curline'><a href='../S/36.html#L74'>dinode</a>             74 mkfs.c           struct dinode din;</span>
+<span class='curline'><a href='../S/36.html#L84'>dinode</a>             84 mkfs.c           assert((BSIZE % sizeof(struct dinode)) == 0);</span>
+<span class='curline'><a href='../S/36.html#L184'>dinode</a>            184 mkfs.c         winode(uint inum, struct dinode *ip)</span>
+<span class='curline'><a href='../S/36.html#L188'>dinode</a>            188 mkfs.c           struct dinode *dip;</span>
+<span class='curline'><a href='../S/36.html#L192'>dinode</a>            192 mkfs.c           dip = ((struct dinode*)buf) + (inum % IPB);</span>
+<span class='curline'><a href='../S/36.html#L198'>dinode</a>            198 mkfs.c         rinode(uint inum, struct dinode *ip)</span>
+<span class='curline'><a href='../S/36.html#L202'>dinode</a>            202 mkfs.c           struct dinode *dip;</span>
+<span class='curline'><a href='../S/36.html#L206'>dinode</a>            206 mkfs.c           dip = ((struct dinode*)buf) + (inum % IPB);</span>
+<span class='curline'><a href='../S/36.html#L227'>dinode</a>            227 mkfs.c           struct dinode din;</span>
+<span class='curline'><a href='../S/36.html#L260'>dinode</a>            260 mkfs.c           struct dinode din;</span>
 </pre>
 </body>
 </html>

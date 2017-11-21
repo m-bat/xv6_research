@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>lapicid</title>
+<title>kmap</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,9 +9,16 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/163.html#L134'>lapicid</a>           134 console.c        cprintf("lapicid %d: panic: ", lapicid());</span>
-<span class='curline'><a href='../S/119.html#L89'>lapicid</a>            89 defs.h         int             lapicid(void);</span>
-<span class='curline'><a href='../S/64.html#L77'>lapicid</a>            77 proc.c           apicid = lapicid();</span>
+<span class='curline'><a href='../S/162.html#L165'>kmap</a>              165 vm.c           } kmap[] = {</span>
+<span class='curline'><a href='../S/162.html#L176'>kmap</a>              176 vm.c             return kmap[3].virt;</span>
+<span class='curline'><a href='../S/162.html#L180'>kmap</a>              180 vm.c             return kmap[4].virt;</span>
+<span class='curline'><a href='../S/162.html#L187'>kmap</a>              187 vm.c             struct kmap *k;</span>
+<span class='curline'><a href='../S/162.html#L195'>kmap</a>              195 vm.c             for(k = kmap; k &lt; &amp;kmap[NELEM(kmap)]; k++) {</span>
+<span class='curline'><a href='../S/162.html#L209'>kmap</a>              209 vm.c             struct kmap *k;  </span>
+<span class='curline'><a href='../S/162.html#L214'>kmap</a>              214 vm.c             for(k = kmap; k &lt; &amp;kmap[NELEM(kmap)]; k++) {</span>
+<span class='curline'><a href='../S/162.html#L580'>kmap</a>              580 vm.c             char *a, *last;</span>
+<span class='curline'><a href='../S/162.html#L584'>kmap</a>              584 vm.c             size = kmap[2].phys_end - kmap[2].phys_start;</span>
+<span class='curline'><a href='../S/162.html#L585'>kmap</a>              585 vm.c           </span>
 </pre>
 </body>
 </html>

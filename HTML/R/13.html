@@ -11,15 +11,15 @@
 <pre>
 <span class='curline'><a href='../S/38.html#L82'>B_DIRTY</a>            82 bio.c              if(b-&gt;refcnt == 0 &amp;&amp; (b-&gt;flags &amp; B_DIRTY) == 0) {</span>
 <span class='curline'><a href='../S/38.html#L114'>B_DIRTY</a>           114 bio.c            b-&gt;flags |= B_DIRTY;</span>
-<span class='curline'><a href='../S/144.html#L94'>B_DIRTY</a>            94 ide.c            if(b-&gt;flags &amp; B_DIRTY){</span>
-<span class='curline'><a href='../S/144.html#L118'>B_DIRTY</a>           118 ide.c            if(!(b-&gt;flags &amp; B_DIRTY) &amp;&amp; idewait(1) &gt;= 0)</span>
-<span class='curline'><a href='../S/144.html#L123'>B_DIRTY</a>           123 ide.c            b-&gt;flags &amp;= ~B_DIRTY;</span>
-<span class='curline'><a href='../S/144.html#L144'>B_DIRTY</a>           144 ide.c            if((b-&gt;flags &amp; (B_VALID|B_DIRTY)) == B_VALID)</span>
-<span class='curline'><a href='../S/144.html#L162'>B_DIRTY</a>           162 ide.c            while((b-&gt;flags &amp; (B_VALID|B_DIRTY)) != B_VALID){</span>
-<span class='curline'><a href='../S/196.html#L231'>B_DIRTY</a>           231 log.c            b-&gt;flags |= B_DIRTY; // prevent eviction</span>
-<span class='curline'><a href='../S/140.html#L45'>B_DIRTY</a>            45 memide.c         if((b-&gt;flags &amp; (B_VALID|B_DIRTY)) == B_VALID)</span>
-<span class='curline'><a href='../S/140.html#L54'>B_DIRTY</a>            54 memide.c         if(b-&gt;flags &amp; B_DIRTY){</span>
-<span class='curline'><a href='../S/140.html#L55'>B_DIRTY</a>            55 memide.c           b-&gt;flags &amp;= ~B_DIRTY;</span>
+<span class='curline'><a href='../S/146.html#L96'>B_DIRTY</a>            96 ide.c            if(b-&gt;flags &amp; B_DIRTY){</span>
+<span class='curline'><a href='../S/146.html#L120'>B_DIRTY</a>           120 ide.c            if(!(b-&gt;flags &amp; B_DIRTY) &amp;&amp; idewait(1) &gt;= 0)</span>
+<span class='curline'><a href='../S/146.html#L125'>B_DIRTY</a>           125 ide.c            b-&gt;flags &amp;= ~B_DIRTY;</span>
+<span class='curline'><a href='../S/146.html#L146'>B_DIRTY</a>           146 ide.c            if((b-&gt;flags &amp; (B_VALID|B_DIRTY)) == B_VALID)</span>
+<span class='curline'><a href='../S/146.html#L164'>B_DIRTY</a>           164 ide.c            while((b-&gt;flags &amp; (B_VALID|B_DIRTY)) != B_VALID){</span>
+<span class='curline'><a href='../S/200.html#L231'>B_DIRTY</a>           231 log.c            b-&gt;flags |= B_DIRTY; // prevent eviction</span>
+<span class='curline'><a href='../S/142.html#L45'>B_DIRTY</a>            45 memide.c         if((b-&gt;flags &amp; (B_VALID|B_DIRTY)) == B_VALID)</span>
+<span class='curline'><a href='../S/142.html#L54'>B_DIRTY</a>            54 memide.c         if(b-&gt;flags &amp; B_DIRTY){</span>
+<span class='curline'><a href='../S/142.html#L55'>B_DIRTY</a>            55 memide.c           b-&gt;flags &amp;= ~B_DIRTY;</span>
 </pre>
 </body>
 </html>

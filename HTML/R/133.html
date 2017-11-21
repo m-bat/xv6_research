@@ -9,16 +9,16 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/162.html#L111'>PGROUNDDOWN</a>       111 trap.c             uint a = PGROUNDDOWN(rcr2());</span>
-<span class='curline'><a href='../S/158.html#L111'>PGROUNDDOWN</a>       111 vm.c           mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm, alloc_flag_t flag)</span>
-<span class='curline'><a href='../S/158.html#L112'>PGROUNDDOWN</a>       112 vm.c           {</span>
-<span class='curline'><a href='../S/158.html#L211'>PGROUNDDOWN</a>       211 vm.c               //TODO Now make only kmap:data memory read-only</span>
-<span class='curline'><a href='../S/158.html#L212'>PGROUNDDOWN</a>       212 vm.c               if (i == 1 || i == 2 || i == 5) {</span>
-<span class='curline'><a href='../S/158.html#L508'>PGROUNDDOWN</a>       508 vm.c           void</span>
-<span class='curline'><a href='../S/158.html#L509'>PGROUNDDOWN</a>       509 vm.c           clearptew(pde_t *pgdir, char *uva)  </span>
-<span class='curline'><a href='../S/158.html#L542'>PGROUNDDOWN</a>       542 vm.c               if  (a == last) {</span>
-<span class='curline'><a href='../S/158.html#L543'>PGROUNDDOWN</a>       543 vm.c                 break;</span>
-<span class='curline'><a href='../S/158.html#L624'>PGROUNDDOWN</a>       624 vm.c           {</span>
+<span class='curline'><a href='../S/166.html#L111'>PGROUNDDOWN</a>       111 trap.c             uint a = PGROUNDDOWN(rcr2());</span>
+<span class='curline'><a href='../S/162.html#L121'>PGROUNDDOWN</a>       121 vm.c             a = (char*)PGROUNDDOWN((uint)va);</span>
+<span class='curline'><a href='../S/162.html#L122'>PGROUNDDOWN</a>       122 vm.c             last = (char*)PGROUNDDOWN(((uint)va) + size - 1);</span>
+<span class='curline'><a href='../S/162.html#L221'>PGROUNDDOWN</a>       221 vm.c               a = (char*)PGROUNDDOWN((uint)k-&gt;virt);</span>
+<span class='curline'><a href='../S/162.html#L222'>PGROUNDDOWN</a>       222 vm.c               last = (char*)PGROUNDDOWN(((uint)k-&gt;virt) + size - 1);</span>
+<span class='curline'><a href='../S/162.html#L550'>PGROUNDDOWN</a>       550 vm.c           void</span>
+<span class='curline'><a href='../S/162.html#L551'>PGROUNDDOWN</a>       551 vm.c           setptew(pde_t *pgdir, char *uva, uint size, uint c)  </span>
+<span class='curline'><a href='../S/162.html#L584'>PGROUNDDOWN</a>       584 vm.c             size = kmap[2].phys_end - kmap[2].phys_start;</span>
+<span class='curline'><a href='../S/162.html#L585'>PGROUNDDOWN</a>       585 vm.c           </span>
+<span class='curline'><a href='../S/162.html#L666'>PGROUNDDOWN</a>       666 vm.c             uint n, va0;</span>
 </pre>
 </body>
 </html>

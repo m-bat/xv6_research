@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>execcmd</title>
+<title>exec</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,14 +9,13 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/8.html#L62'>execcmd</a>            62 sh.c             struct execcmd *ecmd;</span>
-<span class='curline'><a href='../S/8.html#L75'>execcmd</a>            75 sh.c               ecmd = (struct execcmd*)cmd;</span>
-<span class='curline'><a href='../S/8.html#L198'>execcmd</a>           198 sh.c             struct execcmd *cmd;</span>
-<span class='curline'><a href='../S/8.html#L420'>execcmd</a>           420 sh.c             struct execcmd *cmd;</span>
-<span class='curline'><a href='../S/8.html#L426'>execcmd</a>           426 sh.c             ret = execcmd();</span>
-<span class='curline'><a href='../S/8.html#L427'>execcmd</a>           427 sh.c             cmd = (struct execcmd*)ret;</span>
-<span class='curline'><a href='../S/8.html#L454'>execcmd</a>           454 sh.c             struct execcmd *ecmd;</span>
-<span class='curline'><a href='../S/8.html#L464'>execcmd</a>           464 sh.c               ecmd = (struct execcmd*)cmd;</span>
+<span class='curline'><a href='../S/120.html#L32'>exec</a>               32 defs.h         int             exec(char*, char**);</span>
+<span class='curline'><a href='../S/45.html#L30'>exec</a>               30 init.c               exec("sh", argv);</span>
+<span class='curline'><a href='../S/8.html#L78'>exec</a>               78 sh.c               exec(ecmd-&gt;argv[0], ecmd-&gt;argv);</span>
+<span class='curline'><a href='../S/84.html#L420'>exec</a>              420 sysfile.c        return exec(path, argv);</span>
+<span class='curline'><a href='../S/193.html#L16'>exec</a>               16 user.h         int exec(char*, char**);</span>
+<span class='curline'><a href='../S/47.html#L297'>exec</a>              297 usertests.c      if(exec("echo", echoargv) &lt; 0){</span>
+<span class='curline'><a href='../S/47.html#L1626'>exec</a>             1626 usertests.c        exec("echo", args);</span>
 </pre>
 </body>
 </html>

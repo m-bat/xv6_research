@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>allocproc</title>
+<title>alloc_flag_t</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,8 +9,12 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/64.html#L180'>allocproc</a>         180 proc.c           p = allocproc();</span>
-<span class='curline'><a href='../S/64.html#L242'>allocproc</a>         242 proc.c           if((np = allocproc()) == 0){</span>
+<span class='curline'><a href='../S/120.html#L76'>alloc_flag_t</a>       76 defs.h         char*           kalloc(alloc_flag_t);</span>
+<span class='curline'><a href='../S/120.html#L203'>alloc_flag_t</a>      203 defs.h         pde_t*          setupkvm(alloc_flag_t);</span>
+<span class='curline'><a href='../S/172.html#L129'>alloc_flag_t</a>      129 kalloc.c       kalloc(alloc_flag_t flag) {</span>
+<span class='curline'><a href='../S/162.html#L91'>alloc_flag_t</a>       91 vm.c           walkpgdir_with_alloc(pde_t *pgdir, const void *va, alloc_flag_t flag)</span>
+<span class='curline'><a href='../S/162.html#L116'>alloc_flag_t</a>      116 vm.c           mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm, alloc_flag_t flag)</span>
+<span class='curline'><a href='../S/162.html#L184'>alloc_flag_t</a>      184 vm.c           setupkvm(alloc_flag_t flag)  </span>
 </pre>
 </body>
 </html>

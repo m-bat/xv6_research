@@ -20,9 +20,9 @@ This source file includes following definitions.
 </ol>
 <hr />
 <pre>
-<a id='L1' name='L1'></a><em class='sharp'>#include</em> "<a href='126.html'>types.h</a>"
+<a id='L1' name='L1'></a><em class='sharp'>#include</em> "<a href='127.html'>types.h</a>"
 <a id='L2' name='L2'></a><em class='sharp'>#include</em> "<a href='35.html'>stat.h</a>"
-<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='189.html'>user.h</a>"
+<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='193.html'>user.h</a>"
 <a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='29.html'>param.h</a>"
 <a id='L5' name='L5'></a>
 <a id='L6' name='L6'></a><em class='comment'>// Memory allocator by Kernighan and Ritchie,</em>
@@ -30,10 +30,10 @@ This source file includes following definitions.
 <a id='L8' name='L8'></a>
 <a id='L9' name='L9'></a><strong class='reserved'>typedef</strong> <strong class='reserved'>long</strong> <a href='../S/76.html#L16' title='Referred from 16 in umalloc.c.'>Align</a>;
 <a id='L10' name='L10'></a>
-<a id='L11' name='L11'></a><strong class='reserved'>union</strong> <a href='../R/342.html' title='Multiple referred from 2 places.'>header</a> <em class='brace'>{</em>
+<a id='L11' name='L11'></a><strong class='reserved'>union</strong> <a href='../R/345.html' title='Multiple referred from 2 places.'>header</a> <em class='brace'>{</em>
 <a id='L12' name='L12'></a>  <strong class='reserved'>struct</strong> <em class='brace'>{</em>
 <a id='L13' name='L13'></a>    <strong class='reserved'>union</strong> <a href='../S/76.html#L11' title='Defined at 11 in umalloc.c.'>header</a> *ptr;
-<a id='L14' name='L14'></a>    <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> size;
+<a id='L14' name='L14'></a>    <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> size;
 <a id='L15' name='L15'></a>  <em class='brace'>}</em> s;
 <a id='L16' name='L16'></a>  <a href='../S/76.html#L9' title='Defined at 9 in umalloc.c.'>Align</a> x;
 <a id='L17' name='L17'></a><em class='brace'>}</em>;
@@ -44,7 +44,7 @@ This source file includes following definitions.
 <a id='L22' name='L22'></a><strong class='reserved'>static</strong> <a href='../S/76.html#L19' title='Defined at 19 in umalloc.c.'>Header</a> *freep;
 <a id='L23' name='L23'></a>
 <a id='L24' name='L24'></a><strong class='reserved'>void</strong>
-<a id='L25' name='L25'></a><a href='../R/330.html' title='Multiple referred from 4 places.'>free</a>(<strong class='reserved'>void</strong> *ap)
+<a id='L25' name='L25'></a><a href='../R/333.html' title='Multiple referred from 4 places.'>free</a>(<strong class='reserved'>void</strong> *ap)
 <a id='L26' name='L26'></a><em class='brace'>{</em>
 <a id='L27' name='L27'></a>  <a href='../S/76.html#L19' title='Defined at 19 in umalloc.c.'>Header</a> *bp, *p;
 <a id='L28' name='L28'></a>
@@ -66,7 +66,7 @@ This source file includes following definitions.
 <a id='L44' name='L44'></a><em class='brace'>}</em>
 <a id='L45' name='L45'></a>
 <a id='L46' name='L46'></a><strong class='reserved'>static</strong> <a href='../S/76.html#L19' title='Defined at 19 in umalloc.c.'>Header</a>*
-<a id='L47' name='L47'></a><a href='../S/76.html#L87' title='Referred from 87 in umalloc.c.'>morecore</a>(<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> nu)
+<a id='L47' name='L47'></a><a href='../S/76.html#L87' title='Referred from 87 in umalloc.c.'>morecore</a>(<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> nu)
 <a id='L48' name='L48'></a><em class='brace'>{</em>
 <a id='L49' name='L49'></a>  <strong class='reserved'>char</strong> *p;
 <a id='L50' name='L50'></a>  <a href='../S/76.html#L19' title='Defined at 19 in umalloc.c.'>Header</a> *hp;
@@ -83,10 +83,10 @@ This source file includes following definitions.
 <a id='L61' name='L61'></a><em class='brace'>}</em>
 <a id='L62' name='L62'></a>
 <a id='L63' name='L63'></a><strong class='reserved'>void</strong>*
-<a id='L64' name='L64'></a><a href='../R/405.html' title='Multiple referred from 10 places.'>malloc</a>(<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> nbytes)
+<a id='L64' name='L64'></a><a href='../R/408.html' title='Multiple referred from 10 places.'>malloc</a>(<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> nbytes)
 <a id='L65' name='L65'></a><em class='brace'>{</em>
 <a id='L66' name='L66'></a>  <a href='../S/76.html#L19' title='Defined at 19 in umalloc.c.'>Header</a> *p, *prevp;
-<a id='L67' name='L67'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> nunits;
+<a id='L67' name='L67'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> nunits;
 <a id='L68' name='L68'></a>
 <a id='L69' name='L69'></a>  nunits = (nbytes + <strong class='reserved'>sizeof</strong>(<a href='../S/76.html#L19' title='Defined at 19 in umalloc.c.'>Header</a>) - 1)/<strong class='reserved'>sizeof</strong>(<a href='../S/76.html#L19' title='Defined at 19 in umalloc.c.'>Header</a>) + 1;
 <a id='L70' name='L70'></a>  <strong class='reserved'>if</strong>((prevp = freep) == 0)<em class='brace'>{</em>

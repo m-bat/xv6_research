@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>memset</title>
+<title>lapicw</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,34 +9,26 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/162.html#L185'>memset</a>            185 console.c          memset(crt+pos, 0, sizeof(crt[0])*(24*80 - pos));</span>
-<span class='curline'><a href='../S/118.html#L159'>memset</a>            159 defs.h         void*           memset(void*, int, uint);</span>
-<span class='curline'><a href='../S/172.html#L48'>memset</a>             48 fs.c             memset(bp-&gt;data, 0, BSIZE);</span>
-<span class='curline'><a href='../S/172.html#L206'>memset</a>            206 fs.c                 memset(dip, 0, sizeof(*dip));</span>
-<span class='curline'><a href='../S/167.html#L84'>memset</a>             84 kalloc.c         memset(v, 1, PGSIZE);</span>
-<span class='curline'><a href='../S/167.html#L161'>memset</a>            161 kalloc.c         memset((char *)cpus, 0, PGSIZE);</span>
-<span class='curline'><a href='../S/110.html#L21'>memset</a>             21 ls.c             memset(buf+strlen(p), ' ', DIRSIZ-strlen(p));</span>
-<span class='curline'><a href='../S/35.html#L113'>memset</a>            113 mkfs.c           memset(buf, 0, sizeof(buf));</span>
-<span class='curline'><a href='../S/63.html#L159'>memset</a>            159 proc.c           memset(p-&gt;context, 0, sizeof *p-&gt;context);</span>
-<span class='curline'><a href='../S/63.html#L192'>memset</a>            192 proc.c           memset(p-&gt;tf, 0, sizeof(*p-&gt;tf));</span>
-<span class='curline'><a href='../S/8.html#L137'>memset</a>            137 sh.c             memset(buf, 0, nbuf);</span>
-<span class='curline'><a href='../S/8.html#L201'>memset</a>            201 sh.c             memset(cmd, 0, sizeof(*cmd));</span>
-<span class='curline'><a href='../S/8.html#L212'>memset</a>            212 sh.c             memset(cmd, 0, sizeof(*cmd));</span>
-<span class='curline'><a href='../S/8.html#L228'>memset</a>            228 sh.c             memset(cmd, 0, sizeof(*cmd));</span>
-<span class='curline'><a href='../S/8.html#L241'>memset</a>            241 sh.c             memset(cmd, 0, sizeof(*cmd));</span>
-<span class='curline'><a href='../S/8.html#L254'>memset</a>            254 sh.c             memset(cmd, 0, sizeof(*cmd));</span>
-<span class='curline'><a href='../S/108.html#L24'>memset</a>             24 stressfs.c       memset(data, 'a', sizeof(data));</span>
-<span class='curline'><a href='../S/83.html#L218'>memset</a>            218 sysfile.c        memset(&amp;de, 0, sizeof(de));</span>
-<span class='curline'><a href='../S/83.html#L407'>memset</a>            407 sysfile.c        memset(argv, 0, sizeof(argv));</span>
-<span class='curline'><a href='../S/188.html#L38'>memset</a>             38 user.h         void* memset(void*, int, uint);</span>
-<span class='curline'><a href='../S/46.html#L479'>memset</a>            479 usertests.c      memset(buf, pid==0?'c':'p', sizeof(buf));</span>
-<span class='curline'><a href='../S/46.html#L543'>memset</a>            543 usertests.c          memset(buf, '0'+pi, 512);</span>
-<span class='curline'><a href='../S/46.html#L800'>memset</a>            800 usertests.c      memset(fa, 0, sizeof(fa));</span>
-<span class='curline'><a href='../S/46.html#L1161'>memset</a>           1161 usertests.c        memset(buf, i, 600);</span>
-<span class='curline'><a href='../S/157.html#L56'>memset</a>             56 vm.c               memset(pgtab, 0, PGSIZE);</span>
-<span class='curline'><a href='../S/157.html#L151'>memset</a>            151 vm.c             memset(pgdir, 0, PGSIZE);  </span>
-<span class='curline'><a href='../S/157.html#L414'>memset</a>            414 vm.c             memset(mem, 0, PGSIZE);</span>
-<span class='curline'><a href='../S/157.html#L464'>memset</a>            464 vm.c               memset(mem, 0, PGSIZE);</span>
+<span class='curline'><a href='../S/159.html#L61'>lapicw</a>             61 lapic.c          lapicw(SVR, ENABLE | (T_IRQ0 + IRQ_SPURIOUS));</span>
+<span class='curline'><a href='../S/159.html#L67'>lapicw</a>             67 lapic.c          lapicw(TDCR, X1);</span>
+<span class='curline'><a href='../S/159.html#L68'>lapicw</a>             68 lapic.c          lapicw(TIMER, PERIODIC | (T_IRQ0 + IRQ_TIMER));</span>
+<span class='curline'><a href='../S/159.html#L69'>lapicw</a>             69 lapic.c          lapicw(TICR, 10000000);</span>
+<span class='curline'><a href='../S/159.html#L72'>lapicw</a>             72 lapic.c          lapicw(LINT0, MASKED);</span>
+<span class='curline'><a href='../S/159.html#L73'>lapicw</a>             73 lapic.c          lapicw(LINT1, MASKED);</span>
+<span class='curline'><a href='../S/159.html#L78'>lapicw</a>             78 lapic.c            lapicw(PCINT, MASKED);</span>
+<span class='curline'><a href='../S/159.html#L81'>lapicw</a>             81 lapic.c          lapicw(ERROR, T_IRQ0 + IRQ_ERROR);</span>
+<span class='curline'><a href='../S/159.html#L84'>lapicw</a>             84 lapic.c          lapicw(ESR, 0);</span>
+<span class='curline'><a href='../S/159.html#L85'>lapicw</a>             85 lapic.c          lapicw(ESR, 0);</span>
+<span class='curline'><a href='../S/159.html#L88'>lapicw</a>             88 lapic.c          lapicw(EOI, 0);</span>
+<span class='curline'><a href='../S/159.html#L91'>lapicw</a>             91 lapic.c          lapicw(ICRHI, 0);</span>
+<span class='curline'><a href='../S/159.html#L92'>lapicw</a>             92 lapic.c          lapicw(ICRLO, BCAST | INIT | LEVEL);</span>
+<span class='curline'><a href='../S/159.html#L97'>lapicw</a>             97 lapic.c          lapicw(TPR, 0);</span>
+<span class='curline'><a href='../S/159.html#L113'>lapicw</a>            113 lapic.c            lapicw(EOI, 0);</span>
+<span class='curline'><a href='../S/159.html#L145'>lapicw</a>            145 lapic.c          lapicw(ICRHI, apicid&lt;&lt;24);</span>
+<span class='curline'><a href='../S/159.html#L146'>lapicw</a>            146 lapic.c          lapicw(ICRLO, INIT | LEVEL | ASSERT);</span>
+<span class='curline'><a href='../S/159.html#L148'>lapicw</a>            148 lapic.c          lapicw(ICRLO, INIT | LEVEL);</span>
+<span class='curline'><a href='../S/159.html#L157'>lapicw</a>            157 lapic.c            lapicw(ICRHI, apicid&lt;&lt;24);</span>
+<span class='curline'><a href='../S/159.html#L158'>lapicw</a>            158 lapic.c            lapicw(ICRLO, STARTUP | (addr&gt;&gt;12));</span>
 </pre>
 </body>
 </html>

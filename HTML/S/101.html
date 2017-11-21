@@ -19,25 +19,25 @@ This source file includes following definitions.
 </ol>
 <hr />
 <pre>
-<a id='L1' name='L1'></a><em class='sharp'>#include</em> "<a href='126.html'>types.h</a>"
+<a id='L1' name='L1'></a><em class='sharp'>#include</em> "<a href='127.html'>types.h</a>"
 <a id='L2' name='L2'></a><em class='sharp'>#include</em> "<a href='35.html'>stat.h</a>"
-<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='189.html'>user.h</a>"
+<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='193.html'>user.h</a>"
 <a id='L4' name='L4'></a>
-<a id='L5' name='L5'></a><strong class='reserved'>char</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[512];
+<a id='L5' name='L5'></a><strong class='reserved'>char</strong> <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>[512];
 <a id='L6' name='L6'></a>
 <a id='L7' name='L7'></a><strong class='reserved'>void</strong>
-<a id='L8' name='L8'></a><a href='../R/268.html' title='Multiple referred from 2 places.'>cat</a>(<strong class='reserved'>int</strong> fd)
+<a id='L8' name='L8'></a><a href='../R/269.html' title='Multiple referred from 2 places.'>cat</a>(<strong class='reserved'>int</strong> fd)
 <a id='L9' name='L9'></a><em class='brace'>{</em>
 <a id='L10' name='L10'></a>  <strong class='reserved'>int</strong> n;
 <a id='L11' name='L11'></a>
-<a id='L12' name='L12'></a>  <strong class='reserved'>while</strong>((n = read(fd, <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <strong class='reserved'>sizeof</strong>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>))) &gt; 0) <em class='brace'>{</em>
-<a id='L13' name='L13'></a>    <strong class='reserved'>if</strong> (write(1, <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, n) != n) <em class='brace'>{</em>
-<a id='L14' name='L14'></a>      <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(1, "cat: write error\n");
+<a id='L12' name='L12'></a>  <strong class='reserved'>while</strong>((n = read(fd, <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <strong class='reserved'>sizeof</strong>(<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>))) &gt; 0) <em class='brace'>{</em>
+<a id='L13' name='L13'></a>    <strong class='reserved'>if</strong> (write(1, <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>, n) != n) <em class='brace'>{</em>
+<a id='L14' name='L14'></a>      <a href='../D/562.html' title='Multiple defined in 2 places.'>printf</a>(1, "cat: write error\n");
 <a id='L15' name='L15'></a>      <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
 <a id='L16' name='L16'></a>    <em class='brace'>}</em>
 <a id='L17' name='L17'></a>  <em class='brace'>}</em>
 <a id='L18' name='L18'></a>  <strong class='reserved'>if</strong>(n &lt; 0)<em class='brace'>{</em>
-<a id='L19' name='L19'></a>    <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(1, "cat: read error\n");
+<a id='L19' name='L19'></a>    <a href='../D/562.html' title='Multiple defined in 2 places.'>printf</a>(1, "cat: read error\n");
 <a id='L20' name='L20'></a>    <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
 <a id='L21' name='L21'></a>  <em class='brace'>}</em>
 <a id='L22' name='L22'></a><em class='brace'>}</em>
@@ -54,7 +54,7 @@ This source file includes following definitions.
 <a id='L33' name='L33'></a>
 <a id='L34' name='L34'></a>  <strong class='reserved'>for</strong>(i = 1; i &lt; argc; i++)<em class='brace'>{</em>
 <a id='L35' name='L35'></a>    <strong class='reserved'>if</strong>((fd = open(argv[i], 0)) &lt; 0)<em class='brace'>{</em>
-<a id='L36' name='L36'></a>      <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(1, "cat: cannot open %s\n", argv[i]);
+<a id='L36' name='L36'></a>      <a href='../D/562.html' title='Multiple defined in 2 places.'>printf</a>(1, "cat: cannot open %s\n", argv[i]);
 <a id='L37' name='L37'></a>      <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
 <a id='L38' name='L38'></a>    <em class='brace'>}</em>
 <a id='L39' name='L39'></a>    <a href='../S/101.html#L8' title='Defined at 8 in cat.c.'>cat</a>(fd);

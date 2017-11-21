@@ -26,14 +26,14 @@ This source file includes following definitions.
 </ol>
 <hr />
 <pre>
-<a id='L1' name='L1'></a><em class='sharp'>#include</em> "<a href='126.html'>types.h</a>"
+<a id='L1' name='L1'></a><em class='sharp'>#include</em> "<a href='127.html'>types.h</a>"
 <a id='L2' name='L2'></a><em class='sharp'>#include</em> "<a href='35.html'>stat.h</a>"
 <a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='59.html'>fcntl.h</a>"
-<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='189.html'>user.h</a>"
+<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='193.html'>user.h</a>"
 <a id='L5' name='L5'></a><em class='sharp'>#include</em> "<a href='68.html'>x86.h</a>"
 <a id='L6' name='L6'></a>
 <a id='L7' name='L7'></a><strong class='reserved'>char</strong>*
-<a id='L8' name='L8'></a><a href='../R/511.html' title='Multiple referred from 5 places.'>strcpy</a>(<strong class='reserved'>char</strong> *s, <strong class='reserved'>char</strong> *t)
+<a id='L8' name='L8'></a><a href='../R/516.html' title='Multiple referred from 5 places.'>strcpy</a>(<strong class='reserved'>char</strong> *s, <strong class='reserved'>char</strong> *t)
 <a id='L9' name='L9'></a><em class='brace'>{</em>
 <a id='L10' name='L10'></a>  <strong class='reserved'>char</strong> *os;
 <a id='L11' name='L11'></a>
@@ -44,15 +44,15 @@ This source file includes following definitions.
 <a id='L16' name='L16'></a><em class='brace'>}</em>
 <a id='L17' name='L17'></a>
 <a id='L18' name='L18'></a><strong class='reserved'>int</strong>
-<a id='L19' name='L19'></a><a href='../R/510.html' title='Multiple referred from 4 places.'>strcmp</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *p, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *q)
+<a id='L19' name='L19'></a><a href='../R/515.html' title='Multiple referred from 4 places.'>strcmp</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *p, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *q)
 <a id='L20' name='L20'></a><em class='brace'>{</em>
 <a id='L21' name='L21'></a>  <strong class='reserved'>while</strong>(*p &amp;&amp; *p == *q)
 <a id='L22' name='L22'></a>    p++, q++;
-<a id='L23' name='L23'></a>  <strong class='reserved'>return</strong> (<a href='../S/126.html#L6' title='Defined at 6 in types.h.'>uchar</a>)*p - (<a href='../S/126.html#L6' title='Defined at 6 in types.h.'>uchar</a>)*q;
+<a id='L23' name='L23'></a>  <strong class='reserved'>return</strong> (<a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a>)*p - (<a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a>)*q;
 <a id='L24' name='L24'></a><em class='brace'>}</em>
 <a id='L25' name='L25'></a>
-<a id='L26' name='L26'></a><a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a>
-<a id='L27' name='L27'></a><a href='../R/512.html' title='Multiple referred from 13 places.'>strlen</a>(<strong class='reserved'>char</strong> *s)
+<a id='L26' name='L26'></a><a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a>
+<a id='L27' name='L27'></a><a href='../R/517.html' title='Multiple referred from 13 places.'>strlen</a>(<strong class='reserved'>char</strong> *s)
 <a id='L28' name='L28'></a><em class='brace'>{</em>
 <a id='L29' name='L29'></a>  <strong class='reserved'>int</strong> n;
 <a id='L30' name='L30'></a>
@@ -62,14 +62,14 @@ This source file includes following definitions.
 <a id='L34' name='L34'></a><em class='brace'>}</em>
 <a id='L35' name='L35'></a>
 <a id='L36' name='L36'></a><strong class='reserved'>void</strong>*
-<a id='L37' name='L37'></a><a href='../R/413.html' title='Multiple referred from 29 places.'>memset</a>(<strong class='reserved'>void</strong> *dst, <strong class='reserved'>int</strong> c, <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> n)
+<a id='L37' name='L37'></a><a href='../R/416.html' title='Multiple referred from 29 places.'>memset</a>(<strong class='reserved'>void</strong> *dst, <strong class='reserved'>int</strong> c, <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> n)
 <a id='L38' name='L38'></a><em class='brace'>{</em>
 <a id='L39' name='L39'></a>  <a href='../S/68.html#L46' title='Defined at 46 in x86.h.'>stosb</a>(dst, c, n);
 <a id='L40' name='L40'></a>  <strong class='reserved'>return</strong> dst;
 <a id='L41' name='L41'></a><em class='brace'>}</em>
 <a id='L42' name='L42'></a>
 <a id='L43' name='L43'></a><strong class='reserved'>char</strong>*
-<a id='L44' name='L44'></a><a href='../R/509.html' title='Multiple referred from 8 places.'>strchr</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *s, <strong class='reserved'>char</strong> c)
+<a id='L44' name='L44'></a><a href='../R/514.html' title='Multiple referred from 8 places.'>strchr</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *s, <strong class='reserved'>char</strong> c)
 <a id='L45' name='L45'></a><em class='brace'>{</em>
 <a id='L46' name='L46'></a>  <strong class='reserved'>for</strong>(; *s; s++)
 <a id='L47' name='L47'></a>    <strong class='reserved'>if</strong>(*s == c)
@@ -78,7 +78,7 @@ This source file includes following definitions.
 <a id='L50' name='L50'></a><em class='brace'>}</em>
 <a id='L51' name='L51'></a>
 <a id='L52' name='L52'></a><strong class='reserved'>char</strong>*
-<a id='L53' name='L53'></a><a href='../R/338.html' title='Multiple referred from 2 places.'>gets</a>(<strong class='reserved'>char</strong> *<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <strong class='reserved'>int</strong> max)
+<a id='L53' name='L53'></a><a href='../R/341.html' title='Multiple referred from 2 places.'>gets</a>(<strong class='reserved'>char</strong> *<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <strong class='reserved'>int</strong> max)
 <a id='L54' name='L54'></a><em class='brace'>{</em>
 <a id='L55' name='L55'></a>  <strong class='reserved'>int</strong> i, cc;
 <a id='L56' name='L56'></a>  <strong class='reserved'>char</strong> c;
@@ -87,16 +87,16 @@ This source file includes following definitions.
 <a id='L59' name='L59'></a>    cc = read(0, &amp;c, 1);
 <a id='L60' name='L60'></a>    <strong class='reserved'>if</strong>(cc &lt; 1)
 <a id='L61' name='L61'></a>      <strong class='reserved'>break</strong>;
-<a id='L62' name='L62'></a>    <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[i++] = c;
+<a id='L62' name='L62'></a>    <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>[i++] = c;
 <a id='L63' name='L63'></a>    <strong class='reserved'>if</strong>(c == '\n' || c == '\r')
 <a id='L64' name='L64'></a>      <strong class='reserved'>break</strong>;
 <a id='L65' name='L65'></a>  <em class='brace'>}</em>
-<a id='L66' name='L66'></a>  <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[i] = '\0';
-<a id='L67' name='L67'></a>  <strong class='reserved'>return</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>;
+<a id='L66' name='L66'></a>  <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>[i] = '\0';
+<a id='L67' name='L67'></a>  <strong class='reserved'>return</strong> <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>;
 <a id='L68' name='L68'></a><em class='brace'>}</em>
 <a id='L69' name='L69'></a>
 <a id='L70' name='L70'></a><strong class='reserved'>int</strong>
-<a id='L71' name='L71'></a><a href='../R/503.html' title='Multiple referred from 12 places.'>stat</a>(<strong class='reserved'>char</strong> *n, <strong class='reserved'>struct</strong> <a href='../D/601.html' title='Multiple defined in 3 places.'>stat</a> *st)
+<a id='L71' name='L71'></a><a href='../R/508.html' title='Multiple referred from 12 places.'>stat</a>(<strong class='reserved'>char</strong> *n, <strong class='reserved'>struct</strong> <a href='../D/606.html' title='Multiple defined in 3 places.'>stat</a> *st)
 <a id='L72' name='L72'></a><em class='brace'>{</em>
 <a id='L73' name='L73'></a>  <strong class='reserved'>int</strong> fd;
 <a id='L74' name='L74'></a>  <strong class='reserved'>int</strong> r;
@@ -110,7 +110,7 @@ This source file includes following definitions.
 <a id='L82' name='L82'></a><em class='brace'>}</em>
 <a id='L83' name='L83'></a>
 <a id='L84' name='L84'></a><strong class='reserved'>int</strong>
-<a id='L85' name='L85'></a><a href='../R/250.html' title='Multiple referred from 3 places.'>atoi</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *s)
+<a id='L85' name='L85'></a><a href='../R/251.html' title='Multiple referred from 3 places.'>atoi</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *s)
 <a id='L86' name='L86'></a><em class='brace'>{</em>
 <a id='L87' name='L87'></a>  <strong class='reserved'>int</strong> n;
 <a id='L88' name='L88'></a>
@@ -121,7 +121,7 @@ This source file includes following definitions.
 <a id='L93' name='L93'></a><em class='brace'>}</em>
 <a id='L94' name='L94'></a>
 <a id='L95' name='L95'></a><strong class='reserved'>void</strong>*
-<a id='L96' name='L96'></a><a href='../R/412.html' title='Multiple referred from 23 places.'>memmove</a>(<strong class='reserved'>void</strong> *vdst, <strong class='reserved'>void</strong> *vsrc, <strong class='reserved'>int</strong> n)
+<a id='L96' name='L96'></a><a href='../R/415.html' title='Multiple referred from 23 places.'>memmove</a>(<strong class='reserved'>void</strong> *vdst, <strong class='reserved'>void</strong> *vsrc, <strong class='reserved'>int</strong> n)
 <a id='L97' name='L97'></a><em class='brace'>{</em>
 <a id='L98' name='L98'></a>  <strong class='reserved'>char</strong> *dst, *src;
 <a id='L99' name='L99'></a>

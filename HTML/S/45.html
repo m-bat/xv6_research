@@ -20,9 +20,9 @@ This source file includes following definitions.
 <pre>
 <a id='L1' name='L1'></a><em class='comment'>// init: The initial user-level program</em>
 <a id='L2' name='L2'></a>
-<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='126.html'>types.h</a>"
+<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='127.html'>types.h</a>"
 <a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='35.html'>stat.h</a>"
-<a id='L5' name='L5'></a><em class='sharp'>#include</em> "<a href='189.html'>user.h</a>"
+<a id='L5' name='L5'></a><em class='sharp'>#include</em> "<a href='193.html'>user.h</a>"
 <a id='L6' name='L6'></a><em class='sharp'>#include</em> "<a href='59.html'>fcntl.h</a>"
 <a id='L7' name='L7'></a>
 <a id='L8' name='L8'></a><strong class='reserved'>char</strong> *argv[] = <em class='brace'>{</em> "sh", 0 <em class='brace'>}</em>;
@@ -40,19 +40,19 @@ This source file includes following definitions.
 <a id='L20' name='L20'></a>  dup(0);  <em class='comment'>// stderr</em>
 <a id='L21' name='L21'></a>
 <a id='L22' name='L22'></a>  <strong class='reserved'>for</strong>(;;)<em class='brace'>{</em>
-<a id='L23' name='L23'></a>    <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(1, "init: starting sh\n");
-<a id='L24' name='L24'></a>    pid = <a href='../S/64.html#L235' title='Defined at 235 in proc.c.'>fork</a>();
+<a id='L23' name='L23'></a>    <a href='../D/562.html' title='Multiple defined in 2 places.'>printf</a>(1, "init: starting sh\n");
+<a id='L24' name='L24'></a>    pid = <a href='../S/64.html#L238' title='Defined at 238 in proc.c.'>fork</a>();
 <a id='L25' name='L25'></a>    <strong class='reserved'>if</strong>(pid &lt; 0)<em class='brace'>{</em>
-<a id='L26' name='L26'></a>      <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(1, "init: fork failed\n");
+<a id='L26' name='L26'></a>      <a href='../D/562.html' title='Multiple defined in 2 places.'>printf</a>(1, "init: fork failed\n");
 <a id='L27' name='L27'></a>      <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
 <a id='L28' name='L28'></a>    <em class='brace'>}</em>
 <a id='L29' name='L29'></a>    <strong class='reserved'>if</strong>(pid == 0)<em class='brace'>{</em>
-<a id='L30' name='L30'></a>      <a href='../S/90.html#L12' title='Defined at 12 in exec.c.'>exec</a>("sh", argv);
-<a id='L31' name='L31'></a>      <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(1, "init: exec sh failed\n");
+<a id='L30' name='L30'></a>      <a href='../S/90.html#L17' title='Defined at 17 in exec.c.'>exec</a>("sh", argv);
+<a id='L31' name='L31'></a>      <a href='../D/562.html' title='Multiple defined in 2 places.'>printf</a>(1, "init: exec sh failed\n");
 <a id='L32' name='L32'></a>      <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
 <a id='L33' name='L33'></a>    <em class='brace'>}</em>
-<a id='L34' name='L34'></a>    <strong class='reserved'>while</strong>((wpid=<a href='../S/64.html#L342' title='Defined at 342 in proc.c.'>wait</a>()) &gt;= 0 &amp;&amp; wpid != pid)
-<a id='L35' name='L35'></a>      <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(1, "zombie!\n");
+<a id='L34' name='L34'></a>    <strong class='reserved'>while</strong>((wpid=<a href='../S/64.html#L390' title='Defined at 390 in proc.c.'>wait</a>()) &gt;= 0 &amp;&amp; wpid != pid)
+<a id='L35' name='L35'></a>      <a href='../D/562.html' title='Multiple defined in 2 places.'>printf</a>(1, "zombie!\n");
 <a id='L36' name='L36'></a>  <em class='brace'>}</em>
 <a id='L37' name='L37'></a><em class='brace'>}</em>
 </pre>

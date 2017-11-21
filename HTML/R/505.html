@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>static_assert</title>
+<title>sleeplock</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,8 +9,17 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/36.html#L14'>static_assert</a>      14 mkfs.c         #ifndef static_assert</span>
-<span class='curline'><a href='../S/36.html#L77'>static_assert</a>      77 mkfs.c           static_assert(sizeof(int) == 4, "Integers must be 4 bytes!");</span>
+<span class='curline'><a href='../S/185.html#L9'>sleeplock</a>           9 buf.h            struct sleeplock lock;</span>
+<span class='curline'><a href='../S/120.html#L14'>sleeplock</a>          14 defs.h         struct sleeplock;</span>
+<span class='curline'><a href='../S/120.html#L159'>sleeplock</a>         159 defs.h         void            acquiresleep(struct sleeplock*);</span>
+<span class='curline'><a href='../S/120.html#L160'>sleeplock</a>         160 defs.h         void            releasesleep(struct sleeplock*);</span>
+<span class='curline'><a href='../S/120.html#L161'>sleeplock</a>         161 defs.h         int             holdingsleep(struct sleeplock*);</span>
+<span class='curline'><a href='../S/120.html#L162'>sleeplock</a>         162 defs.h         void            initsleeplock(struct sleeplock*, char*);</span>
+<span class='curline'><a href='../S/56.html#L22'>sleeplock</a>          22 file.h           struct sleeplock lock; // protects everything below here</span>
+<span class='curline'><a href='../S/140.html#L14'>sleeplock</a>          14 sleeplock.c    initsleeplock(struct sleeplock *lk, char *name)</span>
+<span class='curline'><a href='../S/140.html#L23'>sleeplock</a>          23 sleeplock.c    acquiresleep(struct sleeplock *lk)</span>
+<span class='curline'><a href='../S/140.html#L35'>sleeplock</a>          35 sleeplock.c    releasesleep(struct sleeplock *lk)</span>
+<span class='curline'><a href='../S/140.html#L45'>sleeplock</a>          45 sleeplock.c    holdingsleep(struct sleeplock *lk)</span>
 </pre>
 </body>
 </html>

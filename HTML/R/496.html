@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>setupkvm</title>
+<title>segdesc</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,11 +9,11 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/119.html#L198'>setupkvm</a>          198 defs.h         pde_t*          setupkvm(alloc_flag_t);</span>
-<span class='curline'><a href='../S/90.html#L39'>setupkvm</a>           39 exec.c           if((pgdir = setupkvm(ALLOC_KGLOBAL)) == 0)</span>
-<span class='curline'><a href='../S/64.html#L183'>setupkvm</a>          183 proc.c           if((p-&gt;pgdir = setupkvm(ALLOC_KGLOBAL)) == 0)</span>
-<span class='curline'><a href='../S/158.html#L230'>setupkvm</a>          230 vm.c           // Allocate one page table for the machine for the kernel address</span>
-<span class='curline'><a href='../S/158.html#L576'>setupkvm</a>          576 vm.c               //set write-eable</span>
+<span class='curline'><a href='../S/123.html#L74'>segdesc</a>            74 mmu.h          #define SEG(type, base, lim, dpl) (struct segdesc)    \</span>
+<span class='curline'><a href='../S/123.html#L78'>segdesc</a>            78 mmu.h          #define SEG16(type, base, lim, dpl) (struct segdesc)  \</span>
+<span class='curline'><a href='../S/93.html#L10'>segdesc</a>            10 proc.h           struct segdesc gdt[NSEGS];   // x86 global descriptor table</span>
+<span class='curline'><a href='../S/68.html#L63'>segdesc</a>            63 x86.h          struct segdesc;</span>
+<span class='curline'><a href='../S/68.html#L66'>segdesc</a>            66 x86.h          lgdt(struct segdesc *p, int size)</span>
 </pre>
 </body>
 </html>

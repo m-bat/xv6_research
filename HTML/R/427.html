@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>mycpu</title>
+<title>mpproc</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,35 +9,9 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/119.html#L123'>mycpu</a>             123 defs.h         struct cpu*     mycpu(void);</span>
-<span class='curline'><a href='../S/155.html#L65'>mycpu</a>              65 main.c           xchg(&amp;(mycpu()-&gt;started), 1); // tell startothers() we're up</span>
-<span class='curline'><a href='../S/155.html#L87'>mycpu</a>              87 main.c             if(c == mycpu())  // We've started already.</span>
-<span class='curline'><a href='../S/64.html#L64'>mycpu</a>              64 proc.c           return mycpu()-cpus;</span>
-<span class='curline'><a href='../S/64.html#L94'>mycpu</a>              94 proc.c           c = mycpu();</span>
-<span class='curline'><a href='../S/64.html#L396'>mycpu</a>             396 proc.c           struct cpu *c = mycpu();</span>
-<span class='curline'><a href='../S/64.html#L443'>mycpu</a>             443 proc.c           if(mycpu()-&gt;ncli != 1)</span>
-<span class='curline'><a href='../S/64.html#L449'>mycpu</a>             449 proc.c           intena = mycpu()-&gt;intena;</span>
-<span class='curline'><a href='../S/64.html#L450'>mycpu</a>             450 proc.c           swtch(&amp;p-&gt;context, mycpu()-&gt;scheduler);</span>
-<span class='curline'><a href='../S/64.html#L451'>mycpu</a>             451 proc.c           mycpu()-&gt;intena = intena;</span>
-<span class='curline'><a href='../S/41.html#L41'>mycpu</a>              41 spinlock.c       lk-&gt;cpu = mycpu();</span>
-<span class='curline'><a href='../S/41.html#L92'>mycpu</a>              92 spinlock.c       return lock-&gt;locked &amp;&amp; lock-&gt;cpu == mycpu();</span>
-<span class='curline'><a href='../S/41.html#L107'>mycpu</a>             107 spinlock.c       if(mycpu()-&gt;ncli == 0)</span>
-<span class='curline'><a href='../S/41.html#L108'>mycpu</a>             108 spinlock.c         mycpu()-&gt;intena = eflags &amp; FL_IF;</span>
-<span class='curline'><a href='../S/41.html#L109'>mycpu</a>             109 spinlock.c       mycpu()-&gt;ncli += 1;</span>
-<span class='curline'><a href='../S/41.html#L117'>mycpu</a>             117 spinlock.c       if(--mycpu()-&gt;ncli &lt; 0)</span>
-<span class='curline'><a href='../S/41.html#L119'>mycpu</a>             119 spinlock.c       if(mycpu()-&gt;ncli == 0 &amp;&amp; mycpu()-&gt;intena)    </span>
-<span class='curline'><a href='../S/158.html#L254'>mycpu</a>             254 vm.c               panic("switchuvm: no kstack");</span>
-<span class='curline'><a href='../S/158.html#L255'>mycpu</a>             255 vm.c             if(p-&gt;pgdir == 0)</span>
-<span class='curline'><a href='../S/158.html#L256'>mycpu</a>             256 vm.c               panic("switchuvm: no pgdir");</span>
-<span class='curline'><a href='../S/158.html#L257'>mycpu</a>             257 vm.c           </span>
-<span class='curline'><a href='../S/158.html#L258'>mycpu</a>             258 vm.c             pushcli();</span>
-<span class='curline'><a href='../S/158.html#L261'>mycpu</a>             261 vm.c             mycpu()-&gt;gdt[SEG_TSS].s = 0;</span>
-<span class='curline'><a href='../S/158.html#L283'>mycpu</a>             283 vm.c               panic("switchuvm: no kstack");</span>
-<span class='curline'><a href='../S/158.html#L284'>mycpu</a>             284 vm.c             if(p-&gt;pgdir == 0)</span>
-<span class='curline'><a href='../S/158.html#L285'>mycpu</a>             285 vm.c               panic("switchuvm: no pgdir");</span>
-<span class='curline'><a href='../S/158.html#L286'>mycpu</a>             286 vm.c           </span>
-<span class='curline'><a href='../S/158.html#L287'>mycpu</a>             287 vm.c             pushcli();</span>
-<span class='curline'><a href='../S/158.html#L290'>mycpu</a>             290 vm.c             mycpu()-&gt;gdt[SEG_TSS].s = 0;</span>
+<span class='curline'><a href='../S/100.html#L102'>mpproc</a>            102 mp.c             struct mpproc *proc;</span>
+<span class='curline'><a href='../S/100.html#L118'>mpproc</a>            118 mp.c                 proc = (struct mpproc*)p;</span>
+<span class='curline'><a href='../S/100.html#L123'>mpproc</a>            123 mp.c                 p += sizeof(struct mpproc);</span>
 </pre>
 </body>
 </html>

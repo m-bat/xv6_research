@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>cps</title>
+<title>cprintf</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,10 +9,52 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/119.html#L135'>cps</a>               135 defs.h         int             cps(void);</span>
-<span class='curline'><a href='../S/88.html#L8'>cps</a>                 8 ps.c             cps();</span>
-<span class='curline'><a href='../S/102.html#L95'>cps</a>                95 sysproc.c        return cps();</span>
-<span class='curline'><a href='../S/189.html#L29'>cps</a>                29 user.h         int cps(void);</span>
+<span class='curline'><a href='../S/167.html#L135'>cprintf</a>           135 console.c        cprintf("lapicid %d: panic: ", lapicid());</span>
+<span class='curline'><a href='../S/167.html#L136'>cprintf</a>           136 console.c        cprintf(s);</span>
+<span class='curline'><a href='../S/167.html#L137'>cprintf</a>           137 console.c        cprintf("\n");</span>
+<span class='curline'><a href='../S/167.html#L141'>cprintf</a>           141 console.c          cprintf("Access KENERLGLOBAL!\n");</span>
+<span class='curline'><a href='../S/167.html#L144'>cprintf</a>           144 console.c          cprintf("LOG: LIFE EXTENSION! As kgflag is not set, exit process %s\n", myproc()-&gt;name);</span>
+<span class='curline'><a href='../S/167.html#L152'>cprintf</a>           152 console.c          cprintf(" %p", pcs[i]);</span>
+<span class='curline'><a href='../S/120.html#L26'>cprintf</a>            26 defs.h         void            cprintf(char*, ...);</span>
+<span class='curline'><a href='../S/90.html#L32'>cprintf</a>            32 exec.c             cprintf("exec: fail\n");</span>
+<span class='curline'><a href='../S/15.html#L166'>cprintf</a>           166 file.c           cprintf("DEBUG: f-&gt;ref %d\n", f-&gt;ref);</span>
+<span class='curline'><a href='../S/177.html#L183'>cprintf</a>           183 fs.c             cprintf("sb: size %d nblocks %d ninodes %d nlog %d logstart %d\</span>
+<span class='curline'><a href='../S/106.html#L57'>cprintf</a>            57 ioapic.c           cprintf("ioapicinit: id isn't equal to ioapicid; not a MP\n");</span>
+<span class='curline'><a href='../S/158.html#L63'>cprintf</a>            63 main.c           cprintf("cpu%d: starting %d\n", cpuid(), cpuid());</span>
+<span class='curline'><a href='../S/95.html#L39'>cprintf</a>            39 pipe.c           cprintf("DEBUG: pipe p %x\n", p);</span>
+<span class='curline'><a href='../S/64.html#L644'>cprintf</a>           644 proc.c             cprintf("%d %s %s", p-&gt;pid, state, p-&gt;name);</span>
+<span class='curline'><a href='../S/64.html#L648'>cprintf</a>           648 proc.c                 cprintf(" %p", pc[i]);</span>
+<span class='curline'><a href='../S/64.html#L650'>cprintf</a>           650 proc.c             cprintf("\n");</span>
+<span class='curline'><a href='../S/64.html#L663'>cprintf</a>           663 proc.c           cprintf("pid \t ppid \t name \t tl-&gt;pid \t tl-&gt;ppid \t state \t\n");  </span>
+<span class='curline'><a href='../S/64.html#L666'>cprintf</a>           666 proc.c               cprintf("%d \t %d \t %s \t %d \t %d \t SLEEPING \t \n", p-&gt;pid, p-&gt;parent-&gt;pid, p-&gt;name, p-&gt;tl-&gt;pid, p-&gt;tl-&gt;ppid);</span>
+<span class='curline'><a href='../S/64.html#L668'>cprintf</a>           668 proc.c               cprintf("%d \t %d \t %s \t %d \t %d \t RUNNING \t \n", p-&gt;pid, p-&gt;parent-&gt;pid, p-&gt;name, p-&gt;tl-&gt;pid, p-&gt;tl-&gt;ppid);</span>
+<span class='curline'><a href='../S/64.html#L670'>cprintf</a>           670 proc.c               cprintf("%d \t %d \t %s \t %d \t %d \t RUNNABLE \t \n", p-&gt;pid, p-&gt;parent-&gt;pid, p-&gt;name, p-&gt;tl-&gt;pid, p-&gt;tl-&gt;ppid);</span>
+<span class='curline'><a href='../S/64.html#L674'>cprintf</a>           674 proc.c               cprintf("%d \t %d \t %s \t %d \t %d \t ZOMBIE \t \n", p-&gt;pid, p-&gt;parent-&gt;pid, p-&gt;name, p-&gt;tl-&gt;pid, p-&gt;tl-&gt;ppid);</span>
+<span class='curline'><a href='../S/64.html#L690'>cprintf</a>           690 proc.c               cprintf("DEBUG: plocal plist_index: %d\n", i);</span>
+<span class='curline'><a href='../S/64.html#L703'>cprintf</a>           703 proc.c           cprintf("plist init!\n");</span>
+<span class='curline'><a href='../S/82.html#L147'>cprintf</a>           147 syscall.c          cprintf("%d %s: unknown sys call %d\n",</span>
+<span class='curline'><a href='../S/166.html#L98'>cprintf</a>            98 trap.c             cprintf("cpu%d: spurious interrupt at %x:%x\n",            </span>
+<span class='curline'><a href='../S/166.html#L109'>cprintf</a>           109 trap.c             cprintf("DEBUG INFO: in kvm, proccess name %s pid %d\n", myproc()-&gt;name, myproc()-&gt;pid);</span>
+<span class='curline'><a href='../S/166.html#L112'>cprintf</a>           112 trap.c             cprintf("DEBUG: Fault addr: %x\n", a);</span>
+<span class='curline'><a href='../S/166.html#L113'>cprintf</a>           113 trap.c             cprintf("DEBUG: Fault addr rcr2: %x\n", rcr2());</span>
+<span class='curline'><a href='../S/166.html#L117'>cprintf</a>           117 trap.c               cprintf("LOG: Access KERNELPLOCAL! exit process %s\n", p-&gt;name);</span>
+<span class='curline'><a href='../S/166.html#L122'>cprintf</a>           122 trap.c               cprintf("LOG: Access KERNELGLOBAL!  set kgflag\n");</span>
+<span class='curline'><a href='../S/166.html#L126'>cprintf</a>           126 trap.c               cprintf("LOG: Make the whole kernel space writeable\n");</span>
+<span class='curline'><a href='../S/166.html#L133'>cprintf</a>           133 trap.c             cprintf("info: proccess name %s pid %d\n", myproc()-&gt;name, myproc()-&gt;pid);</span>
+<span class='curline'><a href='../S/166.html#L142'>cprintf</a>           142 trap.c               cprintf("unexpected trap %d from cpu %d eip %x (cr2=0x%x)\n",</span>
+<span class='curline'><a href='../S/166.html#L147'>cprintf</a>           147 trap.c             cprintf("pid %d %s: trap %d err %d on cpu %d "</span>
+<span class='curline'><a href='../S/162.html#L307'>cprintf</a>           307 vm.c               cprintf("DEBUG: init hit or sh hit\n");</span>
+<span class='curline'><a href='../S/162.html#L310'>cprintf</a>           310 vm.c               cprintf("DEBUG: before: kernel_ro\n");</span>
+<span class='curline'><a href='../S/162.html#L342'>cprintf</a>           342 vm.c                 //cprintf("DEBUG: setptew &amp;plist[%d] %x\n", i, &amp;plist[i]);</span>
+<span class='curline'><a href='../S/162.html#L343'>cprintf</a>           343 vm.c                 setptew(p-&gt;pgdir, (char *)&amp;plist[i], sizeof(&amp;plist), 1);</span>
+<span class='curline'><a href='../S/162.html#L350'>cprintf</a>           350 vm.c               setptew(p-&gt;pgdir, p-&gt;kstack, KSTACKSIZE, 1);</span>
+<span class='curline'><a href='../S/162.html#L367'>cprintf</a>           367 vm.c                   setptew(p-&gt;pgdir, (char *)(p-&gt;ofile[i]-&gt;pipe), PGSIZE, 1);</span>
+<span class='curline'><a href='../S/162.html#L372'>cprintf</a>           372 vm.c             }</span>
+<span class='curline'><a href='../S/162.html#L394'>cprintf</a>           394 vm.c             mem_inituvm = mem;</span>
+<span class='curline'><a href='../S/162.html#L442'>cprintf</a>           442 vm.c             a = PGROUNDUP(oldsz);</span>
+<span class='curline'><a href='../S/162.html#L448'>cprintf</a>           448 vm.c                 return 0;</span>
+<span class='curline'><a href='../S/162.html#L587'>cprintf</a>           587 vm.c             //size /= 1.5;  </span>
+<span class='curline'><a href='../S/162.html#L588'>cprintf</a>           588 vm.c             a = (char *)PGROUNDDOWN((uint)kmap[2].virt);</span>
 </pre>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>stat.h</title>
+<title>spinlock.h</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,30 +9,23 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/101.html#L2'>stat.h</a>    2 cat.c          #include "stat.h"</span>
-<span class='curline'><a href='../S/53.html#L2'>stat.h</a>    2 echo.c         #include "stat.h"</span>
-<span class='curline'><a href='../S/25.html#L5'>stat.h</a>    5 forktest.c     #include "stat.h"</span>
-<span class='curline'><a href='../S/173.html#L15'>stat.h</a>   15 fs.c           #include "stat.h"</span>
-<span class='curline'><a href='../S/142.html#L4'>stat.h</a>    4 grep.c         #include "stat.h"</span>
-<span class='curline'><a href='../S/45.html#L4'>stat.h</a>    4 init.c         #include "stat.h"</span>
-<span class='curline'><a href='../S/85.html#L2'>stat.h</a>    2 kill.c         #include "stat.h"</span>
-<span class='curline'><a href='../S/113.html#L2'>stat.h</a>    2 ln.c           #include "stat.h"</span>
-<span class='curline'><a href='../S/111.html#L2'>stat.h</a>    2 ls.c           #include "stat.h"</span>
-<span class='curline'><a href='../S/46.html#L2'>stat.h</a>    2 manabu_program.c #include "stat.h"</span>
-<span class='curline'><a href='../S/54.html#L2'>stat.h</a>    2 mkdir.c        #include "stat.h"</span>
-<span class='curline'><a href='../S/36.html#L11'>stat.h</a>   11 mkfs.c         #include "stat.h"</span>
-<span class='curline'><a href='../S/6.html#L2'>stat.h</a>    2 mysleep.c      #include "stat.h"</span>
-<span class='curline'><a href='../S/197.html#L2'>stat.h</a>    2 plocal.c       #include "stat.h"</span>
-<span class='curline'><a href='../S/51.html#L2'>stat.h</a>    2 printf.c       #include "stat.h"</span>
-<span class='curline'><a href='../S/88.html#L2'>stat.h</a>    2 ps.c           #include "stat.h"</span>
-<span class='curline'><a href='../S/14.html#L2'>stat.h</a>    2 rm.c           #include "stat.h"</span>
-<span class='curline'><a href='../S/109.html#L11'>stat.h</a>   11 stressfs.c     #include "stat.h"</span>
-<span class='curline'><a href='../S/84.html#L10'>stat.h</a>   10 sysfile.c      #include "stat.h"</span>
-<span class='curline'><a href='../S/83.html#L2'>stat.h</a>    2 ulib.c         #include "stat.h"</span>
-<span class='curline'><a href='../S/76.html#L2'>stat.h</a>    2 umalloc.c      #include "stat.h"</span>
-<span class='curline'><a href='../S/47.html#L3'>stat.h</a>    3 usertests.c    #include "stat.h"</span>
-<span class='curline'><a href='../S/3.html#L2'>stat.h</a>    2 wc.c           #include "stat.h"</span>
-<span class='curline'><a href='../S/81.html#L5'>stat.h</a>    5 zombie.c       #include "stat.h"</span>
+<span class='curline'><a href='../S/38.html#L24'>spinlock.h</a>   24 bio.c          #include "spinlock.h"</span>
+<span class='curline'><a href='../S/167.html#L9'>spinlock.h</a>    9 console.c      #include "spinlock.h"</span>
+<span class='curline'><a href='../S/90.html#L14'>spinlock.h</a>   14 exec.c         #include "spinlock.h"</span>
+<span class='curline'><a href='../S/15.html#L9'>spinlock.h</a>    9 file.c         #include "spinlock.h"</span>
+<span class='curline'><a href='../S/177.html#L18'>spinlock.h</a>   18 fs.c           #include "spinlock.h"</span>
+<span class='curline'><a href='../S/146.html#L11'>spinlock.h</a>   11 ide.c          #include "spinlock.h"</span>
+<span class='curline'><a href='../S/172.html#L10'>spinlock.h</a>   10 kalloc.c       #include "spinlock.h"</span>
+<span class='curline'><a href='../S/200.html#L4'>spinlock.h</a>    4 log.c          #include "spinlock.h"</span>
+<span class='curline'><a href='../S/142.html#L11'>spinlock.h</a>   11 memide.c       #include "spinlock.h"</span>
+<span class='curline'><a href='../S/95.html#L7'>spinlock.h</a>    7 pipe.c         #include "spinlock.h"</span>
+<span class='curline'><a href='../S/64.html#L8'>spinlock.h</a>    8 proc.c         #include "spinlock.h"</span>
+<span class='curline'><a href='../S/93.html#L3'>spinlock.h</a>    3 proc.h         #include "spinlock.h"</span>
+<span class='curline'><a href='../S/140.html#L10'>spinlock.h</a>   10 sleeplock.c    #include "spinlock.h"</span>
+<span class='curline'><a href='../S/41.html#L10'>spinlock.h</a>   10 spinlock.c     #include "spinlock.h"</span>
+<span class='curline'><a href='../S/84.html#L14'>spinlock.h</a>   14 sysfile.c      #include "spinlock.h"</span>
+<span class='curline'><a href='../S/166.html#L9'>spinlock.h</a>    9 trap.c         #include "spinlock.h"</span>
+<span class='curline'><a href='../S/198.html#L7'>spinlock.h</a>    7 uart.c         #include "spinlock.h"</span>
 </pre>
 </body>
 </html>

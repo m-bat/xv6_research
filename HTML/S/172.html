@@ -1,721 +1,226 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>fs.c</title>
+<title>kalloc.c</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
 <link rel='stylesheet' type='text/css' href='../style.css' />
 </head>
 <body>
-<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/fs.c</h2>
-<em class='comment'>/* [&lt;][&gt;]<a href='#L32'>[^]</a><a href='#L668'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/kalloc.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L41'>[^]</a><a href='#L183'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 <hr />
 <h2 class='header'>DEFINITIONS</h2>
 This source file includes following definitions.
 <ol>
-<li><a href='#L32' title='Defined at 32.'>readsb</a></li>
-<li><a href='#L43' title='Defined at 43.'>bzero</a></li>
-<li><a href='#L57' title='Defined at 57.'>balloc</a></li>
-<li><a href='#L82' title='Defined at 82.'>bfree</a></li>
-<li><a href='#L173' title='Defined at 173.'>iinit</a></li>
-<li><a href='#L196' title='Defined at 196.'>ialloc</a></li>
-<li><a href='#L222' title='Defined at 222.'>iupdate</a></li>
-<li><a href='#L243' title='Defined at 243.'>iget</a></li>
-<li><a href='#L278' title='Defined at 278.'>idup</a></li>
-<li><a href='#L289' title='Defined at 289.'>ilock</a></li>
-<li><a href='#L317' title='Defined at 317.'>iunlock</a></li>
-<li><a href='#L333' title='Defined at 333.'>iput</a></li>
-<li><a href='#L357' title='Defined at 357.'>iunlockput</a></li>
-<li><a href='#L374' title='Defined at 374.'>bmap</a></li>
-<li><a href='#L409' title='Defined at 409.'>itrunc</a></li>
-<li><a href='#L441' title='Defined at 441.'>stati</a></li>
-<li><a href='#L454' title='Defined at 454.'>readi</a></li>
-<li><a href='#L483' title='Defined at 483.'>writei</a></li>
-<li><a href='#L518' title='Defined at 518.'>namecmp</a></li>
-<li><a href='#L526' title='Defined at 526.'>dirlookup</a></li>
-<li><a href='#L553' title='Defined at 553.'>dirlink</a></li>
-<li><a href='#L597' title='Defined at 597.'>skipelem</a></li>
-<li><a href='#L626' title='Defined at 626.'>namex</a></li>
-<li><a href='#L661' title='Defined at 661.'>namei</a></li>
-<li><a href='#L668' title='Defined at 668.'>nameiparent</a></li>
+<li><a href='#L41' title='Defined at 41.'>kinit1</a></li>
+<li><a href='#L56' title='Defined at 56.'>kinit2</a></li>
+<li><a href='#L62' title='Defined at 62.'>freerange</a></li>
+<li><a href='#L76' title='Defined at 76.'>kfree</a></li>
+<li><a href='#L129' title='Defined at 129.'>kalloc</a></li>
+<li><a href='#L183' title='Defined at 183.'>cpualloc</a></li>
 </ol>
 <hr />
 <pre>
-<a id='L1' name='L1'></a><em class='comment'>// File system implementation.  Five layers:</em>
-<a id='L2' name='L2'></a><em class='comment'>//   + Blocks: allocator for raw disk blocks.</em>
-<a id='L3' name='L3'></a><em class='comment'>//   + Log: crash recovery for multi-step updates.</em>
-<a id='L4' name='L4'></a><em class='comment'>//   + Files: inode allocator, reading, writing, metadata.</em>
-<a id='L5' name='L5'></a><em class='comment'>//   + Directories: inode with special contents (list of other inodes!)</em>
-<a id='L6' name='L6'></a><em class='comment'>//   + Names: paths like /usr/rtm/xv6/fs.c for convenient naming.</em>
-<a id='L7' name='L7'></a><em class='comment'>//</em>
-<a id='L8' name='L8'></a><em class='comment'>// This file contains the low-level file system manipulation</em>
-<a id='L9' name='L9'></a><em class='comment'>// routines.  The (higher-level) system call implementations</em>
-<a id='L10' name='L10'></a><em class='comment'>// are in sysfile.c.</em>
-<a id='L11' name='L11'></a>
-<a id='L12' name='L12'></a><em class='sharp'>#include</em> "<a href='125.html'>types.h</a>"
-<a id='L13' name='L13'></a><em class='sharp'>#include</em> "<a href='118.html'>defs.h</a>"
-<a id='L14' name='L14'></a><em class='sharp'>#include</em> "<a href='28.html'>param.h</a>"
-<a id='L15' name='L15'></a><em class='sharp'>#include</em> "<a href='34.html'>stat.h</a>"
-<a id='L16' name='L16'></a><em class='sharp'>#include</em> "<a href='121.html'>mmu.h</a>"
-<a id='L17' name='L17'></a><em class='sharp'>#include</em> "<a href='92.html'>proc.h</a>"
-<a id='L18' name='L18'></a><em class='sharp'>#include</em> "<a href='9.html'>spinlock.h</a>"
-<a id='L19' name='L19'></a><em class='sharp'>#include</em> "<a href='2.html'>sleeplock.h</a>"
-<a id='L20' name='L20'></a><em class='sharp'>#include</em> "<a href='103.html'>fs.h</a>"
-<a id='L21' name='L21'></a><em class='sharp'>#include</em> "<a href='180.html'>buf.h</a>"
-<a id='L22' name='L22'></a><em class='sharp'>#include</em> "<a href='55.html'>file.h</a>"
-<a id='L23' name='L23'></a>
-<a id='L24' name='L24'></a><em class='sharp'>#define</em> <a href='../R/396.html' title='Multiple referred from 3 places.'>min</a>(a, b) ((a) &lt; (b) ? (a) : (b))
-<a id='L25' name='L25'></a><strong class='reserved'>static</strong> <strong class='reserved'>void</strong> <a href='../S/172.html#L409' title='Defined at 409 in fs.c.'>itrunc</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a>*);
-<a id='L26' name='L26'></a><em class='comment'>// there should be one superblock per disk device, but we run with</em>
-<a id='L27' name='L27'></a><em class='comment'>// only one device</em>
-<a id='L28' name='L28'></a><strong class='reserved'>struct</strong> <a href='../S/103.html#L14' title='Defined at 14 in fs.h.'>superblock</a> sb; 
+<a id='L1' name='L1'></a><em class='comment'>// Physical memory allocator, intended to allocate</em>
+<a id='L2' name='L2'></a><em class='comment'>// memory for user processes, kernel stacks, page table pages,</em>
+<a id='L3' name='L3'></a><em class='comment'>// and pipe buffers. Allocates 4096-byte pages.</em>
+<a id='L4' name='L4'></a>
+<a id='L5' name='L5'></a><em class='sharp'>#include</em> "<a href='127.html'>types.h</a>"
+<a id='L6' name='L6'></a><em class='sharp'>#include</em> "<a href='120.html'>defs.h</a>"
+<a id='L7' name='L7'></a><em class='sharp'>#include</em> "<a href='29.html'>param.h</a>"
+<a id='L8' name='L8'></a><em class='sharp'>#include</em> "<a href='50.html'>memlayout.h</a>"
+<a id='L9' name='L9'></a><em class='sharp'>#include</em> "<a href='123.html'>mmu.h</a>"
+<a id='L10' name='L10'></a><em class='sharp'>#include</em> "<a href='9.html'>spinlock.h</a>"
+<a id='L11' name='L11'></a><em class='sharp'>#include</em> "<a href='93.html'>proc.h</a>"
+<a id='L12' name='L12'></a>
+<a id='L13' name='L13'></a>
+<a id='L14' name='L14'></a><strong class='reserved'>void</strong> <a href='../S/172.html#L62' title='Defined at 62 in kalloc.c.'>freerange</a>(<strong class='reserved'>void</strong> *vstart, <strong class='reserved'>void</strong> *vend);
+<a id='L15' name='L15'></a><strong class='reserved'>extern</strong> <strong class='reserved'>char</strong> end[]; <em class='comment'>// first address after kernel loaded from ELF file</em>
+<a id='L16' name='L16'></a>                   <em class='comment'>// defined by the kernel linker script in kernel.ld</em>
+<a id='L17' name='L17'></a>
+<a id='L18' name='L18'></a><strong class='reserved'>struct</strong> <a href='../R/490.html' title='Multiple referred from 8 places.'>run</a> <em class='brace'>{</em>
+<a id='L19' name='L19'></a>  <strong class='reserved'>struct</strong> <a href='../S/172.html#L18' title='Defined at 18 in kalloc.c.'>run</a> *next;
+<a id='L20' name='L20'></a><em class='brace'>}</em>;
+<a id='L21' name='L21'></a>
+<a id='L22' name='L22'></a><strong class='reserved'>struct</strong> <em class='brace'>{</em>
+<a id='L23' name='L23'></a>  <strong class='reserved'>struct</strong> <a href='../S/9.html#L5' title='Defined at 5 in spinlock.h.'>spinlock</a> lock;
+<a id='L24' name='L24'></a>  <strong class='reserved'>int</strong> use_lock;
+<a id='L25' name='L25'></a>  <strong class='reserved'>struct</strong> <a href='../S/172.html#L18' title='Defined at 18 in kalloc.c.'>run</a> *freelist;
+<a id='L26' name='L26'></a>  <strong class='reserved'>struct</strong> <a href='../S/172.html#L18' title='Defined at 18 in kalloc.c.'>run</a> *freelist_plocal;
+<a id='L27' name='L27'></a><em class='brace'>}</em> kmem;
+<a id='L28' name='L28'></a>
 <a id='L29' name='L29'></a>
-<a id='L30' name='L30'></a><em class='comment'>// Read the super block.</em>
-<a id='L31' name='L31'></a><strong class='reserved'>void</strong>
-<a id='L32' name='L32'></a><a href='../R/455.html' title='Multiple referred from 4 places.'>readsb</a>(<strong class='reserved'>int</strong> dev, <strong class='reserved'>struct</strong> <a href='../S/103.html#L14' title='Defined at 14 in fs.h.'>superblock</a> *sb)
-<a id='L33' name='L33'></a><em class='brace'>{</em>
-<a id='L34' name='L34'></a>  <strong class='reserved'>struct</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a> *bp;
-<a id='L35' name='L35'></a>
-<a id='L36' name='L36'></a>  bp = <a href='../S/37.html#L97' title='Defined at 97 in bio.c.'>bread</a>(dev, 1);
-<a id='L37' name='L37'></a>  <a href='../D/488.html' title='Multiple defined in 2 places.'>memmove</a>(sb, bp-&gt;data, <strong class='reserved'>sizeof</strong>(*sb));
-<a id='L38' name='L38'></a>  <a href='../S/37.html#L121' title='Defined at 121 in bio.c.'>brelse</a>(bp);
-<a id='L39' name='L39'></a><em class='brace'>}</em>
-<a id='L40' name='L40'></a>
-<a id='L41' name='L41'></a><em class='comment'>// Zero a block.</em>
-<a id='L42' name='L42'></a><strong class='reserved'>static</strong> <strong class='reserved'>void</strong>
-<a id='L43' name='L43'></a><a href='../R/247.html' title='Multiple referred from 6 places.'>bzero</a>(<strong class='reserved'>int</strong> dev, <strong class='reserved'>int</strong> bno)
-<a id='L44' name='L44'></a><em class='brace'>{</em>
-<a id='L45' name='L45'></a>  <strong class='reserved'>struct</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a> *bp;
-<a id='L46' name='L46'></a>
-<a id='L47' name='L47'></a>  bp = <a href='../S/37.html#L97' title='Defined at 97 in bio.c.'>bread</a>(dev, bno);
-<a id='L48' name='L48'></a>  <a href='../D/489.html' title='Multiple defined in 2 places.'>memset</a>(bp-&gt;data, 0, <a href='../S/103.html#L6' title='Defined at 6 in fs.h.'>BSIZE</a>);
-<a id='L49' name='L49'></a>  <a href='../S/195.html#L214' title='Defined at 214 in log.c.'>log_write</a>(bp);
-<a id='L50' name='L50'></a>  <a href='../S/37.html#L121' title='Defined at 121 in bio.c.'>brelse</a>(bp);
-<a id='L51' name='L51'></a><em class='brace'>}</em>
-<a id='L52' name='L52'></a>
-<a id='L53' name='L53'></a><em class='comment'>// Blocks.</em>
+<a id='L30' name='L30'></a><em class='comment'>//add manabu</em>
+<a id='L31' name='L31'></a><strong class='reserved'>extern</strong> <a href='../S/127.html#L7' title='Defined at 7 in types.h.'>pde_t</a> *kpgdir;
+<a id='L32' name='L32'></a><em class='comment'>//extern struct cpu *cpus;</em>
+<a id='L33' name='L33'></a><em class='comment'>//</em>
+<a id='L34' name='L34'></a>
+<a id='L35' name='L35'></a><em class='comment'>// Initialization happens in two phases.</em>
+<a id='L36' name='L36'></a><em class='comment'>// 1. main() calls kinit1() while still using entrypgdir to place just</em>
+<a id='L37' name='L37'></a><em class='comment'>// the pages mapped by entrypgdir on free list.</em>
+<a id='L38' name='L38'></a><em class='comment'>// 2. main() calls kinit2() with the rest of the physical pages</em>
+<a id='L39' name='L39'></a><em class='comment'>// after installing a full page table that maps them on all cores.</em>
+<a id='L40' name='L40'></a><strong class='reserved'>void</strong>
+<a id='L41' name='L41'></a><a href='../R/386.html' title='Multiple referred from 2 places.'>kinit1</a>(<strong class='reserved'>void</strong> *vstart, <strong class='reserved'>void</strong> *vend)
+<a id='L42' name='L42'></a><em class='brace'>{</em>
+<a id='L43' name='L43'></a>  <a href='../S/41.html#L13' title='Defined at 13 in spinlock.c.'>initlock</a>(&amp;kmem.lock, "kmem");
+<a id='L44' name='L44'></a>  kmem.use_lock = 0;
+<a id='L45' name='L45'></a>  <a href='../S/172.html#L62' title='Defined at 62 in kalloc.c.'>freerange</a>(vstart, vend);
+<a id='L46' name='L46'></a>  <em class='comment'>//DEBU</em>
+<a id='L47' name='L47'></a>  <em class='comment'>/*</em>
+<a id='L48' name='L48'></a><em class='comment'>  cprintf("kinit1\n");</em>
+<a id='L49' name='L49'></a><em class='comment'>  cprintf("vstart: %x", vstart);</em>
+<a id='L50' name='L50'></a><em class='comment'>  cprintf("vlast: %x", vend);  </em>
+<a id='L51' name='L51'></a><em class='comment'>  */</em>
+<a id='L52' name='L52'></a>  <em class='comment'>//</em>
+<a id='L53' name='L53'></a><em class='brace'>}</em>
 <a id='L54' name='L54'></a>
-<a id='L55' name='L55'></a><em class='comment'>// Allocate a zeroed disk block.</em>
-<a id='L56' name='L56'></a><strong class='reserved'>static</strong> <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a>
-<a id='L57' name='L57'></a><a href='../R/232.html' title='Multiple referred from 5 places.'>balloc</a>(<a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> dev)
-<a id='L58' name='L58'></a><em class='brace'>{</em>
-<a id='L59' name='L59'></a>  <strong class='reserved'>int</strong> b, bi, m;
-<a id='L60' name='L60'></a>  <strong class='reserved'>struct</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a> *bp;
-<a id='L61' name='L61'></a>
-<a id='L62' name='L62'></a>  bp = 0;
-<a id='L63' name='L63'></a>  <strong class='reserved'>for</strong>(b = 0; b &lt; sb.size; b += <a href='../S/103.html#L45' title='Defined at 45 in fs.h.'>BPB</a>)<em class='brace'>{</em>
-<a id='L64' name='L64'></a>    bp = <a href='../S/37.html#L97' title='Defined at 97 in bio.c.'>bread</a>(dev, <a href='../S/103.html#L48' title='Defined at 48 in fs.h.'>BBLOCK</a>(b, sb));
-<a id='L65' name='L65'></a>    <strong class='reserved'>for</strong>(bi = 0; bi &lt; <a href='../S/103.html#L45' title='Defined at 45 in fs.h.'>BPB</a> &amp;&amp; b + bi &lt; sb.size; bi++)<em class='brace'>{</em>
-<a id='L66' name='L66'></a>      m = 1 &lt;&lt; (bi % 8);
-<a id='L67' name='L67'></a>      <strong class='reserved'>if</strong>((bp-&gt;data[bi/8] &amp; m) == 0)<em class='brace'>{</em>  <em class='comment'>// Is block free?</em>
-<a id='L68' name='L68'></a>        bp-&gt;data[bi/8] |= m;  <em class='comment'>// Mark block in use.</em>
-<a id='L69' name='L69'></a>        <a href='../S/195.html#L214' title='Defined at 214 in log.c.'>log_write</a>(bp);
-<a id='L70' name='L70'></a>        <a href='../S/37.html#L121' title='Defined at 121 in bio.c.'>brelse</a>(bp);
-<a id='L71' name='L71'></a>        <a href='../S/172.html#L43' title='Defined at 43 in fs.c.'>bzero</a>(dev, b + bi);
-<a id='L72' name='L72'></a>        <strong class='reserved'>return</strong> b + bi;
-<a id='L73' name='L73'></a>      <em class='brace'>}</em>
-<a id='L74' name='L74'></a>    <em class='brace'>}</em>
-<a id='L75' name='L75'></a>    <a href='../S/37.html#L121' title='Defined at 121 in bio.c.'>brelse</a>(bp);
-<a id='L76' name='L76'></a>  <em class='brace'>}</em>
-<a id='L77' name='L77'></a>  <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("balloc: out of blocks");
-<a id='L78' name='L78'></a><em class='brace'>}</em>
+<a id='L55' name='L55'></a><strong class='reserved'>void</strong>
+<a id='L56' name='L56'></a><a href='../R/387.html' title='Multiple referred from 2 places.'>kinit2</a>(<strong class='reserved'>void</strong> *vstart, <strong class='reserved'>void</strong> *vend)
+<a id='L57' name='L57'></a><em class='brace'>{</em>  
+<a id='L58' name='L58'></a>  <a href='../S/172.html#L62' title='Defined at 62 in kalloc.c.'>freerange</a>(vstart, vend);
+<a id='L59' name='L59'></a>  kmem.use_lock = 1;
+<a id='L60' name='L60'></a><em class='brace'>}</em>
+<a id='L61' name='L61'></a><strong class='reserved'>void</strong>
+<a id='L62' name='L62'></a><a href='../R/334.html' title='Multiple referred from 3 places.'>freerange</a>(<strong class='reserved'>void</strong> *vstart, <strong class='reserved'>void</strong> *vend)
+<a id='L63' name='L63'></a><em class='brace'>{</em>
+<a id='L64' name='L64'></a>  <strong class='reserved'>char</strong> *p;
+<a id='L65' name='L65'></a>  p = (<strong class='reserved'>char</strong>*)<a href='../S/123.html#L134' title='Defined at 134 in mmu.h.'>PGROUNDUP</a>((<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a>)vstart);
+<a id='L66' name='L66'></a>  <strong class='reserved'>for</strong>(; p + <a href='../S/123.html#L128' title='Defined at 128 in mmu.h.'>PGSIZE</a> &lt;= (<strong class='reserved'>char</strong>*)vend; p += <a href='../S/123.html#L128' title='Defined at 128 in mmu.h.'>PGSIZE</a>)
+<a id='L67' name='L67'></a>    <a href='../S/172.html#L76' title='Defined at 76 in kalloc.c.'>kfree</a>(p);
+<a id='L68' name='L68'></a><em class='brace'>}</em>
+<a id='L69' name='L69'></a>
+<a id='L70' name='L70'></a><em class='comment'>//PAGEBREAK: 21</em>
+<a id='L71' name='L71'></a><em class='comment'>// Free the page of physical memory pointed at by v,</em>
+<a id='L72' name='L72'></a><em class='comment'>// which normally should have been returned by a</em>
+<a id='L73' name='L73'></a><em class='comment'>// call to kalloc().  (The exception is when</em>
+<a id='L74' name='L74'></a><em class='comment'>// initializing the allocator; see kinit above.)</em>
+<a id='L75' name='L75'></a><strong class='reserved'>void</strong>
+<a id='L76' name='L76'></a><a href='../R/384.html' title='Multiple referred from 13 places.'>kfree</a>(<strong class='reserved'>char</strong> *v)
+<a id='L77' name='L77'></a><em class='brace'>{</em>
+<a id='L78' name='L78'></a>  <strong class='reserved'>struct</strong> <a href='../S/172.html#L18' title='Defined at 18 in kalloc.c.'>run</a> *r;
 <a id='L79' name='L79'></a>
-<a id='L80' name='L80'></a><em class='comment'>// Free a disk block.</em>
-<a id='L81' name='L81'></a><strong class='reserved'>static</strong> <strong class='reserved'>void</strong>
-<a id='L82' name='L82'></a><a href='../R/234.html' title='Multiple referred from 3 places.'>bfree</a>(<strong class='reserved'>int</strong> dev, <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> b)
-<a id='L83' name='L83'></a><em class='brace'>{</em>
-<a id='L84' name='L84'></a>  <strong class='reserved'>struct</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a> *bp;
-<a id='L85' name='L85'></a>  <strong class='reserved'>int</strong> bi, m;
-<a id='L86' name='L86'></a>
-<a id='L87' name='L87'></a>  <a href='../S/172.html#L32' title='Defined at 32 in fs.c.'>readsb</a>(dev, &amp;sb);
-<a id='L88' name='L88'></a>  bp = <a href='../S/37.html#L97' title='Defined at 97 in bio.c.'>bread</a>(dev, <a href='../S/103.html#L48' title='Defined at 48 in fs.h.'>BBLOCK</a>(b, sb));
-<a id='L89' name='L89'></a>  bi = b % <a href='../S/103.html#L45' title='Defined at 45 in fs.h.'>BPB</a>;
-<a id='L90' name='L90'></a>  m = 1 &lt;&lt; (bi % 8);
-<a id='L91' name='L91'></a>  <strong class='reserved'>if</strong>((bp-&gt;data[bi/8] &amp; m) == 0)
-<a id='L92' name='L92'></a>    <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("freeing free block");
-<a id='L93' name='L93'></a>  bp-&gt;data[bi/8] &amp;= ~m;
-<a id='L94' name='L94'></a>  <a href='../S/195.html#L214' title='Defined at 214 in log.c.'>log_write</a>(bp);
-<a id='L95' name='L95'></a>  <a href='../S/37.html#L121' title='Defined at 121 in bio.c.'>brelse</a>(bp);
-<a id='L96' name='L96'></a><em class='brace'>}</em>
-<a id='L97' name='L97'></a>
-<a id='L98' name='L98'></a><em class='comment'>// Inodes.</em>
-<a id='L99' name='L99'></a><em class='comment'>//</em>
-<a id='L100' name='L100'></a><em class='comment'>// An inode describes a single unnamed file.</em>
-<a id='L101' name='L101'></a><em class='comment'>// The inode disk structure holds metadata: the file's type,</em>
-<a id='L102' name='L102'></a><em class='comment'>// its size, the number of links referring to it, and the</em>
-<a id='L103' name='L103'></a><em class='comment'>// list of blocks holding the file's content.</em>
-<a id='L104' name='L104'></a><em class='comment'>//</em>
-<a id='L105' name='L105'></a><em class='comment'>// The inodes are laid out sequentially on disk at</em>
-<a id='L106' name='L106'></a><em class='comment'>// sb.startinode. Each inode has a number, indicating its</em>
-<a id='L107' name='L107'></a><em class='comment'>// position on the disk.</em>
-<a id='L108' name='L108'></a><em class='comment'>//</em>
-<a id='L109' name='L109'></a><em class='comment'>// The kernel keeps a cache of in-use inodes in memory</em>
-<a id='L110' name='L110'></a><em class='comment'>// to provide a place for synchronizing access</em>
-<a id='L111' name='L111'></a><em class='comment'>// to inodes used by multiple processes. The cached</em>
-<a id='L112' name='L112'></a><em class='comment'>// inodes include book-keeping information that is</em>
-<a id='L113' name='L113'></a><em class='comment'>// not stored on disk: ip-&gt;ref and ip-&gt;valid.</em>
-<a id='L114' name='L114'></a><em class='comment'>//</em>
-<a id='L115' name='L115'></a><em class='comment'>// An inode and its in-memory representation go through a</em>
-<a id='L116' name='L116'></a><em class='comment'>// sequence of states before they can be used by the</em>
-<a id='L117' name='L117'></a><em class='comment'>// rest of the file system code.</em>
-<a id='L118' name='L118'></a><em class='comment'>//</em>
-<a id='L119' name='L119'></a><em class='comment'>// * Allocation: an inode is allocated if its type (on disk)</em>
-<a id='L120' name='L120'></a><em class='comment'>//   is non-zero. ialloc() allocates, and iput() frees if</em>
-<a id='L121' name='L121'></a><em class='comment'>//   the reference and link counts have fallen to zero.</em>
-<a id='L122' name='L122'></a><em class='comment'>//</em>
-<a id='L123' name='L123'></a><em class='comment'>// * Referencing in cache: an entry in the inode cache</em>
-<a id='L124' name='L124'></a><em class='comment'>//   is free if ip-&gt;ref is zero. Otherwise ip-&gt;ref tracks</em>
-<a id='L125' name='L125'></a><em class='comment'>//   the number of in-memory pointers to the entry (open</em>
-<a id='L126' name='L126'></a><em class='comment'>//   files and current directories). iget() finds or</em>
-<a id='L127' name='L127'></a><em class='comment'>//   creates a cache entry and increments its ref; iput()</em>
-<a id='L128' name='L128'></a><em class='comment'>//   decrements ref.</em>
-<a id='L129' name='L129'></a><em class='comment'>//</em>
-<a id='L130' name='L130'></a><em class='comment'>// * Valid: the information (type, size, &amp;c) in an inode</em>
-<a id='L131' name='L131'></a><em class='comment'>//   cache entry is only correct when ip-&gt;valid is 1.</em>
-<a id='L132' name='L132'></a><em class='comment'>//   ilock() reads the inode from</em>
-<a id='L133' name='L133'></a><em class='comment'>//   the disk and sets ip-&gt;valid, while iput() clears</em>
-<a id='L134' name='L134'></a><em class='comment'>//   ip-&gt;valid if ip-&gt;ref has fallen to zero.</em>
-<a id='L135' name='L135'></a><em class='comment'>//</em>
-<a id='L136' name='L136'></a><em class='comment'>// * Locked: file system code may only examine and modify</em>
-<a id='L137' name='L137'></a><em class='comment'>//   the information in an inode and its content if it</em>
-<a id='L138' name='L138'></a><em class='comment'>//   has first locked the inode.</em>
-<a id='L139' name='L139'></a><em class='comment'>//</em>
-<a id='L140' name='L140'></a><em class='comment'>// Thus a typical sequence is:</em>
-<a id='L141' name='L141'></a><em class='comment'>//   ip = iget(dev, inum)</em>
-<a id='L142' name='L142'></a><em class='comment'>//   ilock(ip)</em>
-<a id='L143' name='L143'></a><em class='comment'>//   ... examine and modify ip-&gt;xxx ...</em>
-<a id='L144' name='L144'></a><em class='comment'>//   iunlock(ip)</em>
-<a id='L145' name='L145'></a><em class='comment'>//   iput(ip)</em>
-<a id='L146' name='L146'></a><em class='comment'>//</em>
-<a id='L147' name='L147'></a><em class='comment'>// ilock() is separate from iget() so that system calls can</em>
-<a id='L148' name='L148'></a><em class='comment'>// get a long-term reference to an inode (as for an open file)</em>
-<a id='L149' name='L149'></a><em class='comment'>// and only lock it for short periods (e.g., in read()).</em>
-<a id='L150' name='L150'></a><em class='comment'>// The separation also helps avoid deadlock and races during</em>
-<a id='L151' name='L151'></a><em class='comment'>// pathname lookup. iget() increments ip-&gt;ref so that the inode</em>
-<a id='L152' name='L152'></a><em class='comment'>// stays cached and pointers to it remain valid.</em>
-<a id='L153' name='L153'></a><em class='comment'>//</em>
-<a id='L154' name='L154'></a><em class='comment'>// Many internal file system functions expect the caller to</em>
-<a id='L155' name='L155'></a><em class='comment'>// have locked the inodes involved; this lets callers create</em>
-<a id='L156' name='L156'></a><em class='comment'>// multi-step atomic operations.</em>
-<a id='L157' name='L157'></a><em class='comment'>//</em>
-<a id='L158' name='L158'></a><em class='comment'>// The icache.lock spin-lock protects the allocation of icache</em>
-<a id='L159' name='L159'></a><em class='comment'>// entries. Since ip-&gt;ref indicates whether an entry is free,</em>
-<a id='L160' name='L160'></a><em class='comment'>// and ip-&gt;dev and ip-&gt;inum indicate which i-node an entry</em>
-<a id='L161' name='L161'></a><em class='comment'>// holds, one must hold icache.lock while using any of those fields.</em>
-<a id='L162' name='L162'></a><em class='comment'>//</em>
-<a id='L163' name='L163'></a><em class='comment'>// An ip-&gt;lock sleep-lock protects all ip-&gt; fields other than ref,</em>
-<a id='L164' name='L164'></a><em class='comment'>// dev, and inum.  One must hold ip-&gt;lock in order to</em>
-<a id='L165' name='L165'></a><em class='comment'>// read or write that inode's ip-&gt;valid, ip-&gt;size, ip-&gt;type, &amp;c.</em>
-<a id='L166' name='L166'></a>
-<a id='L167' name='L167'></a><strong class='reserved'>struct</strong> <em class='brace'>{</em>
-<a id='L168' name='L168'></a>  <strong class='reserved'>struct</strong> <a href='../S/9.html#L5' title='Defined at 5 in spinlock.h.'>spinlock</a> lock;
-<a id='L169' name='L169'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a>[<a href='../S/28.html#L10' title='Defined at 10 in param.h.'>NINODE</a>];
-<a id='L170' name='L170'></a><em class='brace'>}</em> icache;
-<a id='L171' name='L171'></a>
-<a id='L172' name='L172'></a><strong class='reserved'>void</strong>
-<a id='L173' name='L173'></a><a href='../R/334.html' title='Multiple referred from 2 places.'>iinit</a>(<strong class='reserved'>int</strong> dev)
-<a id='L174' name='L174'></a><em class='brace'>{</em>
-<a id='L175' name='L175'></a>  <strong class='reserved'>int</strong> i = 0;
-<a id='L176' name='L176'></a>  
-<a id='L177' name='L177'></a>  <a href='../S/40.html#L13' title='Defined at 13 in spinlock.c.'>initlock</a>(&amp;icache.lock, "icache");
-<a id='L178' name='L178'></a>  <strong class='reserved'>for</strong>(i = 0; i &lt; <a href='../S/28.html#L10' title='Defined at 10 in param.h.'>NINODE</a>; i++) <em class='brace'>{</em>
-<a id='L179' name='L179'></a>    <a href='../S/137.html#L14' title='Defined at 14 in sleeplock.c.'>initsleeplock</a>(&amp;icache.<a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a>[i].lock, "inode");
-<a id='L180' name='L180'></a>  <em class='brace'>}</em>
+<a id='L80' name='L80'></a>  <strong class='reserved'>if</strong>((<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a>)v % <a href='../S/123.html#L128' title='Defined at 128 in mmu.h.'>PGSIZE</a> || v &lt; end || <a href='../S/50.html#L29' title='Defined at 29 in memlayout.h.'>V2P</a>(v) &gt;= <a href='../S/50.html#L14' title='Defined at 14 in memlayout.h.'>PHYSTOP</a>)
+<a id='L81' name='L81'></a>    <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("kfree");
+<a id='L82' name='L82'></a>
+<a id='L83' name='L83'></a>  <em class='comment'>// Fill with junk to catch dangling refs.</em>
+<a id='L84' name='L84'></a>  <a href='../D/512.html' title='Multiple defined in 2 places.'>memset</a>(v, 1, <a href='../S/123.html#L128' title='Defined at 128 in mmu.h.'>PGSIZE</a>);
+<a id='L85' name='L85'></a>
+<a id='L86' name='L86'></a>  <strong class='reserved'>if</strong>(kmem.use_lock)
+<a id='L87' name='L87'></a>    <a href='../S/41.html#L25' title='Defined at 25 in spinlock.c.'>acquire</a>(&amp;kmem.lock);
+<a id='L88' name='L88'></a>  r = (<strong class='reserved'>struct</strong> <a href='../S/172.html#L18' title='Defined at 18 in kalloc.c.'>run</a>*)v;
+<a id='L89' name='L89'></a>  
+<a id='L90' name='L90'></a>  <strong class='reserved'>if</strong> (v &gt;= (<strong class='reserved'>char</strong> *)<a href='../S/50.html#L27' title='Defined at 27 in memlayout.h.'>KERNPLOCAL</a>) <em class='brace'>{</em>
+<a id='L91' name='L91'></a>    r-&gt;next = kmem.freelist_plocal;
+<a id='L92' name='L92'></a>    kmem.freelist_plocal = r;
+<a id='L93' name='L93'></a>    <em class='comment'>//Read-only set PTE_R</em>
+<a id='L94' name='L94'></a>    <em class='comment'>//clearptew(kpgdir, (char *)r);</em>
+<a id='L95' name='L95'></a>    <em class='comment'>//DEBUG</em>
+<a id='L96' name='L96'></a>    <em class='comment'>//cprintf("kinit2: kpgdir-&gt;0x%x\n", kpgdir);</em>
+<a id='L97' name='L97'></a>  <em class='brace'>}</em>
+<a id='L98' name='L98'></a>  <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L99' name='L99'></a>    r-&gt;next = kmem.freelist;
+<a id='L100' name='L100'></a>    kmem.freelist = r;
+<a id='L101' name='L101'></a>  <em class='brace'>}</em>
+<a id='L102' name='L102'></a>    
+<a id='L103' name='L103'></a>  <em class='comment'>//kmem.freelist = r;</em>
+<a id='L104' name='L104'></a>  <strong class='reserved'>if</strong>(kmem.use_lock)
+<a id='L105' name='L105'></a>    <a href='../S/41.html#L47' title='Defined at 47 in spinlock.c.'>release</a>(&amp;kmem.lock);
+<a id='L106' name='L106'></a><em class='brace'>}</em>
+<a id='L107' name='L107'></a>
+<a id='L108' name='L108'></a><em class='comment'>// Allocate one 4096-byte page of physical memory.</em>
+<a id='L109' name='L109'></a><em class='comment'>// Returns a pointer that the kernel can use.</em>
+<a id='L110' name='L110'></a><em class='comment'>// Returns 0 if the memory cannot be allocated.</em>
+<a id='L111' name='L111'></a><em class='comment'>/*</em>
+<a id='L112' name='L112'></a><em class='comment'>char*</em>
+<a id='L113' name='L113'></a><em class='comment'>kalloc(void)</em>
+<a id='L114' name='L114'></a><em class='comment'>{</em>
+<a id='L115' name='L115'></a><em class='comment'>  struct run *r;</em>
+<a id='L116' name='L116'></a><em class='comment'></em>
+<a id='L117' name='L117'></a><em class='comment'>  if(kmem.use_lock)</em>
+<a id='L118' name='L118'></a><em class='comment'>    acquire(&amp;kmem.lock);</em>
+<a id='L119' name='L119'></a><em class='comment'>  r = kmem.freelist;</em>
+<a id='L120' name='L120'></a><em class='comment'>  if(r)</em>
+<a id='L121' name='L121'></a><em class='comment'>    kmem.freelist = r-&gt;next;</em>
+<a id='L122' name='L122'></a><em class='comment'>  if(kmem.use_lock)</em>
+<a id='L123' name='L123'></a><em class='comment'>    release(&amp;kmem.lock);</em>
+<a id='L124' name='L124'></a><em class='comment'>  return (char*)r;</em>
+<a id='L125' name='L125'></a><em class='comment'>}*/</em>
+<a id='L126' name='L126'></a><em class='comment'>//add manabu 11/12</em>
+<a id='L127' name='L127'></a>
+<a id='L128' name='L128'></a><strong class='reserved'>char</strong>*
+<a id='L129' name='L129'></a><a href='../R/381.html' title='Multiple referred from 16 places.'>kalloc</a>(<a href='../S/120.html#L75' title='Defined at 75 in defs.h.'>alloc_flag_t</a> flag) <em class='brace'>{</em>
+<a id='L130' name='L130'></a>  <em class='comment'>//struct run *r;</em>
+<a id='L131' name='L131'></a>  <strong class='reserved'>struct</strong> <a href='../S/172.html#L18' title='Defined at 18 in kalloc.c.'>run</a> *r = 0;
+<a id='L132' name='L132'></a>
+<a id='L133' name='L133'></a>  <strong class='reserved'>if</strong>(kmem.use_lock)
+<a id='L134' name='L134'></a>    <a href='../S/41.html#L25' title='Defined at 25 in spinlock.c.'>acquire</a>(&amp;kmem.lock);
+<a id='L135' name='L135'></a>
+<a id='L136' name='L136'></a>  <strong class='reserved'>switch</strong>(flag) <em class='brace'>{</em>
+<a id='L137' name='L137'></a>  <strong class='reserved'>case</strong> <a href='../S/120.html#L75' title='Defined at 75 in defs.h.'>ALLOC_KGLOBAL</a>:
+<a id='L138' name='L138'></a>    r = kmem.freelist;
+<a id='L139' name='L139'></a>    <strong class='reserved'>if</strong>(r)
+<a id='L140' name='L140'></a>      kmem.freelist = r-&gt;next;
+<a id='L141' name='L141'></a>    <strong class='reserved'>break</strong>;
+<a id='L142' name='L142'></a>  <strong class='reserved'>case</strong> <a href='../S/120.html#L75' title='Defined at 75 in defs.h.'>ALLOC_PLOCAL</a>:
+<a id='L143' name='L143'></a>    r = kmem.freelist_plocal;
+<a id='L144' name='L144'></a>    <strong class='reserved'>if</strong>(r) <em class='brace'>{</em>
+<a id='L145' name='L145'></a>      kmem.freelist_plocal = r-&gt;next;
+<a id='L146' name='L146'></a>      <em class='comment'>//cprintf("DEBUG: kalloc(ALLOC_PLOCAL) r %x\n", r);</em>
+<a id='L147' name='L147'></a>    <em class='brace'>}</em>
+<a id='L148' name='L148'></a>    <strong class='reserved'>break</strong>;
+<a id='L149' name='L149'></a>  <strong class='reserved'>default</strong>:
+<a id='L150' name='L150'></a>    <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("unknown allocation flag");
+<a id='L151' name='L151'></a>  <em class='brace'>}</em>
+<a id='L152' name='L152'></a>  <strong class='reserved'>if</strong>(kmem.use_lock)
+<a id='L153' name='L153'></a>    <a href='../S/41.html#L47' title='Defined at 47 in spinlock.c.'>release</a>(&amp;kmem.lock);
+<a id='L154' name='L154'></a>  <strong class='reserved'>return</strong> (<strong class='reserved'>char</strong>*)r;
+<a id='L155' name='L155'></a><em class='brace'>}</em>
+<a id='L156' name='L156'></a>
+<a id='L157' name='L157'></a>
+<a id='L158' name='L158'></a><em class='comment'>//add function  by manabu</em>
+<a id='L159' name='L159'></a><em class='comment'>/*</em>
+<a id='L160' name='L160'></a><em class='comment'>char*</em>
+<a id='L161' name='L161'></a><em class='comment'>kuinfo_alloc (void) {</em>
+<a id='L162' name='L162'></a><em class='comment'>  struct run *r;</em>
+<a id='L163' name='L163'></a><em class='comment'></em>
+<a id='L164' name='L164'></a><em class='comment'>  if (kmem.use_lock) </em>
+<a id='L165' name='L165'></a><em class='comment'>    acquire(&amp;kmem.lock);</em>
+<a id='L166' name='L166'></a><em class='comment'>        </em>
+<a id='L167' name='L167'></a><em class='comment'>  r = kmem.freelist_plocal;</em>
+<a id='L168' name='L168'></a><em class='comment'>  if (r) </em>
+<a id='L169' name='L169'></a><em class='comment'>    kmem.freelist_plocal = r-&gt;next;</em>
+<a id='L170' name='L170'></a><em class='comment'>        </em>
+<a id='L171' name='L171'></a><em class='comment'>  if (kmem.use_lock)</em>
+<a id='L172' name='L172'></a><em class='comment'>    release(&amp;kmem.lock);</em>
+<a id='L173' name='L173'></a><em class='comment'>        </em>
+<a id='L174' name='L174'></a><em class='comment'>  return (char*)r;</em>
+<a id='L175' name='L175'></a><em class='comment'>}</em>
+<a id='L176' name='L176'></a><em class='comment'>*/</em>
+<a id='L177' name='L177'></a>
+<a id='L178' name='L178'></a><em class='comment'>//add function by manabu 10/26</em>
+<a id='L179' name='L179'></a><em class='comment'>//allocate cpu array</em>
+<a id='L180' name='L180'></a><em class='comment'>//</em>
 <a id='L181' name='L181'></a>
-<a id='L182' name='L182'></a>  <a href='../S/172.html#L32' title='Defined at 32 in fs.c.'>readsb</a>(dev, &amp;sb);
-<a id='L183' name='L183'></a>  <a href='../S/162.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("sb: size %d nblocks %d ninodes %d nlog %d logstart %d\
-<a id='L184' name='L184'></a> inodestart %d bmap start %d\n", sb.size, sb.nblocks,
-<a id='L185' name='L185'></a>          sb.ninodes, sb.nlog, sb.logstart, sb.inodestart,
-<a id='L186' name='L186'></a>          sb.bmapstart);
-<a id='L187' name='L187'></a><em class='brace'>}</em>
-<a id='L188' name='L188'></a>
-<a id='L189' name='L189'></a><strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a>* <a href='../S/172.html#L243' title='Defined at 243 in fs.c.'>iget</a>(<a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> dev, <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> inum);
+<a id='L182' name='L182'></a><strong class='reserved'>int</strong> 
+<a id='L183' name='L183'></a><a href='../R/291.html' title='Multiple referred from 2 places.'>cpualloc</a>() <em class='brace'>{</em>
+<a id='L184' name='L184'></a>
+<a id='L185' name='L185'></a>  <strong class='reserved'>if</strong> ((cpus = (<strong class='reserved'>struct</strong> <a href='../S/93.html#L6' title='Defined at 6 in proc.h.'>cpu</a> *)<a href='../S/172.html#L129' title='Defined at 129 in kalloc.c.'>kalloc</a>(<a href='../S/120.html#L75' title='Defined at 75 in defs.h.'>ALLOC_KGLOBAL</a>)) == 0) <em class='brace'>{</em>
+<a id='L186' name='L186'></a>    <strong class='reserved'>return</strong> 0;
+<a id='L187' name='L187'></a>  <em class='brace'>}</em>
+<a id='L188' name='L188'></a>  <em class='comment'>//DEBUG</em>
+<a id='L189' name='L189'></a>  <em class='comment'>//`cprintf("cpus %x", cpus);</em>
 <a id='L190' name='L190'></a>
-<a id='L191' name='L191'></a><em class='comment'>//PAGEBREAK!</em>
-<a id='L192' name='L192'></a><em class='comment'>// Allocate an inode on device dev.</em>
-<a id='L193' name='L193'></a><em class='comment'>// Mark it as allocated by  giving it type type.</em>
-<a id='L194' name='L194'></a><em class='comment'>// Returns an unlocked but allocated and referenced inode.</em>
-<a id='L195' name='L195'></a><strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a>*
-<a id='L196' name='L196'></a><a href='../R/324.html' title='Multiple referred from 5 places.'>ialloc</a>(<a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> dev, <strong class='reserved'>short</strong> type)
-<a id='L197' name='L197'></a><em class='brace'>{</em>
-<a id='L198' name='L198'></a>  <strong class='reserved'>int</strong> inum;
-<a id='L199' name='L199'></a>  <strong class='reserved'>struct</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a> *bp;
-<a id='L200' name='L200'></a>  <strong class='reserved'>struct</strong> <a href='../S/103.html#L29' title='Defined at 29 in fs.h.'>dinode</a> *dip;
-<a id='L201' name='L201'></a>
-<a id='L202' name='L202'></a>  <strong class='reserved'>for</strong>(inum = 1; inum &lt; sb.ninodes; inum++)<em class='brace'>{</em>
-<a id='L203' name='L203'></a>    bp = <a href='../S/37.html#L97' title='Defined at 97 in bio.c.'>bread</a>(dev, <a href='../S/103.html#L42' title='Defined at 42 in fs.h.'>IBLOCK</a>(inum, sb));
-<a id='L204' name='L204'></a>    dip = (<strong class='reserved'>struct</strong> <a href='../S/103.html#L29' title='Defined at 29 in fs.h.'>dinode</a>*)bp-&gt;data + inum%<a href='../S/103.html#L39' title='Defined at 39 in fs.h.'>IPB</a>;
-<a id='L205' name='L205'></a>    <strong class='reserved'>if</strong>(dip-&gt;type == 0)<em class='brace'>{</em>  <em class='comment'>// a free inode</em>
-<a id='L206' name='L206'></a>      <a href='../D/489.html' title='Multiple defined in 2 places.'>memset</a>(dip, 0, <strong class='reserved'>sizeof</strong>(*dip));
-<a id='L207' name='L207'></a>      dip-&gt;type = type;
-<a id='L208' name='L208'></a>      <a href='../S/195.html#L214' title='Defined at 214 in log.c.'>log_write</a>(bp);   <em class='comment'>// mark it allocated on the disk</em>
-<a id='L209' name='L209'></a>      <a href='../S/37.html#L121' title='Defined at 121 in bio.c.'>brelse</a>(bp);
-<a id='L210' name='L210'></a>      <strong class='reserved'>return</strong> <a href='../S/172.html#L243' title='Defined at 243 in fs.c.'>iget</a>(dev, inum);
-<a id='L211' name='L211'></a>    <em class='brace'>}</em>
-<a id='L212' name='L212'></a>    <a href='../S/37.html#L121' title='Defined at 121 in bio.c.'>brelse</a>(bp);
-<a id='L213' name='L213'></a>  <em class='brace'>}</em>
-<a id='L214' name='L214'></a>  <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("ialloc: no inodes");
-<a id='L215' name='L215'></a><em class='brace'>}</em>
-<a id='L216' name='L216'></a>
-<a id='L217' name='L217'></a><em class='comment'>// Copy a modified in-memory inode to disk.</em>
-<a id='L218' name='L218'></a><em class='comment'>// Must be called after every change to an ip-&gt;xxx field</em>
-<a id='L219' name='L219'></a><em class='comment'>// that lives on disk, since i-node cache is write-through.</em>
-<a id='L220' name='L220'></a><em class='comment'>// Caller must hold ip-&gt;lock.</em>
-<a id='L221' name='L221'></a><strong class='reserved'>void</strong>
-<a id='L222' name='L222'></a><a href='../R/356.html' title='Multiple referred from 10 places.'>iupdate</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip)
-<a id='L223' name='L223'></a><em class='brace'>{</em>
-<a id='L224' name='L224'></a>  <strong class='reserved'>struct</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a> *bp;
-<a id='L225' name='L225'></a>  <strong class='reserved'>struct</strong> <a href='../S/103.html#L29' title='Defined at 29 in fs.h.'>dinode</a> *dip;
-<a id='L226' name='L226'></a>
-<a id='L227' name='L227'></a>  bp = <a href='../S/37.html#L97' title='Defined at 97 in bio.c.'>bread</a>(ip-&gt;dev, <a href='../S/103.html#L42' title='Defined at 42 in fs.h.'>IBLOCK</a>(ip-&gt;inum, sb));
-<a id='L228' name='L228'></a>  dip = (<strong class='reserved'>struct</strong> <a href='../S/103.html#L29' title='Defined at 29 in fs.h.'>dinode</a>*)bp-&gt;data + ip-&gt;inum%<a href='../S/103.html#L39' title='Defined at 39 in fs.h.'>IPB</a>;
-<a id='L229' name='L229'></a>  dip-&gt;type = ip-&gt;type;
-<a id='L230' name='L230'></a>  dip-&gt;major = ip-&gt;major;
-<a id='L231' name='L231'></a>  dip-&gt;minor = ip-&gt;minor;
-<a id='L232' name='L232'></a>  dip-&gt;nlink = ip-&gt;nlink;
-<a id='L233' name='L233'></a>  dip-&gt;size = ip-&gt;size;
-<a id='L234' name='L234'></a>  <a href='../D/488.html' title='Multiple defined in 2 places.'>memmove</a>(dip-&gt;addrs, ip-&gt;addrs, <strong class='reserved'>sizeof</strong>(ip-&gt;addrs));
-<a id='L235' name='L235'></a>  <a href='../S/195.html#L214' title='Defined at 214 in log.c.'>log_write</a>(bp);
-<a id='L236' name='L236'></a>  <a href='../S/37.html#L121' title='Defined at 121 in bio.c.'>brelse</a>(bp);
-<a id='L237' name='L237'></a><em class='brace'>}</em>
-<a id='L238' name='L238'></a>
-<a id='L239' name='L239'></a><em class='comment'>// Find the inode with number inum on device dev</em>
-<a id='L240' name='L240'></a><em class='comment'>// and return the in-memory copy. Does not lock</em>
-<a id='L241' name='L241'></a><em class='comment'>// the inode and does not read it from disk.</em>
-<a id='L242' name='L242'></a><strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a>*
-<a id='L243' name='L243'></a><a href='../R/333.html' title='Multiple referred from 4 places.'>iget</a>(<a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> dev, <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> inum)
-<a id='L244' name='L244'></a><em class='brace'>{</em>
-<a id='L245' name='L245'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip, *empty;
-<a id='L246' name='L246'></a>
-<a id='L247' name='L247'></a>  <a href='../S/40.html#L25' title='Defined at 25 in spinlock.c.'>acquire</a>(&amp;icache.lock);
-<a id='L248' name='L248'></a>
-<a id='L249' name='L249'></a>  <em class='comment'>// Is the inode already cached?</em>
-<a id='L250' name='L250'></a>  empty = 0;
-<a id='L251' name='L251'></a>  <strong class='reserved'>for</strong>(ip = &amp;icache.<a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a>[0]; ip &lt; &amp;icache.<a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a>[<a href='../S/28.html#L10' title='Defined at 10 in param.h.'>NINODE</a>]; ip++)<em class='brace'>{</em>
-<a id='L252' name='L252'></a>    <strong class='reserved'>if</strong>(ip-&gt;ref &gt; 0 &amp;&amp; ip-&gt;dev == dev &amp;&amp; ip-&gt;inum == inum)<em class='brace'>{</em>
-<a id='L253' name='L253'></a>      ip-&gt;ref++;
-<a id='L254' name='L254'></a>      <a href='../S/40.html#L47' title='Defined at 47 in spinlock.c.'>release</a>(&amp;icache.lock);
-<a id='L255' name='L255'></a>      <strong class='reserved'>return</strong> ip;
-<a id='L256' name='L256'></a>    <em class='brace'>}</em>
-<a id='L257' name='L257'></a>    <strong class='reserved'>if</strong>(empty == 0 &amp;&amp; ip-&gt;ref == 0)    <em class='comment'>// Remember empty slot.</em>
-<a id='L258' name='L258'></a>      empty = ip;
-<a id='L259' name='L259'></a>  <em class='brace'>}</em>
-<a id='L260' name='L260'></a>
-<a id='L261' name='L261'></a>  <em class='comment'>// Recycle an inode cache entry.</em>
-<a id='L262' name='L262'></a>  <strong class='reserved'>if</strong>(empty == 0)
-<a id='L263' name='L263'></a>    <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("iget: no inodes");
-<a id='L264' name='L264'></a>
-<a id='L265' name='L265'></a>  ip = empty;
-<a id='L266' name='L266'></a>  ip-&gt;dev = dev;
-<a id='L267' name='L267'></a>  ip-&gt;inum = inum;
-<a id='L268' name='L268'></a>  ip-&gt;ref = 1;
-<a id='L269' name='L269'></a>  ip-&gt;valid = 0;
-<a id='L270' name='L270'></a>  <a href='../S/40.html#L47' title='Defined at 47 in spinlock.c.'>release</a>(&amp;icache.lock);
-<a id='L271' name='L271'></a>
-<a id='L272' name='L272'></a>  <strong class='reserved'>return</strong> ip;
-<a id='L273' name='L273'></a><em class='brace'>}</em>
-<a id='L274' name='L274'></a>
-<a id='L275' name='L275'></a><em class='comment'>// Increment reference count for ip.</em>
-<a id='L276' name='L276'></a><em class='comment'>// Returns ip to enable ip = idup(ip1) idiom.</em>
-<a id='L277' name='L277'></a><strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a>*
-<a id='L278' name='L278'></a><a href='../R/332.html' title='Multiple referred from 3 places.'>idup</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip)
-<a id='L279' name='L279'></a><em class='brace'>{</em>
-<a id='L280' name='L280'></a>  <a href='../S/40.html#L25' title='Defined at 25 in spinlock.c.'>acquire</a>(&amp;icache.lock);
-<a id='L281' name='L281'></a>  ip-&gt;ref++;
-<a id='L282' name='L282'></a>  <a href='../S/40.html#L47' title='Defined at 47 in spinlock.c.'>release</a>(&amp;icache.lock);
-<a id='L283' name='L283'></a>  <strong class='reserved'>return</strong> ip;
-<a id='L284' name='L284'></a><em class='brace'>}</em>
-<a id='L285' name='L285'></a>
-<a id='L286' name='L286'></a><em class='comment'>// Lock the given inode.</em>
-<a id='L287' name='L287'></a><em class='comment'>// Reads the inode from disk if necessary.</em>
-<a id='L288' name='L288'></a><strong class='reserved'>void</strong>
-<a id='L289' name='L289'></a><a href='../R/335.html' title='Multiple referred from 19 places.'>ilock</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip)
-<a id='L290' name='L290'></a><em class='brace'>{</em>
-<a id='L291' name='L291'></a>  <strong class='reserved'>struct</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a> *bp;
-<a id='L292' name='L292'></a>  <strong class='reserved'>struct</strong> <a href='../S/103.html#L29' title='Defined at 29 in fs.h.'>dinode</a> *dip;
-<a id='L293' name='L293'></a>
-<a id='L294' name='L294'></a>  <strong class='reserved'>if</strong>(ip == 0 || ip-&gt;ref &lt; 1)
-<a id='L295' name='L295'></a>    <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("ilock");
-<a id='L296' name='L296'></a>
-<a id='L297' name='L297'></a>  <a href='../S/137.html#L23' title='Defined at 23 in sleeplock.c.'>acquiresleep</a>(&amp;ip-&gt;lock);
-<a id='L298' name='L298'></a>
-<a id='L299' name='L299'></a>  <strong class='reserved'>if</strong>(ip-&gt;valid == 0)<em class='brace'>{</em>
-<a id='L300' name='L300'></a>    bp = <a href='../S/37.html#L97' title='Defined at 97 in bio.c.'>bread</a>(ip-&gt;dev, <a href='../S/103.html#L42' title='Defined at 42 in fs.h.'>IBLOCK</a>(ip-&gt;inum, sb));
-<a id='L301' name='L301'></a>    dip = (<strong class='reserved'>struct</strong> <a href='../S/103.html#L29' title='Defined at 29 in fs.h.'>dinode</a>*)bp-&gt;data + ip-&gt;inum%<a href='../S/103.html#L39' title='Defined at 39 in fs.h.'>IPB</a>;
-<a id='L302' name='L302'></a>    ip-&gt;type = dip-&gt;type;
-<a id='L303' name='L303'></a>    ip-&gt;major = dip-&gt;major;
-<a id='L304' name='L304'></a>    ip-&gt;minor = dip-&gt;minor;
-<a id='L305' name='L305'></a>    ip-&gt;nlink = dip-&gt;nlink;
-<a id='L306' name='L306'></a>    ip-&gt;size = dip-&gt;size;
-<a id='L307' name='L307'></a>    <a href='../D/488.html' title='Multiple defined in 2 places.'>memmove</a>(ip-&gt;addrs, dip-&gt;addrs, <strong class='reserved'>sizeof</strong>(ip-&gt;addrs));
-<a id='L308' name='L308'></a>    <a href='../S/37.html#L121' title='Defined at 121 in bio.c.'>brelse</a>(bp);
-<a id='L309' name='L309'></a>    ip-&gt;valid = 1;
-<a id='L310' name='L310'></a>    <strong class='reserved'>if</strong>(ip-&gt;type == 0)
-<a id='L311' name='L311'></a>      <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("ilock: no type");
-<a id='L312' name='L312'></a>  <em class='brace'>}</em>
-<a id='L313' name='L313'></a><em class='brace'>}</em>
-<a id='L314' name='L314'></a>
-<a id='L315' name='L315'></a><em class='comment'>// Unlock the given inode.</em>
-<a id='L316' name='L316'></a><strong class='reserved'>void</strong>
-<a id='L317' name='L317'></a><a href='../R/354.html' title='Multiple referred from 11 places.'>iunlock</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip)
-<a id='L318' name='L318'></a><em class='brace'>{</em>
-<a id='L319' name='L319'></a>  <strong class='reserved'>if</strong>(ip == 0 || !<a href='../S/137.html#L45' title='Defined at 45 in sleeplock.c.'>holdingsleep</a>(&amp;ip-&gt;lock) || ip-&gt;ref &lt; 1)
-<a id='L320' name='L320'></a>    <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("iunlock");
-<a id='L321' name='L321'></a>
-<a id='L322' name='L322'></a>  <a href='../S/137.html#L35' title='Defined at 35 in sleeplock.c.'>releasesleep</a>(&amp;ip-&gt;lock);
-<a id='L323' name='L323'></a><em class='brace'>}</em>
-<a id='L324' name='L324'></a>
-<a id='L325' name='L325'></a><em class='comment'>// Drop a reference to an in-memory inode.</em>
-<a id='L326' name='L326'></a><em class='comment'>// If that was the last reference, the inode cache entry can</em>
-<a id='L327' name='L327'></a><em class='comment'>// be recycled.</em>
-<a id='L328' name='L328'></a><em class='comment'>// If that was the last reference and the inode has no links</em>
-<a id='L329' name='L329'></a><em class='comment'>// to it, free the inode (and its content) on disk.</em>
-<a id='L330' name='L330'></a><em class='comment'>// All calls to iput() must be inside a transaction in</em>
-<a id='L331' name='L331'></a><em class='comment'>// case it has to free the inode.</em>
-<a id='L332' name='L332'></a><strong class='reserved'>void</strong>
-<a id='L333' name='L333'></a><a href='../R/349.html' title='Multiple referred from 8 places.'>iput</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip)
-<a id='L334' name='L334'></a><em class='brace'>{</em>
-<a id='L335' name='L335'></a>  <a href='../S/137.html#L23' title='Defined at 23 in sleeplock.c.'>acquiresleep</a>(&amp;ip-&gt;lock);
-<a id='L336' name='L336'></a>  <strong class='reserved'>if</strong>(ip-&gt;valid &amp;&amp; ip-&gt;nlink == 0)<em class='brace'>{</em>
-<a id='L337' name='L337'></a>    <a href='../S/40.html#L25' title='Defined at 25 in spinlock.c.'>acquire</a>(&amp;icache.lock);
-<a id='L338' name='L338'></a>    <strong class='reserved'>int</strong> r = ip-&gt;ref;
-<a id='L339' name='L339'></a>    <a href='../S/40.html#L47' title='Defined at 47 in spinlock.c.'>release</a>(&amp;icache.lock);
-<a id='L340' name='L340'></a>    <strong class='reserved'>if</strong>(r == 1)<em class='brace'>{</em>
-<a id='L341' name='L341'></a>      <em class='comment'>// inode has no links and no other references: truncate and free.</em>
-<a id='L342' name='L342'></a>      <a href='../S/172.html#L409' title='Defined at 409 in fs.c.'>itrunc</a>(ip);
-<a id='L343' name='L343'></a>      ip-&gt;type = 0;
-<a id='L344' name='L344'></a>      <a href='../S/172.html#L222' title='Defined at 222 in fs.c.'>iupdate</a>(ip);
-<a id='L345' name='L345'></a>      ip-&gt;valid = 0;
-<a id='L346' name='L346'></a>    <em class='brace'>}</em>
-<a id='L347' name='L347'></a>  <em class='brace'>}</em>
-<a id='L348' name='L348'></a>  <a href='../S/137.html#L35' title='Defined at 35 in sleeplock.c.'>releasesleep</a>(&amp;ip-&gt;lock);
-<a id='L349' name='L349'></a>
-<a id='L350' name='L350'></a>  <a href='../S/40.html#L25' title='Defined at 25 in spinlock.c.'>acquire</a>(&amp;icache.lock);
-<a id='L351' name='L351'></a>  ip-&gt;ref--;
-<a id='L352' name='L352'></a>  <a href='../S/40.html#L47' title='Defined at 47 in spinlock.c.'>release</a>(&amp;icache.lock);
-<a id='L353' name='L353'></a><em class='brace'>}</em>
-<a id='L354' name='L354'></a>
-<a id='L355' name='L355'></a><em class='comment'>// Common idiom: unlock, then put.</em>
-<a id='L356' name='L356'></a><strong class='reserved'>void</strong>
-<a id='L357' name='L357'></a><a href='../R/355.html' title='Multiple referred from 22 places.'>iunlockput</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip)
-<a id='L358' name='L358'></a><em class='brace'>{</em>
-<a id='L359' name='L359'></a>  <a href='../S/172.html#L317' title='Defined at 317 in fs.c.'>iunlock</a>(ip);
-<a id='L360' name='L360'></a>  <a href='../S/172.html#L333' title='Defined at 333 in fs.c.'>iput</a>(ip);
-<a id='L361' name='L361'></a><em class='brace'>}</em>
-<a id='L362' name='L362'></a>
-<a id='L363' name='L363'></a><em class='comment'>//PAGEBREAK!</em>
-<a id='L364' name='L364'></a><em class='comment'>// Inode content</em>
-<a id='L365' name='L365'></a><em class='comment'>//</em>
-<a id='L366' name='L366'></a><em class='comment'>// The content (data) associated with each inode is stored</em>
-<a id='L367' name='L367'></a><em class='comment'>// in blocks on the disk. The first NDIRECT block numbers</em>
-<a id='L368' name='L368'></a><em class='comment'>// are listed in ip-&gt;addrs[].  The next NINDIRECT blocks are</em>
-<a id='L369' name='L369'></a><em class='comment'>// listed in block ip-&gt;addrs[NDIRECT].</em>
-<a id='L370' name='L370'></a>
-<a id='L371' name='L371'></a><em class='comment'>// Return the disk block address of the nth block in inode ip.</em>
-<a id='L372' name='L372'></a><em class='comment'>// If there is no such block, bmap allocates one.</em>
-<a id='L373' name='L373'></a><strong class='reserved'>static</strong> <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a>
-<a id='L374' name='L374'></a><a href='../R/241.html' title='Multiple referred from 2 places.'>bmap</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip, <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> bn)
-<a id='L375' name='L375'></a><em class='brace'>{</em>
-<a id='L376' name='L376'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> addr, *a;
-<a id='L377' name='L377'></a>  <strong class='reserved'>struct</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a> *bp;
-<a id='L378' name='L378'></a>
-<a id='L379' name='L379'></a>  <strong class='reserved'>if</strong>(bn &lt; <a href='../S/103.html#L24' title='Defined at 24 in fs.h.'>NDIRECT</a>)<em class='brace'>{</em>
-<a id='L380' name='L380'></a>    <strong class='reserved'>if</strong>((addr = ip-&gt;addrs[bn]) == 0)
-<a id='L381' name='L381'></a>      ip-&gt;addrs[bn] = addr = <a href='../D/321.html' title='Multiple defined in 2 places.'>balloc</a>(ip-&gt;dev);
-<a id='L382' name='L382'></a>    <strong class='reserved'>return</strong> addr;
-<a id='L383' name='L383'></a>  <em class='brace'>}</em>
-<a id='L384' name='L384'></a>  bn -= <a href='../S/103.html#L24' title='Defined at 24 in fs.h.'>NDIRECT</a>;
-<a id='L385' name='L385'></a>
-<a id='L386' name='L386'></a>  <strong class='reserved'>if</strong>(bn &lt; <a href='../S/103.html#L25' title='Defined at 25 in fs.h.'>NINDIRECT</a>)<em class='brace'>{</em>
-<a id='L387' name='L387'></a>    <em class='comment'>// Load indirect block, allocating if necessary.</em>
-<a id='L388' name='L388'></a>    <strong class='reserved'>if</strong>((addr = ip-&gt;addrs[<a href='../S/103.html#L24' title='Defined at 24 in fs.h.'>NDIRECT</a>]) == 0)
-<a id='L389' name='L389'></a>      ip-&gt;addrs[<a href='../S/103.html#L24' title='Defined at 24 in fs.h.'>NDIRECT</a>] = addr = <a href='../D/321.html' title='Multiple defined in 2 places.'>balloc</a>(ip-&gt;dev);
-<a id='L390' name='L390'></a>    bp = <a href='../S/37.html#L97' title='Defined at 97 in bio.c.'>bread</a>(ip-&gt;dev, addr);
-<a id='L391' name='L391'></a>    a = (<a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a>*)bp-&gt;data;
-<a id='L392' name='L392'></a>    <strong class='reserved'>if</strong>((addr = a[bn]) == 0)<em class='brace'>{</em>
-<a id='L393' name='L393'></a>      a[bn] = addr = <a href='../D/321.html' title='Multiple defined in 2 places.'>balloc</a>(ip-&gt;dev);
-<a id='L394' name='L394'></a>      <a href='../S/195.html#L214' title='Defined at 214 in log.c.'>log_write</a>(bp);
-<a id='L395' name='L395'></a>    <em class='brace'>}</em>
-<a id='L396' name='L396'></a>    <a href='../S/37.html#L121' title='Defined at 121 in bio.c.'>brelse</a>(bp);
-<a id='L397' name='L397'></a>    <strong class='reserved'>return</strong> addr;
-<a id='L398' name='L398'></a>  <em class='brace'>}</em>
-<a id='L399' name='L399'></a>
-<a id='L400' name='L400'></a>  <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("bmap: out of range");
-<a id='L401' name='L401'></a><em class='brace'>}</em>
-<a id='L402' name='L402'></a>
-<a id='L403' name='L403'></a><em class='comment'>// Truncate inode (discard contents).</em>
-<a id='L404' name='L404'></a><em class='comment'>// Only called when the inode has no links</em>
-<a id='L405' name='L405'></a><em class='comment'>// to it (no directory entries referring to it)</em>
-<a id='L406' name='L406'></a><em class='comment'>// and has no in-memory reference to it (is</em>
-<a id='L407' name='L407'></a><em class='comment'>// not an open file or current directory).</em>
-<a id='L408' name='L408'></a><strong class='reserved'>static</strong> <strong class='reserved'>void</strong>
-<a id='L409' name='L409'></a><a href='../R/353.html' title='Multiple referred from 2 places.'>itrunc</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip)
-<a id='L410' name='L410'></a><em class='brace'>{</em>
-<a id='L411' name='L411'></a>  <strong class='reserved'>int</strong> i, j;
-<a id='L412' name='L412'></a>  <strong class='reserved'>struct</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a> *bp;
-<a id='L413' name='L413'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> *a;
-<a id='L414' name='L414'></a>
-<a id='L415' name='L415'></a>  <strong class='reserved'>for</strong>(i = 0; i &lt; <a href='../S/103.html#L24' title='Defined at 24 in fs.h.'>NDIRECT</a>; i++)<em class='brace'>{</em>
-<a id='L416' name='L416'></a>    <strong class='reserved'>if</strong>(ip-&gt;addrs[i])<em class='brace'>{</em>
-<a id='L417' name='L417'></a>      <a href='../S/172.html#L82' title='Defined at 82 in fs.c.'>bfree</a>(ip-&gt;dev, ip-&gt;addrs[i]);
-<a id='L418' name='L418'></a>      ip-&gt;addrs[i] = 0;
-<a id='L419' name='L419'></a>    <em class='brace'>}</em>
-<a id='L420' name='L420'></a>  <em class='brace'>}</em>
-<a id='L421' name='L421'></a>
-<a id='L422' name='L422'></a>  <strong class='reserved'>if</strong>(ip-&gt;addrs[<a href='../S/103.html#L24' title='Defined at 24 in fs.h.'>NDIRECT</a>])<em class='brace'>{</em>
-<a id='L423' name='L423'></a>    bp = <a href='../S/37.html#L97' title='Defined at 97 in bio.c.'>bread</a>(ip-&gt;dev, ip-&gt;addrs[<a href='../S/103.html#L24' title='Defined at 24 in fs.h.'>NDIRECT</a>]);
-<a id='L424' name='L424'></a>    a = (<a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a>*)bp-&gt;data;
-<a id='L425' name='L425'></a>    <strong class='reserved'>for</strong>(j = 0; j &lt; <a href='../S/103.html#L25' title='Defined at 25 in fs.h.'>NINDIRECT</a>; j++)<em class='brace'>{</em>
-<a id='L426' name='L426'></a>      <strong class='reserved'>if</strong>(a[j])
-<a id='L427' name='L427'></a>        <a href='../S/172.html#L82' title='Defined at 82 in fs.c.'>bfree</a>(ip-&gt;dev, a[j]);
-<a id='L428' name='L428'></a>    <em class='brace'>}</em>
-<a id='L429' name='L429'></a>    <a href='../S/37.html#L121' title='Defined at 121 in bio.c.'>brelse</a>(bp);
-<a id='L430' name='L430'></a>    <a href='../S/172.html#L82' title='Defined at 82 in fs.c.'>bfree</a>(ip-&gt;dev, ip-&gt;addrs[<a href='../S/103.html#L24' title='Defined at 24 in fs.h.'>NDIRECT</a>]);
-<a id='L431' name='L431'></a>    ip-&gt;addrs[<a href='../S/103.html#L24' title='Defined at 24 in fs.h.'>NDIRECT</a>] = 0;
-<a id='L432' name='L432'></a>  <em class='brace'>}</em>
-<a id='L433' name='L433'></a>
-<a id='L434' name='L434'></a>  ip-&gt;size = 0;
-<a id='L435' name='L435'></a>  <a href='../S/172.html#L222' title='Defined at 222 in fs.c.'>iupdate</a>(ip);
-<a id='L436' name='L436'></a><em class='brace'>}</em>
-<a id='L437' name='L437'></a>
-<a id='L438' name='L438'></a><em class='comment'>// Copy stat information from inode.</em>
-<a id='L439' name='L439'></a><em class='comment'>// Caller must hold ip-&gt;lock.</em>
-<a id='L440' name='L440'></a><strong class='reserved'>void</strong>
-<a id='L441' name='L441'></a><a href='../R/484.html' title='Multiple referred from 2 places.'>stati</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip, <strong class='reserved'>struct</strong> <a href='../D/581.html' title='Multiple defined in 3 places.'>stat</a> *st)
-<a id='L442' name='L442'></a><em class='brace'>{</em>
-<a id='L443' name='L443'></a>  st-&gt;dev = ip-&gt;dev;
-<a id='L444' name='L444'></a>  st-&gt;ino = ip-&gt;inum;
-<a id='L445' name='L445'></a>  st-&gt;type = ip-&gt;type;
-<a id='L446' name='L446'></a>  st-&gt;nlink = ip-&gt;nlink;
-<a id='L447' name='L447'></a>  st-&gt;size = ip-&gt;size;
-<a id='L448' name='L448'></a><em class='brace'>}</em>
-<a id='L449' name='L449'></a>
-<a id='L450' name='L450'></a><em class='comment'>//PAGEBREAK!</em>
-<a id='L451' name='L451'></a><em class='comment'>// Read data from inode.</em>
-<a id='L452' name='L452'></a><em class='comment'>// Caller must hold ip-&gt;lock.</em>
-<a id='L453' name='L453'></a><strong class='reserved'>int</strong>
-<a id='L454' name='L454'></a><a href='../R/454.html' title='Multiple referred from 8 places.'>readi</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip, <strong class='reserved'>char</strong> *dst, <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> off, <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> n)
-<a id='L455' name='L455'></a><em class='brace'>{</em>
-<a id='L456' name='L456'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> tot, m;
-<a id='L457' name='L457'></a>  <strong class='reserved'>struct</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a> *bp;
-<a id='L458' name='L458'></a>
-<a id='L459' name='L459'></a>  <strong class='reserved'>if</strong>(ip-&gt;type == <a href='../S/34.html#L3' title='Defined at 3 in stat.h.'>T_DEV</a>)<em class='brace'>{</em>
-<a id='L460' name='L460'></a>    <strong class='reserved'>if</strong>(ip-&gt;major &lt; 0 || ip-&gt;major &gt;= <a href='../S/28.html#L11' title='Defined at 11 in param.h.'>NDEV</a> || !<a href='../S/55.html#L33' title='Defined at 33 in file.h.'>devsw</a>[ip-&gt;major].read)
-<a id='L461' name='L461'></a>      <strong class='reserved'>return</strong> -1;
-<a id='L462' name='L462'></a>    <strong class='reserved'>return</strong> <a href='../S/55.html#L33' title='Defined at 33 in file.h.'>devsw</a>[ip-&gt;major].read(ip, dst, n);
-<a id='L463' name='L463'></a>  <em class='brace'>}</em>
-<a id='L464' name='L464'></a>
-<a id='L465' name='L465'></a>  <strong class='reserved'>if</strong>(off &gt; ip-&gt;size || off + n &lt; off)
-<a id='L466' name='L466'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L467' name='L467'></a>  <strong class='reserved'>if</strong>(off + n &gt; ip-&gt;size)
-<a id='L468' name='L468'></a>    n = ip-&gt;size - off;
-<a id='L469' name='L469'></a>
-<a id='L470' name='L470'></a>  <strong class='reserved'>for</strong>(tot=0; tot&lt;n; tot+=m, off+=m, dst+=m)<em class='brace'>{</em>
-<a id='L471' name='L471'></a>    bp = <a href='../S/37.html#L97' title='Defined at 97 in bio.c.'>bread</a>(ip-&gt;dev, <a href='../S/172.html#L374' title='Defined at 374 in fs.c.'>bmap</a>(ip, off/<a href='../S/103.html#L6' title='Defined at 6 in fs.h.'>BSIZE</a>));
-<a id='L472' name='L472'></a>    m = <a href='../D/491.html' title='Multiple defined in 2 places.'>min</a>(n - tot, <a href='../S/103.html#L6' title='Defined at 6 in fs.h.'>BSIZE</a> - off%<a href='../S/103.html#L6' title='Defined at 6 in fs.h.'>BSIZE</a>);
-<a id='L473' name='L473'></a>    <a href='../D/488.html' title='Multiple defined in 2 places.'>memmove</a>(dst, bp-&gt;data + off%<a href='../S/103.html#L6' title='Defined at 6 in fs.h.'>BSIZE</a>, m);
-<a id='L474' name='L474'></a>    <a href='../S/37.html#L121' title='Defined at 121 in bio.c.'>brelse</a>(bp);
-<a id='L475' name='L475'></a>  <em class='brace'>}</em>
-<a id='L476' name='L476'></a>  <strong class='reserved'>return</strong> n;
-<a id='L477' name='L477'></a><em class='brace'>}</em>
-<a id='L478' name='L478'></a>
-<a id='L479' name='L479'></a><em class='comment'>// PAGEBREAK!</em>
-<a id='L480' name='L480'></a><em class='comment'>// Write data to inode.</em>
-<a id='L481' name='L481'></a><em class='comment'>// Caller must hold ip-&gt;lock.</em>
-<a id='L482' name='L482'></a><strong class='reserved'>int</strong>
-<a id='L483' name='L483'></a><a href='../R/552.html' title='Multiple referred from 4 places.'>writei</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip, <strong class='reserved'>char</strong> *src, <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> off, <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> n)
-<a id='L484' name='L484'></a><em class='brace'>{</em>
-<a id='L485' name='L485'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> tot, m;
-<a id='L486' name='L486'></a>  <strong class='reserved'>struct</strong> <a href='../S/180.html#L1' title='Defined at 1 in buf.h.'>buf</a> *bp;
-<a id='L487' name='L487'></a>
-<a id='L488' name='L488'></a>  <strong class='reserved'>if</strong>(ip-&gt;type == <a href='../S/34.html#L3' title='Defined at 3 in stat.h.'>T_DEV</a>)<em class='brace'>{</em>
-<a id='L489' name='L489'></a>    <strong class='reserved'>if</strong>(ip-&gt;major &lt; 0 || ip-&gt;major &gt;= <a href='../S/28.html#L11' title='Defined at 11 in param.h.'>NDEV</a> || !<a href='../S/55.html#L33' title='Defined at 33 in file.h.'>devsw</a>[ip-&gt;major].write)
-<a id='L490' name='L490'></a>      <strong class='reserved'>return</strong> -1;
-<a id='L491' name='L491'></a>    <strong class='reserved'>return</strong> <a href='../S/55.html#L33' title='Defined at 33 in file.h.'>devsw</a>[ip-&gt;major].write(ip, src, n);
-<a id='L492' name='L492'></a>  <em class='brace'>}</em>
-<a id='L493' name='L493'></a>
-<a id='L494' name='L494'></a>  <strong class='reserved'>if</strong>(off &gt; ip-&gt;size || off + n &lt; off)
-<a id='L495' name='L495'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L496' name='L496'></a>  <strong class='reserved'>if</strong>(off + n &gt; <a href='../S/103.html#L26' title='Defined at 26 in fs.h.'>MAXFILE</a>*<a href='../S/103.html#L6' title='Defined at 6 in fs.h.'>BSIZE</a>)
-<a id='L497' name='L497'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L498' name='L498'></a>
-<a id='L499' name='L499'></a>  <strong class='reserved'>for</strong>(tot=0; tot&lt;n; tot+=m, off+=m, src+=m)<em class='brace'>{</em>
-<a id='L500' name='L500'></a>    bp = <a href='../S/37.html#L97' title='Defined at 97 in bio.c.'>bread</a>(ip-&gt;dev, <a href='../S/172.html#L374' title='Defined at 374 in fs.c.'>bmap</a>(ip, off/<a href='../S/103.html#L6' title='Defined at 6 in fs.h.'>BSIZE</a>));
-<a id='L501' name='L501'></a>    m = <a href='../D/491.html' title='Multiple defined in 2 places.'>min</a>(n - tot, <a href='../S/103.html#L6' title='Defined at 6 in fs.h.'>BSIZE</a> - off%<a href='../S/103.html#L6' title='Defined at 6 in fs.h.'>BSIZE</a>);
-<a id='L502' name='L502'></a>    <a href='../D/488.html' title='Multiple defined in 2 places.'>memmove</a>(bp-&gt;data + off%<a href='../S/103.html#L6' title='Defined at 6 in fs.h.'>BSIZE</a>, src, m);
-<a id='L503' name='L503'></a>    <a href='../S/195.html#L214' title='Defined at 214 in log.c.'>log_write</a>(bp);
-<a id='L504' name='L504'></a>    <a href='../S/37.html#L121' title='Defined at 121 in bio.c.'>brelse</a>(bp);
-<a id='L505' name='L505'></a>  <em class='brace'>}</em>
-<a id='L506' name='L506'></a>
-<a id='L507' name='L507'></a>  <strong class='reserved'>if</strong>(n &gt; 0 &amp;&amp; off &gt; ip-&gt;size)<em class='brace'>{</em>
-<a id='L508' name='L508'></a>    ip-&gt;size = off;
-<a id='L509' name='L509'></a>    <a href='../S/172.html#L222' title='Defined at 222 in fs.c.'>iupdate</a>(ip);
-<a id='L510' name='L510'></a>  <em class='brace'>}</em>
-<a id='L511' name='L511'></a>  <strong class='reserved'>return</strong> n;
-<a id='L512' name='L512'></a><em class='brace'>}</em>
-<a id='L513' name='L513'></a>
-<a id='L514' name='L514'></a><em class='comment'>//PAGEBREAK!</em>
-<a id='L515' name='L515'></a><em class='comment'>// Directories</em>
-<a id='L516' name='L516'></a>
-<a id='L517' name='L517'></a><strong class='reserved'>int</strong>
-<a id='L518' name='L518'></a><a href='../R/410.html' title='Multiple referred from 3 places.'>namecmp</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *s, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *t)
-<a id='L519' name='L519'></a><em class='brace'>{</em>
-<a id='L520' name='L520'></a>  <strong class='reserved'>return</strong> <a href='../S/11.html#L59' title='Defined at 59 in string.c.'>strncmp</a>(s, t, <a href='../S/103.html#L51' title='Defined at 51 in fs.h.'>DIRSIZ</a>);
-<a id='L521' name='L521'></a><em class='brace'>}</em>
-<a id='L522' name='L522'></a>
-<a id='L523' name='L523'></a><em class='comment'>// Look for a directory entry in a directory.</em>
-<a id='L524' name='L524'></a><em class='comment'>// If found, set *poff to byte offset of entry.</em>
-<a id='L525' name='L525'></a><strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a>*
-<a id='L526' name='L526'></a><a href='../R/282.html' title='Multiple referred from 5 places.'>dirlookup</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *dp, <strong class='reserved'>char</strong> *name, <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> *poff)
-<a id='L527' name='L527'></a><em class='brace'>{</em>
-<a id='L528' name='L528'></a>  <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> off, inum;
-<a id='L529' name='L529'></a>  <strong class='reserved'>struct</strong> <a href='../S/103.html#L53' title='Defined at 53 in fs.h.'>dirent</a> de;
-<a id='L530' name='L530'></a>
-<a id='L531' name='L531'></a>  <strong class='reserved'>if</strong>(dp-&gt;type != <a href='../S/34.html#L1' title='Defined at 1 in stat.h.'>T_DIR</a>)
-<a id='L532' name='L532'></a>    <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("dirlookup not DIR");
-<a id='L533' name='L533'></a>
-<a id='L534' name='L534'></a>  <strong class='reserved'>for</strong>(off = 0; off &lt; dp-&gt;size; off += <strong class='reserved'>sizeof</strong>(de))<em class='brace'>{</em>
-<a id='L535' name='L535'></a>    <strong class='reserved'>if</strong>(<a href='../S/172.html#L454' title='Defined at 454 in fs.c.'>readi</a>(dp, (<strong class='reserved'>char</strong>*)&amp;de, off, <strong class='reserved'>sizeof</strong>(de)) != <strong class='reserved'>sizeof</strong>(de))
-<a id='L536' name='L536'></a>      <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("dirlookup read");
-<a id='L537' name='L537'></a>    <strong class='reserved'>if</strong>(de.inum == 0)
-<a id='L538' name='L538'></a>      <strong class='reserved'>continue</strong>;
-<a id='L539' name='L539'></a>    <strong class='reserved'>if</strong>(<a href='../S/172.html#L518' title='Defined at 518 in fs.c.'>namecmp</a>(name, de.name) == 0)<em class='brace'>{</em>
-<a id='L540' name='L540'></a>      <em class='comment'>// entry matches path element</em>
-<a id='L541' name='L541'></a>      <strong class='reserved'>if</strong>(poff)
-<a id='L542' name='L542'></a>        *poff = off;
-<a id='L543' name='L543'></a>      inum = de.inum;
-<a id='L544' name='L544'></a>      <strong class='reserved'>return</strong> <a href='../S/172.html#L243' title='Defined at 243 in fs.c.'>iget</a>(dp-&gt;dev, inum);
-<a id='L545' name='L545'></a>    <em class='brace'>}</em>
-<a id='L546' name='L546'></a>  <em class='brace'>}</em>
-<a id='L547' name='L547'></a>
-<a id='L548' name='L548'></a>  <strong class='reserved'>return</strong> 0;
-<a id='L549' name='L549'></a><em class='brace'>}</em>
-<a id='L550' name='L550'></a>
-<a id='L551' name='L551'></a><em class='comment'>// Write a new directory entry (name, inum) into the directory dp.</em>
-<a id='L552' name='L552'></a><strong class='reserved'>int</strong>
-<a id='L553' name='L553'></a><a href='../R/281.html' title='Multiple referred from 4 places.'>dirlink</a>(<strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *dp, <strong class='reserved'>char</strong> *name, <a href='../S/125.html#L1' title='Defined at 1 in types.h.'>uint</a> inum)
-<a id='L554' name='L554'></a><em class='brace'>{</em>
-<a id='L555' name='L555'></a>  <strong class='reserved'>int</strong> off;
-<a id='L556' name='L556'></a>  <strong class='reserved'>struct</strong> <a href='../S/103.html#L53' title='Defined at 53 in fs.h.'>dirent</a> de;
-<a id='L557' name='L557'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip;
-<a id='L558' name='L558'></a>
-<a id='L559' name='L559'></a>  <em class='comment'>// Check that name is not present.</em>
-<a id='L560' name='L560'></a>  <strong class='reserved'>if</strong>((ip = <a href='../S/172.html#L526' title='Defined at 526 in fs.c.'>dirlookup</a>(dp, name, 0)) != 0)<em class='brace'>{</em>
-<a id='L561' name='L561'></a>    <a href='../S/172.html#L333' title='Defined at 333 in fs.c.'>iput</a>(ip);
-<a id='L562' name='L562'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L563' name='L563'></a>  <em class='brace'>}</em>
-<a id='L564' name='L564'></a>
-<a id='L565' name='L565'></a>  <em class='comment'>// Look for an empty dirent.</em>
-<a id='L566' name='L566'></a>  <strong class='reserved'>for</strong>(off = 0; off &lt; dp-&gt;size; off += <strong class='reserved'>sizeof</strong>(de))<em class='brace'>{</em>
-<a id='L567' name='L567'></a>    <strong class='reserved'>if</strong>(<a href='../S/172.html#L454' title='Defined at 454 in fs.c.'>readi</a>(dp, (<strong class='reserved'>char</strong>*)&amp;de, off, <strong class='reserved'>sizeof</strong>(de)) != <strong class='reserved'>sizeof</strong>(de))
-<a id='L568' name='L568'></a>      <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("dirlink read");
-<a id='L569' name='L569'></a>    <strong class='reserved'>if</strong>(de.inum == 0)
-<a id='L570' name='L570'></a>      <strong class='reserved'>break</strong>;
-<a id='L571' name='L571'></a>  <em class='brace'>}</em>
-<a id='L572' name='L572'></a>
-<a id='L573' name='L573'></a>  <a href='../S/11.html#L69' title='Defined at 69 in string.c.'>strncpy</a>(de.name, name, <a href='../S/103.html#L51' title='Defined at 51 in fs.h.'>DIRSIZ</a>);
-<a id='L574' name='L574'></a>  de.inum = inum;
-<a id='L575' name='L575'></a>  <strong class='reserved'>if</strong>(<a href='../S/172.html#L483' title='Defined at 483 in fs.c.'>writei</a>(dp, (<strong class='reserved'>char</strong>*)&amp;de, off, <strong class='reserved'>sizeof</strong>(de)) != <strong class='reserved'>sizeof</strong>(de))
-<a id='L576' name='L576'></a>    <a href='../D/515.html' title='Multiple defined in 2 places.'>panic</a>("dirlink");
-<a id='L577' name='L577'></a>
-<a id='L578' name='L578'></a>  <strong class='reserved'>return</strong> 0;
-<a id='L579' name='L579'></a><em class='brace'>}</em>
-<a id='L580' name='L580'></a>
-<a id='L581' name='L581'></a><em class='comment'>//PAGEBREAK!</em>
-<a id='L582' name='L582'></a><em class='comment'>// Paths</em>
-<a id='L583' name='L583'></a>
-<a id='L584' name='L584'></a><em class='comment'>// Copy the next path element from path into name.</em>
-<a id='L585' name='L585'></a><em class='comment'>// Return a pointer to the element following the copied one.</em>
-<a id='L586' name='L586'></a><em class='comment'>// The returned path has no leading slashes,</em>
-<a id='L587' name='L587'></a><em class='comment'>// so the caller can check *path=='\0' to see if the name is the last one.</em>
-<a id='L588' name='L588'></a><em class='comment'>// If no name to remove, return 0.</em>
-<a id='L589' name='L589'></a><em class='comment'>//</em>
-<a id='L590' name='L590'></a><em class='comment'>// Examples:</em>
-<a id='L591' name='L591'></a><em class='comment'>//   skipelem("a/bb/c", name) = "bb/c", setting name = "a"</em>
-<a id='L592' name='L592'></a><em class='comment'>//   skipelem("///a//bb", name) = "bb", setting name = "a"</em>
-<a id='L593' name='L593'></a><em class='comment'>//   skipelem("a", name) = "", setting name = "a"</em>
-<a id='L594' name='L594'></a><em class='comment'>//   skipelem("", name) = skipelem("////", name) = 0</em>
-<a id='L595' name='L595'></a><em class='comment'>//</em>
-<a id='L596' name='L596'></a><strong class='reserved'>static</strong> <strong class='reserved'>char</strong>*
-<a id='L597' name='L597'></a><a href='../S/172.html#L635' title='Referred from 635 in fs.c.'>skipelem</a>(<strong class='reserved'>char</strong> *path, <strong class='reserved'>char</strong> *name)
-<a id='L598' name='L598'></a><em class='brace'>{</em>
-<a id='L599' name='L599'></a>  <strong class='reserved'>char</strong> *s;
-<a id='L600' name='L600'></a>  <strong class='reserved'>int</strong> len;
-<a id='L601' name='L601'></a>
-<a id='L602' name='L602'></a>  <strong class='reserved'>while</strong>(*path == '/')
-<a id='L603' name='L603'></a>    path++;
-<a id='L604' name='L604'></a>  <strong class='reserved'>if</strong>(*path == 0)
-<a id='L605' name='L605'></a>    <strong class='reserved'>return</strong> 0;
-<a id='L606' name='L606'></a>  s = path;
-<a id='L607' name='L607'></a>  <strong class='reserved'>while</strong>(*path != '/' &amp;&amp; *path != 0)
-<a id='L608' name='L608'></a>    path++;
-<a id='L609' name='L609'></a>  len = path - s;
-<a id='L610' name='L610'></a>  <strong class='reserved'>if</strong>(len &gt;= <a href='../S/103.html#L51' title='Defined at 51 in fs.h.'>DIRSIZ</a>)
-<a id='L611' name='L611'></a>    <a href='../D/488.html' title='Multiple defined in 2 places.'>memmove</a>(name, s, <a href='../S/103.html#L51' title='Defined at 51 in fs.h.'>DIRSIZ</a>);
-<a id='L612' name='L612'></a>  <strong class='reserved'>else</strong> <em class='brace'>{</em>
-<a id='L613' name='L613'></a>    <a href='../D/488.html' title='Multiple defined in 2 places.'>memmove</a>(name, s, len);
-<a id='L614' name='L614'></a>    name[len] = 0;
-<a id='L615' name='L615'></a>  <em class='brace'>}</em>
-<a id='L616' name='L616'></a>  <strong class='reserved'>while</strong>(*path == '/')
-<a id='L617' name='L617'></a>    path++;
-<a id='L618' name='L618'></a>  <strong class='reserved'>return</strong> path;
-<a id='L619' name='L619'></a><em class='brace'>}</em>
-<a id='L620' name='L620'></a>
-<a id='L621' name='L621'></a><em class='comment'>// Look up and return the inode for a path name.</em>
-<a id='L622' name='L622'></a><em class='comment'>// If parent != 0, return the inode for the parent and copy the final</em>
-<a id='L623' name='L623'></a><em class='comment'>// path element into name, which must have room for DIRSIZ bytes.</em>
-<a id='L624' name='L624'></a><em class='comment'>// Must be called inside a transaction since it calls iput().</em>
-<a id='L625' name='L625'></a><strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a>*
-<a id='L626' name='L626'></a><a href='../R/413.html' title='Multiple referred from 2 places.'>namex</a>(<strong class='reserved'>char</strong> *path, <strong class='reserved'>int</strong> <a href='../S/172.html#L668' title='Defined at 668 in fs.c.'>nameiparent</a>, <strong class='reserved'>char</strong> *name)
-<a id='L627' name='L627'></a><em class='brace'>{</em>
-<a id='L628' name='L628'></a>  <strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a> *ip, *next;
-<a id='L629' name='L629'></a>
-<a id='L630' name='L630'></a>  <strong class='reserved'>if</strong>(*path == '/')
-<a id='L631' name='L631'></a>    ip = <a href='../S/172.html#L243' title='Defined at 243 in fs.c.'>iget</a>(<a href='../S/28.html#L12' title='Defined at 12 in param.h.'>ROOTDEV</a>, <a href='../S/103.html#L5' title='Defined at 5 in fs.h.'>ROOTINO</a>);
-<a id='L632' name='L632'></a>  <strong class='reserved'>else</strong>
-<a id='L633' name='L633'></a>    ip = <a href='../S/172.html#L278' title='Defined at 278 in fs.c.'>idup</a>(<a href='../S/63.html#L92' title='Defined at 92 in proc.c.'>myproc</a>()-&gt;cwd);
-<a id='L634' name='L634'></a>
-<a id='L635' name='L635'></a>  <strong class='reserved'>while</strong>((path = <a href='../S/172.html#L597' title='Defined at 597 in fs.c.'>skipelem</a>(path, name)) != 0)<em class='brace'>{</em>
-<a id='L636' name='L636'></a>    <a href='../S/172.html#L289' title='Defined at 289 in fs.c.'>ilock</a>(ip);
-<a id='L637' name='L637'></a>    <strong class='reserved'>if</strong>(ip-&gt;type != <a href='../S/34.html#L1' title='Defined at 1 in stat.h.'>T_DIR</a>)<em class='brace'>{</em>
-<a id='L638' name='L638'></a>      <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
-<a id='L639' name='L639'></a>      <strong class='reserved'>return</strong> 0;
-<a id='L640' name='L640'></a>    <em class='brace'>}</em>
-<a id='L641' name='L641'></a>    <strong class='reserved'>if</strong>(<a href='../S/172.html#L668' title='Defined at 668 in fs.c.'>nameiparent</a> &amp;&amp; *path == '\0')<em class='brace'>{</em>
-<a id='L642' name='L642'></a>      <em class='comment'>// Stop one level early.</em>
-<a id='L643' name='L643'></a>      <a href='../S/172.html#L317' title='Defined at 317 in fs.c.'>iunlock</a>(ip);
-<a id='L644' name='L644'></a>      <strong class='reserved'>return</strong> ip;
-<a id='L645' name='L645'></a>    <em class='brace'>}</em>
-<a id='L646' name='L646'></a>    <strong class='reserved'>if</strong>((next = <a href='../S/172.html#L526' title='Defined at 526 in fs.c.'>dirlookup</a>(ip, name, 0)) == 0)<em class='brace'>{</em>
-<a id='L647' name='L647'></a>      <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
-<a id='L648' name='L648'></a>      <strong class='reserved'>return</strong> 0;
-<a id='L649' name='L649'></a>    <em class='brace'>}</em>
-<a id='L650' name='L650'></a>    <a href='../S/172.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
-<a id='L651' name='L651'></a>    ip = next;
-<a id='L652' name='L652'></a>  <em class='brace'>}</em>
-<a id='L653' name='L653'></a>  <strong class='reserved'>if</strong>(<a href='../S/172.html#L668' title='Defined at 668 in fs.c.'>nameiparent</a>)<em class='brace'>{</em>
-<a id='L654' name='L654'></a>    <a href='../S/172.html#L333' title='Defined at 333 in fs.c.'>iput</a>(ip);
-<a id='L655' name='L655'></a>    <strong class='reserved'>return</strong> 0;
-<a id='L656' name='L656'></a>  <em class='brace'>}</em>
-<a id='L657' name='L657'></a>  <strong class='reserved'>return</strong> ip;
-<a id='L658' name='L658'></a><em class='brace'>}</em>
-<a id='L659' name='L659'></a>
-<a id='L660' name='L660'></a><strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a>*
-<a id='L661' name='L661'></a><a href='../R/411.html' title='Multiple referred from 6 places.'>namei</a>(<strong class='reserved'>char</strong> *path)
-<a id='L662' name='L662'></a><em class='brace'>{</em>
-<a id='L663' name='L663'></a>  <strong class='reserved'>char</strong> name[<a href='../S/103.html#L51' title='Defined at 51 in fs.h.'>DIRSIZ</a>];
-<a id='L664' name='L664'></a>  <strong class='reserved'>return</strong> <a href='../S/172.html#L626' title='Defined at 626 in fs.c.'>namex</a>(path, 0, name);
-<a id='L665' name='L665'></a><em class='brace'>}</em>
-<a id='L666' name='L666'></a>
-<a id='L667' name='L667'></a><strong class='reserved'>struct</strong> <a href='../S/55.html#L16' title='Defined at 16 in file.h.'>inode</a>*
-<a id='L668' name='L668'></a><a href='../R/412.html' title='Multiple referred from 7 places.'>nameiparent</a>(<strong class='reserved'>char</strong> *path, <strong class='reserved'>char</strong> *name)
-<a id='L669' name='L669'></a><em class='brace'>{</em>
-<a id='L670' name='L670'></a>  <strong class='reserved'>return</strong> <a href='../S/172.html#L626' title='Defined at 626 in fs.c.'>namex</a>(path, 1, name);
-<a id='L671' name='L671'></a><em class='brace'>}</em>
+<a id='L191' name='L191'></a>  <em class='comment'>//init cpus by zero</em>
+<a id='L192' name='L192'></a>  <a href='../D/512.html' title='Multiple defined in 2 places.'>memset</a>((<strong class='reserved'>char</strong> *)cpus, 0, <a href='../S/123.html#L128' title='Defined at 128 in mmu.h.'>PGSIZE</a>);
+<a id='L193' name='L193'></a>  <strong class='reserved'>return</strong> 1;
+<a id='L194' name='L194'></a><em class='brace'>}</em>
+<a id='L195' name='L195'></a>
 </pre>
 <hr />
 <a id='BOTTOM' name='BOTTOM'></a>
-<em class='comment'>/* [&lt;][&gt;]<a href='#L32'>[^]</a><a href='#L668'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L41'>[^]</a><a href='#L183'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 </body>
 </html>

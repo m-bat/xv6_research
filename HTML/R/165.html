@@ -9,9 +9,9 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/158.html#L55'>SEG_KDATA</a>          55 vm.c             // Cannot share a CODE descriptor for both kernel and user</span>
-<span class='curline'><a href='../S/158.html#L257'>SEG_KDATA</a>         257 vm.c           </span>
-<span class='curline'><a href='../S/158.html#L286'>SEG_KDATA</a>         286 vm.c           </span>
+<span class='curline'><a href='../S/162.html#L65'>SEG_KDATA</a>          65 vm.c             c-&gt;gdt[SEG_KDATA] = SEG(STA_W, 0, 0xffffffff, 0);</span>
+<span class='curline'><a href='../S/162.html#L267'>SEG_KDATA</a>         267 vm.c             mycpu()-&gt;ts.ss0 = SEG_KDATA &lt;&lt; 3;</span>
+<span class='curline'><a href='../S/162.html#L298'>SEG_KDATA</a>         298 vm.c             mycpu()-&gt;ts.ss0 = SEG_KDATA &lt;&lt; 3;</span>
 </pre>
 </body>
 </html>

@@ -21,15 +21,15 @@ This source file includes following definitions.
 <a id='L1' name='L1'></a><em class='comment'>// Create a zombie process that</em>
 <a id='L2' name='L2'></a><em class='comment'>// must be reparented at exit.</em>
 <a id='L3' name='L3'></a>
-<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='126.html'>types.h</a>"
+<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='127.html'>types.h</a>"
 <a id='L5' name='L5'></a><em class='sharp'>#include</em> "<a href='35.html'>stat.h</a>"
-<a id='L6' name='L6'></a><em class='sharp'>#include</em> "<a href='189.html'>user.h</a>"
+<a id='L6' name='L6'></a><em class='sharp'>#include</em> "<a href='193.html'>user.h</a>"
 <a id='L7' name='L7'></a>
 <a id='L8' name='L8'></a><strong class='reserved'>int</strong>
 <a id='L9' name='L9'></a>main(<strong class='reserved'>void</strong>)
 <a id='L10' name='L10'></a><em class='brace'>{</em>
-<a id='L11' name='L11'></a>  <strong class='reserved'>if</strong>(<a href='../S/64.html#L235' title='Defined at 235 in proc.c.'>fork</a>() &gt; 0)
-<a id='L12' name='L12'></a>    <a href='../S/64.html#L488' title='Defined at 488 in proc.c.'>sleep</a>(5);  <em class='comment'>// Let child exit before parent.</em>
+<a id='L11' name='L11'></a>  <strong class='reserved'>if</strong>(<a href='../S/64.html#L238' title='Defined at 238 in proc.c.'>fork</a>() &gt; 0)
+<a id='L12' name='L12'></a>    <a href='../S/64.html#L536' title='Defined at 536 in proc.c.'>sleep</a>(5);  <em class='comment'>// Let child exit before parent.</em>
 <a id='L13' name='L13'></a>  <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
 <a id='L14' name='L14'></a><em class='brace'>}</em>
 </pre>

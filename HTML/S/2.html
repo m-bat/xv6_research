@@ -11,15 +11,15 @@
 <a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/sleeplock.h</h2>
 <em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 <hr />
-<h2 class='header'><a href='../J/55.html' title='Multiple included from 13 places.'>INCLUDED FROM</a></h2>
+<h2 class='header'><a href='../J/56.html' title='Multiple included from 14 places.'>INCLUDED FROM</a></h2>
 <hr />
 <pre>
 <a id='L1' name='L1'></a><em class='sharp'>#ifndef</em> <a href='../S/2.html#L2' title='Defined at 2 in sleeplock.h.'>XV6_SLEEPLOCK_H</a>
 <a id='L2' name='L2'></a><em class='sharp'>#define</em> <a href='../S/2.html#L1' title='Referred from 1 in sleeplock.h.'>XV6_SLEEPLOCK_H</a>
 <a id='L3' name='L3'></a>
 <a id='L4' name='L4'></a><em class='comment'>// Long-term locks for processes</em>
-<a id='L5' name='L5'></a><strong class='reserved'>struct</strong> <a href='../R/500.html' title='Multiple referred from 11 places.'>sleeplock</a> <em class='brace'>{</em>
-<a id='L6' name='L6'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> locked;       <em class='comment'>// Is the lock held?</em>
+<a id='L5' name='L5'></a><strong class='reserved'>struct</strong> <a href='../R/505.html' title='Multiple referred from 11 places.'>sleeplock</a> <em class='brace'>{</em>
+<a id='L6' name='L6'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> locked;       <em class='comment'>// Is the lock held?</em>
 <a id='L7' name='L7'></a>  <strong class='reserved'>struct</strong> <a href='../S/9.html#L5' title='Defined at 5 in spinlock.h.'>spinlock</a> lk; <em class='comment'>// spinlock protecting this sleep lock</em>
 <a id='L8' name='L8'></a>  
 <a id='L9' name='L9'></a>  <em class='comment'>// For debugging:</em>

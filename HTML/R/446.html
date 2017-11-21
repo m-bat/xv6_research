@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>peek</title>
+<title>parsepipe</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,15 +9,9 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/8.html#L335'>peek</a>              335 sh.c             peek(&amp;s, es, "");</span>
-<span class='curline'><a href='../S/8.html#L350'>peek</a>              350 sh.c             while(peek(ps, es, "&amp;")){</span>
-<span class='curline'><a href='../S/8.html#L354'>peek</a>              354 sh.c             if(peek(ps, es, ";")){</span>
-<span class='curline'><a href='../S/8.html#L367'>peek</a>              367 sh.c             if(peek(ps, es, "|")){</span>
-<span class='curline'><a href='../S/8.html#L380'>peek</a>              380 sh.c             while(peek(ps, es, "&lt;&gt;")){</span>
-<span class='curline'><a href='../S/8.html#L404'>peek</a>              404 sh.c             if(!peek(ps, es, "("))</span>
-<span class='curline'><a href='../S/8.html#L408'>peek</a>              408 sh.c             if(!peek(ps, es, ")"))</span>
-<span class='curline'><a href='../S/8.html#L423'>peek</a>              423 sh.c             if(peek(ps, es, "("))</span>
-<span class='curline'><a href='../S/8.html#L431'>peek</a>              431 sh.c             while(!peek(ps, es, "|)&amp;;")){</span>
+<span class='curline'><a href='../S/8.html#L323'>parsepipe</a>         323 sh.c           struct cmd *parsepipe(char**, char*);</span>
+<span class='curline'><a href='../S/8.html#L349'>parsepipe</a>         349 sh.c             cmd = parsepipe(ps, es);</span>
+<span class='curline'><a href='../S/8.html#L369'>parsepipe</a>         369 sh.c               cmd = pipecmd(cmd, parsepipe(ps, es));</span>
 </pre>
 </body>
 </html>

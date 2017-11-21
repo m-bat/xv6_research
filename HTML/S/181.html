@@ -1,38 +1,80 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>buf.h</title>
+<title>mp.h</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
 <link rel='stylesheet' type='text/css' href='../style.css' />
 </head>
 <body>
-<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/buf.h</h2>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/mp.h</h2>
 <em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 <hr />
-<h2 class='header'><a href='../J/5.html' title='Multiple included from 6 places.'>INCLUDED FROM</a></h2>
+<h2 class='header'><a href='100.html#L9' title='Included from 9 in mp.c.'>INCLUDED FROM</a></h2>
 <hr />
 <pre>
-<a id='L1' name='L1'></a><em class='sharp'>#ifndef</em> <a href='../S/181.html#L2' title='Defined at 2 in buf.h.'>XV6_BUF_H</a>
-<a id='L2' name='L2'></a><em class='sharp'>#define</em> <a href='../S/181.html#L1' title='Referred from 1 in buf.h.'>XV6_BUF_H</a>
+<a id='L1' name='L1'></a><em class='sharp'>#ifndef</em> <a href='../S/181.html#L2' title='Defined at 2 in mp.h.'>XV6_MP_H</a>
+<a id='L2' name='L2'></a><em class='sharp'>#define</em> <a href='../S/181.html#L1' title='Referred from 1 in mp.h.'>XV6_MP_H</a>
 <a id='L3' name='L3'></a>
-<a id='L4' name='L4'></a>
-<a id='L5' name='L5'></a><strong class='reserved'>struct</strong> <a href='../R/265.html' title='Multiple referred from 173 places.'>buf</a> <em class='brace'>{</em>
-<a id='L6' name='L6'></a>  <strong class='reserved'>int</strong> <a href='../S/141.html#L32' title='Defined at 32 in entry.S.'>flags</a>;
-<a id='L7' name='L7'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> dev;
-<a id='L8' name='L8'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> blockno;
-<a id='L9' name='L9'></a>  <strong class='reserved'>struct</strong> <a href='../S/2.html#L5' title='Defined at 5 in sleeplock.h.'>sleeplock</a> lock;
-<a id='L10' name='L10'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> refcnt;
-<a id='L11' name='L11'></a>  <strong class='reserved'>struct</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a> *prev; <em class='comment'>// LRU cache list</em>
-<a id='L12' name='L12'></a>  <strong class='reserved'>struct</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a> *next;
-<a id='L13' name='L13'></a>  <strong class='reserved'>struct</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a> *qnext; <em class='comment'>// disk queue</em>
-<a id='L14' name='L14'></a>  <a href='../S/126.html#L6' title='Defined at 6 in types.h.'>uchar</a> data[<a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>];
+<a id='L4' name='L4'></a><em class='comment'>// See MultiProcessor Specification Version 1.[14]</em>
+<a id='L5' name='L5'></a>
+<a id='L6' name='L6'></a><strong class='reserved'>struct</strong> <a href='../R/420.html' title='Multiple referred from 18 places.'>mp</a> <em class='brace'>{</em>             <em class='comment'>// floating pointer</em>
+<a id='L7' name='L7'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> signature[4];           <em class='comment'>// "_MP_"</em>
+<a id='L8' name='L8'></a>  <strong class='reserved'>void</strong> *physaddr;               <em class='comment'>// phys addr of MP config table</em>
+<a id='L9' name='L9'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> length;                 <em class='comment'>// 1</em>
+<a id='L10' name='L10'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> specrev;                <em class='comment'>// [14]</em>
+<a id='L11' name='L11'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> checksum;               <em class='comment'>// all bytes must add up to 0</em>
+<a id='L12' name='L12'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> type;                   <em class='comment'>// MP system config type</em>
+<a id='L13' name='L13'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> imcrp;
+<a id='L14' name='L14'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> reserved[3];
 <a id='L15' name='L15'></a><em class='brace'>}</em>;
-<a id='L16' name='L16'></a><em class='sharp'>#define</em> <a href='../R/14.html' title='Multiple referred from 6 places.'>B_VALID</a> 0x2  <em class='comment'>// buffer has been read from disk</em>
-<a id='L17' name='L17'></a><em class='sharp'>#define</em> <a href='../R/13.html' title='Multiple referred from 11 places.'>B_DIRTY</a> 0x4  <em class='comment'>// buffer needs to be written to disk</em>
-<a id='L18' name='L18'></a>
-<a id='L19' name='L19'></a><em class='sharp'>#endif</em>
+<a id='L16' name='L16'></a>
+<a id='L17' name='L17'></a><strong class='reserved'>struct</strong> <a href='../R/421.html' title='Multiple referred from 4 places.'>mpconf</a> <em class='brace'>{</em>         <em class='comment'>// configuration table header</em>
+<a id='L18' name='L18'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> signature[4];           <em class='comment'>// "PCMP"</em>
+<a id='L19' name='L19'></a>  <a href='../S/127.html#L5' title='Defined at 5 in types.h.'>ushort</a> length;                <em class='comment'>// total table length</em>
+<a id='L20' name='L20'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> version;                <em class='comment'>// [14]</em>
+<a id='L21' name='L21'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> checksum;               <em class='comment'>// all bytes must add up to 0</em>
+<a id='L22' name='L22'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> product[20];            <em class='comment'>// product id</em>
+<a id='L23' name='L23'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> *oemtable;               <em class='comment'>// OEM table pointer</em>
+<a id='L24' name='L24'></a>  <a href='../S/127.html#L5' title='Defined at 5 in types.h.'>ushort</a> oemlength;             <em class='comment'>// OEM table length</em>
+<a id='L25' name='L25'></a>  <a href='../S/127.html#L5' title='Defined at 5 in types.h.'>ushort</a> entry;                 <em class='comment'>// entry count</em>
+<a id='L26' name='L26'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> *lapicaddr;              <em class='comment'>// address of local APIC</em>
+<a id='L27' name='L27'></a>  <a href='../S/127.html#L5' title='Defined at 5 in types.h.'>ushort</a> xlength;               <em class='comment'>// extended table length</em>
+<a id='L28' name='L28'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> xchecksum;              <em class='comment'>// extended table checksum</em>
+<a id='L29' name='L29'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> reserved;
+<a id='L30' name='L30'></a><em class='brace'>}</em>;
+<a id='L31' name='L31'></a>
+<a id='L32' name='L32'></a><strong class='reserved'>struct</strong> <a href='../R/427.html' title='Multiple referred from 3 places.'>mpproc</a> <em class='brace'>{</em>         <em class='comment'>// processor table entry</em>
+<a id='L33' name='L33'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> type;                   <em class='comment'>// entry type (0)</em>
+<a id='L34' name='L34'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> apicid;                 <em class='comment'>// local APIC id</em>
+<a id='L35' name='L35'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> version;                <em class='comment'>// local APIC verison</em>
+<a id='L36' name='L36'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> <a href='../S/143.html#L32' title='Defined at 32 in entry.S.'>flags</a>;                  <em class='comment'>// CPU flags</em>
+<a id='L37' name='L37'></a><em class='sharp'>    #define</em> MPBOOT 0x02           <em class='comment'>// This proc is the bootstrap processor.</em>
+<a id='L38' name='L38'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> signature[4];           <em class='comment'>// CPU signature</em>
+<a id='L39' name='L39'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> feature;                 <em class='comment'>// feature flags from CPUID instruction</em>
+<a id='L40' name='L40'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> reserved[8];
+<a id='L41' name='L41'></a><em class='brace'>}</em>;
+<a id='L42' name='L42'></a>
+<a id='L43' name='L43'></a><strong class='reserved'>struct</strong> <a href='../R/425.html' title='Multiple referred from 3 places.'>mpioapic</a> <em class='brace'>{</em>       <em class='comment'>// I/O APIC table entry</em>
+<a id='L44' name='L44'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> type;                   <em class='comment'>// entry type (2)</em>
+<a id='L45' name='L45'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> apicno;                 <em class='comment'>// I/O APIC id</em>
+<a id='L46' name='L46'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> version;                <em class='comment'>// I/O APIC version</em>
+<a id='L47' name='L47'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> <a href='../S/143.html#L32' title='Defined at 32 in entry.S.'>flags</a>;                  <em class='comment'>// I/O APIC flags</em>
+<a id='L48' name='L48'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> *addr;                  <em class='comment'>// I/O APIC address</em>
+<a id='L49' name='L49'></a><em class='brace'>}</em>;
+<a id='L50' name='L50'></a>
+<a id='L51' name='L51'></a><em class='comment'>// Table entry types</em>
+<a id='L52' name='L52'></a><em class='sharp'>#define</em> <a href='../S/100.html#L117' title='Referred from 117 in mp.c.'>MPPROC</a>    0x00  <em class='comment'>// One per processor</em>
+<a id='L53' name='L53'></a><em class='sharp'>#define</em> <a href='../S/100.html#L130' title='Referred from 130 in mp.c.'>MPBUS</a>     0x01  <em class='comment'>// One per bus</em>
+<a id='L54' name='L54'></a><em class='sharp'>#define</em> <a href='../S/100.html#L125' title='Referred from 125 in mp.c.'>MPIOAPIC</a>  0x02  <em class='comment'>// One per I/O APIC</em>
+<a id='L55' name='L55'></a><em class='sharp'>#define</em> <a href='../S/100.html#L131' title='Referred from 131 in mp.c.'>MPIOINTR</a>  0x03  <em class='comment'>// One per bus interrupt source</em>
+<a id='L56' name='L56'></a><em class='sharp'>#define</em> <a href='../S/100.html#L132' title='Referred from 132 in mp.c.'>MPLINTR</a>   0x04  <em class='comment'>// One per system interrupt source</em>
+<a id='L57' name='L57'></a>
+<a id='L58' name='L58'></a><em class='comment'>//PAGEBREAK!</em>
+<a id='L59' name='L59'></a><em class='comment'>// Blank page.</em>
+<a id='L60' name='L60'></a>
+<a id='L61' name='L61'></a><em class='sharp'>#endif</em>
 </pre>
 <hr />
 <a id='BOTTOM' name='BOTTOM'></a>

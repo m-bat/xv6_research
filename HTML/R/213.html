@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>UNUSED</title>
+<title>T_SYSCALL</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,12 +9,9 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/64.html#L114'>UNUSED</a>            114 proc.c             if(p-&gt;state == UNUSED)</span>
-<span class='curline'><a href='../S/64.html#L137'>UNUSED</a>            137 proc.c             p-&gt;state = UNUSED;</span>
-<span class='curline'><a href='../S/64.html#L251'>UNUSED</a>            251 proc.c             np-&gt;state = UNUSED;</span>
-<span class='curline'><a href='../S/64.html#L367'>UNUSED</a>            367 proc.c                 p-&gt;state = UNUSED;</span>
-<span class='curline'><a href='../S/64.html#L577'>UNUSED</a>            577 proc.c           [UNUSED]    "unused",</span>
-<span class='curline'><a href='../S/64.html#L590'>UNUSED</a>            590 proc.c             if(p-&gt;state == UNUSED)</span>
+<span class='curline'><a href='../S/166.html#L30'>T_SYSCALL</a>          30 trap.c           SETGATE(idt[T_SYSCALL], 1, SEG_KCODE&lt;&lt;3, vectors[T_SYSCALL], DPL_USER);</span>
+<span class='curline'><a href='../S/166.html#L54'>T_SYSCALL</a>          54 trap.c           if(tf-&gt;trapno == T_SYSCALL){</span>
+<span class='curline'><a href='../S/47.html#L1558'>T_SYSCALL</a>        1558 usertests.c          "a" (SYS_sleep), "n" (T_SYSCALL), "c" (p) :</span>
 </pre>
 </body>
 </html>

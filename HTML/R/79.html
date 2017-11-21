@@ -9,9 +9,9 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/168.html#L90'>KERNPLOCAL</a>         90 kalloc.c         if (v &gt;= (char *)KERNPLOCAL) {</span>
-<span class='curline'><a href='../S/158.html#L158'>KERNPLOCAL</a>        158 vm.c             uint phys_end;</span>
-<span class='curline'><a href='../S/158.html#L159'>KERNPLOCAL</a>        159 vm.c             int perm;</span>
+<span class='curline'><a href='../S/172.html#L90'>KERNPLOCAL</a>         90 kalloc.c         if (v &gt;= (char *)KERNPLOCAL) {</span>
+<span class='curline'><a href='../S/162.html#L168'>KERNPLOCAL</a>        168 vm.c             { (void*)data,     V2P(data),     V2P(KERNPLOCAL), PTE_W}, // [3] kern data+memory</span>
+<span class='curline'><a href='../S/162.html#L169'>KERNPLOCAL</a>        169 vm.c             { (void*)KERNPLOCAL, V2P(KERNPLOCAL), PHYSTOP,  PTE_W}, //      [4] kern userinfo</span>
 </pre>
 </body>
 </html>

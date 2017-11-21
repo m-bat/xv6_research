@@ -9,12 +9,12 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/158.html#L254'>SEG_TSS</a>           254 vm.c               panic("switchuvm: no kstack");</span>
-<span class='curline'><a href='../S/158.html#L256'>SEG_TSS</a>           256 vm.c               panic("switchuvm: no pgdir");</span>
-<span class='curline'><a href='../S/158.html#L262'>SEG_TSS</a>           262 vm.c             mycpu()-&gt;ts.ss0 = SEG_KDATA &lt;&lt; 3;</span>
-<span class='curline'><a href='../S/158.html#L283'>SEG_TSS</a>           283 vm.c               panic("switchuvm: no kstack");</span>
-<span class='curline'><a href='../S/158.html#L285'>SEG_TSS</a>           285 vm.c               panic("switchuvm: no pgdir");</span>
-<span class='curline'><a href='../S/158.html#L291'>SEG_TSS</a>           291 vm.c             mycpu()-&gt;ts.ss0 = SEG_KDATA &lt;&lt; 3;</span>
+<span class='curline'><a href='../S/162.html#L264'>SEG_TSS</a>           264 vm.c             mycpu()-&gt;gdt[SEG_TSS] = SEG16(STS_T32A, &amp;mycpu()-&gt;ts,</span>
+<span class='curline'><a href='../S/162.html#L266'>SEG_TSS</a>           266 vm.c             mycpu()-&gt;gdt[SEG_TSS].s = 0;</span>
+<span class='curline'><a href='../S/162.html#L272'>SEG_TSS</a>           272 vm.c             ltr(SEG_TSS &lt;&lt; 3);</span>
+<span class='curline'><a href='../S/162.html#L295'>SEG_TSS</a>           295 vm.c             mycpu()-&gt;gdt[SEG_TSS] = SEG16(STS_T32A, &amp;mycpu()-&gt;ts,</span>
+<span class='curline'><a href='../S/162.html#L297'>SEG_TSS</a>           297 vm.c             mycpu()-&gt;gdt[SEG_TSS].s = 0;</span>
+<span class='curline'><a href='../S/162.html#L303'>SEG_TSS</a>           303 vm.c             ltr(SEG_TSS &lt;&lt; 3);</span>
 </pre>
 </body>
 </html>

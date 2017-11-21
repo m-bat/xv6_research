@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>fork1</title>
+<title>flags</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,12 +9,29 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/8.html#L52'>fork1</a>              52 sh.c           int fork1(void);  // Fork but panics on failure.</span>
-<span class='curline'><a href='../S/8.html#L94'>fork1</a>              94 sh.c               if(fork1() == 0)</span>
-<span class='curline'><a href='../S/8.html#L104'>fork1</a>             104 sh.c               if(fork1() == 0){</span>
-<span class='curline'><a href='../S/8.html#L111'>fork1</a>             111 sh.c               if(fork1() == 0){</span>
-<span class='curline'><a href='../S/8.html#L126'>fork1</a>             126 sh.c               if(fork1() == 0)</span>
-<span class='curline'><a href='../S/8.html#L167'>fork1</a>             167 sh.c               if(fork1() == 0)</span>
+<span class='curline'><a href='../S/38.html#L82'>flags</a>              82 bio.c              if(b-&gt;refcnt == 0 &amp;&amp; (b-&gt;flags &amp; B_DIRTY) == 0) {</span>
+<span class='curline'><a href='../S/38.html#L85'>flags</a>              85 bio.c                b-&gt;flags = 0;</span>
+<span class='curline'><a href='../S/38.html#L102'>flags</a>             102 bio.c            if((b-&gt;flags &amp; B_VALID) == 0) {</span>
+<span class='curline'><a href='../S/38.html#L114'>flags</a>             114 bio.c            b-&gt;flags |= B_DIRTY;</span>
+<span class='curline'><a href='../S/185.html#L6'>flags</a>               6 buf.h            int flags;</span>
+<span class='curline'><a href='../S/74.html#L18'>flags</a>              18 elf.h            uint flags;</span>
+<span class='curline'><a href='../S/74.html#L35'>flags</a>              35 elf.h            uint flags;</span>
+<span class='curline'><a href='../S/146.html#L96'>flags</a>              96 ide.c            if(b-&gt;flags &amp; B_DIRTY){</span>
+<span class='curline'><a href='../S/146.html#L120'>flags</a>             120 ide.c            if(!(b-&gt;flags &amp; B_DIRTY) &amp;&amp; idewait(1) &gt;= 0)</span>
+<span class='curline'><a href='../S/146.html#L124'>flags</a>             124 ide.c            b-&gt;flags |= B_VALID;</span>
+<span class='curline'><a href='../S/146.html#L125'>flags</a>             125 ide.c            b-&gt;flags &amp;= ~B_DIRTY;</span>
+<span class='curline'><a href='../S/146.html#L146'>flags</a>             146 ide.c            if((b-&gt;flags &amp; (B_VALID|B_DIRTY)) == B_VALID)</span>
+<span class='curline'><a href='../S/146.html#L164'>flags</a>             164 ide.c            while((b-&gt;flags &amp; (B_VALID|B_DIRTY)) != B_VALID){</span>
+<span class='curline'><a href='../S/200.html#L231'>flags</a>             231 log.c            b-&gt;flags |= B_DIRTY; // prevent eviction</span>
+<span class='curline'><a href='../S/142.html#L45'>flags</a>              45 memide.c         if((b-&gt;flags &amp; (B_VALID|B_DIRTY)) == B_VALID)</span>
+<span class='curline'><a href='../S/142.html#L54'>flags</a>              54 memide.c         if(b-&gt;flags &amp; B_DIRTY){</span>
+<span class='curline'><a href='../S/142.html#L55'>flags</a>              55 memide.c           b-&gt;flags &amp;= ~B_DIRTY;</span>
+<span class='curline'><a href='../S/142.html#L59'>flags</a>              59 memide.c         b-&gt;flags |= B_VALID;</span>
+<span class='curline'><a href='../S/181.html#L36'>flags</a>              36 mp.h             uchar flags;                  // CPU flags</span>
+<span class='curline'><a href='../S/181.html#L47'>flags</a>              47 mp.h             uchar flags;                  // I/O APIC flags</span>
+<span class='curline'><a href='../S/162.html#L615'>flags</a>             615 vm.c           copyuvm(pde_t *pgdir, uint sz)</span>
+<span class='curline'><a href='../S/162.html#L626'>flags</a>             626 vm.c                 panic("copyuvm: pte should exist");</span>
+<span class='curline'><a href='../S/162.html#L630'>flags</a>             630 vm.c               flags = PTE_FLAGS(*pte);</span>
 </pre>
 </body>
 </html>

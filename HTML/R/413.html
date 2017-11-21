@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>memset</title>
+<title>mem</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,35 +9,24 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/163.html#L185'>memset</a>            185 console.c          memset(crt+pos, 0, sizeof(crt[0])*(24*80 - pos));</span>
-<span class='curline'><a href='../S/119.html#L162'>memset</a>            162 defs.h         void*           memset(void*, int, uint);</span>
-<span class='curline'><a href='../S/173.html#L48'>memset</a>             48 fs.c             memset(bp-&gt;data, 0, BSIZE);</span>
-<span class='curline'><a href='../S/173.html#L206'>memset</a>            206 fs.c                 memset(dip, 0, sizeof(*dip));</span>
-<span class='curline'><a href='../S/168.html#L84'>memset</a>             84 kalloc.c         memset(v, 1, PGSIZE);</span>
-<span class='curline'><a href='../S/168.html#L190'>memset</a>            190 kalloc.c         memset((char *)cpus, 0, PGSIZE);</span>
-<span class='curline'><a href='../S/111.html#L21'>memset</a>             21 ls.c             memset(buf+strlen(p), ' ', DIRSIZ-strlen(p));</span>
-<span class='curline'><a href='../S/36.html#L113'>memset</a>            113 mkfs.c           memset(buf, 0, sizeof(buf));</span>
-<span class='curline'><a href='../S/64.html#L55'>memset</a>             55 proc.c             memset(ptable, 0, PGSIZE); //set UNUSED 0</span>
-<span class='curline'><a href='../S/64.html#L154'>memset</a>            154 proc.c           memset(p-&gt;context, 0, sizeof *p-&gt;context);</span>
-<span class='curline'><a href='../S/64.html#L187'>memset</a>            187 proc.c           memset(p-&gt;tf, 0, sizeof(*p-&gt;tf));</span>
-<span class='curline'><a href='../S/8.html#L137'>memset</a>            137 sh.c             memset(buf, 0, nbuf);</span>
-<span class='curline'><a href='../S/8.html#L201'>memset</a>            201 sh.c             memset(cmd, 0, sizeof(*cmd));</span>
-<span class='curline'><a href='../S/8.html#L212'>memset</a>            212 sh.c             memset(cmd, 0, sizeof(*cmd));</span>
-<span class='curline'><a href='../S/8.html#L228'>memset</a>            228 sh.c             memset(cmd, 0, sizeof(*cmd));</span>
-<span class='curline'><a href='../S/8.html#L241'>memset</a>            241 sh.c             memset(cmd, 0, sizeof(*cmd));</span>
-<span class='curline'><a href='../S/8.html#L254'>memset</a>            254 sh.c             memset(cmd, 0, sizeof(*cmd));</span>
-<span class='curline'><a href='../S/109.html#L24'>memset</a>             24 stressfs.c       memset(data, 'a', sizeof(data));</span>
-<span class='curline'><a href='../S/84.html#L218'>memset</a>            218 sysfile.c        memset(&amp;de, 0, sizeof(de));</span>
-<span class='curline'><a href='../S/84.html#L407'>memset</a>            407 sysfile.c        memset(argv, 0, sizeof(argv));</span>
-<span class='curline'><a href='../S/189.html#L41'>memset</a>             41 user.h         void* memset(void*, int, uint);</span>
-<span class='curline'><a href='../S/47.html#L479'>memset</a>            479 usertests.c      memset(buf, pid==0?'c':'p', sizeof(buf));</span>
-<span class='curline'><a href='../S/47.html#L543'>memset</a>            543 usertests.c          memset(buf, '0'+pi, 512);</span>
-<span class='curline'><a href='../S/47.html#L800'>memset</a>            800 usertests.c      memset(fa, 0, sizeof(fa));</span>
-<span class='curline'><a href='../S/47.html#L1161'>memset</a>           1161 usertests.c        memset(buf, i, 600);</span>
-<span class='curline'><a href='../S/158.html#L93'>memset</a>             93 vm.c               pgtab = (pte_t*)P2V(PTE_ADDR(*pde));</span>
-<span class='curline'><a href='../S/158.html#L181'>memset</a>            181 vm.c             pde_t *pgdir;</span>
-<span class='curline'><a href='../S/158.html#L361'>memset</a>            361 vm.c             mem = kalloc(ALLOC_KGLOBAL);</span>
-<span class='curline'><a href='../S/158.html#L411'>memset</a>            411 vm.c             a = PGROUNDUP(oldsz);</span>
+<span class='curline'><a href='../S/47.html#L1782'>mem</a>              1782 usertests.c      mem();</span>
+<span class='curline'><a href='../S/162.html#L384'>mem</a>               384 vm.c           </span>
+<span class='curline'><a href='../S/162.html#L388'>mem</a>               388 vm.c             char *mem;</span>
+<span class='curline'><a href='../S/162.html#L390'>mem</a>               390 vm.c             if(sz &gt;= PGSIZE)</span>
+<span class='curline'><a href='../S/162.html#L394'>mem</a>               394 vm.c             mem_inituvm = mem;</span>
+<span class='curline'><a href='../S/162.html#L396'>mem</a>               396 vm.c             </span>
+<span class='curline'><a href='../S/162.html#L397'>mem</a>               397 vm.c             //DEBUG</span>
+<span class='curline'><a href='../S/162.html#L398'>mem</a>               398 vm.c             cprintf("mem %x", mem);</span>
+<span class='curline'><a href='../S/162.html#L430'>mem</a>               430 vm.c           // newsz, which need not be page aligned.  Returns new size or 0 on error.</span>
+<span class='curline'><a href='../S/162.html#L440'>mem</a>               440 vm.c               return oldsz;</span>
+<span class='curline'><a href='../S/162.html#L441'>mem</a>               441 vm.c           </span>
+<span class='curline'><a href='../S/162.html#L446'>mem</a>               446 vm.c                 cprintf("allocuvm out of memory\n");</span>
+<span class='curline'><a href='../S/162.html#L447'>mem</a>               447 vm.c                 deallocuvm(pgdir, newsz, oldsz);</span>
+<span class='curline'><a href='../S/162.html#L450'>mem</a>               450 vm.c               memset(mem, 0, PGSIZE);</span>
+<span class='curline'><a href='../S/162.html#L616'>mem</a>               616 vm.c           {</span>
+<span class='curline'><a href='../S/162.html#L627'>mem</a>               627 vm.c               if(!(*pte &amp; PTE_P))</span>
+<span class='curline'><a href='../S/162.html#L629'>mem</a>               629 vm.c               pa = PTE_ADDR(*pte);</span>
+<span class='curline'><a href='../S/162.html#L630'>mem</a>               630 vm.c               flags = PTE_FLAGS(*pte);</span>
 </pre>
 </body>
 </html>

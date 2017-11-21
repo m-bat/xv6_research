@@ -11,7 +11,7 @@
 <a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/proc.h</h2>
 <em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 <hr />
-<h2 class='header'><a href='../J/50.html' title='Multiple included from 19 places.'>INCLUDED FROM</a></h2>
+<h2 class='header'><a href='../J/51.html' title='Multiple included from 19 places.'>INCLUDED FROM</a></h2>
 <hr />
 <pre>
 <a id='L1' name='L1'></a><em class='sharp'>#ifndef</em> <a href='../S/93.html#L2' title='Defined at 2 in proc.h.'>XV6_PROC_H</a>
@@ -19,12 +19,12 @@
 <a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='9.html'>spinlock.h</a>"
 <a id='L4' name='L4'></a>
 <a id='L5' name='L5'></a><em class='comment'>// Per-CPU state</em>
-<a id='L6' name='L6'></a><strong class='reserved'>struct</strong> <a href='../R/289.html' title='Multiple referred from 15 places.'>cpu</a> <em class='brace'>{</em>
-<a id='L7' name='L7'></a>  <a href='../S/126.html#L6' title='Defined at 6 in types.h.'>uchar</a> apicid;                <em class='comment'>// Local APIC ID</em>
-<a id='L8' name='L8'></a>  <strong class='reserved'>struct</strong> <a href='../S/93.html#L34' title='Defined at 34 in proc.h.'>context</a> *<a href='../S/64.html#L393' title='Defined at 393 in proc.c.'>scheduler</a>;   <em class='comment'>// swtch() here to enter scheduler</em>
-<a id='L9' name='L9'></a>  <strong class='reserved'>struct</strong> <a href='../S/122.html#L157' title='Defined at 157 in mmu.h.'>taskstate</a> ts;         <em class='comment'>// Used by x86 to find stack for interrupt</em>
-<a id='L10' name='L10'></a>  <strong class='reserved'>struct</strong> <a href='../S/122.html#L57' title='Defined at 57 in mmu.h.'>segdesc</a> gdt[<a href='../S/122.html#L53' title='Defined at 53 in mmu.h.'>NSEGS</a>];   <em class='comment'>// x86 global descriptor table</em>
-<a id='L11' name='L11'></a>  <strong class='reserved'>volatile</strong> <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> started;       <em class='comment'>// Has the CPU started?</em>
+<a id='L6' name='L6'></a><strong class='reserved'>struct</strong> <a href='../R/290.html' title='Multiple referred from 15 places.'>cpu</a> <em class='brace'>{</em>
+<a id='L7' name='L7'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> apicid;                <em class='comment'>// Local APIC ID</em>
+<a id='L8' name='L8'></a>  <strong class='reserved'>struct</strong> <a href='../S/93.html#L34' title='Defined at 34 in proc.h.'>context</a> *<a href='../S/64.html#L441' title='Defined at 441 in proc.c.'>scheduler</a>;   <em class='comment'>// swtch() here to enter scheduler</em>
+<a id='L9' name='L9'></a>  <strong class='reserved'>struct</strong> <a href='../S/123.html#L157' title='Defined at 157 in mmu.h.'>taskstate</a> ts;         <em class='comment'>// Used by x86 to find stack for interrupt</em>
+<a id='L10' name='L10'></a>  <strong class='reserved'>struct</strong> <a href='../S/123.html#L57' title='Defined at 57 in mmu.h.'>segdesc</a> gdt[<a href='../S/123.html#L53' title='Defined at 53 in mmu.h.'>NSEGS</a>];   <em class='comment'>// x86 global descriptor table</em>
+<a id='L11' name='L11'></a>  <strong class='reserved'>volatile</strong> <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> started;       <em class='comment'>// Has the CPU started?</em>
 <a id='L12' name='L12'></a>  <strong class='reserved'>int</strong> ncli;                    <em class='comment'>// Depth of pushcli nesting.</em>
 <a id='L13' name='L13'></a>  <strong class='reserved'>int</strong> intena;                  <em class='comment'>// Were interrupts enabled before pushcli?</em>
 <a id='L14' name='L14'></a>  <strong class='reserved'>struct</strong> <a href='../S/93.html#L61' title='Defined at 61 in proc.h.'>proc</a> *<a href='../S/93.html#L61' title='Defined at 61 in proc.h.'>proc</a>;           <em class='comment'>// The process running on this cpu or null  </em>
@@ -47,18 +47,18 @@
 <a id='L31' name='L31'></a><em class='comment'>// The layout of the context matches the layout of the stack in swtch.S</em>
 <a id='L32' name='L32'></a><em class='comment'>// at the "Switch stacks" comment. Switch doesn't save eip explicitly,</em>
 <a id='L33' name='L33'></a><em class='comment'>// but it is on the stack and allocproc() manipulates it.</em>
-<a id='L34' name='L34'></a><strong class='reserved'>struct</strong> <a href='../R/284.html' title='Multiple referred from 11 places.'>context</a> <em class='brace'>{</em>
-<a id='L35' name='L35'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> edi;
-<a id='L36' name='L36'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> esi;
-<a id='L37' name='L37'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> ebx;
-<a id='L38' name='L38'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> ebp;
-<a id='L39' name='L39'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> eip;
+<a id='L34' name='L34'></a><strong class='reserved'>struct</strong> <a href='../R/285.html' title='Multiple referred from 11 places.'>context</a> <em class='brace'>{</em>
+<a id='L35' name='L35'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> edi;
+<a id='L36' name='L36'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> esi;
+<a id='L37' name='L37'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> ebx;
+<a id='L38' name='L38'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> ebp;
+<a id='L39' name='L39'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> eip;
 <a id='L40' name='L40'></a><em class='brace'>}</em>;
 <a id='L41' name='L41'></a>
-<a id='L42' name='L42'></a><strong class='reserved'>enum</strong> <a href='../S/93.html#L65' title='Referred from 65 in proc.h.'>procstate</a> <em class='brace'>{</em> <a href='../R/213.html' title='Multiple referred from 6 places.'>UNUSED</a>, <a href='../R/35.html' title='Multiple referred from 2 places.'>EMBRYO</a>, <a href='../R/171.html' title='Multiple referred from 6 places.'>SLEEPING</a>, <a href='../R/156.html' title='Multiple referred from 8 places.'>RUNNABLE</a>, <a href='../R/157.html' title='Multiple referred from 5 places.'>RUNNING</a>, <a href='../R/239.html' title='Multiple referred from 5 places.'>ZOMBIE</a> <em class='brace'>}</em>;
+<a id='L42' name='L42'></a><strong class='reserved'>enum</strong> <a href='../S/93.html#L65' title='Referred from 65 in proc.h.'>procstate</a> <em class='brace'>{</em> <a href='../R/214.html' title='Multiple referred from 6 places.'>UNUSED</a>, <a href='../R/35.html' title='Multiple referred from 2 places.'>EMBRYO</a>, <a href='../R/171.html' title='Multiple referred from 6 places.'>SLEEPING</a>, <a href='../R/156.html' title='Multiple referred from 8 places.'>RUNNABLE</a>, <a href='../R/157.html' title='Multiple referred from 5 places.'>RUNNING</a>, <a href='../R/240.html' title='Multiple referred from 7 places.'>ZOMBIE</a> <em class='brace'>}</em>;
 <a id='L43' name='L43'></a>
 <a id='L44' name='L44'></a><em class='comment'>//add manabu 9/19 practice</em>
-<a id='L45' name='L45'></a><strong class='reserved'>struct</strong> <a href='../R/546.html' title='Multiple referred from 2 places.'>test_local</a> <em class='brace'>{</em>
+<a id='L45' name='L45'></a><strong class='reserved'>struct</strong> <a href='../R/552.html' title='Multiple referred from 2 places.'>test_local</a> <em class='brace'>{</em>
 <a id='L46' name='L46'></a>  <strong class='reserved'>int</strong> pid;
 <a id='L47' name='L47'></a>  <strong class='reserved'>int</strong> ppid;
 <a id='L48' name='L48'></a><em class='brace'>}</em>;
@@ -74,9 +74,9 @@
 <a id='L58' name='L58'></a>
 <a id='L59' name='L59'></a>
 <a id='L60' name='L60'></a><em class='comment'>// Per-process state</em>
-<a id='L61' name='L61'></a><strong class='reserved'>struct</strong> <a href='../R/462.html' title='Multiple referred from 55 places.'>proc</a> <em class='brace'>{</em>
-<a id='L62' name='L62'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> sz;                     <em class='comment'>// Size of process memory (bytes)</em>
-<a id='L63' name='L63'></a>  <a href='../S/126.html#L7' title='Defined at 7 in types.h.'>pde_t</a>* pgdir;                <em class='comment'>// Page table</em>
+<a id='L61' name='L61'></a><strong class='reserved'>struct</strong> <a href='../R/467.html' title='Multiple referred from 59 places.'>proc</a> <em class='brace'>{</em>
+<a id='L62' name='L62'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> sz;                     <em class='comment'>// Size of process memory (bytes)</em>
+<a id='L63' name='L63'></a>  <a href='../S/127.html#L7' title='Defined at 7 in types.h.'>pde_t</a>* pgdir;                <em class='comment'>// Page table</em>
 <a id='L64' name='L64'></a>  <strong class='reserved'>char</strong> *kstack;                <em class='comment'>// Bottom of kernel stack for this process</em>
 <a id='L65' name='L65'></a>  <strong class='reserved'>enum</strong> <a href='../S/93.html#L42' title='Defined at 42 in proc.h.'>procstate</a> state;        <em class='comment'>// Process state</em>
 <a id='L66' name='L66'></a>  <strong class='reserved'>int</strong> pid;                     <em class='comment'>// Process ID</em>
@@ -86,11 +86,11 @@
 <a id='L70' name='L70'></a>  <strong class='reserved'>void</strong> *chan;                  <em class='comment'>// If non-zero, sleeping on chan</em>
 <a id='L71' name='L71'></a>  <strong class='reserved'>int</strong> killed;                  <em class='comment'>// If non-zero, have been killed</em>
 <a id='L72' name='L72'></a>  <strong class='reserved'>struct</strong> <a href='../S/56.html#L4' title='Defined at 4 in file.h.'>file</a> *ofile[<a href='../S/29.html#L12' title='Defined at 12 in param.h.'>NOFILE</a>];  <em class='comment'>// Open files</em>
-<a id='L73' name='L73'></a>  <strong class='reserved'>struct</strong> <a href='../S/56.html#L19' title='Defined at 19 in file.h.'>inode</a> *cwd;           <em class='comment'>// Current directory</em>
+<a id='L73' name='L73'></a>  <strong class='reserved'>struct</strong> <a href='../S/56.html#L18' title='Defined at 18 in file.h.'>inode</a> *cwd;           <em class='comment'>// Current directory</em>
 <a id='L74' name='L74'></a>  <strong class='reserved'>char</strong> name[16];               <em class='comment'>// Process name (debugging)</em>
 <a id='L75' name='L75'></a>  <strong class='reserved'>struct</strong> <a href='../S/93.html#L45' title='Defined at 45 in proc.h.'>test_local</a> *tl;       <em class='comment'>// add test local</em>
 <a id='L76' name='L76'></a>  <em class='comment'>//add manabu 10/18</em>
-<a id='L77' name='L77'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> kgflag;                 <em class='comment'>// kernel global data flag</em>
+<a id='L77' name='L77'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> kgflag;                 <em class='comment'>// kernel global data flag</em>
 <a id='L78' name='L78'></a><em class='brace'>}</em>;
 <a id='L79' name='L79'></a>
 <a id='L80' name='L80'></a>
@@ -101,7 +101,7 @@
 <a id='L85' name='L85'></a><em class='comment'>//   expandable heap</em>
 <a id='L86' name='L86'></a>
 <a id='L87' name='L87'></a><em class='comment'>//add pmanabu 11/07</em>
-<a id='L88' name='L88'></a><strong class='reserved'>struct</strong> <a href='../R/466.html' title='Multiple referred from 3 places.'>ptable_t</a> <em class='brace'>{</em>  
+<a id='L88' name='L88'></a><strong class='reserved'>struct</strong> <a href='../R/471.html' title='Multiple referred from 3 places.'>ptable_t</a> <em class='brace'>{</em>  
 <a id='L89' name='L89'></a>  <strong class='reserved'>struct</strong> <a href='../S/9.html#L5' title='Defined at 5 in spinlock.h.'>spinlock</a> lock; 
 <a id='L90' name='L90'></a>  <strong class='reserved'>struct</strong> <a href='../S/93.html#L61' title='Defined at 61 in proc.h.'>proc</a> <a href='../S/93.html#L61' title='Defined at 61 in proc.h.'>proc</a>[<a href='../S/29.html#L4' title='Defined at 4 in param.h.'>NPROC</a>];  
 <a id='L91' name='L91'></a><em class='brace'>}</em>;

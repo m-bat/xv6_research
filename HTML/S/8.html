@@ -38,8 +38,8 @@ This source file includes following definitions.
 <pre>
 <a id='L1' name='L1'></a><em class='comment'>// Shell.</em>
 <a id='L2' name='L2'></a>
-<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='126.html'>types.h</a>"
-<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='189.html'>user.h</a>"
+<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='127.html'>types.h</a>"
+<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='193.html'>user.h</a>"
 <a id='L5' name='L5'></a><em class='sharp'>#include</em> "<a href='59.html'>fcntl.h</a>"
 <a id='L6' name='L6'></a>
 <a id='L7' name='L7'></a><em class='comment'>// Parsed command representation</em>
@@ -51,17 +51,17 @@ This source file includes following definitions.
 <a id='L13' name='L13'></a>
 <a id='L14' name='L14'></a><em class='sharp'>#define</em> <a href='../R/98.html' title='Multiple referred from 3 places.'>MAXARGS</a> 10
 <a id='L15' name='L15'></a>
-<a id='L16' name='L16'></a><strong class='reserved'>struct</strong> <a href='../R/273.html' title='Multiple referred from 112 places.'>cmd</a> <em class='brace'>{</em>
+<a id='L16' name='L16'></a><strong class='reserved'>struct</strong> <a href='../R/274.html' title='Multiple referred from 112 places.'>cmd</a> <em class='brace'>{</em>
 <a id='L17' name='L17'></a>  <strong class='reserved'>int</strong> type;
 <a id='L18' name='L18'></a><em class='brace'>}</em>;
 <a id='L19' name='L19'></a>
-<a id='L20' name='L20'></a><strong class='reserved'>struct</strong> <a href='../R/305.html' title='Multiple referred from 8 places.'>execcmd</a> <em class='brace'>{</em>
+<a id='L20' name='L20'></a><strong class='reserved'>struct</strong> <a href='../R/306.html' title='Multiple referred from 8 places.'>execcmd</a> <em class='brace'>{</em>
 <a id='L21' name='L21'></a>  <strong class='reserved'>int</strong> type;
 <a id='L22' name='L22'></a>  <strong class='reserved'>char</strong> *argv[<a href='../S/8.html#L14' title='Defined at 14 in sh.c.'>MAXARGS</a>];
 <a id='L23' name='L23'></a>  <strong class='reserved'>char</strong> *eargv[<a href='../S/8.html#L14' title='Defined at 14 in sh.c.'>MAXARGS</a>];
 <a id='L24' name='L24'></a><em class='brace'>}</em>;
 <a id='L25' name='L25'></a>
-<a id='L26' name='L26'></a><strong class='reserved'>struct</strong> <a href='../R/478.html' title='Multiple referred from 8 places.'>redircmd</a> <em class='brace'>{</em>
+<a id='L26' name='L26'></a><strong class='reserved'>struct</strong> <a href='../R/483.html' title='Multiple referred from 8 places.'>redircmd</a> <em class='brace'>{</em>
 <a id='L27' name='L27'></a>  <strong class='reserved'>int</strong> type;
 <a id='L28' name='L28'></a>  <strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L29' name='L29'></a>  <strong class='reserved'>char</strong> *<a href='../S/56.html#L4' title='Defined at 4 in file.h.'>file</a>;
@@ -70,75 +70,75 @@ This source file includes following definitions.
 <a id='L32' name='L32'></a>  <strong class='reserved'>int</strong> fd;
 <a id='L33' name='L33'></a><em class='brace'>}</em>;
 <a id='L34' name='L34'></a>
-<a id='L35' name='L35'></a><strong class='reserved'>struct</strong> <a href='../R/453.html' title='Multiple referred from 6 places.'>pipecmd</a> <em class='brace'>{</em>
+<a id='L35' name='L35'></a><strong class='reserved'>struct</strong> <a href='../R/457.html' title='Multiple referred from 6 places.'>pipecmd</a> <em class='brace'>{</em>
 <a id='L36' name='L36'></a>  <strong class='reserved'>int</strong> type;
 <a id='L37' name='L37'></a>  <strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *left;
 <a id='L38' name='L38'></a>  <strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *right;
 <a id='L39' name='L39'></a><em class='brace'>}</em>;
 <a id='L40' name='L40'></a>
-<a id='L41' name='L41'></a><strong class='reserved'>struct</strong> <a href='../R/397.html' title='Multiple referred from 6 places.'>listcmd</a> <em class='brace'>{</em>
+<a id='L41' name='L41'></a><strong class='reserved'>struct</strong> <a href='../R/400.html' title='Multiple referred from 6 places.'>listcmd</a> <em class='brace'>{</em>
 <a id='L42' name='L42'></a>  <strong class='reserved'>int</strong> type;
 <a id='L43' name='L43'></a>  <strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *left;
 <a id='L44' name='L44'></a>  <strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *right;
 <a id='L45' name='L45'></a><em class='brace'>}</em>;
 <a id='L46' name='L46'></a>
-<a id='L47' name='L47'></a><strong class='reserved'>struct</strong> <a href='../R/251.html' title='Multiple referred from 6 places.'>backcmd</a> <em class='brace'>{</em>
+<a id='L47' name='L47'></a><strong class='reserved'>struct</strong> <a href='../R/252.html' title='Multiple referred from 6 places.'>backcmd</a> <em class='brace'>{</em>
 <a id='L48' name='L48'></a>  <strong class='reserved'>int</strong> type;
 <a id='L49' name='L49'></a>  <strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L50' name='L50'></a><em class='brace'>}</em>;
 <a id='L51' name='L51'></a>
 <a id='L52' name='L52'></a><strong class='reserved'>int</strong> <a href='../S/8.html#L182' title='Defined at 182 in sh.c.'>fork1</a>(<strong class='reserved'>void</strong>);  <em class='comment'>// Fork but panics on failure.</em>
-<a id='L53' name='L53'></a><strong class='reserved'>void</strong> <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>(<strong class='reserved'>char</strong>*);
+<a id='L53' name='L53'></a><strong class='reserved'>void</strong> <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>(<strong class='reserved'>char</strong>*);
 <a id='L54' name='L54'></a><strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *<a href='../S/8.html#L328' title='Defined at 328 in sh.c.'>parsecmd</a>(<strong class='reserved'>char</strong>*);
 <a id='L55' name='L55'></a>
 <a id='L56' name='L56'></a><em class='comment'>// Execute cmd.  Never returns.</em>
 <a id='L57' name='L57'></a><strong class='reserved'>void</strong>
-<a id='L58' name='L58'></a><a href='../R/486.html' title='Multiple referred from 7 places.'>runcmd</a>(<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>)
+<a id='L58' name='L58'></a><a href='../R/491.html' title='Multiple referred from 7 places.'>runcmd</a>(<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>)
 <a id='L59' name='L59'></a><em class='brace'>{</em>
 <a id='L60' name='L60'></a>  <strong class='reserved'>int</strong> p[2];
-<a id='L61' name='L61'></a>  <strong class='reserved'>struct</strong> <a href='../D/341.html' title='Multiple defined in 2 places.'>backcmd</a> *bcmd;
-<a id='L62' name='L62'></a>  <strong class='reserved'>struct</strong> <a href='../D/397.html' title='Multiple defined in 2 places.'>execcmd</a> *ecmd;
-<a id='L63' name='L63'></a>  <strong class='reserved'>struct</strong> <a href='../D/490.html' title='Multiple defined in 2 places.'>listcmd</a> *lcmd;
-<a id='L64' name='L64'></a>  <strong class='reserved'>struct</strong> <a href='../D/550.html' title='Multiple defined in 2 places.'>pipecmd</a> *pcmd;
-<a id='L65' name='L65'></a>  <strong class='reserved'>struct</strong> <a href='../D/576.html' title='Multiple defined in 2 places.'>redircmd</a> *rcmd;
+<a id='L61' name='L61'></a>  <strong class='reserved'>struct</strong> <a href='../D/342.html' title='Multiple defined in 2 places.'>backcmd</a> *bcmd;
+<a id='L62' name='L62'></a>  <strong class='reserved'>struct</strong> <a href='../D/398.html' title='Multiple defined in 2 places.'>execcmd</a> *ecmd;
+<a id='L63' name='L63'></a>  <strong class='reserved'>struct</strong> <a href='../D/493.html' title='Multiple defined in 2 places.'>listcmd</a> *lcmd;
+<a id='L64' name='L64'></a>  <strong class='reserved'>struct</strong> <a href='../D/554.html' title='Multiple defined in 2 places.'>pipecmd</a> *pcmd;
+<a id='L65' name='L65'></a>  <strong class='reserved'>struct</strong> <a href='../D/581.html' title='Multiple defined in 2 places.'>redircmd</a> *rcmd;
 <a id='L66' name='L66'></a>
 <a id='L67' name='L67'></a>  <strong class='reserved'>if</strong>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> == 0)
 <a id='L68' name='L68'></a>    <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
 <a id='L69' name='L69'></a>
 <a id='L70' name='L70'></a>  <strong class='reserved'>switch</strong>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;type)<em class='brace'>{</em>
 <a id='L71' name='L71'></a>  <strong class='reserved'>default</strong>:
-<a id='L72' name='L72'></a>    <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("runcmd");
+<a id='L72' name='L72'></a>    <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("runcmd");
 <a id='L73' name='L73'></a>
 <a id='L74' name='L74'></a>  <strong class='reserved'>case</strong> <a href='../S/8.html#L8' title='Defined at 8 in sh.c.'>EXEC</a>:
-<a id='L75' name='L75'></a>    ecmd = (<strong class='reserved'>struct</strong> <a href='../D/397.html' title='Multiple defined in 2 places.'>execcmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
+<a id='L75' name='L75'></a>    ecmd = (<strong class='reserved'>struct</strong> <a href='../D/398.html' title='Multiple defined in 2 places.'>execcmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L76' name='L76'></a>    <strong class='reserved'>if</strong>(ecmd-&gt;argv[0] == 0)
 <a id='L77' name='L77'></a>      <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
-<a id='L78' name='L78'></a>    <a href='../S/90.html#L12' title='Defined at 12 in exec.c.'>exec</a>(ecmd-&gt;argv[0], ecmd-&gt;argv);
-<a id='L79' name='L79'></a>    <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(2, "exec %s failed\n", ecmd-&gt;argv[0]);
+<a id='L78' name='L78'></a>    <a href='../S/90.html#L17' title='Defined at 17 in exec.c.'>exec</a>(ecmd-&gt;argv[0], ecmd-&gt;argv);
+<a id='L79' name='L79'></a>    <a href='../D/562.html' title='Multiple defined in 2 places.'>printf</a>(2, "exec %s failed\n", ecmd-&gt;argv[0]);
 <a id='L80' name='L80'></a>    <strong class='reserved'>break</strong>;
 <a id='L81' name='L81'></a>
 <a id='L82' name='L82'></a>  <strong class='reserved'>case</strong> <a href='../S/8.html#L9' title='Defined at 9 in sh.c.'>REDIR</a>:
-<a id='L83' name='L83'></a>    rcmd = (<strong class='reserved'>struct</strong> <a href='../D/576.html' title='Multiple defined in 2 places.'>redircmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
+<a id='L83' name='L83'></a>    rcmd = (<strong class='reserved'>struct</strong> <a href='../D/581.html' title='Multiple defined in 2 places.'>redircmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L84' name='L84'></a>    close(rcmd-&gt;fd);
 <a id='L85' name='L85'></a>    <strong class='reserved'>if</strong>(open(rcmd-&gt;<a href='../S/56.html#L4' title='Defined at 4 in file.h.'>file</a>, rcmd-&gt;mode) &lt; 0)<em class='brace'>{</em>
-<a id='L86' name='L86'></a>      <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(2, "open %s failed\n", rcmd-&gt;<a href='../S/56.html#L4' title='Defined at 4 in file.h.'>file</a>);
+<a id='L86' name='L86'></a>      <a href='../D/562.html' title='Multiple defined in 2 places.'>printf</a>(2, "open %s failed\n", rcmd-&gt;<a href='../S/56.html#L4' title='Defined at 4 in file.h.'>file</a>);
 <a id='L87' name='L87'></a>      <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
 <a id='L88' name='L88'></a>    <em class='brace'>}</em>
 <a id='L89' name='L89'></a>    <a href='../S/8.html#L58' title='Defined at 58 in sh.c.'>runcmd</a>(rcmd-&gt;<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>);
 <a id='L90' name='L90'></a>    <strong class='reserved'>break</strong>;
 <a id='L91' name='L91'></a>
 <a id='L92' name='L92'></a>  <strong class='reserved'>case</strong> <a href='../S/8.html#L11' title='Defined at 11 in sh.c.'>LIST</a>:
-<a id='L93' name='L93'></a>    lcmd = (<strong class='reserved'>struct</strong> <a href='../D/490.html' title='Multiple defined in 2 places.'>listcmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
+<a id='L93' name='L93'></a>    lcmd = (<strong class='reserved'>struct</strong> <a href='../D/493.html' title='Multiple defined in 2 places.'>listcmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L94' name='L94'></a>    <strong class='reserved'>if</strong>(<a href='../S/8.html#L182' title='Defined at 182 in sh.c.'>fork1</a>() == 0)
 <a id='L95' name='L95'></a>      <a href='../S/8.html#L58' title='Defined at 58 in sh.c.'>runcmd</a>(lcmd-&gt;left);
-<a id='L96' name='L96'></a>    <a href='../S/64.html#L342' title='Defined at 342 in proc.c.'>wait</a>();
+<a id='L96' name='L96'></a>    <a href='../S/64.html#L390' title='Defined at 390 in proc.c.'>wait</a>();
 <a id='L97' name='L97'></a>    <a href='../S/8.html#L58' title='Defined at 58 in sh.c.'>runcmd</a>(lcmd-&gt;right);
 <a id='L98' name='L98'></a>    <strong class='reserved'>break</strong>;
 <a id='L99' name='L99'></a>
 <a id='L100' name='L100'></a>  <strong class='reserved'>case</strong> <a href='../S/8.html#L10' title='Defined at 10 in sh.c.'>PIPE</a>:
-<a id='L101' name='L101'></a>    pcmd = (<strong class='reserved'>struct</strong> <a href='../D/550.html' title='Multiple defined in 2 places.'>pipecmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
+<a id='L101' name='L101'></a>    pcmd = (<strong class='reserved'>struct</strong> <a href='../D/554.html' title='Multiple defined in 2 places.'>pipecmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L102' name='L102'></a>    <strong class='reserved'>if</strong>(<a href='../S/95.html#L13' title='Defined at 13 in pipe.c.'>pipe</a>(p) &lt; 0)
-<a id='L103' name='L103'></a>      <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("pipe");
+<a id='L103' name='L103'></a>      <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("pipe");
 <a id='L104' name='L104'></a>    <strong class='reserved'>if</strong>(<a href='../S/8.html#L182' title='Defined at 182 in sh.c.'>fork1</a>() == 0)<em class='brace'>{</em>
 <a id='L105' name='L105'></a>      close(1);
 <a id='L106' name='L106'></a>      dup(p[1]);
@@ -155,12 +155,12 @@ This source file includes following definitions.
 <a id='L117' name='L117'></a>    <em class='brace'>}</em>
 <a id='L118' name='L118'></a>    close(p[0]);
 <a id='L119' name='L119'></a>    close(p[1]);
-<a id='L120' name='L120'></a>    <a href='../S/64.html#L342' title='Defined at 342 in proc.c.'>wait</a>();
-<a id='L121' name='L121'></a>    <a href='../S/64.html#L342' title='Defined at 342 in proc.c.'>wait</a>();
+<a id='L120' name='L120'></a>    <a href='../S/64.html#L390' title='Defined at 390 in proc.c.'>wait</a>();
+<a id='L121' name='L121'></a>    <a href='../S/64.html#L390' title='Defined at 390 in proc.c.'>wait</a>();
 <a id='L122' name='L122'></a>    <strong class='reserved'>break</strong>;
 <a id='L123' name='L123'></a>
 <a id='L124' name='L124'></a>  <strong class='reserved'>case</strong> <a href='../S/8.html#L12' title='Defined at 12 in sh.c.'>BACK</a>:
-<a id='L125' name='L125'></a>    bcmd = (<strong class='reserved'>struct</strong> <a href='../D/341.html' title='Multiple defined in 2 places.'>backcmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
+<a id='L125' name='L125'></a>    bcmd = (<strong class='reserved'>struct</strong> <a href='../D/342.html' title='Multiple defined in 2 places.'>backcmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L126' name='L126'></a>    <strong class='reserved'>if</strong>(<a href='../S/8.html#L182' title='Defined at 182 in sh.c.'>fork1</a>() == 0)
 <a id='L127' name='L127'></a>      <a href='../S/8.html#L58' title='Defined at 58 in sh.c.'>runcmd</a>(bcmd-&gt;<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>);
 <a id='L128' name='L128'></a>    <strong class='reserved'>break</strong>;
@@ -169,12 +169,12 @@ This source file includes following definitions.
 <a id='L131' name='L131'></a><em class='brace'>}</em>
 <a id='L132' name='L132'></a>
 <a id='L133' name='L133'></a><strong class='reserved'>int</strong>
-<a id='L134' name='L134'></a><a href='../S/8.html#L159' title='Referred from 159 in sh.c.'>getcmd</a>(<strong class='reserved'>char</strong> *<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <strong class='reserved'>int</strong> nbuf)
+<a id='L134' name='L134'></a><a href='../S/8.html#L159' title='Referred from 159 in sh.c.'>getcmd</a>(<strong class='reserved'>char</strong> *<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <strong class='reserved'>int</strong> nbuf)
 <a id='L135' name='L135'></a><em class='brace'>{</em>
-<a id='L136' name='L136'></a>  <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(2, "$ ");
-<a id='L137' name='L137'></a>  <a href='../D/509.html' title='Multiple defined in 2 places.'>memset</a>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, 0, nbuf);
-<a id='L138' name='L138'></a>  <a href='../S/83.html#L53' title='Defined at 53 in ulib.c.'>gets</a>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, nbuf);
-<a id='L139' name='L139'></a>  <strong class='reserved'>if</strong>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[0] == 0) <em class='comment'>// EOF</em>
+<a id='L136' name='L136'></a>  <a href='../D/562.html' title='Multiple defined in 2 places.'>printf</a>(2, "$ ");
+<a id='L137' name='L137'></a>  <a href='../D/512.html' title='Multiple defined in 2 places.'>memset</a>(<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>, 0, nbuf);
+<a id='L138' name='L138'></a>  <a href='../S/83.html#L53' title='Defined at 53 in ulib.c.'>gets</a>(<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>, nbuf);
+<a id='L139' name='L139'></a>  <strong class='reserved'>if</strong>(<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>[0] == 0) <em class='comment'>// EOF</em>
 <a id='L140' name='L140'></a>    <strong class='reserved'>return</strong> -1;
 <a id='L141' name='L141'></a>  <strong class='reserved'>return</strong> 0;
 <a id='L142' name='L142'></a><em class='brace'>}</em>
@@ -182,7 +182,7 @@ This source file includes following definitions.
 <a id='L144' name='L144'></a><strong class='reserved'>int</strong>
 <a id='L145' name='L145'></a>main(<strong class='reserved'>void</strong>)
 <a id='L146' name='L146'></a><em class='brace'>{</em>
-<a id='L147' name='L147'></a>  <strong class='reserved'>static</strong> <strong class='reserved'>char</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[100];
+<a id='L147' name='L147'></a>  <strong class='reserved'>static</strong> <strong class='reserved'>char</strong> <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>[100];
 <a id='L148' name='L148'></a>  <strong class='reserved'>int</strong> fd;
 <a id='L149' name='L149'></a>
 <a id='L150' name='L150'></a>  <em class='comment'>// Ensure that three file descriptors are open.</em>
@@ -194,36 +194,36 @@ This source file includes following definitions.
 <a id='L156' name='L156'></a>  <em class='brace'>}</em>
 <a id='L157' name='L157'></a>
 <a id='L158' name='L158'></a>  <em class='comment'>// Read and run input commands.</em>
-<a id='L159' name='L159'></a>  <strong class='reserved'>while</strong>(<a href='../S/8.html#L134' title='Defined at 134 in sh.c.'>getcmd</a>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <strong class='reserved'>sizeof</strong>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>)) &gt;= 0)<em class='brace'>{</em>
-<a id='L160' name='L160'></a>    <strong class='reserved'>if</strong>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[0] == 'c' &amp;&amp; <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[1] == 'd' &amp;&amp; <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[2] == ' ')<em class='brace'>{</em>
+<a id='L159' name='L159'></a>  <strong class='reserved'>while</strong>(<a href='../S/8.html#L134' title='Defined at 134 in sh.c.'>getcmd</a>(<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>, <strong class='reserved'>sizeof</strong>(<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>)) &gt;= 0)<em class='brace'>{</em>
+<a id='L160' name='L160'></a>    <strong class='reserved'>if</strong>(<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>[0] == 'c' &amp;&amp; <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>[1] == 'd' &amp;&amp; <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>[2] == ' ')<em class='brace'>{</em>
 <a id='L161' name='L161'></a>      <em class='comment'>// Chdir must be called by the parent, not the child.</em>
-<a id='L162' name='L162'></a>      <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[<a href='../D/610.html' title='Multiple defined in 2 places.'>strlen</a>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>)-1] = 0;  <em class='comment'>// chop \n</em>
-<a id='L163' name='L163'></a>      <strong class='reserved'>if</strong>(chdir(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>+3) &lt; 0)
-<a id='L164' name='L164'></a>        <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(2, "cannot cd %s\n", <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>+3);
+<a id='L162' name='L162'></a>      <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>[<a href='../D/615.html' title='Multiple defined in 2 places.'>strlen</a>(<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>)-1] = 0;  <em class='comment'>// chop \n</em>
+<a id='L163' name='L163'></a>      <strong class='reserved'>if</strong>(chdir(<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>+3) &lt; 0)
+<a id='L164' name='L164'></a>        <a href='../D/562.html' title='Multiple defined in 2 places.'>printf</a>(2, "cannot cd %s\n", <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>+3);
 <a id='L165' name='L165'></a>      <strong class='reserved'>continue</strong>;
 <a id='L166' name='L166'></a>    <em class='brace'>}</em>
 <a id='L167' name='L167'></a>    <strong class='reserved'>if</strong>(<a href='../S/8.html#L182' title='Defined at 182 in sh.c.'>fork1</a>() == 0)
-<a id='L168' name='L168'></a>      <a href='../S/8.html#L58' title='Defined at 58 in sh.c.'>runcmd</a>(<a href='../S/8.html#L328' title='Defined at 328 in sh.c.'>parsecmd</a>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>));
-<a id='L169' name='L169'></a>    <a href='../S/64.html#L342' title='Defined at 342 in proc.c.'>wait</a>();
+<a id='L168' name='L168'></a>      <a href='../S/8.html#L58' title='Defined at 58 in sh.c.'>runcmd</a>(<a href='../S/8.html#L328' title='Defined at 328 in sh.c.'>parsecmd</a>(<a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a>));
+<a id='L169' name='L169'></a>    <a href='../S/64.html#L390' title='Defined at 390 in proc.c.'>wait</a>();
 <a id='L170' name='L170'></a>  <em class='brace'>}</em>
 <a id='L171' name='L171'></a>  <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
 <a id='L172' name='L172'></a><em class='brace'>}</em>
 <a id='L173' name='L173'></a>
 <a id='L174' name='L174'></a><strong class='reserved'>void</strong>
-<a id='L175' name='L175'></a><a href='../R/438.html' title='Multiple referred from 97 places.'>panic</a>(<strong class='reserved'>char</strong> *s)
+<a id='L175' name='L175'></a><a href='../R/441.html' title='Multiple referred from 100 places.'>panic</a>(<strong class='reserved'>char</strong> *s)
 <a id='L176' name='L176'></a><em class='brace'>{</em>
-<a id='L177' name='L177'></a>  <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(2, "%s\n", s);
+<a id='L177' name='L177'></a>  <a href='../D/562.html' title='Multiple defined in 2 places.'>printf</a>(2, "%s\n", s);
 <a id='L178' name='L178'></a>  <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
 <a id='L179' name='L179'></a><em class='brace'>}</em>
 <a id='L180' name='L180'></a>
 <a id='L181' name='L181'></a><strong class='reserved'>int</strong>
-<a id='L182' name='L182'></a><a href='../R/325.html' title='Multiple referred from 6 places.'>fork1</a>(<strong class='reserved'>void</strong>)
+<a id='L182' name='L182'></a><a href='../R/328.html' title='Multiple referred from 6 places.'>fork1</a>(<strong class='reserved'>void</strong>)
 <a id='L183' name='L183'></a><em class='brace'>{</em>
 <a id='L184' name='L184'></a>  <strong class='reserved'>int</strong> pid;
 <a id='L185' name='L185'></a>
-<a id='L186' name='L186'></a>  pid = <a href='../S/64.html#L235' title='Defined at 235 in proc.c.'>fork</a>();
+<a id='L186' name='L186'></a>  pid = <a href='../S/64.html#L238' title='Defined at 238 in proc.c.'>fork</a>();
 <a id='L187' name='L187'></a>  <strong class='reserved'>if</strong>(pid == -1)
-<a id='L188' name='L188'></a>    <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("fork");
+<a id='L188' name='L188'></a>    <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("fork");
 <a id='L189' name='L189'></a>  <strong class='reserved'>return</strong> pid;
 <a id='L190' name='L190'></a><em class='brace'>}</em>
 <a id='L191' name='L191'></a>
@@ -231,23 +231,23 @@ This source file includes following definitions.
 <a id='L193' name='L193'></a><em class='comment'>// Constructors</em>
 <a id='L194' name='L194'></a>
 <a id='L195' name='L195'></a><strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>*
-<a id='L196' name='L196'></a><a href='../R/305.html' title='Multiple referred from 8 places.'>execcmd</a>(<strong class='reserved'>void</strong>)
+<a id='L196' name='L196'></a><a href='../R/306.html' title='Multiple referred from 8 places.'>execcmd</a>(<strong class='reserved'>void</strong>)
 <a id='L197' name='L197'></a><em class='brace'>{</em>
-<a id='L198' name='L198'></a>  <strong class='reserved'>struct</strong> <a href='../D/397.html' title='Multiple defined in 2 places.'>execcmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
+<a id='L198' name='L198'></a>  <strong class='reserved'>struct</strong> <a href='../D/398.html' title='Multiple defined in 2 places.'>execcmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L199' name='L199'></a>
 <a id='L200' name='L200'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../S/76.html#L64' title='Defined at 64 in umalloc.c.'>malloc</a>(<strong class='reserved'>sizeof</strong>(*<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>));
-<a id='L201' name='L201'></a>  <a href='../D/509.html' title='Multiple defined in 2 places.'>memset</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, 0, <strong class='reserved'>sizeof</strong>(*<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>));
+<a id='L201' name='L201'></a>  <a href='../D/512.html' title='Multiple defined in 2 places.'>memset</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, 0, <strong class='reserved'>sizeof</strong>(*<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>));
 <a id='L202' name='L202'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;type = <a href='../S/8.html#L8' title='Defined at 8 in sh.c.'>EXEC</a>;
 <a id='L203' name='L203'></a>  <strong class='reserved'>return</strong> (<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L204' name='L204'></a><em class='brace'>}</em>
 <a id='L205' name='L205'></a>
 <a id='L206' name='L206'></a><strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>*
-<a id='L207' name='L207'></a><a href='../R/478.html' title='Multiple referred from 8 places.'>redircmd</a>(<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *subcmd, <strong class='reserved'>char</strong> *<a href='../S/56.html#L4' title='Defined at 4 in file.h.'>file</a>, <strong class='reserved'>char</strong> *efile, <strong class='reserved'>int</strong> mode, <strong class='reserved'>int</strong> fd)
+<a id='L207' name='L207'></a><a href='../R/483.html' title='Multiple referred from 8 places.'>redircmd</a>(<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *subcmd, <strong class='reserved'>char</strong> *<a href='../S/56.html#L4' title='Defined at 4 in file.h.'>file</a>, <strong class='reserved'>char</strong> *efile, <strong class='reserved'>int</strong> mode, <strong class='reserved'>int</strong> fd)
 <a id='L208' name='L208'></a><em class='brace'>{</em>
-<a id='L209' name='L209'></a>  <strong class='reserved'>struct</strong> <a href='../D/576.html' title='Multiple defined in 2 places.'>redircmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
+<a id='L209' name='L209'></a>  <strong class='reserved'>struct</strong> <a href='../D/581.html' title='Multiple defined in 2 places.'>redircmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L210' name='L210'></a>
 <a id='L211' name='L211'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../S/76.html#L64' title='Defined at 64 in umalloc.c.'>malloc</a>(<strong class='reserved'>sizeof</strong>(*<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>));
-<a id='L212' name='L212'></a>  <a href='../D/509.html' title='Multiple defined in 2 places.'>memset</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, 0, <strong class='reserved'>sizeof</strong>(*<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>));
+<a id='L212' name='L212'></a>  <a href='../D/512.html' title='Multiple defined in 2 places.'>memset</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, 0, <strong class='reserved'>sizeof</strong>(*<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>));
 <a id='L213' name='L213'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;type = <a href='../S/8.html#L9' title='Defined at 9 in sh.c.'>REDIR</a>;
 <a id='L214' name='L214'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = subcmd;
 <a id='L215' name='L215'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;<a href='../S/56.html#L4' title='Defined at 4 in file.h.'>file</a> = <a href='../S/56.html#L4' title='Defined at 4 in file.h.'>file</a>;
@@ -258,12 +258,12 @@ This source file includes following definitions.
 <a id='L220' name='L220'></a><em class='brace'>}</em>
 <a id='L221' name='L221'></a>
 <a id='L222' name='L222'></a><strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>*
-<a id='L223' name='L223'></a><a href='../R/453.html' title='Multiple referred from 6 places.'>pipecmd</a>(<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *left, <strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *right)
+<a id='L223' name='L223'></a><a href='../R/457.html' title='Multiple referred from 6 places.'>pipecmd</a>(<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *left, <strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *right)
 <a id='L224' name='L224'></a><em class='brace'>{</em>
-<a id='L225' name='L225'></a>  <strong class='reserved'>struct</strong> <a href='../D/550.html' title='Multiple defined in 2 places.'>pipecmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
+<a id='L225' name='L225'></a>  <strong class='reserved'>struct</strong> <a href='../D/554.html' title='Multiple defined in 2 places.'>pipecmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L226' name='L226'></a>
 <a id='L227' name='L227'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../S/76.html#L64' title='Defined at 64 in umalloc.c.'>malloc</a>(<strong class='reserved'>sizeof</strong>(*<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>));
-<a id='L228' name='L228'></a>  <a href='../D/509.html' title='Multiple defined in 2 places.'>memset</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, 0, <strong class='reserved'>sizeof</strong>(*<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>));
+<a id='L228' name='L228'></a>  <a href='../D/512.html' title='Multiple defined in 2 places.'>memset</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, 0, <strong class='reserved'>sizeof</strong>(*<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>));
 <a id='L229' name='L229'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;type = <a href='../S/8.html#L10' title='Defined at 10 in sh.c.'>PIPE</a>;
 <a id='L230' name='L230'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;left = left;
 <a id='L231' name='L231'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;right = right;
@@ -271,12 +271,12 @@ This source file includes following definitions.
 <a id='L233' name='L233'></a><em class='brace'>}</em>
 <a id='L234' name='L234'></a>
 <a id='L235' name='L235'></a><strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>*
-<a id='L236' name='L236'></a><a href='../R/397.html' title='Multiple referred from 6 places.'>listcmd</a>(<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *left, <strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *right)
+<a id='L236' name='L236'></a><a href='../R/400.html' title='Multiple referred from 6 places.'>listcmd</a>(<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *left, <strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *right)
 <a id='L237' name='L237'></a><em class='brace'>{</em>
-<a id='L238' name='L238'></a>  <strong class='reserved'>struct</strong> <a href='../D/490.html' title='Multiple defined in 2 places.'>listcmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
+<a id='L238' name='L238'></a>  <strong class='reserved'>struct</strong> <a href='../D/493.html' title='Multiple defined in 2 places.'>listcmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L239' name='L239'></a>
 <a id='L240' name='L240'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../S/76.html#L64' title='Defined at 64 in umalloc.c.'>malloc</a>(<strong class='reserved'>sizeof</strong>(*<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>));
-<a id='L241' name='L241'></a>  <a href='../D/509.html' title='Multiple defined in 2 places.'>memset</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, 0, <strong class='reserved'>sizeof</strong>(*<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>));
+<a id='L241' name='L241'></a>  <a href='../D/512.html' title='Multiple defined in 2 places.'>memset</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, 0, <strong class='reserved'>sizeof</strong>(*<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>));
 <a id='L242' name='L242'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;type = <a href='../S/8.html#L11' title='Defined at 11 in sh.c.'>LIST</a>;
 <a id='L243' name='L243'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;left = left;
 <a id='L244' name='L244'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;right = right;
@@ -284,12 +284,12 @@ This source file includes following definitions.
 <a id='L246' name='L246'></a><em class='brace'>}</em>
 <a id='L247' name='L247'></a>
 <a id='L248' name='L248'></a><strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>*
-<a id='L249' name='L249'></a><a href='../R/251.html' title='Multiple referred from 6 places.'>backcmd</a>(<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *subcmd)
+<a id='L249' name='L249'></a><a href='../R/252.html' title='Multiple referred from 6 places.'>backcmd</a>(<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *subcmd)
 <a id='L250' name='L250'></a><em class='brace'>{</em>
-<a id='L251' name='L251'></a>  <strong class='reserved'>struct</strong> <a href='../D/341.html' title='Multiple defined in 2 places.'>backcmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
+<a id='L251' name='L251'></a>  <strong class='reserved'>struct</strong> <a href='../D/342.html' title='Multiple defined in 2 places.'>backcmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L252' name='L252'></a>
 <a id='L253' name='L253'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../S/76.html#L64' title='Defined at 64 in umalloc.c.'>malloc</a>(<strong class='reserved'>sizeof</strong>(*<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>));
-<a id='L254' name='L254'></a>  <a href='../D/509.html' title='Multiple defined in 2 places.'>memset</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, 0, <strong class='reserved'>sizeof</strong>(*<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>));
+<a id='L254' name='L254'></a>  <a href='../D/512.html' title='Multiple defined in 2 places.'>memset</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, 0, <strong class='reserved'>sizeof</strong>(*<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>));
 <a id='L255' name='L255'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;type = <a href='../S/8.html#L12' title='Defined at 12 in sh.c.'>BACK</a>;
 <a id='L256' name='L256'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = subcmd;
 <a id='L257' name='L257'></a>  <strong class='reserved'>return</strong> (<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
@@ -301,7 +301,7 @@ This source file includes following definitions.
 <a id='L263' name='L263'></a><strong class='reserved'>char</strong> symbols[] = "&lt;|&gt;&amp;;()";
 <a id='L264' name='L264'></a>
 <a id='L265' name='L265'></a><strong class='reserved'>int</strong>
-<a id='L266' name='L266'></a><a href='../R/339.html' title='Multiple referred from 8 places.'>gettoken</a>(<strong class='reserved'>char</strong> **ps, <strong class='reserved'>char</strong> *es, <strong class='reserved'>char</strong> **q, <strong class='reserved'>char</strong> **eq)
+<a id='L266' name='L266'></a><a href='../R/342.html' title='Multiple referred from 8 places.'>gettoken</a>(<strong class='reserved'>char</strong> **ps, <strong class='reserved'>char</strong> *es, <strong class='reserved'>char</strong> **q, <strong class='reserved'>char</strong> **eq)
 <a id='L267' name='L267'></a><em class='brace'>{</em>
 <a id='L268' name='L268'></a>  <strong class='reserved'>char</strong> *s;
 <a id='L269' name='L269'></a>  <strong class='reserved'>int</strong> ret;
@@ -346,7 +346,7 @@ This source file includes following definitions.
 <a id='L308' name='L308'></a><em class='brace'>}</em>
 <a id='L309' name='L309'></a>
 <a id='L310' name='L310'></a><strong class='reserved'>int</strong>
-<a id='L311' name='L311'></a><a href='../R/446.html' title='Multiple referred from 9 places.'>peek</a>(<strong class='reserved'>char</strong> **ps, <strong class='reserved'>char</strong> *es, <strong class='reserved'>char</strong> *toks)
+<a id='L311' name='L311'></a><a href='../R/449.html' title='Multiple referred from 9 places.'>peek</a>(<strong class='reserved'>char</strong> **ps, <strong class='reserved'>char</strong> *es, <strong class='reserved'>char</strong> *toks)
 <a id='L312' name='L312'></a><em class='brace'>{</em>
 <a id='L313' name='L313'></a>  <strong class='reserved'>char</strong> *s;
 <a id='L314' name='L314'></a>
@@ -363,54 +363,54 @@ This source file includes following definitions.
 <a id='L325' name='L325'></a><strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *<a href='../S/8.html#L450' title='Defined at 450 in sh.c.'>nulterminate</a>(<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>*);
 <a id='L326' name='L326'></a>
 <a id='L327' name='L327'></a><strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>*
-<a id='L328' name='L328'></a><a href='../R/440.html' title='Multiple referred from 2 places.'>parsecmd</a>(<strong class='reserved'>char</strong> *s)
+<a id='L328' name='L328'></a><a href='../R/443.html' title='Multiple referred from 2 places.'>parsecmd</a>(<strong class='reserved'>char</strong> *s)
 <a id='L329' name='L329'></a><em class='brace'>{</em>
 <a id='L330' name='L330'></a>  <strong class='reserved'>char</strong> *es;
 <a id='L331' name='L331'></a>  <strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L332' name='L332'></a>
-<a id='L333' name='L333'></a>  es = s + <a href='../D/610.html' title='Multiple defined in 2 places.'>strlen</a>(s);
+<a id='L333' name='L333'></a>  es = s + <a href='../D/615.html' title='Multiple defined in 2 places.'>strlen</a>(s);
 <a id='L334' name='L334'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../S/8.html#L345' title='Defined at 345 in sh.c.'>parseline</a>(&amp;s, es);
 <a id='L335' name='L335'></a>  <a href='../S/8.html#L311' title='Defined at 311 in sh.c.'>peek</a>(&amp;s, es, "");
 <a id='L336' name='L336'></a>  <strong class='reserved'>if</strong>(s != es)<em class='brace'>{</em>
-<a id='L337' name='L337'></a>    <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(2, "leftovers: %s\n", s);
-<a id='L338' name='L338'></a>    <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("syntax");
+<a id='L337' name='L337'></a>    <a href='../D/562.html' title='Multiple defined in 2 places.'>printf</a>(2, "leftovers: %s\n", s);
+<a id='L338' name='L338'></a>    <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("syntax");
 <a id='L339' name='L339'></a>  <em class='brace'>}</em>
 <a id='L340' name='L340'></a>  <a href='../S/8.html#L450' title='Defined at 450 in sh.c.'>nulterminate</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>);
 <a id='L341' name='L341'></a>  <strong class='reserved'>return</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L342' name='L342'></a><em class='brace'>}</em>
 <a id='L343' name='L343'></a>
 <a id='L344' name='L344'></a><strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>*
-<a id='L345' name='L345'></a><a href='../R/442.html' title='Multiple referred from 4 places.'>parseline</a>(<strong class='reserved'>char</strong> **ps, <strong class='reserved'>char</strong> *es)
+<a id='L345' name='L345'></a><a href='../R/445.html' title='Multiple referred from 4 places.'>parseline</a>(<strong class='reserved'>char</strong> **ps, <strong class='reserved'>char</strong> *es)
 <a id='L346' name='L346'></a><em class='brace'>{</em>
 <a id='L347' name='L347'></a>  <strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L348' name='L348'></a>
 <a id='L349' name='L349'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../S/8.html#L362' title='Defined at 362 in sh.c.'>parsepipe</a>(ps, es);
 <a id='L350' name='L350'></a>  <strong class='reserved'>while</strong>(<a href='../S/8.html#L311' title='Defined at 311 in sh.c.'>peek</a>(ps, es, "&amp;"))<em class='brace'>{</em>
 <a id='L351' name='L351'></a>    <a href='../S/8.html#L266' title='Defined at 266 in sh.c.'>gettoken</a>(ps, es, 0, 0);
-<a id='L352' name='L352'></a>    <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../D/341.html' title='Multiple defined in 2 places.'>backcmd</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>);
+<a id='L352' name='L352'></a>    <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../D/342.html' title='Multiple defined in 2 places.'>backcmd</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>);
 <a id='L353' name='L353'></a>  <em class='brace'>}</em>
 <a id='L354' name='L354'></a>  <strong class='reserved'>if</strong>(<a href='../S/8.html#L311' title='Defined at 311 in sh.c.'>peek</a>(ps, es, ";"))<em class='brace'>{</em>
 <a id='L355' name='L355'></a>    <a href='../S/8.html#L266' title='Defined at 266 in sh.c.'>gettoken</a>(ps, es, 0, 0);
-<a id='L356' name='L356'></a>    <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../D/490.html' title='Multiple defined in 2 places.'>listcmd</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, <a href='../S/8.html#L345' title='Defined at 345 in sh.c.'>parseline</a>(ps, es));
+<a id='L356' name='L356'></a>    <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../D/493.html' title='Multiple defined in 2 places.'>listcmd</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, <a href='../S/8.html#L345' title='Defined at 345 in sh.c.'>parseline</a>(ps, es));
 <a id='L357' name='L357'></a>  <em class='brace'>}</em>
 <a id='L358' name='L358'></a>  <strong class='reserved'>return</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L359' name='L359'></a><em class='brace'>}</em>
 <a id='L360' name='L360'></a>
 <a id='L361' name='L361'></a><strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>*
-<a id='L362' name='L362'></a><a href='../R/443.html' title='Multiple referred from 3 places.'>parsepipe</a>(<strong class='reserved'>char</strong> **ps, <strong class='reserved'>char</strong> *es)
+<a id='L362' name='L362'></a><a href='../R/446.html' title='Multiple referred from 3 places.'>parsepipe</a>(<strong class='reserved'>char</strong> **ps, <strong class='reserved'>char</strong> *es)
 <a id='L363' name='L363'></a><em class='brace'>{</em>
 <a id='L364' name='L364'></a>  <strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L365' name='L365'></a>
 <a id='L366' name='L366'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../S/8.html#L416' title='Defined at 416 in sh.c.'>parseexec</a>(ps, es);
 <a id='L367' name='L367'></a>  <strong class='reserved'>if</strong>(<a href='../S/8.html#L311' title='Defined at 311 in sh.c.'>peek</a>(ps, es, "|"))<em class='brace'>{</em>
 <a id='L368' name='L368'></a>    <a href='../S/8.html#L266' title='Defined at 266 in sh.c.'>gettoken</a>(ps, es, 0, 0);
-<a id='L369' name='L369'></a>    <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../D/550.html' title='Multiple defined in 2 places.'>pipecmd</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, <a href='../S/8.html#L362' title='Defined at 362 in sh.c.'>parsepipe</a>(ps, es));
+<a id='L369' name='L369'></a>    <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../D/554.html' title='Multiple defined in 2 places.'>pipecmd</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, <a href='../S/8.html#L362' title='Defined at 362 in sh.c.'>parsepipe</a>(ps, es));
 <a id='L370' name='L370'></a>  <em class='brace'>}</em>
 <a id='L371' name='L371'></a>  <strong class='reserved'>return</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L372' name='L372'></a><em class='brace'>}</em>
 <a id='L373' name='L373'></a>
 <a id='L374' name='L374'></a><strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>*
-<a id='L375' name='L375'></a><a href='../R/444.html' title='Multiple referred from 3 places.'>parseredirs</a>(<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, <strong class='reserved'>char</strong> **ps, <strong class='reserved'>char</strong> *es)
+<a id='L375' name='L375'></a><a href='../R/447.html' title='Multiple referred from 3 places.'>parseredirs</a>(<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, <strong class='reserved'>char</strong> **ps, <strong class='reserved'>char</strong> *es)
 <a id='L376' name='L376'></a><em class='brace'>{</em>
 <a id='L377' name='L377'></a>  <strong class='reserved'>int</strong> tok;
 <a id='L378' name='L378'></a>  <strong class='reserved'>char</strong> *q, *eq;
@@ -418,16 +418,16 @@ This source file includes following definitions.
 <a id='L380' name='L380'></a>  <strong class='reserved'>while</strong>(<a href='../S/8.html#L311' title='Defined at 311 in sh.c.'>peek</a>(ps, es, "&lt;&gt;"))<em class='brace'>{</em>
 <a id='L381' name='L381'></a>    tok = <a href='../S/8.html#L266' title='Defined at 266 in sh.c.'>gettoken</a>(ps, es, 0, 0);
 <a id='L382' name='L382'></a>    <strong class='reserved'>if</strong>(<a href='../S/8.html#L266' title='Defined at 266 in sh.c.'>gettoken</a>(ps, es, &amp;q, &amp;eq) != 'a')
-<a id='L383' name='L383'></a>      <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("missing file for redirection");
+<a id='L383' name='L383'></a>      <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("missing file for redirection");
 <a id='L384' name='L384'></a>    <strong class='reserved'>switch</strong>(tok)<em class='brace'>{</em>
 <a id='L385' name='L385'></a>    <strong class='reserved'>case</strong> '&lt;':
-<a id='L386' name='L386'></a>      <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../D/576.html' title='Multiple defined in 2 places.'>redircmd</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, q, eq, <a href='../S/59.html#L4' title='Defined at 4 in fcntl.h.'>O_RDONLY</a>, 0);
+<a id='L386' name='L386'></a>      <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../D/581.html' title='Multiple defined in 2 places.'>redircmd</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, q, eq, <a href='../S/59.html#L4' title='Defined at 4 in fcntl.h.'>O_RDONLY</a>, 0);
 <a id='L387' name='L387'></a>      <strong class='reserved'>break</strong>;
 <a id='L388' name='L388'></a>    <strong class='reserved'>case</strong> '&gt;':
-<a id='L389' name='L389'></a>      <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../D/576.html' title='Multiple defined in 2 places.'>redircmd</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, q, eq, <a href='../S/59.html#L5' title='Defined at 5 in fcntl.h.'>O_WRONLY</a>|<a href='../S/59.html#L7' title='Defined at 7 in fcntl.h.'>O_CREATE</a>, 1);
+<a id='L389' name='L389'></a>      <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../D/581.html' title='Multiple defined in 2 places.'>redircmd</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, q, eq, <a href='../S/59.html#L5' title='Defined at 5 in fcntl.h.'>O_WRONLY</a>|<a href='../S/59.html#L7' title='Defined at 7 in fcntl.h.'>O_CREATE</a>, 1);
 <a id='L390' name='L390'></a>      <strong class='reserved'>break</strong>;
 <a id='L391' name='L391'></a>    <strong class='reserved'>case</strong> '+':  <em class='comment'>// &gt;&gt;</em>
-<a id='L392' name='L392'></a>      <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../D/576.html' title='Multiple defined in 2 places.'>redircmd</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, q, eq, <a href='../S/59.html#L5' title='Defined at 5 in fcntl.h.'>O_WRONLY</a>|<a href='../S/59.html#L7' title='Defined at 7 in fcntl.h.'>O_CREATE</a>, 1);
+<a id='L392' name='L392'></a>      <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../D/581.html' title='Multiple defined in 2 places.'>redircmd</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, q, eq, <a href='../S/59.html#L5' title='Defined at 5 in fcntl.h.'>O_WRONLY</a>|<a href='../S/59.html#L7' title='Defined at 7 in fcntl.h.'>O_CREATE</a>, 1);
 <a id='L393' name='L393'></a>      <strong class='reserved'>break</strong>;
 <a id='L394' name='L394'></a>    <em class='brace'>}</em>
 <a id='L395' name='L395'></a>  <em class='brace'>}</em>
@@ -440,29 +440,29 @@ This source file includes following definitions.
 <a id='L402' name='L402'></a>  <strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L403' name='L403'></a>
 <a id='L404' name='L404'></a>  <strong class='reserved'>if</strong>(!<a href='../S/8.html#L311' title='Defined at 311 in sh.c.'>peek</a>(ps, es, "("))
-<a id='L405' name='L405'></a>    <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("parseblock");
+<a id='L405' name='L405'></a>    <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("parseblock");
 <a id='L406' name='L406'></a>  <a href='../S/8.html#L266' title='Defined at 266 in sh.c.'>gettoken</a>(ps, es, 0, 0);
 <a id='L407' name='L407'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../S/8.html#L345' title='Defined at 345 in sh.c.'>parseline</a>(ps, es);
 <a id='L408' name='L408'></a>  <strong class='reserved'>if</strong>(!<a href='../S/8.html#L311' title='Defined at 311 in sh.c.'>peek</a>(ps, es, ")"))
-<a id='L409' name='L409'></a>    <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("syntax - missing )");
+<a id='L409' name='L409'></a>    <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("syntax - missing )");
 <a id='L410' name='L410'></a>  <a href='../S/8.html#L266' title='Defined at 266 in sh.c.'>gettoken</a>(ps, es, 0, 0);
 <a id='L411' name='L411'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = <a href='../S/8.html#L375' title='Defined at 375 in sh.c.'>parseredirs</a>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>, ps, es);
 <a id='L412' name='L412'></a>  <strong class='reserved'>return</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L413' name='L413'></a><em class='brace'>}</em>
 <a id='L414' name='L414'></a>
 <a id='L415' name='L415'></a><strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>*
-<a id='L416' name='L416'></a><a href='../R/441.html' title='Multiple referred from 2 places.'>parseexec</a>(<strong class='reserved'>char</strong> **ps, <strong class='reserved'>char</strong> *es)
+<a id='L416' name='L416'></a><a href='../R/444.html' title='Multiple referred from 2 places.'>parseexec</a>(<strong class='reserved'>char</strong> **ps, <strong class='reserved'>char</strong> *es)
 <a id='L417' name='L417'></a><em class='brace'>{</em>
 <a id='L418' name='L418'></a>  <strong class='reserved'>char</strong> *q, *eq;
 <a id='L419' name='L419'></a>  <strong class='reserved'>int</strong> tok, argc;
-<a id='L420' name='L420'></a>  <strong class='reserved'>struct</strong> <a href='../D/397.html' title='Multiple defined in 2 places.'>execcmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
+<a id='L420' name='L420'></a>  <strong class='reserved'>struct</strong> <a href='../D/398.html' title='Multiple defined in 2 places.'>execcmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L421' name='L421'></a>  <strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *ret;
 <a id='L422' name='L422'></a>
 <a id='L423' name='L423'></a>  <strong class='reserved'>if</strong>(<a href='../S/8.html#L311' title='Defined at 311 in sh.c.'>peek</a>(ps, es, "("))
 <a id='L424' name='L424'></a>    <strong class='reserved'>return</strong> <a href='../S/8.html#L400' title='Defined at 400 in sh.c.'>parseblock</a>(ps, es);
 <a id='L425' name='L425'></a>
-<a id='L426' name='L426'></a>  ret = <a href='../D/397.html' title='Multiple defined in 2 places.'>execcmd</a>();
-<a id='L427' name='L427'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = (<strong class='reserved'>struct</strong> <a href='../D/397.html' title='Multiple defined in 2 places.'>execcmd</a>*)ret;
+<a id='L426' name='L426'></a>  ret = <a href='../D/398.html' title='Multiple defined in 2 places.'>execcmd</a>();
+<a id='L427' name='L427'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> = (<strong class='reserved'>struct</strong> <a href='../D/398.html' title='Multiple defined in 2 places.'>execcmd</a>*)ret;
 <a id='L428' name='L428'></a>
 <a id='L429' name='L429'></a>  argc = 0;
 <a id='L430' name='L430'></a>  ret = <a href='../S/8.html#L375' title='Defined at 375 in sh.c.'>parseredirs</a>(ret, ps, es);
@@ -470,12 +470,12 @@ This source file includes following definitions.
 <a id='L432' name='L432'></a>    <strong class='reserved'>if</strong>((tok=<a href='../S/8.html#L266' title='Defined at 266 in sh.c.'>gettoken</a>(ps, es, &amp;q, &amp;eq)) == 0)
 <a id='L433' name='L433'></a>      <strong class='reserved'>break</strong>;
 <a id='L434' name='L434'></a>    <strong class='reserved'>if</strong>(tok != 'a')
-<a id='L435' name='L435'></a>      <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("syntax");
+<a id='L435' name='L435'></a>      <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("syntax");
 <a id='L436' name='L436'></a>    <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;argv[argc] = q;
 <a id='L437' name='L437'></a>    <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;eargv[argc] = eq;
 <a id='L438' name='L438'></a>    argc++;
 <a id='L439' name='L439'></a>    <strong class='reserved'>if</strong>(argc &gt;= <a href='../S/8.html#L14' title='Defined at 14 in sh.c.'>MAXARGS</a>)
-<a id='L440' name='L440'></a>      <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("too many args");
+<a id='L440' name='L440'></a>      <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("too many args");
 <a id='L441' name='L441'></a>    ret = <a href='../S/8.html#L375' title='Defined at 375 in sh.c.'>parseredirs</a>(ret, ps, es);
 <a id='L442' name='L442'></a>  <em class='brace'>}</em>
 <a id='L443' name='L443'></a>  <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;argv[argc] = 0;
@@ -485,45 +485,45 @@ This source file includes following definitions.
 <a id='L447' name='L447'></a>
 <a id='L448' name='L448'></a><em class='comment'>// NUL-terminate all the counted strings.</em>
 <a id='L449' name='L449'></a><strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>*
-<a id='L450' name='L450'></a><a href='../R/433.html' title='Multiple referred from 8 places.'>nulterminate</a>(<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>)
+<a id='L450' name='L450'></a><a href='../R/436.html' title='Multiple referred from 8 places.'>nulterminate</a>(<strong class='reserved'>struct</strong> <a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> *<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>)
 <a id='L451' name='L451'></a><em class='brace'>{</em>
 <a id='L452' name='L452'></a>  <strong class='reserved'>int</strong> i;
-<a id='L453' name='L453'></a>  <strong class='reserved'>struct</strong> <a href='../D/341.html' title='Multiple defined in 2 places.'>backcmd</a> *bcmd;
-<a id='L454' name='L454'></a>  <strong class='reserved'>struct</strong> <a href='../D/397.html' title='Multiple defined in 2 places.'>execcmd</a> *ecmd;
-<a id='L455' name='L455'></a>  <strong class='reserved'>struct</strong> <a href='../D/490.html' title='Multiple defined in 2 places.'>listcmd</a> *lcmd;
-<a id='L456' name='L456'></a>  <strong class='reserved'>struct</strong> <a href='../D/550.html' title='Multiple defined in 2 places.'>pipecmd</a> *pcmd;
-<a id='L457' name='L457'></a>  <strong class='reserved'>struct</strong> <a href='../D/576.html' title='Multiple defined in 2 places.'>redircmd</a> *rcmd;
+<a id='L453' name='L453'></a>  <strong class='reserved'>struct</strong> <a href='../D/342.html' title='Multiple defined in 2 places.'>backcmd</a> *bcmd;
+<a id='L454' name='L454'></a>  <strong class='reserved'>struct</strong> <a href='../D/398.html' title='Multiple defined in 2 places.'>execcmd</a> *ecmd;
+<a id='L455' name='L455'></a>  <strong class='reserved'>struct</strong> <a href='../D/493.html' title='Multiple defined in 2 places.'>listcmd</a> *lcmd;
+<a id='L456' name='L456'></a>  <strong class='reserved'>struct</strong> <a href='../D/554.html' title='Multiple defined in 2 places.'>pipecmd</a> *pcmd;
+<a id='L457' name='L457'></a>  <strong class='reserved'>struct</strong> <a href='../D/581.html' title='Multiple defined in 2 places.'>redircmd</a> *rcmd;
 <a id='L458' name='L458'></a>
 <a id='L459' name='L459'></a>  <strong class='reserved'>if</strong>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a> == 0)
 <a id='L460' name='L460'></a>    <strong class='reserved'>return</strong> 0;
 <a id='L461' name='L461'></a>
 <a id='L462' name='L462'></a>  <strong class='reserved'>switch</strong>(<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>-&gt;type)<em class='brace'>{</em>
 <a id='L463' name='L463'></a>  <strong class='reserved'>case</strong> <a href='../S/8.html#L8' title='Defined at 8 in sh.c.'>EXEC</a>:
-<a id='L464' name='L464'></a>    ecmd = (<strong class='reserved'>struct</strong> <a href='../D/397.html' title='Multiple defined in 2 places.'>execcmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
+<a id='L464' name='L464'></a>    ecmd = (<strong class='reserved'>struct</strong> <a href='../D/398.html' title='Multiple defined in 2 places.'>execcmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L465' name='L465'></a>    <strong class='reserved'>for</strong>(i=0; ecmd-&gt;argv[i]; i++)
 <a id='L466' name='L466'></a>      *ecmd-&gt;eargv[i] = 0;
 <a id='L467' name='L467'></a>    <strong class='reserved'>break</strong>;
 <a id='L468' name='L468'></a>
 <a id='L469' name='L469'></a>  <strong class='reserved'>case</strong> <a href='../S/8.html#L9' title='Defined at 9 in sh.c.'>REDIR</a>:
-<a id='L470' name='L470'></a>    rcmd = (<strong class='reserved'>struct</strong> <a href='../D/576.html' title='Multiple defined in 2 places.'>redircmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
+<a id='L470' name='L470'></a>    rcmd = (<strong class='reserved'>struct</strong> <a href='../D/581.html' title='Multiple defined in 2 places.'>redircmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L471' name='L471'></a>    <a href='../S/8.html#L450' title='Defined at 450 in sh.c.'>nulterminate</a>(rcmd-&gt;<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>);
 <a id='L472' name='L472'></a>    *rcmd-&gt;efile = 0;
 <a id='L473' name='L473'></a>    <strong class='reserved'>break</strong>;
 <a id='L474' name='L474'></a>
 <a id='L475' name='L475'></a>  <strong class='reserved'>case</strong> <a href='../S/8.html#L10' title='Defined at 10 in sh.c.'>PIPE</a>:
-<a id='L476' name='L476'></a>    pcmd = (<strong class='reserved'>struct</strong> <a href='../D/550.html' title='Multiple defined in 2 places.'>pipecmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
+<a id='L476' name='L476'></a>    pcmd = (<strong class='reserved'>struct</strong> <a href='../D/554.html' title='Multiple defined in 2 places.'>pipecmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L477' name='L477'></a>    <a href='../S/8.html#L450' title='Defined at 450 in sh.c.'>nulterminate</a>(pcmd-&gt;left);
 <a id='L478' name='L478'></a>    <a href='../S/8.html#L450' title='Defined at 450 in sh.c.'>nulterminate</a>(pcmd-&gt;right);
 <a id='L479' name='L479'></a>    <strong class='reserved'>break</strong>;
 <a id='L480' name='L480'></a>
 <a id='L481' name='L481'></a>  <strong class='reserved'>case</strong> <a href='../S/8.html#L11' title='Defined at 11 in sh.c.'>LIST</a>:
-<a id='L482' name='L482'></a>    lcmd = (<strong class='reserved'>struct</strong> <a href='../D/490.html' title='Multiple defined in 2 places.'>listcmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
+<a id='L482' name='L482'></a>    lcmd = (<strong class='reserved'>struct</strong> <a href='../D/493.html' title='Multiple defined in 2 places.'>listcmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L483' name='L483'></a>    <a href='../S/8.html#L450' title='Defined at 450 in sh.c.'>nulterminate</a>(lcmd-&gt;left);
 <a id='L484' name='L484'></a>    <a href='../S/8.html#L450' title='Defined at 450 in sh.c.'>nulterminate</a>(lcmd-&gt;right);
 <a id='L485' name='L485'></a>    <strong class='reserved'>break</strong>;
 <a id='L486' name='L486'></a>
 <a id='L487' name='L487'></a>  <strong class='reserved'>case</strong> <a href='../S/8.html#L12' title='Defined at 12 in sh.c.'>BACK</a>:
-<a id='L488' name='L488'></a>    bcmd = (<strong class='reserved'>struct</strong> <a href='../D/341.html' title='Multiple defined in 2 places.'>backcmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
+<a id='L488' name='L488'></a>    bcmd = (<strong class='reserved'>struct</strong> <a href='../D/342.html' title='Multiple defined in 2 places.'>backcmd</a>*)<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>;
 <a id='L489' name='L489'></a>    <a href='../S/8.html#L450' title='Defined at 450 in sh.c.'>nulterminate</a>(bcmd-&gt;<a href='../S/8.html#L16' title='Defined at 16 in sh.c.'>cmd</a>);
 <a id='L490' name='L490'></a>    <strong class='reserved'>break</strong>;
 <a id='L491' name='L491'></a>  <em class='brace'>}</em>

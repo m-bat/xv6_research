@@ -9,13 +9,13 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/158.html#L73'>PTE_ADDR</a>           73 vm.c             pde_t *pde;</span>
-<span class='curline'><a href='../S/158.html#L88'>PTE_ADDR</a>           88 vm.c             pde_t *pde;</span>
-<span class='curline'><a href='../S/158.html#L379'>PTE_ADDR</a>          379 vm.c             uint i, pa, n;</span>
-<span class='curline'><a href='../S/158.html#L441'>PTE_ADDR</a>          441 vm.c             if(newsz &gt;= oldsz)</span>
-<span class='curline'><a href='../S/158.html#L464'>PTE_ADDR</a>          464 vm.c                 switchuvm(myproc());</span>
-<span class='curline'><a href='../S/158.html#L583'>PTE_ADDR</a>          583 vm.c             }</span>
-<span class='curline'><a href='../S/158.html#L610'>PTE_ADDR</a>          610 vm.c               if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags, ALLOC_KGLOBAL) &lt; 0)</span>
+<span class='curline'><a href='../S/162.html#L83'>PTE_ADDR</a>           83 vm.c               pgtab = (pte_t*)P2V(PTE_ADDR(*pde));</span>
+<span class='curline'><a href='../S/162.html#L98'>PTE_ADDR</a>           98 vm.c               pgtab = (pte_t*)P2V(PTE_ADDR(*pde));</span>
+<span class='curline'><a href='../S/162.html#L414'>PTE_ADDR</a>          414 vm.c               panic("loaduvm: addr must be page aligned");</span>
+<span class='curline'><a href='../S/162.html#L478'>PTE_ADDR</a>          478 vm.c               pte = walkpgdir(pgdir, (char*)a);</span>
+<span class='curline'><a href='../S/162.html#L508'>PTE_ADDR</a>          508 vm.c               panic("freevm: no pgdir");</span>
+<span class='curline'><a href='../S/162.html#L625'>PTE_ADDR</a>          625 vm.c               if((pte = walkpgdir(pgdir, (void *) i)) == 0)</span>
+<span class='curline'><a href='../S/162.html#L652'>PTE_ADDR</a>          652 vm.c             if((*pte &amp; PTE_P) == 0)</span>
 </pre>
 </body>
 </html>

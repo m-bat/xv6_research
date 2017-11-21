@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>buf.h</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.4' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/buf.h</h2>
+<em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'><a href='../J/5.html' title='Multiple included from 7 places.'>INCLUDED FROM</a></h2>
+<hr />
+<pre>
+<a id='L1' name='L1'></a><em class='sharp'>#ifndef</em> <a href='../S/185.html#L2' title='Defined at 2 in buf.h.'>XV6_BUF_H</a>
+<a id='L2' name='L2'></a><em class='sharp'>#define</em> <a href='../S/185.html#L1' title='Referred from 1 in buf.h.'>XV6_BUF_H</a>
+<a id='L3' name='L3'></a>
+<a id='L4' name='L4'></a>
+<a id='L5' name='L5'></a><strong class='reserved'>struct</strong> <a href='../R/266.html' title='Multiple referred from 174 places.'>buf</a> <em class='brace'>{</em>
+<a id='L6' name='L6'></a>  <strong class='reserved'>int</strong> <a href='../S/143.html#L32' title='Defined at 32 in entry.S.'>flags</a>;
+<a id='L7' name='L7'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> dev;
+<a id='L8' name='L8'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> blockno;
+<a id='L9' name='L9'></a>  <strong class='reserved'>struct</strong> <a href='../S/2.html#L5' title='Defined at 5 in sleeplock.h.'>sleeplock</a> lock;
+<a id='L10' name='L10'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> refcnt;
+<a id='L11' name='L11'></a>  <strong class='reserved'>struct</strong> <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a> *prev; <em class='comment'>// LRU cache list</em>
+<a id='L12' name='L12'></a>  <strong class='reserved'>struct</strong> <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a> *next;
+<a id='L13' name='L13'></a>  <strong class='reserved'>struct</strong> <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a> *qnext; <em class='comment'>// disk queue</em>
+<a id='L14' name='L14'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> data[<a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>];
+<a id='L15' name='L15'></a><em class='brace'>}</em>;
+<a id='L16' name='L16'></a><em class='sharp'>#define</em> <a href='../R/14.html' title='Multiple referred from 6 places.'>B_VALID</a> 0x2  <em class='comment'>// buffer has been read from disk</em>
+<a id='L17' name='L17'></a><em class='sharp'>#define</em> <a href='../R/13.html' title='Multiple referred from 11 places.'>B_DIRTY</a> 0x4  <em class='comment'>// buffer needs to be written to disk</em>
+<a id='L18' name='L18'></a>
+<a id='L19' name='L19'></a><em class='sharp'>#endif</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;][^][v]<a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

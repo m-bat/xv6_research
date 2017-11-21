@@ -1,137 +1,88 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>grep.c</title>
+<title>memide.c</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
 <link rel='stylesheet' type='text/css' href='../style.css' />
 </head>
 <body>
-<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/grep.c</h2>
-<em class='comment'>/* [&lt;][&gt;]<a href='#L11'>[^]</a><a href='#L99'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/memide.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L22'>[^]</a><a href='#L39'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 <hr />
 <h2 class='header'>DEFINITIONS</h2>
 This source file includes following definitions.
 <ol>
-<li><a href='#L11' title='Defined at 11.'>grep</a></li>
-<li><a href='#L39' title='Defined at 39.'>main</a></li>
-<li><a href='#L73' title='Defined at 73.'>match</a></li>
-<li><a href='#L85' title='Defined at 85.'>matchhere</a></li>
-<li><a href='#L99' title='Defined at 99.'>matchstar</a></li>
+<li><a href='#L22' title='Defined at 22.'>ideinit</a></li>
+<li><a href='#L30' title='Defined at 30.'>ideintr</a></li>
+<li><a href='#L39' title='Defined at 39.'>iderw</a></li>
 </ol>
 <hr />
 <pre>
-<a id='L1' name='L1'></a><em class='comment'>// Simple grep.  Only supports ^ . * $ operators.</em>
-<a id='L2' name='L2'></a>
-<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='126.html'>types.h</a>"
-<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='35.html'>stat.h</a>"
-<a id='L5' name='L5'></a><em class='sharp'>#include</em> "<a href='189.html'>user.h</a>"
-<a id='L6' name='L6'></a>
-<a id='L7' name='L7'></a><strong class='reserved'>char</strong> <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[1024];
-<a id='L8' name='L8'></a><strong class='reserved'>int</strong> <a href='../S/142.html#L73' title='Defined at 73 in grep.c.'>match</a>(<strong class='reserved'>char</strong>*, <strong class='reserved'>char</strong>*);
-<a id='L9' name='L9'></a>
-<a id='L10' name='L10'></a><strong class='reserved'>void</strong>
-<a id='L11' name='L11'></a><a href='../R/340.html' title='Multiple referred from 2 places.'>grep</a>(<strong class='reserved'>char</strong> *pattern, <strong class='reserved'>int</strong> fd)
-<a id='L12' name='L12'></a><em class='brace'>{</em>
-<a id='L13' name='L13'></a>  <strong class='reserved'>int</strong> n, m;
-<a id='L14' name='L14'></a>  <strong class='reserved'>char</strong> *p, *q;
+<a id='L1' name='L1'></a><em class='comment'>// Fake IDE disk; stores blocks in memory.</em>
+<a id='L2' name='L2'></a><em class='comment'>// Useful for running kernel without scratch disk.</em>
+<a id='L3' name='L3'></a>
+<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='127.html'>types.h</a>"
+<a id='L5' name='L5'></a><em class='sharp'>#include</em> "<a href='120.html'>defs.h</a>"
+<a id='L6' name='L6'></a><em class='sharp'>#include</em> "<a href='29.html'>param.h</a>"
+<a id='L7' name='L7'></a><em class='sharp'>#include</em> "<a href='123.html'>mmu.h</a>"
+<a id='L8' name='L8'></a><em class='sharp'>#include</em> "<a href='93.html'>proc.h</a>"
+<a id='L9' name='L9'></a><em class='sharp'>#include</em> "<a href='68.html'>x86.h</a>"
+<a id='L10' name='L10'></a><em class='sharp'>#include</em> "<a href='137.html'>traps.h</a>"
+<a id='L11' name='L11'></a><em class='sharp'>#include</em> "<a href='9.html'>spinlock.h</a>"
+<a id='L12' name='L12'></a><em class='sharp'>#include</em> "<a href='2.html'>sleeplock.h</a>"
+<a id='L13' name='L13'></a><em class='sharp'>#include</em> "<a href='104.html'>fs.h</a>"
+<a id='L14' name='L14'></a><em class='sharp'>#include</em> "<a href='185.html'>buf.h</a>"
 <a id='L15' name='L15'></a>
-<a id='L16' name='L16'></a>  m = 0;
-<a id='L17' name='L17'></a>  <strong class='reserved'>while</strong>((n = read(fd, <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>+m, <strong class='reserved'>sizeof</strong>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>)-m-1)) &gt; 0)<em class='brace'>{</em>
-<a id='L18' name='L18'></a>    m += n;
-<a id='L19' name='L19'></a>    <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>[m] = '\0';
-<a id='L20' name='L20'></a>    p = <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>;
-<a id='L21' name='L21'></a>    <strong class='reserved'>while</strong>((q = <a href='../S/83.html#L44' title='Defined at 44 in ulib.c.'>strchr</a>(p, '\n')) != 0)<em class='brace'>{</em>
-<a id='L22' name='L22'></a>      *q = 0;
-<a id='L23' name='L23'></a>      <strong class='reserved'>if</strong>(<a href='../S/142.html#L73' title='Defined at 73 in grep.c.'>match</a>(pattern, p))<em class='brace'>{</em>
-<a id='L24' name='L24'></a>        *q = '\n';
-<a id='L25' name='L25'></a>        write(1, p, q+1 - p);
-<a id='L26' name='L26'></a>      <em class='brace'>}</em>
-<a id='L27' name='L27'></a>      p = q+1;
-<a id='L28' name='L28'></a>    <em class='brace'>}</em>
-<a id='L29' name='L29'></a>    <strong class='reserved'>if</strong>(p == <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>)
-<a id='L30' name='L30'></a>      m = 0;
-<a id='L31' name='L31'></a>    <strong class='reserved'>if</strong>(m &gt; 0)<em class='brace'>{</em>
-<a id='L32' name='L32'></a>      m -= p - <a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>;
-<a id='L33' name='L33'></a>      <a href='../D/508.html' title='Multiple defined in 2 places.'>memmove</a>(<a href='../S/181.html#L5' title='Defined at 5 in buf.h.'>buf</a>, p, m);
-<a id='L34' name='L34'></a>    <em class='brace'>}</em>
-<a id='L35' name='L35'></a>  <em class='brace'>}</em>
-<a id='L36' name='L36'></a><em class='brace'>}</em>
-<a id='L37' name='L37'></a>
-<a id='L38' name='L38'></a><strong class='reserved'>int</strong>
-<a id='L39' name='L39'></a>main(<strong class='reserved'>int</strong> argc, <strong class='reserved'>char</strong> *argv[])
+<a id='L16' name='L16'></a><strong class='reserved'>extern</strong> <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> _binary_fs_img_start[], _binary_fs_img_size[];
+<a id='L17' name='L17'></a>
+<a id='L18' name='L18'></a><strong class='reserved'>static</strong> <strong class='reserved'>int</strong> disksize;
+<a id='L19' name='L19'></a><strong class='reserved'>static</strong> <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> *memdisk;
+<a id='L20' name='L20'></a>
+<a id='L21' name='L21'></a><strong class='reserved'>void</strong>
+<a id='L22' name='L22'></a><a href='../R/350.html' title='Multiple referred from 2 places.'>ideinit</a>(<strong class='reserved'>void</strong>)
+<a id='L23' name='L23'></a><em class='brace'>{</em>
+<a id='L24' name='L24'></a>  memdisk = _binary_fs_img_start;
+<a id='L25' name='L25'></a>  disksize = (<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a>)_binary_fs_img_size/<a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>;
+<a id='L26' name='L26'></a><em class='brace'>}</em>
+<a id='L27' name='L27'></a>
+<a id='L28' name='L28'></a><em class='comment'>// Interrupt handler.</em>
+<a id='L29' name='L29'></a><strong class='reserved'>void</strong>
+<a id='L30' name='L30'></a><a href='../R/351.html' title='Multiple referred from 2 places.'>ideintr</a>(<strong class='reserved'>void</strong>)
+<a id='L31' name='L31'></a><em class='brace'>{</em>
+<a id='L32' name='L32'></a>  <em class='comment'>// no-op</em>
+<a id='L33' name='L33'></a><em class='brace'>}</em>
+<a id='L34' name='L34'></a>
+<a id='L35' name='L35'></a><em class='comment'>// Sync buf with disk.</em>
+<a id='L36' name='L36'></a><em class='comment'>// If B_DIRTY is set, write buf to disk, clear B_DIRTY, set B_VALID.</em>
+<a id='L37' name='L37'></a><em class='comment'>// Else if B_VALID is not set, read buf from disk, set B_VALID.</em>
+<a id='L38' name='L38'></a><strong class='reserved'>void</strong>
+<a id='L39' name='L39'></a><a href='../R/352.html' title='Multiple referred from 3 places.'>iderw</a>(<strong class='reserved'>struct</strong> <a href='../S/185.html#L5' title='Defined at 5 in buf.h.'>buf</a> *b)
 <a id='L40' name='L40'></a><em class='brace'>{</em>
-<a id='L41' name='L41'></a>  <strong class='reserved'>int</strong> fd, i;
-<a id='L42' name='L42'></a>  <strong class='reserved'>char</strong> *pattern;
-<a id='L43' name='L43'></a>
-<a id='L44' name='L44'></a>  <strong class='reserved'>if</strong>(argc &lt;= 1)<em class='brace'>{</em>
-<a id='L45' name='L45'></a>    <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(2, "usage: grep pattern [file ...]\n");
-<a id='L46' name='L46'></a>    <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
-<a id='L47' name='L47'></a>  <em class='brace'>}</em>
-<a id='L48' name='L48'></a>  pattern = argv[1];
-<a id='L49' name='L49'></a>
-<a id='L50' name='L50'></a>  <strong class='reserved'>if</strong>(argc &lt;= 2)<em class='brace'>{</em>
-<a id='L51' name='L51'></a>    <a href='../S/142.html#L11' title='Defined at 11 in grep.c.'>grep</a>(pattern, 0);
-<a id='L52' name='L52'></a>    <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
-<a id='L53' name='L53'></a>  <em class='brace'>}</em>
-<a id='L54' name='L54'></a>
-<a id='L55' name='L55'></a>  <strong class='reserved'>for</strong>(i = 2; i &lt; argc; i++)<em class='brace'>{</em>
-<a id='L56' name='L56'></a>    <strong class='reserved'>if</strong>((fd = open(argv[i], 0)) &lt; 0)<em class='brace'>{</em>
-<a id='L57' name='L57'></a>      <a href='../D/557.html' title='Multiple defined in 2 places.'>printf</a>(1, "grep: cannot open %s\n", argv[i]);
-<a id='L58' name='L58'></a>      <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
-<a id='L59' name='L59'></a>    <em class='brace'>}</em>
-<a id='L60' name='L60'></a>    <a href='../S/142.html#L11' title='Defined at 11 in grep.c.'>grep</a>(pattern, fd);
-<a id='L61' name='L61'></a>    close(fd);
-<a id='L62' name='L62'></a>  <em class='brace'>}</em>
-<a id='L63' name='L63'></a>  <a href='../S/64.html#L296' title='Defined at 296 in proc.c.'>exit</a>();
-<a id='L64' name='L64'></a><em class='brace'>}</em>
-<a id='L65' name='L65'></a>
-<a id='L66' name='L66'></a><em class='comment'>// Regexp matcher from Kernighan &amp; Pike,</em>
-<a id='L67' name='L67'></a><em class='comment'>// The Practice of Programming, Chapter 9.</em>
-<a id='L68' name='L68'></a>
-<a id='L69' name='L69'></a><strong class='reserved'>int</strong> <a href='../S/142.html#L85' title='Defined at 85 in grep.c.'>matchhere</a>(<strong class='reserved'>char</strong>*, <strong class='reserved'>char</strong>*);
-<a id='L70' name='L70'></a><strong class='reserved'>int</strong> <a href='../S/142.html#L99' title='Defined at 99 in grep.c.'>matchstar</a>(<strong class='reserved'>int</strong>, <strong class='reserved'>char</strong>*, <strong class='reserved'>char</strong>*);
-<a id='L71' name='L71'></a>
-<a id='L72' name='L72'></a><strong class='reserved'>int</strong>
-<a id='L73' name='L73'></a><a href='../R/407.html' title='Multiple referred from 2 places.'>match</a>(<strong class='reserved'>char</strong> *re, <strong class='reserved'>char</strong> *text)
-<a id='L74' name='L74'></a><em class='brace'>{</em>
-<a id='L75' name='L75'></a>  <strong class='reserved'>if</strong>(re[0] == '^')
-<a id='L76' name='L76'></a>    <strong class='reserved'>return</strong> <a href='../S/142.html#L85' title='Defined at 85 in grep.c.'>matchhere</a>(re+1, text);
-<a id='L77' name='L77'></a>  <strong class='reserved'>do</strong><em class='brace'>{</em>  <em class='comment'>// must look at empty string</em>
-<a id='L78' name='L78'></a>    <strong class='reserved'>if</strong>(<a href='../S/142.html#L85' title='Defined at 85 in grep.c.'>matchhere</a>(re, text))
-<a id='L79' name='L79'></a>      <strong class='reserved'>return</strong> 1;
-<a id='L80' name='L80'></a>  <em class='brace'>}</em><strong class='reserved'>while</strong>(*text++ != '\0');
-<a id='L81' name='L81'></a>  <strong class='reserved'>return</strong> 0;
-<a id='L82' name='L82'></a><em class='brace'>}</em>
-<a id='L83' name='L83'></a>
-<a id='L84' name='L84'></a><em class='comment'>// matchhere: search for re at beginning of text</em>
-<a id='L85' name='L85'></a><strong class='reserved'>int</strong> <a href='../R/408.html' title='Multiple referred from 5 places.'>matchhere</a>(<strong class='reserved'>char</strong> *re, <strong class='reserved'>char</strong> *text)
-<a id='L86' name='L86'></a><em class='brace'>{</em>
-<a id='L87' name='L87'></a>  <strong class='reserved'>if</strong>(re[0] == '\0')
-<a id='L88' name='L88'></a>    <strong class='reserved'>return</strong> 1;
-<a id='L89' name='L89'></a>  <strong class='reserved'>if</strong>(re[1] == '*')
-<a id='L90' name='L90'></a>    <strong class='reserved'>return</strong> <a href='../S/142.html#L99' title='Defined at 99 in grep.c.'>matchstar</a>(re[0], re+2, text);
-<a id='L91' name='L91'></a>  <strong class='reserved'>if</strong>(re[0] == '$' &amp;&amp; re[1] == '\0')
-<a id='L92' name='L92'></a>    <strong class='reserved'>return</strong> *text == '\0';
-<a id='L93' name='L93'></a>  <strong class='reserved'>if</strong>(*text!='\0' &amp;&amp; (re[0]=='.' || re[0]==*text))
-<a id='L94' name='L94'></a>    <strong class='reserved'>return</strong> <a href='../S/142.html#L85' title='Defined at 85 in grep.c.'>matchhere</a>(re+1, text+1);
-<a id='L95' name='L95'></a>  <strong class='reserved'>return</strong> 0;
-<a id='L96' name='L96'></a><em class='brace'>}</em>
-<a id='L97' name='L97'></a>
-<a id='L98' name='L98'></a><em class='comment'>// matchstar: search for c*re at beginning of text</em>
-<a id='L99' name='L99'></a><strong class='reserved'>int</strong> <a href='../R/409.html' title='Multiple referred from 2 places.'>matchstar</a>(<strong class='reserved'>int</strong> c, <strong class='reserved'>char</strong> *re, <strong class='reserved'>char</strong> *text)
-<a id='L100' name='L100'></a><em class='brace'>{</em>
-<a id='L101' name='L101'></a>  <strong class='reserved'>do</strong><em class='brace'>{</em>  <em class='comment'>// a * matches zero or more instances</em>
-<a id='L102' name='L102'></a>    <strong class='reserved'>if</strong>(<a href='../S/142.html#L85' title='Defined at 85 in grep.c.'>matchhere</a>(re, text))
-<a id='L103' name='L103'></a>      <strong class='reserved'>return</strong> 1;
-<a id='L104' name='L104'></a>  <em class='brace'>}</em><strong class='reserved'>while</strong>(*text!='\0' &amp;&amp; (*text++==c || c=='.'));
-<a id='L105' name='L105'></a>  <strong class='reserved'>return</strong> 0;
-<a id='L106' name='L106'></a><em class='brace'>}</em>
-<a id='L107' name='L107'></a>
+<a id='L41' name='L41'></a>  <a href='../S/127.html#L6' title='Defined at 6 in types.h.'>uchar</a> *p;
+<a id='L42' name='L42'></a>
+<a id='L43' name='L43'></a>  <strong class='reserved'>if</strong>(!<a href='../S/140.html#L45' title='Defined at 45 in sleeplock.c.'>holdingsleep</a>(&amp;b-&gt;lock))
+<a id='L44' name='L44'></a>    <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("iderw: buf not locked");
+<a id='L45' name='L45'></a>  <strong class='reserved'>if</strong>((b-&gt;<a href='../S/143.html#L32' title='Defined at 32 in entry.S.'>flags</a> &amp; (<a href='../S/185.html#L16' title='Defined at 16 in buf.h.'>B_VALID</a>|<a href='../S/185.html#L17' title='Defined at 17 in buf.h.'>B_DIRTY</a>)) == <a href='../S/185.html#L16' title='Defined at 16 in buf.h.'>B_VALID</a>)
+<a id='L46' name='L46'></a>    <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("iderw: nothing to do");
+<a id='L47' name='L47'></a>  <strong class='reserved'>if</strong>(b-&gt;dev != 1)
+<a id='L48' name='L48'></a>    <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("iderw: request not for disk 1");
+<a id='L49' name='L49'></a>  <strong class='reserved'>if</strong>(b-&gt;blockno &gt;= disksize)
+<a id='L50' name='L50'></a>    <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("iderw: block out of range");
+<a id='L51' name='L51'></a>
+<a id='L52' name='L52'></a>  p = memdisk + b-&gt;blockno*<a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>;
+<a id='L53' name='L53'></a>
+<a id='L54' name='L54'></a>  <strong class='reserved'>if</strong>(b-&gt;<a href='../S/143.html#L32' title='Defined at 32 in entry.S.'>flags</a> &amp; <a href='../S/185.html#L17' title='Defined at 17 in buf.h.'>B_DIRTY</a>)<em class='brace'>{</em>
+<a id='L55' name='L55'></a>    b-&gt;<a href='../S/143.html#L32' title='Defined at 32 in entry.S.'>flags</a> &amp;= ~<a href='../S/185.html#L17' title='Defined at 17 in buf.h.'>B_DIRTY</a>;
+<a id='L56' name='L56'></a>    <a href='../D/511.html' title='Multiple defined in 2 places.'>memmove</a>(p, b-&gt;data, <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>);
+<a id='L57' name='L57'></a>  <em class='brace'>}</em> <strong class='reserved'>else</strong>
+<a id='L58' name='L58'></a>    <a href='../D/511.html' title='Multiple defined in 2 places.'>memmove</a>(b-&gt;data, p, <a href='../S/104.html#L9' title='Defined at 9 in fs.h.'>BSIZE</a>);
+<a id='L59' name='L59'></a>  b-&gt;<a href='../S/143.html#L32' title='Defined at 32 in entry.S.'>flags</a> |= <a href='../S/185.html#L16' title='Defined at 16 in buf.h.'>B_VALID</a>;
+<a id='L60' name='L60'></a><em class='brace'>}</em>
 </pre>
 <hr />
 <a id='BOTTOM' name='BOTTOM'></a>
-<em class='comment'>/* [&lt;][&gt;]<a href='#L11'>[^]</a><a href='#L99'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L22'>[^]</a><a href='#L39'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 </body>
 </html>

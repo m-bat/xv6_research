@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>context</title>
+<title>brelse</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,17 +9,26 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/118.html#L7'>context</a>             7 defs.h         struct context;</span>
-<span class='curline'><a href='../S/118.html#L139'>context</a>           139 defs.h         void            swtch(struct context**, struct context*);</span>
-<span class='curline'><a href='../S/63.html#L157'>context</a>           157 proc.c           sp -= sizeof *p-&gt;context;</span>
-<span class='curline'><a href='../S/63.html#L158'>context</a>           158 proc.c           p-&gt;context = (struct context*)sp;</span>
-<span class='curline'><a href='../S/63.html#L159'>context</a>           159 proc.c           memset(p-&gt;context, 0, sizeof *p-&gt;context);</span>
-<span class='curline'><a href='../S/63.html#L160'>context</a>           160 proc.c           p-&gt;context-&gt;eip = (uint)forkret;</span>
-<span class='curline'><a href='../S/63.html#L421'>context</a>           421 proc.c               swtch(&amp;(c-&gt;scheduler), p-&gt;context);</span>
-<span class='curline'><a href='../S/63.html#L455'>context</a>           455 proc.c           swtch(&amp;p-&gt;context, mycpu()-&gt;scheduler);</span>
-<span class='curline'><a href='../S/63.html#L603'>context</a>           603 proc.c               getcallerpcs((uint*)p-&gt;context-&gt;ebp+2, pc);</span>
-<span class='curline'><a href='../S/92.html#L8'>context</a>             8 proc.h           struct context *scheduler;   // swtch() here to enter scheduler</span>
-<span class='curline'><a href='../S/92.html#L69'>context</a>            69 proc.h           struct context *context;     // swtch() here to run process</span>
+<span class='curline'><a href='../S/120.html#L21'>brelse</a>             21 defs.h         void            brelse(struct buf*);</span>
+<span class='curline'><a href='../S/177.html#L38'>brelse</a>             38 fs.c             brelse(bp);</span>
+<span class='curline'><a href='../S/177.html#L50'>brelse</a>             50 fs.c             brelse(bp);</span>
+<span class='curline'><a href='../S/177.html#L70'>brelse</a>             70 fs.c                   brelse(bp);</span>
+<span class='curline'><a href='../S/177.html#L75'>brelse</a>             75 fs.c               brelse(bp);</span>
+<span class='curline'><a href='../S/177.html#L95'>brelse</a>             95 fs.c             brelse(bp);</span>
+<span class='curline'><a href='../S/177.html#L209'>brelse</a>            209 fs.c                 brelse(bp);</span>
+<span class='curline'><a href='../S/177.html#L212'>brelse</a>            212 fs.c               brelse(bp);</span>
+<span class='curline'><a href='../S/177.html#L236'>brelse</a>            236 fs.c             brelse(bp);</span>
+<span class='curline'><a href='../S/177.html#L308'>brelse</a>            308 fs.c               brelse(bp);</span>
+<span class='curline'><a href='../S/177.html#L396'>brelse</a>            396 fs.c               brelse(bp);</span>
+<span class='curline'><a href='../S/177.html#L429'>brelse</a>            429 fs.c               brelse(bp);</span>
+<span class='curline'><a href='../S/177.html#L474'>brelse</a>            474 fs.c               brelse(bp);</span>
+<span class='curline'><a href='../S/177.html#L504'>brelse</a>            504 fs.c               brelse(bp);</span>
+<span class='curline'><a href='../S/200.html#L79'>brelse</a>             79 log.c              brelse(lbuf);</span>
+<span class='curline'><a href='../S/200.html#L80'>brelse</a>             80 log.c              brelse(dbuf);</span>
+<span class='curline'><a href='../S/200.html#L95'>brelse</a>             95 log.c            brelse(buf);</span>
+<span class='curline'><a href='../S/200.html#L112'>brelse</a>            112 log.c            brelse(buf);</span>
+<span class='curline'><a href='../S/200.html#L187'>brelse</a>            187 log.c              brelse(from);</span>
+<span class='curline'><a href='../S/200.html#L188'>brelse</a>            188 log.c              brelse(to);</span>
 </pre>
 </body>
 </html>

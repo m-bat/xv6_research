@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>sleeplock</title>
+<title>setptew_kernel</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,17 +9,8 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/181.html#L9'>sleeplock</a>           9 buf.h            struct sleeplock lock;</span>
-<span class='curline'><a href='../S/119.html#L14'>sleeplock</a>          14 defs.h         struct sleeplock;</span>
-<span class='curline'><a href='../S/119.html#L154'>sleeplock</a>         154 defs.h         void            acquiresleep(struct sleeplock*);</span>
-<span class='curline'><a href='../S/119.html#L155'>sleeplock</a>         155 defs.h         void            releasesleep(struct sleeplock*);</span>
-<span class='curline'><a href='../S/119.html#L156'>sleeplock</a>         156 defs.h         int             holdingsleep(struct sleeplock*);</span>
-<span class='curline'><a href='../S/119.html#L157'>sleeplock</a>         157 defs.h         void            initsleeplock(struct sleeplock*, char*);</span>
-<span class='curline'><a href='../S/56.html#L23'>sleeplock</a>          23 file.h           struct sleeplock lock; // protects everything below here</span>
-<span class='curline'><a href='../S/138.html#L14'>sleeplock</a>          14 sleeplock.c    initsleeplock(struct sleeplock *lk, char *name)</span>
-<span class='curline'><a href='../S/138.html#L23'>sleeplock</a>          23 sleeplock.c    acquiresleep(struct sleeplock *lk)</span>
-<span class='curline'><a href='../S/138.html#L35'>sleeplock</a>          35 sleeplock.c    releasesleep(struct sleeplock *lk)</span>
-<span class='curline'><a href='../S/138.html#L45'>sleeplock</a>          45 sleeplock.c    holdingsleep(struct sleeplock *lk)</span>
+<span class='curline'><a href='../S/120.html#L221'>setptew_kernel</a>    221 defs.h         void            setptew_kernel(pde_t *pgdir);</span>
+<span class='curline'><a href='../S/166.html#L124'>setptew_kernel</a>    124 trap.c               setptew_kernel(p-&gt;pgdir);</span>
 </pre>
 </body>
 </html>

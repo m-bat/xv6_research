@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>USERINFO</title>
+<title>T_IRQ0</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,9 +9,19 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/167.html#L91'>USERINFO</a>           91 kalloc.c         if (v &gt;= (char *)USERINFO) {</span>
-<span class='curline'><a href='../S/157.html#L137'>USERINFO</a>          137 vm.c             { (void*)data,     V2P(data),     V2P(USERINFO), PTE_W}, // [3] kern data+memory</span>
-<span class='curline'><a href='../S/157.html#L138'>USERINFO</a>          138 vm.c             { (void*)USERINFO, V2P(USERINFO), PHYSTOP,  PTE_W}, //      [4] kern userinfo</span>
+<span class='curline'><a href='../S/106.html#L62'>T_IRQ0</a>             62 ioapic.c           ioapicwrite(REG_TABLE+2*i, INT_DISABLED | (T_IRQ0 + i));</span>
+<span class='curline'><a href='../S/106.html#L73'>T_IRQ0</a>             73 ioapic.c         ioapicwrite(REG_TABLE+2*irq, T_IRQ0 + irq);</span>
+<span class='curline'><a href='../S/159.html#L61'>T_IRQ0</a>             61 lapic.c          lapicw(SVR, ENABLE | (T_IRQ0 + IRQ_SPURIOUS));</span>
+<span class='curline'><a href='../S/159.html#L68'>T_IRQ0</a>             68 lapic.c          lapicw(TIMER, PERIODIC | (T_IRQ0 + IRQ_TIMER));</span>
+<span class='curline'><a href='../S/159.html#L81'>T_IRQ0</a>             81 lapic.c          lapicw(ERROR, T_IRQ0 + IRQ_ERROR);</span>
+<span class='curline'><a href='../S/166.html#L72'>T_IRQ0</a>             72 trap.c           case T_IRQ0 + IRQ_TIMER:</span>
+<span class='curline'><a href='../S/166.html#L81'>T_IRQ0</a>             81 trap.c           case T_IRQ0 + IRQ_IDE:</span>
+<span class='curline'><a href='../S/166.html#L85'>T_IRQ0</a>             85 trap.c           case T_IRQ0 + IRQ_IDE+1:</span>
+<span class='curline'><a href='../S/166.html#L88'>T_IRQ0</a>             88 trap.c           case T_IRQ0 + IRQ_KBD:</span>
+<span class='curline'><a href='../S/166.html#L92'>T_IRQ0</a>             92 trap.c           case T_IRQ0 + IRQ_COM1:</span>
+<span class='curline'><a href='../S/166.html#L96'>T_IRQ0</a>             96 trap.c           case T_IRQ0 + 7:</span>
+<span class='curline'><a href='../S/166.html#L97'>T_IRQ0</a>             97 trap.c           case T_IRQ0 + IRQ_SPURIOUS:</span>
+<span class='curline'><a href='../S/166.html#L162'>T_IRQ0</a>            162 trap.c              tf-&gt;trapno == T_IRQ0+IRQ_TIMER)</span>
 </pre>
 </body>
 </html>

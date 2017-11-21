@@ -9,144 +9,155 @@
 </head>
 <body>
 <a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/exec.c</h2>
-<em class='comment'>/* [&lt;][&gt;]<a href='#L12'>[^]</a>[v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L17'>[^]</a>[v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 <hr />
 <h2 class='header'>DEFINITIONS</h2>
 This source file includes following definitions.
 <ol>
-<li><a href='#L12' title='Defined at 12.'>exec</a></li>
+<li><a href='#L17' title='Defined at 17.'>exec</a></li>
 </ol>
 <hr />
 <pre>
-<a id='L1' name='L1'></a><em class='sharp'>#include</em> "<a href='126.html'>types.h</a>"
+<a id='L1' name='L1'></a><em class='sharp'>#include</em> "<a href='127.html'>types.h</a>"
 <a id='L2' name='L2'></a><em class='sharp'>#include</em> "<a href='29.html'>param.h</a>"
 <a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='50.html'>memlayout.h</a>"
-<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='122.html'>mmu.h</a>"
+<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='123.html'>mmu.h</a>"
 <a id='L5' name='L5'></a><em class='sharp'>#include</em> "<a href='93.html'>proc.h</a>"
-<a id='L6' name='L6'></a><em class='sharp'>#include</em> "<a href='119.html'>defs.h</a>"
+<a id='L6' name='L6'></a><em class='sharp'>#include</em> "<a href='120.html'>defs.h</a>"
 <a id='L7' name='L7'></a><em class='sharp'>#include</em> "<a href='68.html'>x86.h</a>"
 <a id='L8' name='L8'></a><em class='sharp'>#include</em> "<a href='74.html'>elf.h</a>"
 <a id='L9' name='L9'></a>
-<a id='L10' name='L10'></a>
-<a id='L11' name='L11'></a><strong class='reserved'>int</strong>
-<a id='L12' name='L12'></a><a href='../R/304.html' title='Multiple referred from 7 places.'>exec</a>(<strong class='reserved'>char</strong> *path, <strong class='reserved'>char</strong> **argv)
-<a id='L13' name='L13'></a><em class='brace'>{</em>
-<a id='L14' name='L14'></a>  <strong class='reserved'>char</strong> *s, *last;
-<a id='L15' name='L15'></a>  <strong class='reserved'>int</strong> i, off, n = 0;
-<a id='L16' name='L16'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> argc, sz, sp, ustack[3+<a href='../S/29.html#L17' title='Defined at 17 in param.h.'>MAXARG</a>+1];
-<a id='L17' name='L17'></a>  <strong class='reserved'>struct</strong> <a href='../S/74.html#L9' title='Defined at 9 in elf.h.'>elfhdr</a> elf;
-<a id='L18' name='L18'></a>  <strong class='reserved'>struct</strong> <a href='../S/56.html#L19' title='Defined at 19 in file.h.'>inode</a> *ip;
-<a id='L19' name='L19'></a>  <strong class='reserved'>struct</strong> <a href='../S/74.html#L28' title='Defined at 28 in elf.h.'>proghdr</a> ph;
-<a id='L20' name='L20'></a>  <a href='../S/126.html#L7' title='Defined at 7 in types.h.'>pde_t</a> *pgdir, *oldpgdir;
-<a id='L21' name='L21'></a>  <strong class='reserved'>struct</strong> <a href='../S/93.html#L61' title='Defined at 61 in proc.h.'>proc</a> *curproc = <a href='../S/64.html#L90' title='Defined at 90 in proc.c.'>myproc</a>();
-<a id='L22' name='L22'></a>
-<a id='L23' name='L23'></a>  <a href='../S/196.html#L126' title='Defined at 126 in log.c.'>begin_op</a>();
-<a id='L24' name='L24'></a>
-<a id='L25' name='L25'></a>  <strong class='reserved'>if</strong>((ip = <a href='../S/173.html#L661' title='Defined at 661 in fs.c.'>namei</a>(path)) == 0)<em class='brace'>{</em>
-<a id='L26' name='L26'></a>    <a href='../S/196.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L27' name='L27'></a>    <a href='../S/163.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("exec: fail\n");
-<a id='L28' name='L28'></a>    <strong class='reserved'>return</strong> -1;
-<a id='L29' name='L29'></a>  <em class='brace'>}</em>
-<a id='L30' name='L30'></a>  <a href='../S/173.html#L289' title='Defined at 289 in fs.c.'>ilock</a>(ip);  
-<a id='L31' name='L31'></a>  pgdir = 0;
-<a id='L32' name='L32'></a>
-<a id='L33' name='L33'></a>  <em class='comment'>// Check ELF header</em>
-<a id='L34' name='L34'></a>  <strong class='reserved'>if</strong>(<a href='../S/173.html#L454' title='Defined at 454 in fs.c.'>readi</a>(ip, (<strong class='reserved'>char</strong>*)&amp;elf, 0, <strong class='reserved'>sizeof</strong>(elf)) != <strong class='reserved'>sizeof</strong>(elf))
-<a id='L35' name='L35'></a>    <strong class='reserved'>goto</strong> bad;
-<a id='L36' name='L36'></a>  <strong class='reserved'>if</strong>(elf.<a href='../S/141.html#L31' title='Defined at 31 in entry.S.'>magic</a> != <a href='../S/74.html#L6' title='Defined at 6 in elf.h.'>ELF_MAGIC</a>)
-<a id='L37' name='L37'></a>    <strong class='reserved'>goto</strong> bad;
-<a id='L38' name='L38'></a>
-<a id='L39' name='L39'></a>  <strong class='reserved'>if</strong>((pgdir = <a href='../S/158.html#L174' title='Defined at 174 in vm.c.'>setupkvm</a>(<a href='../S/119.html#L73' title='Defined at 73 in defs.h.'>ALLOC_KGLOBAL</a>)) == 0)
+<a id='L10' name='L10'></a><em class='sharp'>#include</em> "<a href='104.html'>fs.h</a>"
+<a id='L11' name='L11'></a><em class='sharp'>#include</em> "<a href='2.html'>sleeplock.h</a>"
+<a id='L12' name='L12'></a><em class='sharp'>#include</em> "<a href='56.html'>file.h</a>"
+<a id='L13' name='L13'></a><em class='sharp'>#include</em> "<a href='185.html'>buf.h</a>"
+<a id='L14' name='L14'></a><em class='sharp'>#include</em> "<a href='9.html'>spinlock.h</a>"
+<a id='L15' name='L15'></a>
+<a id='L16' name='L16'></a><strong class='reserved'>int</strong>
+<a id='L17' name='L17'></a><a href='../R/305.html' title='Multiple referred from 7 places.'>exec</a>(<strong class='reserved'>char</strong> *path, <strong class='reserved'>char</strong> **argv)
+<a id='L18' name='L18'></a><em class='brace'>{</em>
+<a id='L19' name='L19'></a>  <strong class='reserved'>char</strong> *s, *last;
+<a id='L20' name='L20'></a>  <strong class='reserved'>int</strong> i, off, n = 0;
+<a id='L21' name='L21'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> argc, sz, sp, ustack[3+<a href='../S/29.html#L17' title='Defined at 17 in param.h.'>MAXARG</a>+1];
+<a id='L22' name='L22'></a>  <strong class='reserved'>struct</strong> <a href='../S/74.html#L9' title='Defined at 9 in elf.h.'>elfhdr</a> elf;
+<a id='L23' name='L23'></a>  <strong class='reserved'>struct</strong> <a href='../S/56.html#L18' title='Defined at 18 in file.h.'>inode</a> *ip;
+<a id='L24' name='L24'></a>  <strong class='reserved'>struct</strong> <a href='../S/74.html#L28' title='Defined at 28 in elf.h.'>proghdr</a> ph;
+<a id='L25' name='L25'></a>  <a href='../S/127.html#L7' title='Defined at 7 in types.h.'>pde_t</a> *pgdir, *oldpgdir;
+<a id='L26' name='L26'></a>  <strong class='reserved'>struct</strong> <a href='../S/93.html#L61' title='Defined at 61 in proc.h.'>proc</a> *curproc = <a href='../S/64.html#L91' title='Defined at 91 in proc.c.'>myproc</a>();
+<a id='L27' name='L27'></a>
+<a id='L28' name='L28'></a>  <a href='../S/200.html#L126' title='Defined at 126 in log.c.'>begin_op</a>();
+<a id='L29' name='L29'></a>
+<a id='L30' name='L30'></a>  <strong class='reserved'>if</strong>((ip = <a href='../S/177.html#L661' title='Defined at 661 in fs.c.'>namei</a>(path)) == 0)<em class='brace'>{</em>
+<a id='L31' name='L31'></a>    <a href='../S/200.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
+<a id='L32' name='L32'></a>    <a href='../S/167.html#L67' title='Defined at 67 in console.c.'>cprintf</a>("exec: fail\n");
+<a id='L33' name='L33'></a>    <strong class='reserved'>return</strong> -1;
+<a id='L34' name='L34'></a>  <em class='brace'>}</em>
+<a id='L35' name='L35'></a>  <a href='../S/177.html#L289' title='Defined at 289 in fs.c.'>ilock</a>(ip);  
+<a id='L36' name='L36'></a>  pgdir = 0;
+<a id='L37' name='L37'></a>
+<a id='L38' name='L38'></a>  <em class='comment'>// Check ELF header</em>
+<a id='L39' name='L39'></a>  <strong class='reserved'>if</strong>(<a href='../S/177.html#L454' title='Defined at 454 in fs.c.'>readi</a>(ip, (<strong class='reserved'>char</strong>*)&amp;elf, 0, <strong class='reserved'>sizeof</strong>(elf)) != <strong class='reserved'>sizeof</strong>(elf))
 <a id='L40' name='L40'></a>    <strong class='reserved'>goto</strong> bad;
-<a id='L41' name='L41'></a>
-<a id='L42' name='L42'></a>  <em class='comment'>// Load program into memory.</em>
-<a id='L43' name='L43'></a>  sz = 0;
-<a id='L44' name='L44'></a>  <strong class='reserved'>for</strong>(i=0, off=elf.phoff; i&lt;elf.phnum; i++, off+=<strong class='reserved'>sizeof</strong>(ph))<em class='brace'>{</em>
-<a id='L45' name='L45'></a>    <strong class='reserved'>if</strong>(<a href='../S/173.html#L454' title='Defined at 454 in fs.c.'>readi</a>(ip, (<strong class='reserved'>char</strong>*)&amp;ph, off, <strong class='reserved'>sizeof</strong>(ph)) != <strong class='reserved'>sizeof</strong>(ph))
-<a id='L46' name='L46'></a>      <strong class='reserved'>goto</strong> bad;
-<a id='L47' name='L47'></a>    <strong class='reserved'>if</strong>(ph.type != <a href='../S/74.html#L40' title='Defined at 40 in elf.h.'>ELF_PROG_LOAD</a>)
-<a id='L48' name='L48'></a>      <strong class='reserved'>continue</strong>;
-<a id='L49' name='L49'></a>    <strong class='reserved'>if</strong>(ph.memsz &lt; ph.filesz)
-<a id='L50' name='L50'></a>      <strong class='reserved'>goto</strong> bad;
-<a id='L51' name='L51'></a>    <strong class='reserved'>if</strong>(ph.vaddr + ph.memsz &lt; ph.vaddr)
-<a id='L52' name='L52'></a>      <strong class='reserved'>goto</strong> bad;
-<a id='L53' name='L53'></a>    <strong class='reserved'>if</strong>((sz = <a href='../S/158.html#L393' title='Defined at 393 in vm.c.'>allocuvm</a>(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
-<a id='L54' name='L54'></a>      <strong class='reserved'>goto</strong> bad;
-<a id='L55' name='L55'></a>    <strong class='reserved'>if</strong>(ph.vaddr % <a href='../S/122.html#L128' title='Defined at 128 in mmu.h.'>PGSIZE</a> != 0)
-<a id='L56' name='L56'></a>      <strong class='reserved'>goto</strong> bad;
-<a id='L57' name='L57'></a>    <strong class='reserved'>if</strong>(<a href='../S/158.html#L369' title='Defined at 369 in vm.c.'>loaduvm</a>(pgdir, (<strong class='reserved'>char</strong>*)ph.vaddr, ip, ph.off, ph.filesz) &lt; 0)
-<a id='L58' name='L58'></a>      <strong class='reserved'>goto</strong> bad;
-<a id='L59' name='L59'></a>  <em class='brace'>}</em>
-<a id='L60' name='L60'></a>  <a href='../S/173.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
-<a id='L61' name='L61'></a>  <a href='../S/196.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L62' name='L62'></a>  ip = 0;
-<a id='L63' name='L63'></a>
-<a id='L64' name='L64'></a>  <em class='comment'>// Allocate two pages at the next page boundary.</em>
-<a id='L65' name='L65'></a>  <em class='comment'>// Make the first inaccessible.  Use the second as the user stack.</em>
-<a id='L66' name='L66'></a>  sz = <a href='../S/122.html#L134' title='Defined at 134 in mmu.h.'>PGROUNDUP</a>(sz);
-<a id='L67' name='L67'></a>  <strong class='reserved'>if</strong>((sz = <a href='../S/158.html#L393' title='Defined at 393 in vm.c.'>allocuvm</a>(pgdir, sz, sz + 2*<a href='../S/122.html#L128' title='Defined at 128 in mmu.h.'>PGSIZE</a>)) == 0)
-<a id='L68' name='L68'></a>    <strong class='reserved'>goto</strong> bad;
-<a id='L69' name='L69'></a>  <a href='../S/158.html#L474' title='Defined at 474 in vm.c.'>clearpteu</a>(pgdir, (<strong class='reserved'>char</strong>*)(sz - 2*<a href='../S/122.html#L128' title='Defined at 128 in mmu.h.'>PGSIZE</a>));
-<a id='L70' name='L70'></a>  sp = sz;
-<a id='L71' name='L71'></a>
-<a id='L72' name='L72'></a>  <em class='comment'>// Push argument strings, prepare rest of stack in ustack.</em>
-<a id='L73' name='L73'></a>  <strong class='reserved'>for</strong>(argc = 0; argv[argc]; argc++) <em class='brace'>{</em>
-<a id='L74' name='L74'></a>    <strong class='reserved'>if</strong>(argc &gt;= <a href='../S/29.html#L17' title='Defined at 17 in param.h.'>MAXARG</a>)
-<a id='L75' name='L75'></a>      <strong class='reserved'>goto</strong> bad;
-<a id='L76' name='L76'></a>    sp = (sp - (<a href='../D/610.html' title='Multiple defined in 2 places.'>strlen</a>(argv[argc]) + 1)) &amp; ~3;
-<a id='L77' name='L77'></a>    <strong class='reserved'>if</strong>(<a href='../S/158.html#L617' title='Defined at 617 in vm.c.'>copyout</a>(pgdir, sp, argv[argc], <a href='../D/610.html' title='Multiple defined in 2 places.'>strlen</a>(argv[argc]) + 1) &lt; 0)
-<a id='L78' name='L78'></a>      <strong class='reserved'>goto</strong> bad;
-<a id='L79' name='L79'></a>    ustack[3+argc] = sp;
-<a id='L80' name='L80'></a>  <em class='brace'>}</em>
-<a id='L81' name='L81'></a>  ustack[3+argc] = 0;
-<a id='L82' name='L82'></a>
-<a id='L83' name='L83'></a>  ustack[0] = 0xffffffff;  <em class='comment'>// fake return PC</em>
-<a id='L84' name='L84'></a>  ustack[1] = argc;
-<a id='L85' name='L85'></a>  ustack[2] = sp - (argc+1)*4;  <em class='comment'>// argv pointer</em>
-<a id='L86' name='L86'></a>
-<a id='L87' name='L87'></a>  sp -= (3+argc+1) * 4;
-<a id='L88' name='L88'></a>  <strong class='reserved'>if</strong>(<a href='../S/158.html#L617' title='Defined at 617 in vm.c.'>copyout</a>(pgdir, sp, ustack, (3+argc+1)*4) &lt; 0)
-<a id='L89' name='L89'></a>    <strong class='reserved'>goto</strong> bad;
-<a id='L90' name='L90'></a>
-<a id='L91' name='L91'></a>  <em class='comment'>// Save program name for debugging.</em>
-<a id='L92' name='L92'></a>  <strong class='reserved'>for</strong>(last=s=path; *s; s++)
-<a id='L93' name='L93'></a>    <strong class='reserved'>if</strong>(*s == '/')
-<a id='L94' name='L94'></a>      last = s+1;
-<a id='L95' name='L95'></a>  <a href='../S/11.html#L83' title='Defined at 83 in string.c.'>safestrcpy</a>(curproc-&gt;name, last, <strong class='reserved'>sizeof</strong>(curproc-&gt;name));
-<a id='L96' name='L96'></a>
-<a id='L97' name='L97'></a>  <em class='comment'>// Commit to the user image.</em>
-<a id='L98' name='L98'></a>  oldpgdir = curproc-&gt;pgdir;  
-<a id='L99' name='L99'></a>  curproc-&gt;pgdir = pgdir;
-<a id='L100' name='L100'></a>  curproc-&gt;sz = sz;
-<a id='L101' name='L101'></a>  curproc-&gt;tf-&gt;eip = elf.entry;  <em class='comment'>// main</em>
-<a id='L102' name='L102'></a>  curproc-&gt;tf-&gt;esp = sp;
-<a id='L103' name='L103'></a>
-<a id='L104' name='L104'></a>  <strong class='reserved'>if</strong> (<a href='../D/608.html' title='Multiple defined in 2 places.'>strcmp</a>(path, "/init") == 0) <em class='brace'>{</em>
-<a id='L105' name='L105'></a>    n = 1;
-<a id='L106' name='L106'></a>  <em class='brace'>}</em>
-<a id='L107' name='L107'></a>  <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> (<a href='../D/608.html' title='Multiple defined in 2 places.'>strcmp</a>(path, "sh") == 0) <em class='brace'>{</em>
-<a id='L108' name='L108'></a>    n = 1;
-<a id='L109' name='L109'></a>  <em class='brace'>}</em>
-<a id='L110' name='L110'></a>  <strong class='reserved'>else</strong> <em class='brace'>{</em>
-<a id='L111' name='L111'></a>    n = 0;
-<a id='L112' name='L112'></a>  <em class='brace'>}</em>
-<a id='L113' name='L113'></a>  
-<a id='L114' name='L114'></a>  <a href='../S/158.html#L273' title='Defined at 273 in vm.c.'>switchuvm_ro</a>(curproc, n, oldpgdir);  
-<a id='L115' name='L115'></a>  <a href='../S/158.html#L455' title='Defined at 455 in vm.c.'>freevm</a>(oldpgdir);
-<a id='L116' name='L116'></a>  <strong class='reserved'>return</strong> 0;
-<a id='L117' name='L117'></a>
-<a id='L118' name='L118'></a> bad:
-<a id='L119' name='L119'></a>  <strong class='reserved'>if</strong>(pgdir)
-<a id='L120' name='L120'></a>    <a href='../S/158.html#L455' title='Defined at 455 in vm.c.'>freevm</a>(pgdir);
-<a id='L121' name='L121'></a>  <strong class='reserved'>if</strong>(ip)<em class='brace'>{</em>
-<a id='L122' name='L122'></a>    <a href='../S/173.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
-<a id='L123' name='L123'></a>    <a href='../S/196.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
-<a id='L124' name='L124'></a>  <em class='brace'>}</em>
-<a id='L125' name='L125'></a>  <strong class='reserved'>return</strong> -1;
-<a id='L126' name='L126'></a><em class='brace'>}</em>
+<a id='L41' name='L41'></a>  <strong class='reserved'>if</strong>(elf.<a href='../S/143.html#L31' title='Defined at 31 in entry.S.'>magic</a> != <a href='../S/74.html#L6' title='Defined at 6 in elf.h.'>ELF_MAGIC</a>)
+<a id='L42' name='L42'></a>    <strong class='reserved'>goto</strong> bad;
+<a id='L43' name='L43'></a>
+<a id='L44' name='L44'></a>  <strong class='reserved'>if</strong>((pgdir = <a href='../S/162.html#L184' title='Defined at 184 in vm.c.'>setupkvm</a>(<a href='../S/120.html#L75' title='Defined at 75 in defs.h.'>ALLOC_KGLOBAL</a>)) == 0)
+<a id='L45' name='L45'></a>    <strong class='reserved'>goto</strong> bad;
+<a id='L46' name='L46'></a>
+<a id='L47' name='L47'></a>  <em class='comment'>// Load program into memory.</em>
+<a id='L48' name='L48'></a>  sz = 0;
+<a id='L49' name='L49'></a>  <strong class='reserved'>for</strong>(i=0, off=elf.phoff; i&lt;elf.phnum; i++, off+=<strong class='reserved'>sizeof</strong>(ph))<em class='brace'>{</em>
+<a id='L50' name='L50'></a>    <strong class='reserved'>if</strong>(<a href='../S/177.html#L454' title='Defined at 454 in fs.c.'>readi</a>(ip, (<strong class='reserved'>char</strong>*)&amp;ph, off, <strong class='reserved'>sizeof</strong>(ph)) != <strong class='reserved'>sizeof</strong>(ph))
+<a id='L51' name='L51'></a>      <strong class='reserved'>goto</strong> bad;
+<a id='L52' name='L52'></a>    <strong class='reserved'>if</strong>(ph.type != <a href='../S/74.html#L40' title='Defined at 40 in elf.h.'>ELF_PROG_LOAD</a>)
+<a id='L53' name='L53'></a>      <strong class='reserved'>continue</strong>;
+<a id='L54' name='L54'></a>    <strong class='reserved'>if</strong>(ph.memsz &lt; ph.filesz)
+<a id='L55' name='L55'></a>      <strong class='reserved'>goto</strong> bad;
+<a id='L56' name='L56'></a>    <strong class='reserved'>if</strong>(ph.vaddr + ph.memsz &lt; ph.vaddr)
+<a id='L57' name='L57'></a>      <strong class='reserved'>goto</strong> bad;
+<a id='L58' name='L58'></a>    <strong class='reserved'>if</strong>((sz = <a href='../S/162.html#L428' title='Defined at 428 in vm.c.'>allocuvm</a>(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
+<a id='L59' name='L59'></a>      <strong class='reserved'>goto</strong> bad;
+<a id='L60' name='L60'></a>    <strong class='reserved'>if</strong>(ph.vaddr % <a href='../S/123.html#L128' title='Defined at 128 in mmu.h.'>PGSIZE</a> != 0)
+<a id='L61' name='L61'></a>      <strong class='reserved'>goto</strong> bad;
+<a id='L62' name='L62'></a>    <strong class='reserved'>if</strong>(<a href='../S/162.html#L404' title='Defined at 404 in vm.c.'>loaduvm</a>(pgdir, (<strong class='reserved'>char</strong>*)ph.vaddr, ip, ph.off, ph.filesz) &lt; 0)
+<a id='L63' name='L63'></a>      <strong class='reserved'>goto</strong> bad;
+<a id='L64' name='L64'></a>  <em class='brace'>}</em>
+<a id='L65' name='L65'></a>  <a href='../S/177.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
+<a id='L66' name='L66'></a>  <a href='../S/200.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
+<a id='L67' name='L67'></a>  ip = 0;
+<a id='L68' name='L68'></a>
+<a id='L69' name='L69'></a>  <em class='comment'>// Allocate two pages at the next page boundary.</em>
+<a id='L70' name='L70'></a>  <em class='comment'>// Make the first inaccessible.  Use the second as the user stack.</em>
+<a id='L71' name='L71'></a>  sz = <a href='../S/123.html#L134' title='Defined at 134 in mmu.h.'>PGROUNDUP</a>(sz);
+<a id='L72' name='L72'></a>  <strong class='reserved'>if</strong>((sz = <a href='../S/162.html#L428' title='Defined at 428 in vm.c.'>allocuvm</a>(pgdir, sz, sz + 2*<a href='../S/123.html#L128' title='Defined at 128 in mmu.h.'>PGSIZE</a>)) == 0)
+<a id='L73' name='L73'></a>    <strong class='reserved'>goto</strong> bad;
+<a id='L74' name='L74'></a>  <a href='../S/162.html#L518' title='Defined at 518 in vm.c.'>clearpteu</a>(pgdir, (<strong class='reserved'>char</strong>*)(sz - 2*<a href='../S/123.html#L128' title='Defined at 128 in mmu.h.'>PGSIZE</a>));
+<a id='L75' name='L75'></a>  sp = sz;
+<a id='L76' name='L76'></a>
+<a id='L77' name='L77'></a>  <em class='comment'>// Push argument strings, prepare rest of stack in ustack.</em>
+<a id='L78' name='L78'></a>  <strong class='reserved'>for</strong>(argc = 0; argv[argc]; argc++) <em class='brace'>{</em>
+<a id='L79' name='L79'></a>    <strong class='reserved'>if</strong>(argc &gt;= <a href='../S/29.html#L17' title='Defined at 17 in param.h.'>MAXARG</a>)
+<a id='L80' name='L80'></a>      <strong class='reserved'>goto</strong> bad;
+<a id='L81' name='L81'></a>    sp = (sp - (<a href='../D/615.html' title='Multiple defined in 2 places.'>strlen</a>(argv[argc]) + 1)) &amp; ~3;
+<a id='L82' name='L82'></a>    <strong class='reserved'>if</strong>(<a href='../S/162.html#L659' title='Defined at 659 in vm.c.'>copyout</a>(pgdir, sp, argv[argc], <a href='../D/615.html' title='Multiple defined in 2 places.'>strlen</a>(argv[argc]) + 1) &lt; 0)
+<a id='L83' name='L83'></a>      <strong class='reserved'>goto</strong> bad;
+<a id='L84' name='L84'></a>    ustack[3+argc] = sp;
+<a id='L85' name='L85'></a>  <em class='brace'>}</em>
+<a id='L86' name='L86'></a>  ustack[3+argc] = 0;
+<a id='L87' name='L87'></a>
+<a id='L88' name='L88'></a>  ustack[0] = 0xffffffff;  <em class='comment'>// fake return PC</em>
+<a id='L89' name='L89'></a>  ustack[1] = argc;
+<a id='L90' name='L90'></a>  ustack[2] = sp - (argc+1)*4;  <em class='comment'>// argv pointer</em>
+<a id='L91' name='L91'></a>
+<a id='L92' name='L92'></a>  sp -= (3+argc+1) * 4;
+<a id='L93' name='L93'></a>  <strong class='reserved'>if</strong>(<a href='../S/162.html#L659' title='Defined at 659 in vm.c.'>copyout</a>(pgdir, sp, ustack, (3+argc+1)*4) &lt; 0)
+<a id='L94' name='L94'></a>    <strong class='reserved'>goto</strong> bad;
+<a id='L95' name='L95'></a>
+<a id='L96' name='L96'></a>  <em class='comment'>// Save program name for debugging.</em>
+<a id='L97' name='L97'></a>  <strong class='reserved'>for</strong>(last=s=path; *s; s++)
+<a id='L98' name='L98'></a>    <strong class='reserved'>if</strong>(*s == '/')
+<a id='L99' name='L99'></a>      last = s+1;
+<a id='L100' name='L100'></a>  <a href='../S/11.html#L83' title='Defined at 83 in string.c.'>safestrcpy</a>(curproc-&gt;name, last, <strong class='reserved'>sizeof</strong>(curproc-&gt;name));
+<a id='L101' name='L101'></a>
+<a id='L102' name='L102'></a>  <em class='comment'>// Commit to the user image.</em>
+<a id='L103' name='L103'></a>  oldpgdir = curproc-&gt;pgdir;  
+<a id='L104' name='L104'></a>  curproc-&gt;pgdir = pgdir;
+<a id='L105' name='L105'></a>  curproc-&gt;sz = sz;
+<a id='L106' name='L106'></a>  curproc-&gt;tf-&gt;eip = elf.entry;  <em class='comment'>// main</em>
+<a id='L107' name='L107'></a>  curproc-&gt;tf-&gt;esp = sp;
+<a id='L108' name='L108'></a>
+<a id='L109' name='L109'></a>  <strong class='reserved'>if</strong> (<a href='../D/613.html' title='Multiple defined in 2 places.'>strcmp</a>(path, "/init") == 0) <em class='brace'>{</em>
+<a id='L110' name='L110'></a>    n = 1;
+<a id='L111' name='L111'></a>  <em class='brace'>}</em>
+<a id='L112' name='L112'></a>  <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> (<a href='../D/613.html' title='Multiple defined in 2 places.'>strcmp</a>(path, "sh") == 0) <em class='brace'>{</em>
+<a id='L113' name='L113'></a>    n = 1;
+<a id='L114' name='L114'></a>  <em class='brace'>}</em>
+<a id='L115' name='L115'></a>  <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L116' name='L116'></a>    n = 0;
+<a id='L117' name='L117'></a>  <em class='brace'>}</em>  
+<a id='L118' name='L118'></a>  <a href='../S/162.html#L254' title='Defined at 254 in vm.c.'>switchuvm</a>(curproc);  
+<a id='L119' name='L119'></a>  <a href='../S/162.html#L500' title='Defined at 500 in vm.c.'>freevm</a>(oldpgdir);
+<a id='L120' name='L120'></a>
+<a id='L121' name='L121'></a><em class='comment'>//************************************************************************//</em>
+<a id='L122' name='L122'></a><a href='../S/162.html#L247' title='Defined at 247 in vm.c.'>switchkvm</a>();
+<a id='L123' name='L123'></a><a href='../S/162.html#L283' title='Defined at 283 in vm.c.'>switchuvm_ro</a>(curproc, n);
+<a id='L124' name='L124'></a>
+<a id='L125' name='L125'></a><em class='comment'>//****************************************************************************</em>
+<a id='L126' name='L126'></a>  
+<a id='L127' name='L127'></a>  <strong class='reserved'>return</strong> 0;
+<a id='L128' name='L128'></a>
+<a id='L129' name='L129'></a> bad:
+<a id='L130' name='L130'></a>  <strong class='reserved'>if</strong>(pgdir)
+<a id='L131' name='L131'></a>    <a href='../S/162.html#L500' title='Defined at 500 in vm.c.'>freevm</a>(pgdir);
+<a id='L132' name='L132'></a>  <strong class='reserved'>if</strong>(ip)<em class='brace'>{</em>
+<a id='L133' name='L133'></a>    <a href='../S/177.html#L357' title='Defined at 357 in fs.c.'>iunlockput</a>(ip);
+<a id='L134' name='L134'></a>    <a href='../S/200.html#L146' title='Defined at 146 in log.c.'>end_op</a>();
+<a id='L135' name='L135'></a>  <em class='brace'>}</em>
+<a id='L136' name='L136'></a>  <strong class='reserved'>return</strong> -1;
+<a id='L137' name='L137'></a><em class='brace'>}</em>
 </pre>
 <hr />
 <a id='BOTTOM' name='BOTTOM'></a>
-<em class='comment'>/* [&lt;][&gt;][^]<a href='#L12'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<em class='comment'>/* [&lt;][&gt;][^]<a href='#L17'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 </body>
 </html>

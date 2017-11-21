@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>ioapicwrite</title>
+<title>ioapicenable</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,10 +9,10 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/106.html#L62'>ioapicwrite</a>        62 ioapic.c           ioapicwrite(REG_TABLE+2*i, INT_DISABLED | (T_IRQ0 + i));</span>
-<span class='curline'><a href='../S/106.html#L63'>ioapicwrite</a>        63 ioapic.c           ioapicwrite(REG_TABLE+2*i+1, 0);</span>
-<span class='curline'><a href='../S/106.html#L73'>ioapicwrite</a>        73 ioapic.c         ioapicwrite(REG_TABLE+2*irq, T_IRQ0 + irq);</span>
-<span class='curline'><a href='../S/106.html#L74'>ioapicwrite</a>        74 ioapic.c         ioapicwrite(REG_TABLE+2*irq+1, cpunum &lt;&lt; 24);</span>
+<span class='curline'><a href='../S/167.html#L362'>ioapicenable</a>      362 console.c        ioapicenable(IRQ_KBD, 0);</span>
+<span class='curline'><a href='../S/120.html#L69'>ioapicenable</a>       69 defs.h         void            ioapicenable(int irq, int cpu);</span>
+<span class='curline'><a href='../S/146.html#L58'>ioapicenable</a>       58 ide.c            ioapicenable(IRQ_IDE, ncpu - 1);</span>
+<span class='curline'><a href='../S/198.html#L44'>ioapicenable</a>       44 uart.c           ioapicenable(IRQ_COM1, 0);</span>
 </pre>
 </body>
 </html>

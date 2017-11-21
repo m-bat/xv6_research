@@ -9,8 +9,8 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/158.html#L55'>STA_W</a>              55 vm.c             // Cannot share a CODE descriptor for both kernel and user</span>
-<span class='curline'><a href='../S/158.html#L57'>STA_W</a>              57 vm.c             // an interrupt from CPL=0 to DPL=3.</span>
+<span class='curline'><a href='../S/162.html#L65'>STA_W</a>              65 vm.c             c-&gt;gdt[SEG_KDATA] = SEG(STA_W, 0, 0xffffffff, 0);</span>
+<span class='curline'><a href='../S/162.html#L67'>STA_W</a>              67 vm.c             c-&gt;gdt[SEG_UDATA] = SEG(STA_W, 0, 0xffffffff, DPL_USER);</span>
 </pre>
 </body>
 </html>

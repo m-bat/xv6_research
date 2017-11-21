@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>sys_fstat</title>
+<title>stat</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,8 +9,18 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/81.html#L91'>sys_fstat</a>          91 syscall.c      extern int sys_fstat(void);</span>
-<span class='curline'><a href='../S/81.html#L117'>sys_fstat</a>         117 syscall.c      [SYS_fstat]   sys_fstat,</span>
+<span class='curline'><a href='../S/120.html#L15'>stat</a>               15 defs.h         struct stat;</span>
+<span class='curline'><a href='../S/120.html#L41'>stat</a>               41 defs.h         int             filestat(struct file*, struct stat*);</span>
+<span class='curline'><a href='../S/120.html#L60'>stat</a>               60 defs.h         void            stati(struct inode*, struct stat*);</span>
+<span class='curline'><a href='../S/15.html#L196'>stat</a>              196 file.c         filestat(struct file *f, struct stat *st)</span>
+<span class='curline'><a href='../S/177.html#L441'>stat</a>              441 fs.c           stati(struct inode *ip, struct stat *st)</span>
+<span class='curline'><a href='../S/112.html#L31'>stat</a>               31 ls.c             struct stat st;</span>
+<span class='curline'><a href='../S/112.html#L62'>stat</a>               62 ls.c                 if(stat(buf, &amp;st) &lt; 0){</span>
+<span class='curline'><a href='../S/84.html#L110'>stat</a>              110 sysfile.c        struct stat *st;</span>
+<span class='curline'><a href='../S/83.html#L71'>stat</a>               71 ulib.c         stat(char *n, struct stat *st)</span>
+<span class='curline'><a href='../S/193.html#L4'>stat</a>                4 user.h         struct stat;</span>
+<span class='curline'><a href='../S/193.html#L20'>stat</a>               20 user.h         int fstat(int fd, struct stat*);</span>
+<span class='curline'><a href='../S/193.html#L34'>stat</a>               34 user.h         int stat(char*, struct stat*);</span>
 </pre>
 </body>
 </html>

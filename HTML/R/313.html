@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>file</title>
+<title>fetchint</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,63 +9,9 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/119.html#L8'>file</a>                8 defs.h         struct file;</span>
-<span class='curline'><a href='../S/119.html#L34'>file</a>               34 defs.h         struct file*    filealloc(void);</span>
-<span class='curline'><a href='../S/119.html#L35'>file</a>               35 defs.h         void            fileclose(struct file*);</span>
-<span class='curline'><a href='../S/119.html#L36'>file</a>               36 defs.h         struct file*    filedup(struct file*);</span>
-<span class='curline'><a href='../S/119.html#L38'>file</a>               38 defs.h         int             fileread(struct file*, char*, int n);</span>
-<span class='curline'><a href='../S/119.html#L39'>file</a>               39 defs.h         int             filestat(struct file*, struct stat*);</span>
-<span class='curline'><a href='../S/119.html#L40'>file</a>               40 defs.h         int             filewrite(struct file*, char*, int n);</span>
-<span class='curline'><a href='../S/119.html#L111'>file</a>              111 defs.h         int             pipealloc(struct file**, struct file**);</span>
-<span class='curline'><a href='../S/15.html#L24'>file</a>               24 file.c           struct file file;  //file head </span>
-<span class='curline'><a href='../S/15.html#L27'>file</a>               27 file.c         struct file *h;</span>
-<span class='curline'><a href='../S/15.html#L57'>file</a>               57 file.c         struct file*</span>
-<span class='curline'><a href='../S/15.html#L60'>file</a>               60 file.c           struct file *f;</span>
-<span class='curline'><a href='../S/15.html#L90'>file</a>               90 file.c           if ((f = (struct file *)kalloc(ALLOC_PLOCAL)) == 0) {    </span>
-<span class='curline'><a href='../S/15.html#L110'>file</a>              110 file.c         struct file*</span>
-<span class='curline'><a href='../S/15.html#L111'>file</a>              111 file.c         filedup(struct file *f)</span>
-<span class='curline'><a href='../S/15.html#L123'>file</a>              123 file.c         fileclose(struct file *f)</span>
-<span class='curline'><a href='../S/15.html#L125'>file</a>              125 file.c           struct file ff;</span>
-<span class='curline'><a href='../S/15.html#L156'>file</a>              156 file.c         filestat(struct file *f, struct stat *st)</span>
-<span class='curline'><a href='../S/15.html#L169'>file</a>              169 file.c         fileread(struct file *f, char *addr, int n)</span>
-<span class='curline'><a href='../S/15.html#L190'>file</a>              190 file.c         filewrite(struct file *f, char *addr, int n)</span>
-<span class='curline'><a href='../S/56.html#L13'>file</a>               13 file.h           struct file *next;</span>
-<span class='curline'><a href='../S/56.html#L14'>file</a>               14 file.h           struct file *prev;</span>
-<span class='curline'><a href='../S/95.html#L23'>file</a>               23 pipe.c         pipealloc(struct file **f0, struct file **f1)</span>
-<span class='curline'><a href='../S/93.html#L72'>file</a>               72 proc.h           struct file *ofile[NOFILE];  // Open files</span>
-<span class='curline'><a href='../S/8.html#L29'>file</a>               29 sh.c             char *file;</span>
-<span class='curline'><a href='../S/8.html#L85'>file</a>               85 sh.c               if(open(rcmd-&gt;file, rcmd-&gt;mode) &lt; 0){</span>
-<span class='curline'><a href='../S/8.html#L86'>file</a>               86 sh.c                 printf(2, "open %s failed\n", rcmd-&gt;file);</span>
-<span class='curline'><a href='../S/8.html#L207'>file</a>              207 sh.c           redircmd(struct cmd *subcmd, char *file, char *efile, int mode, int fd)</span>
-<span class='curline'><a href='../S/8.html#L215'>file</a>              215 sh.c             cmd-&gt;file = file;</span>
-<span class='curline'><a href='../S/84.html#L22'>file</a>               22 sysfile.c      argfd(int n, int *pfd, struct file **pf)</span>
-<span class='curline'><a href='../S/84.html#L25'>file</a>               25 sysfile.c        struct file *f;</span>
-<span class='curline'><a href='../S/84.html#L41'>file</a>               41 sysfile.c      fdalloc(struct file *f)</span>
-<span class='curline'><a href='../S/84.html#L58'>file</a>               58 sysfile.c        struct file *f;</span>
-<span class='curline'><a href='../S/84.html#L72'>file</a>               72 sysfile.c        struct file *f;</span>
-<span class='curline'><a href='../S/84.html#L84'>file</a>               84 sysfile.c        struct file *f;</span>
-<span class='curline'><a href='../S/84.html#L97'>file</a>               97 sysfile.c        struct file *f;</span>
-<span class='curline'><a href='../S/84.html#L109'>file</a>              109 sysfile.c        struct file *f;</span>
-<span class='curline'><a href='../S/84.html#L291'>file</a>              291 sysfile.c        struct file *f;</span>
-<span class='curline'><a href='../S/84.html#L427'>file</a>              427 sysfile.c        struct file *rf, *wf;</span>
-<span class='curline'><a href='../S/47.html#L767'>file</a>              767 usertests.c      char file[3];</span>
-<span class='curline'><a href='../S/47.html#L776'>file</a>              776 usertests.c      file[0] = 'C';</span>
-<span class='curline'><a href='../S/47.html#L777'>file</a>              777 usertests.c      file[2] = '\0';</span>
-<span class='curline'><a href='../S/47.html#L779'>file</a>              779 usertests.c        file[1] = '0' + i;</span>
-<span class='curline'><a href='../S/47.html#L780'>file</a>              780 usertests.c        unlink(file);</span>
-<span class='curline'><a href='../S/47.html#L783'>file</a>              783 usertests.c          link("C0", file);</span>
-<span class='curline'><a href='../S/47.html#L785'>file</a>              785 usertests.c          link("C0", file);</span>
-<span class='curline'><a href='../S/47.html#L787'>file</a>              787 usertests.c          fd = open(file, O_CREATE | O_RDWR);</span>
-<span class='curline'><a href='../S/47.html#L789'>file</a>              789 usertests.c            printf(1, "concreate create %s failed\n", file);</span>
-<span class='curline'><a href='../S/47.html#L828'>file</a>              828 usertests.c        file[1] = '0' + i;</span>
-<span class='curline'><a href='../S/47.html#L836'>file</a>              836 usertests.c          close(open(file, 0));</span>
-<span class='curline'><a href='../S/47.html#L837'>file</a>              837 usertests.c          close(open(file, 0));</span>
-<span class='curline'><a href='../S/47.html#L838'>file</a>              838 usertests.c          close(open(file, 0));</span>
-<span class='curline'><a href='../S/47.html#L839'>file</a>              839 usertests.c          close(open(file, 0));</span>
-<span class='curline'><a href='../S/47.html#L841'>file</a>              841 usertests.c          unlink(file);</span>
-<span class='curline'><a href='../S/47.html#L842'>file</a>              842 usertests.c          unlink(file);</span>
-<span class='curline'><a href='../S/47.html#L843'>file</a>              843 usertests.c          unlink(file);</span>
-<span class='curline'><a href='../S/47.html#L844'>file</a>              844 usertests.c          unlink(file);</span>
+<span class='curline'><a href='../S/120.html#L177'>fetchint</a>          177 defs.h         int             fetchint(uint, int*);</span>
+<span class='curline'><a href='../S/82.html#L52'>fetchint</a>           52 syscall.c        return fetchint((myproc()-&gt;tf-&gt;esp) + 4 + 4*n, ip);</span>
+<span class='curline'><a href='../S/84.html#L411'>fetchint</a>          411 sysfile.c          if(fetchint(uargv+4*i, (int*)&amp;uarg) &lt; 0)</span>
 </pre>
 </body>
 </html>

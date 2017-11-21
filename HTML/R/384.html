@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>kinit2</title>
+<title>kfree</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,8 +9,19 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/119.html#L77'>kinit2</a>             77 defs.h         void            kinit2(void*, void*);</span>
-<span class='curline'><a href='../S/155.html#L39'>kinit2</a>             39 main.c           kinit2(P2V(4*1024*1024), P2V(PHYSTOP)); // must come after startothers()</span>
+<span class='curline'><a href='../S/120.html#L77'>kfree</a>              77 defs.h         void            kfree(char*);</span>
+<span class='curline'><a href='../S/15.html#L144'>kfree</a>             144 file.c           kfree((char*)f);</span>
+<span class='curline'><a href='../S/15.html#L182'>kfree</a>             182 file.c           kfree((char*)f);  </span>
+<span class='curline'><a href='../S/172.html#L67'>kfree</a>              67 kalloc.c           kfree(p);</span>
+<span class='curline'><a href='../S/95.html#L59'>kfree</a>              59 pipe.c             kfree((char*)p);</span>
+<span class='curline'><a href='../S/95.html#L80'>kfree</a>              80 pipe.c             kfree((char*)p);</span>
+<span class='curline'><a href='../S/95.html#L98'>kfree</a>              98 pipe.c             kfree((char*)p);</span>
+<span class='curline'><a href='../S/64.html#L252'>kfree</a>             252 proc.c             kfree(np-&gt;kstack);</span>
+<span class='curline'><a href='../S/64.html#L408'>kfree</a>             408 proc.c                 kfree(p-&gt;kstack);</span>
+<span class='curline'><a href='../S/162.html#L450'>kfree</a>             450 vm.c               memset(mem, 0, PGSIZE);</span>
+<span class='curline'><a href='../S/162.html#L490'>kfree</a>             490 vm.c                 setptew(myproc()-&gt;pgdir, (char *)v, PGSIZE, 1);      </span>
+<span class='curline'><a href='../S/162.html#L509'>kfree</a>             509 vm.c             deallocuvm(pgdir, KERNBASE, 0);</span>
+<span class='curline'><a href='../S/162.html#L512'>kfree</a>             512 vm.c                 char * v = P2V(PTE_ADDR(pgdir[i]));</span>
 </pre>
 </body>
 </html>

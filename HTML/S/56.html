@@ -11,54 +11,53 @@
 <a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/file.h</h2>
 <em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
 <hr />
-<h2 class='header'><a href='../J/17.html' title='Multiple included from 8 places.'>INCLUDED FROM</a></h2>
+<h2 class='header'><a href='../J/17.html' title='Multiple included from 9 places.'>INCLUDED FROM</a></h2>
 <hr />
 <pre>
 <a id='L1' name='L1'></a><em class='sharp'>#ifndef</em> <a href='../S/56.html#L2' title='Defined at 2 in file.h.'>XV6_FILE_H</a>
 <a id='L2' name='L2'></a><em class='sharp'>#define</em> <a href='../S/56.html#L1' title='Referred from 1 in file.h.'>XV6_FILE_H</a>
 <a id='L3' name='L3'></a>
-<a id='L4' name='L4'></a><strong class='reserved'>struct</strong> <a href='../R/313.html' title='Multiple referred from 57 places.'>file</a> <em class='brace'>{</em>
-<a id='L5' name='L5'></a>  <strong class='reserved'>enum</strong> <em class='brace'>{</em> <a href='../S/15.html#L136' title='Referred from 136 in file.c.'>FD_NONE</a>, <a href='../R/44.html' title='Multiple referred from 5 places.'>FD_PIPE</a>, <a href='../R/42.html' title='Multiple referred from 5 places.'>FD_INODE</a> <em class='brace'>}</em> type;
+<a id='L4' name='L4'></a><strong class='reserved'>struct</strong> <a href='../R/315.html' title='Multiple referred from 59 places.'>file</a> <em class='brace'>{</em>
+<a id='L5' name='L5'></a>  <strong class='reserved'>enum</strong> <em class='brace'>{</em> <a href='../R/43.html' title='Multiple referred from 2 places.'>FD_NONE</a>, <a href='../R/44.html' title='Multiple referred from 7 places.'>FD_PIPE</a>, <a href='../R/42.html' title='Multiple referred from 6 places.'>FD_INODE</a> <em class='brace'>}</em> type;
 <a id='L6' name='L6'></a>  <strong class='reserved'>int</strong> ref; <em class='comment'>// reference count</em>
 <a id='L7' name='L7'></a>  <strong class='reserved'>char</strong> readable;
 <a id='L8' name='L8'></a>  <strong class='reserved'>char</strong> writable;
 <a id='L9' name='L9'></a>  <strong class='reserved'>struct</strong> <a href='../S/95.html#L13' title='Defined at 13 in pipe.c.'>pipe</a> *<a href='../S/95.html#L13' title='Defined at 13 in pipe.c.'>pipe</a>;
-<a id='L10' name='L10'></a>  <strong class='reserved'>struct</strong> <a href='../S/56.html#L19' title='Defined at 19 in file.h.'>inode</a> *ip;
-<a id='L11' name='L11'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> off;
+<a id='L10' name='L10'></a>  <strong class='reserved'>struct</strong> <a href='../S/56.html#L18' title='Defined at 18 in file.h.'>inode</a> *ip;
+<a id='L11' name='L11'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> off;
 <a id='L12' name='L12'></a>  <em class='comment'>//add manabu 10/17</em>
-<a id='L13' name='L13'></a>  <strong class='reserved'>struct</strong> <a href='../S/56.html#L4' title='Defined at 4 in file.h.'>file</a> *next;
-<a id='L14' name='L14'></a>  <strong class='reserved'>struct</strong> <a href='../S/56.html#L4' title='Defined at 4 in file.h.'>file</a> *prev;
-<a id='L15' name='L15'></a><em class='brace'>}</em>;
+<a id='L13' name='L13'></a>
+<a id='L14' name='L14'></a><em class='brace'>}</em>;
+<a id='L15' name='L15'></a>
 <a id='L16' name='L16'></a>
-<a id='L17' name='L17'></a>
-<a id='L18' name='L18'></a><em class='comment'>// in-memory copy of an inode</em>
-<a id='L19' name='L19'></a><strong class='reserved'>struct</strong> <a href='../R/362.html' title='Multiple referred from 62 places.'>inode</a> <em class='brace'>{</em>
-<a id='L20' name='L20'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> dev;           <em class='comment'>// Device number</em>
-<a id='L21' name='L21'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> inum;          <em class='comment'>// Inode number</em>
-<a id='L22' name='L22'></a>  <strong class='reserved'>int</strong> ref;            <em class='comment'>// Reference count</em>
-<a id='L23' name='L23'></a>  <strong class='reserved'>struct</strong> <a href='../S/2.html#L5' title='Defined at 5 in sleeplock.h.'>sleeplock</a> lock; <em class='comment'>// protects everything below here</em>
-<a id='L24' name='L24'></a>  <strong class='reserved'>int</strong> valid;          <em class='comment'>// inode has been read from disk?</em>
-<a id='L25' name='L25'></a>
-<a id='L26' name='L26'></a>  <strong class='reserved'>short</strong> type;         <em class='comment'>// copy of disk inode</em>
-<a id='L27' name='L27'></a>  <strong class='reserved'>short</strong> major;
-<a id='L28' name='L28'></a>  <strong class='reserved'>short</strong> minor;
-<a id='L29' name='L29'></a>  <strong class='reserved'>short</strong> nlink;
-<a id='L30' name='L30'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> size;
-<a id='L31' name='L31'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> addrs[<a href='../S/104.html#L27' title='Defined at 27 in fs.h.'>NDIRECT</a>+1];
-<a id='L32' name='L32'></a><em class='brace'>}</em>;
-<a id='L33' name='L33'></a>
-<a id='L34' name='L34'></a><em class='comment'>// table mapping major device number to</em>
-<a id='L35' name='L35'></a><em class='comment'>// device functions</em>
-<a id='L36' name='L36'></a><strong class='reserved'>struct</strong> <a href='../R/296.html' title='Multiple referred from 8 places.'>devsw</a> <em class='brace'>{</em>
-<a id='L37' name='L37'></a>  <strong class='reserved'>int</strong> (*read)(<strong class='reserved'>struct</strong> <a href='../S/56.html#L19' title='Defined at 19 in file.h.'>inode</a>*, <strong class='reserved'>char</strong>*, <strong class='reserved'>int</strong>);
-<a id='L38' name='L38'></a>  <strong class='reserved'>int</strong> (*write)(<strong class='reserved'>struct</strong> <a href='../S/56.html#L19' title='Defined at 19 in file.h.'>inode</a>*, <strong class='reserved'>char</strong>*, <strong class='reserved'>int</strong>);
-<a id='L39' name='L39'></a><em class='brace'>}</em>;
-<a id='L40' name='L40'></a>
-<a id='L41' name='L41'></a><strong class='reserved'>extern</strong> <strong class='reserved'>struct</strong> <a href='../S/56.html#L36' title='Defined at 36 in file.h.'>devsw</a> <a href='../S/56.html#L36' title='Defined at 36 in file.h.'>devsw</a>[];
-<a id='L42' name='L42'></a>
-<a id='L43' name='L43'></a><em class='sharp'>#define</em> <a href='../R/23.html' title='Multiple referred from 2 places.'>CONSOLE</a> 1
-<a id='L44' name='L44'></a>
-<a id='L45' name='L45'></a><em class='sharp'>#endif</em>
+<a id='L17' name='L17'></a><em class='comment'>// in-memory copy of an inode</em>
+<a id='L18' name='L18'></a><strong class='reserved'>struct</strong> <a href='../R/365.html' title='Multiple referred from 62 places.'>inode</a> <em class='brace'>{</em>
+<a id='L19' name='L19'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> dev;           <em class='comment'>// Device number</em>
+<a id='L20' name='L20'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> inum;          <em class='comment'>// Inode number</em>
+<a id='L21' name='L21'></a>  <strong class='reserved'>int</strong> ref;            <em class='comment'>// Reference count</em>
+<a id='L22' name='L22'></a>  <strong class='reserved'>struct</strong> <a href='../S/2.html#L5' title='Defined at 5 in sleeplock.h.'>sleeplock</a> lock; <em class='comment'>// protects everything below here</em>
+<a id='L23' name='L23'></a>  <strong class='reserved'>int</strong> valid;          <em class='comment'>// inode has been read from disk?</em>
+<a id='L24' name='L24'></a>
+<a id='L25' name='L25'></a>  <strong class='reserved'>short</strong> type;         <em class='comment'>// copy of disk inode</em>
+<a id='L26' name='L26'></a>  <strong class='reserved'>short</strong> major;
+<a id='L27' name='L27'></a>  <strong class='reserved'>short</strong> minor;
+<a id='L28' name='L28'></a>  <strong class='reserved'>short</strong> nlink;
+<a id='L29' name='L29'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> size;
+<a id='L30' name='L30'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> addrs[<a href='../S/104.html#L27' title='Defined at 27 in fs.h.'>NDIRECT</a>+1];
+<a id='L31' name='L31'></a><em class='brace'>}</em>;
+<a id='L32' name='L32'></a>
+<a id='L33' name='L33'></a><em class='comment'>// table mapping major device number to</em>
+<a id='L34' name='L34'></a><em class='comment'>// device functions</em>
+<a id='L35' name='L35'></a><strong class='reserved'>struct</strong> <a href='../R/297.html' title='Multiple referred from 8 places.'>devsw</a> <em class='brace'>{</em>
+<a id='L36' name='L36'></a>  <strong class='reserved'>int</strong> (*read)(<strong class='reserved'>struct</strong> <a href='../S/56.html#L18' title='Defined at 18 in file.h.'>inode</a>*, <strong class='reserved'>char</strong>*, <strong class='reserved'>int</strong>);
+<a id='L37' name='L37'></a>  <strong class='reserved'>int</strong> (*write)(<strong class='reserved'>struct</strong> <a href='../S/56.html#L18' title='Defined at 18 in file.h.'>inode</a>*, <strong class='reserved'>char</strong>*, <strong class='reserved'>int</strong>);
+<a id='L38' name='L38'></a><em class='brace'>}</em>;
+<a id='L39' name='L39'></a>
+<a id='L40' name='L40'></a><strong class='reserved'>extern</strong> <strong class='reserved'>struct</strong> <a href='../S/56.html#L35' title='Defined at 35 in file.h.'>devsw</a> <a href='../S/56.html#L35' title='Defined at 35 in file.h.'>devsw</a>[];
+<a id='L41' name='L41'></a>
+<a id='L42' name='L42'></a><em class='sharp'>#define</em> <a href='../R/23.html' title='Multiple referred from 2 places.'>CONSOLE</a> 1
+<a id='L43' name='L43'></a>
+<a id='L44' name='L44'></a><em class='sharp'>#endif</em>
 </pre>
 <hr />
 <a id='BOTTOM' name='BOTTOM'></a>

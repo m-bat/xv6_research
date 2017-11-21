@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>lapicw</title>
+<title>ioapicwrite</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,26 +9,10 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/155.html#L61'>lapicw</a>             61 lapic.c          lapicw(SVR, ENABLE | (T_IRQ0 + IRQ_SPURIOUS));</span>
-<span class='curline'><a href='../S/155.html#L67'>lapicw</a>             67 lapic.c          lapicw(TDCR, X1);</span>
-<span class='curline'><a href='../S/155.html#L68'>lapicw</a>             68 lapic.c          lapicw(TIMER, PERIODIC | (T_IRQ0 + IRQ_TIMER));</span>
-<span class='curline'><a href='../S/155.html#L69'>lapicw</a>             69 lapic.c          lapicw(TICR, 10000000);</span>
-<span class='curline'><a href='../S/155.html#L72'>lapicw</a>             72 lapic.c          lapicw(LINT0, MASKED);</span>
-<span class='curline'><a href='../S/155.html#L73'>lapicw</a>             73 lapic.c          lapicw(LINT1, MASKED);</span>
-<span class='curline'><a href='../S/155.html#L78'>lapicw</a>             78 lapic.c            lapicw(PCINT, MASKED);</span>
-<span class='curline'><a href='../S/155.html#L81'>lapicw</a>             81 lapic.c          lapicw(ERROR, T_IRQ0 + IRQ_ERROR);</span>
-<span class='curline'><a href='../S/155.html#L84'>lapicw</a>             84 lapic.c          lapicw(ESR, 0);</span>
-<span class='curline'><a href='../S/155.html#L85'>lapicw</a>             85 lapic.c          lapicw(ESR, 0);</span>
-<span class='curline'><a href='../S/155.html#L88'>lapicw</a>             88 lapic.c          lapicw(EOI, 0);</span>
-<span class='curline'><a href='../S/155.html#L91'>lapicw</a>             91 lapic.c          lapicw(ICRHI, 0);</span>
-<span class='curline'><a href='../S/155.html#L92'>lapicw</a>             92 lapic.c          lapicw(ICRLO, BCAST | INIT | LEVEL);</span>
-<span class='curline'><a href='../S/155.html#L97'>lapicw</a>             97 lapic.c          lapicw(TPR, 0);</span>
-<span class='curline'><a href='../S/155.html#L113'>lapicw</a>            113 lapic.c            lapicw(EOI, 0);</span>
-<span class='curline'><a href='../S/155.html#L145'>lapicw</a>            145 lapic.c          lapicw(ICRHI, apicid&lt;&lt;24);</span>
-<span class='curline'><a href='../S/155.html#L146'>lapicw</a>            146 lapic.c          lapicw(ICRLO, INIT | LEVEL | ASSERT);</span>
-<span class='curline'><a href='../S/155.html#L148'>lapicw</a>            148 lapic.c          lapicw(ICRLO, INIT | LEVEL);</span>
-<span class='curline'><a href='../S/155.html#L157'>lapicw</a>            157 lapic.c            lapicw(ICRHI, apicid&lt;&lt;24);</span>
-<span class='curline'><a href='../S/155.html#L158'>lapicw</a>            158 lapic.c            lapicw(ICRLO, STARTUP | (addr&gt;&gt;12));</span>
+<span class='curline'><a href='../S/106.html#L62'>ioapicwrite</a>        62 ioapic.c           ioapicwrite(REG_TABLE+2*i, INT_DISABLED | (T_IRQ0 + i));</span>
+<span class='curline'><a href='../S/106.html#L63'>ioapicwrite</a>        63 ioapic.c           ioapicwrite(REG_TABLE+2*i+1, 0);</span>
+<span class='curline'><a href='../S/106.html#L73'>ioapicwrite</a>        73 ioapic.c         ioapicwrite(REG_TABLE+2*irq, T_IRQ0 + irq);</span>
+<span class='curline'><a href='../S/106.html#L74'>ioapicwrite</a>        74 ioapic.c         ioapicwrite(REG_TABLE+2*irq+1, cpunum &lt;&lt; 24);</span>
 </pre>
 </body>
 </html>

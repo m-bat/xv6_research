@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>context</title>
+<title>consputc</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,17 +9,17 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/119.html#L7'>context</a>             7 defs.h         struct context;</span>
-<span class='curline'><a href='../S/119.html#L142'>context</a>           142 defs.h         void            swtch(struct context**, struct context*);</span>
-<span class='curline'><a href='../S/64.html#L152'>context</a>           152 proc.c           sp -= sizeof *p-&gt;context;</span>
-<span class='curline'><a href='../S/64.html#L153'>context</a>           153 proc.c           p-&gt;context = (struct context*)sp;</span>
-<span class='curline'><a href='../S/64.html#L154'>context</a>           154 proc.c           memset(p-&gt;context, 0, sizeof *p-&gt;context);</span>
-<span class='curline'><a href='../S/64.html#L155'>context</a>           155 proc.c           p-&gt;context-&gt;eip = (uint)forkret;</span>
-<span class='curline'><a href='../S/64.html#L416'>context</a>           416 proc.c               swtch(&amp;(c-&gt;scheduler), p-&gt;context);</span>
-<span class='curline'><a href='../S/64.html#L450'>context</a>           450 proc.c           swtch(&amp;p-&gt;context, mycpu()-&gt;scheduler);</span>
-<span class='curline'><a href='../S/64.html#L598'>context</a>           598 proc.c               getcallerpcs((uint*)p-&gt;context-&gt;ebp+2, pc);</span>
-<span class='curline'><a href='../S/93.html#L8'>context</a>             8 proc.h           struct context *scheduler;   // swtch() here to enter scheduler</span>
-<span class='curline'><a href='../S/93.html#L69'>context</a>            69 proc.h           struct context *context;     // swtch() here to run process</span>
+<span class='curline'><a href='../S/167.html#L18'>consputc</a>           18 console.c      static void consputc(int);</span>
+<span class='curline'><a href='../S/167.html#L61'>consputc</a>           61 console.c          consputc(buf[i]);</span>
+<span class='curline'><a href='../S/167.html#L87'>consputc</a>           87 console.c            consputc(c);</span>
+<span class='curline'><a href='../S/167.html#L105'>consputc</a>          105 console.c              consputc(*s);</span>
+<span class='curline'><a href='../S/167.html#L108'>consputc</a>          108 console.c            consputc('%');</span>
+<span class='curline'><a href='../S/167.html#L112'>consputc</a>          112 console.c            consputc('%');</span>
+<span class='curline'><a href='../S/167.html#L113'>consputc</a>          113 console.c            consputc(c);</span>
+<span class='curline'><a href='../S/167.html#L241'>consputc</a>          241 console.c              consputc(BACKSPACE);</span>
+<span class='curline'><a href='../S/167.html#L247'>consputc</a>          247 console.c              consputc(BACKSPACE);</span>
+<span class='curline'><a href='../S/167.html#L254'>consputc</a>          254 console.c              consputc(c);</span>
+<span class='curline'><a href='../S/167.html#L331'>consputc</a>          331 console.c          consputc(buf[i] &amp; 0xff);</span>
 </pre>
 </body>
 </html>

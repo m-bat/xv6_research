@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>asm.h</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.4' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/asm.h</h2>
+<em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'><a href='../J/1.html' title='Multiple included from 3 places.'>INCLUDED FROM</a></h2>
+<hr />
+<pre>
+<a id='L1' name='L1'></a><em class='sharp'>#ifndef</em> <a href='../S/148.html#L2' title='Defined at 2 in asm.h.'>XV6_ASM_H</a>
+<a id='L2' name='L2'></a><em class='sharp'>#define</em> <a href='../S/148.html#L1' title='Referred from 1 in asm.h.'>XV6_ASM_H</a>
+<a id='L3' name='L3'></a>
+<a id='L4' name='L4'></a><em class='comment'>//</em>
+<a id='L5' name='L5'></a><em class='comment'>// assembler macros to create x86 segments</em>
+<a id='L6' name='L6'></a><em class='comment'>//</em>
+<a id='L7' name='L7'></a>
+<a id='L8' name='L8'></a><em class='sharp'>#define</em> SEG_NULLASM                                             \
+<a id='L9' name='L9'></a>        .word 0, 0;                                             \
+<a id='L10' name='L10'></a>        .byte 0, 0, 0, 0
+<a id='L11' name='L11'></a>
+<a id='L12' name='L12'></a><em class='comment'>// The 0xC0 means the limit is in 4096-byte units</em>
+<a id='L13' name='L13'></a><em class='comment'>// and (for executable segments) 32-bit mode.</em>
+<a id='L14' name='L14'></a><em class='sharp'>#define</em> SEG_ASM(type,base,lim)                                  \
+<a id='L15' name='L15'></a>        .word (((lim) &gt;&gt; 12) &amp; 0xffff), ((base) &amp; 0xffff);      \
+<a id='L16' name='L16'></a>        .byte (((base) &gt;&gt; 16) &amp; 0xff), (0x90 | (type)),         \
+<a id='L17' name='L17'></a>                (0xC0 | (((lim) &gt;&gt; 28) &amp; 0xf)), (((base) &gt;&gt; 24) &amp; 0xff)
+<a id='L18' name='L18'></a>
+<a id='L19' name='L19'></a><em class='sharp'>#define</em> <a href='../R/175.html' title='Multiple referred from 2 places.'>STA_X</a>     0x8       <em class='comment'>// Executable segment</em>
+<a id='L20' name='L20'></a><em class='sharp'>#define</em> STA_E     0x4       <em class='comment'>// Expand down (non-executable segments)</em>
+<a id='L21' name='L21'></a><em class='sharp'>#define</em> STA_C     0x4       <em class='comment'>// Conforming code segment (executable only)</em>
+<a id='L22' name='L22'></a><em class='sharp'>#define</em> <a href='../R/174.html' title='Multiple referred from 2 places.'>STA_W</a>     0x2       <em class='comment'>// Writeable (non-executable segments)</em>
+<a id='L23' name='L23'></a><em class='sharp'>#define</em> <a href='../R/173.html' title='Multiple referred from 2 places.'>STA_R</a>     0x2       <em class='comment'>// Readable (executable segments)</em>
+<a id='L24' name='L24'></a><em class='sharp'>#define</em> STA_A     0x1       <em class='comment'>// Accessed</em>
+<a id='L25' name='L25'></a>
+<a id='L26' name='L26'></a><em class='sharp'>#endif</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;][^][v]<a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

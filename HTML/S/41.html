@@ -26,17 +26,17 @@ This source file includes following definitions.
 <pre>
 <a id='L1' name='L1'></a><em class='comment'>// Mutual exclusion spin locks.</em>
 <a id='L2' name='L2'></a>
-<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='126.html'>types.h</a>"
-<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='119.html'>defs.h</a>"
+<a id='L3' name='L3'></a><em class='sharp'>#include</em> "<a href='127.html'>types.h</a>"
+<a id='L4' name='L4'></a><em class='sharp'>#include</em> "<a href='120.html'>defs.h</a>"
 <a id='L5' name='L5'></a><em class='sharp'>#include</em> "<a href='29.html'>param.h</a>"
 <a id='L6' name='L6'></a><em class='sharp'>#include</em> "<a href='68.html'>x86.h</a>"
 <a id='L7' name='L7'></a><em class='sharp'>#include</em> "<a href='50.html'>memlayout.h</a>"
-<a id='L8' name='L8'></a><em class='sharp'>#include</em> "<a href='122.html'>mmu.h</a>"
+<a id='L8' name='L8'></a><em class='sharp'>#include</em> "<a href='123.html'>mmu.h</a>"
 <a id='L9' name='L9'></a><em class='sharp'>#include</em> "<a href='93.html'>proc.h</a>"
 <a id='L10' name='L10'></a><em class='sharp'>#include</em> "<a href='9.html'>spinlock.h</a>"
 <a id='L11' name='L11'></a>
 <a id='L12' name='L12'></a><strong class='reserved'>void</strong>
-<a id='L13' name='L13'></a><a href='../R/358.html' title='Multiple referred from 12 places.'>initlock</a>(<strong class='reserved'>struct</strong> <a href='../S/9.html#L5' title='Defined at 5 in spinlock.h.'>spinlock</a> *lk, <strong class='reserved'>char</strong> *name)
+<a id='L13' name='L13'></a><a href='../R/361.html' title='Multiple referred from 12 places.'>initlock</a>(<strong class='reserved'>struct</strong> <a href='../S/9.html#L5' title='Defined at 5 in spinlock.h.'>spinlock</a> *lk, <strong class='reserved'>char</strong> *name)
 <a id='L14' name='L14'></a><em class='brace'>{</em>
 <a id='L15' name='L15'></a>  lk-&gt;name = name;
 <a id='L16' name='L16'></a>  lk-&gt;locked = 0;
@@ -48,11 +48,11 @@ This source file includes following definitions.
 <a id='L22' name='L22'></a><em class='comment'>// Holding a lock for a long time may cause</em>
 <a id='L23' name='L23'></a><em class='comment'>// other CPUs to waste time spinning to acquire it.</em>
 <a id='L24' name='L24'></a><strong class='reserved'>void</strong>
-<a id='L25' name='L25'></a><a href='../R/240.html' title='Multiple referred from 43 places.'>acquire</a>(<strong class='reserved'>struct</strong> <a href='../S/9.html#L5' title='Defined at 5 in spinlock.h.'>spinlock</a> *lk)
+<a id='L25' name='L25'></a><a href='../R/241.html' title='Multiple referred from 44 places.'>acquire</a>(<strong class='reserved'>struct</strong> <a href='../S/9.html#L5' title='Defined at 5 in spinlock.h.'>spinlock</a> *lk)
 <a id='L26' name='L26'></a><em class='brace'>{</em>
 <a id='L27' name='L27'></a>  <a href='../S/41.html#L101' title='Defined at 101 in spinlock.c.'>pushcli</a>(); <em class='comment'>// disable interrupts to avoid deadlock.</em>
 <a id='L28' name='L28'></a>  <strong class='reserved'>if</strong>(<a href='../S/41.html#L90' title='Defined at 90 in spinlock.c.'>holding</a>(lk))
-<a id='L29' name='L29'></a>    <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("acquire");
+<a id='L29' name='L29'></a>    <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("acquire");
 <a id='L30' name='L30'></a>
 <a id='L31' name='L31'></a>  <em class='comment'>// The xchg is atomic.</em>
 <a id='L32' name='L32'></a>  <strong class='reserved'>while</strong>(<a href='../S/68.html#L124' title='Defined at 124 in x86.h.'>xchg</a>(&amp;lk-&gt;locked, 1) != 0)
@@ -64,16 +64,16 @@ This source file includes following definitions.
 <a id='L38' name='L38'></a>  __sync_synchronize();
 <a id='L39' name='L39'></a>
 <a id='L40' name='L40'></a>  <em class='comment'>// Record info about lock acquisition for debugging.</em>
-<a id='L41' name='L41'></a>  lk-&gt;<a href='../S/93.html#L6' title='Defined at 6 in proc.h.'>cpu</a> = <a href='../S/64.html#L70' title='Defined at 70 in proc.c.'>mycpu</a>();
+<a id='L41' name='L41'></a>  lk-&gt;<a href='../S/93.html#L6' title='Defined at 6 in proc.h.'>cpu</a> = <a href='../S/64.html#L71' title='Defined at 71 in proc.c.'>mycpu</a>();
 <a id='L42' name='L42'></a>  <a href='../S/41.html#L72' title='Defined at 72 in spinlock.c.'>getcallerpcs</a>(&amp;lk, lk-&gt;pcs);
 <a id='L43' name='L43'></a><em class='brace'>}</em>
 <a id='L44' name='L44'></a>
 <a id='L45' name='L45'></a><em class='comment'>// Release the lock.</em>
 <a id='L46' name='L46'></a><strong class='reserved'>void</strong>
-<a id='L47' name='L47'></a><a href='../R/479.html' title='Multiple referred from 56 places.'>release</a>(<strong class='reserved'>struct</strong> <a href='../S/9.html#L5' title='Defined at 5 in spinlock.h.'>spinlock</a> *lk)
+<a id='L47' name='L47'></a><a href='../R/484.html' title='Multiple referred from 58 places.'>release</a>(<strong class='reserved'>struct</strong> <a href='../S/9.html#L5' title='Defined at 5 in spinlock.h.'>spinlock</a> *lk)
 <a id='L48' name='L48'></a><em class='brace'>{</em>
 <a id='L49' name='L49'></a>  <strong class='reserved'>if</strong>(!<a href='../S/41.html#L90' title='Defined at 90 in spinlock.c.'>holding</a>(lk))
-<a id='L50' name='L50'></a>    <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("release");
+<a id='L50' name='L50'></a>    <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("release");
 <a id='L51' name='L51'></a>
 <a id='L52' name='L52'></a>  lk-&gt;pcs[0] = 0;
 <a id='L53' name='L53'></a>  lk-&gt;<a href='../S/93.html#L6' title='Defined at 6 in proc.h.'>cpu</a> = 0;
@@ -95,17 +95,17 @@ This source file includes following definitions.
 <a id='L69' name='L69'></a>
 <a id='L70' name='L70'></a><em class='comment'>// Record the current call stack in pcs[] by following the %ebp chain.</em>
 <a id='L71' name='L71'></a><strong class='reserved'>void</strong>
-<a id='L72' name='L72'></a><a href='../R/336.html' title='Multiple referred from 4 places.'>getcallerpcs</a>(<strong class='reserved'>void</strong> *v, <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> pcs[])
+<a id='L72' name='L72'></a><a href='../R/339.html' title='Multiple referred from 4 places.'>getcallerpcs</a>(<strong class='reserved'>void</strong> *v, <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> pcs[])
 <a id='L73' name='L73'></a><em class='brace'>{</em>
-<a id='L74' name='L74'></a>  <a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a> *ebp;
+<a id='L74' name='L74'></a>  <a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a> *ebp;
 <a id='L75' name='L75'></a>  <strong class='reserved'>int</strong> i;
 <a id='L76' name='L76'></a>
-<a id='L77' name='L77'></a>  ebp = (<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a>*)v - 2;
+<a id='L77' name='L77'></a>  ebp = (<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a>*)v - 2;
 <a id='L78' name='L78'></a>  <strong class='reserved'>for</strong>(i = 0; i &lt; 10; i++)<em class='brace'>{</em>
-<a id='L79' name='L79'></a>    <strong class='reserved'>if</strong>(ebp == 0 || ebp &lt; (<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a>*)<a href='../S/50.html#L23' title='Defined at 23 in memlayout.h.'>KERNBASE</a> || ebp == (<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a>*)0xffffffff)
+<a id='L79' name='L79'></a>    <strong class='reserved'>if</strong>(ebp == 0 || ebp &lt; (<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a>*)<a href='../S/50.html#L23' title='Defined at 23 in memlayout.h.'>KERNBASE</a> || ebp == (<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a>*)0xffffffff)
 <a id='L80' name='L80'></a>      <strong class='reserved'>break</strong>;
 <a id='L81' name='L81'></a>    pcs[i] = ebp[1];     <em class='comment'>// saved %eip</em>
-<a id='L82' name='L82'></a>    ebp = (<a href='../S/126.html#L4' title='Defined at 4 in types.h.'>uint</a>*)ebp[0]; <em class='comment'>// saved %ebp</em>
+<a id='L82' name='L82'></a>    ebp = (<a href='../S/127.html#L4' title='Defined at 4 in types.h.'>uint</a>*)ebp[0]; <em class='comment'>// saved %ebp</em>
 <a id='L83' name='L83'></a>  <em class='brace'>}</em>
 <a id='L84' name='L84'></a>  <strong class='reserved'>for</strong>(; i &lt; 10; i++)
 <a id='L85' name='L85'></a>    pcs[i] = 0;
@@ -113,9 +113,9 @@ This source file includes following definitions.
 <a id='L87' name='L87'></a>
 <a id='L88' name='L88'></a><em class='comment'>// Check whether this cpu is holding the lock.</em>
 <a id='L89' name='L89'></a><strong class='reserved'>int</strong>
-<a id='L90' name='L90'></a><a href='../R/343.html' title='Multiple referred from 4 places.'>holding</a>(<strong class='reserved'>struct</strong> <a href='../S/9.html#L5' title='Defined at 5 in spinlock.h.'>spinlock</a> *lock)
+<a id='L90' name='L90'></a><a href='../R/346.html' title='Multiple referred from 4 places.'>holding</a>(<strong class='reserved'>struct</strong> <a href='../S/9.html#L5' title='Defined at 5 in spinlock.h.'>spinlock</a> *lock)
 <a id='L91' name='L91'></a><em class='brace'>{</em>
-<a id='L92' name='L92'></a>  <strong class='reserved'>return</strong> lock-&gt;locked &amp;&amp; lock-&gt;<a href='../S/93.html#L6' title='Defined at 6 in proc.h.'>cpu</a> == <a href='../S/64.html#L70' title='Defined at 70 in proc.c.'>mycpu</a>();
+<a id='L92' name='L92'></a>  <strong class='reserved'>return</strong> lock-&gt;locked &amp;&amp; lock-&gt;<a href='../S/93.html#L6' title='Defined at 6 in proc.h.'>cpu</a> == <a href='../S/64.html#L71' title='Defined at 71 in proc.c.'>mycpu</a>();
 <a id='L93' name='L93'></a><em class='brace'>}</em>
 <a id='L94' name='L94'></a>
 <a id='L95' name='L95'></a>
@@ -124,25 +124,25 @@ This source file includes following definitions.
 <a id='L98' name='L98'></a><em class='comment'>// are off, then pushcli, popcli leaves them off.</em>
 <a id='L99' name='L99'></a>
 <a id='L100' name='L100'></a><strong class='reserved'>void</strong>
-<a id='L101' name='L101'></a><a href='../R/468.html' title='Multiple referred from 5 places.'>pushcli</a>(<strong class='reserved'>void</strong>)
+<a id='L101' name='L101'></a><a href='../R/473.html' title='Multiple referred from 5 places.'>pushcli</a>(<strong class='reserved'>void</strong>)
 <a id='L102' name='L102'></a><em class='brace'>{</em>
 <a id='L103' name='L103'></a>  <strong class='reserved'>int</strong> eflags;
 <a id='L104' name='L104'></a>
 <a id='L105' name='L105'></a>  eflags = <a href='../S/68.html#L98' title='Defined at 98 in x86.h.'>readeflags</a>();
 <a id='L106' name='L106'></a>  <a href='../S/68.html#L112' title='Defined at 112 in x86.h.'>cli</a>();
-<a id='L107' name='L107'></a>  <strong class='reserved'>if</strong>(<a href='../S/64.html#L70' title='Defined at 70 in proc.c.'>mycpu</a>()-&gt;ncli == 0)
-<a id='L108' name='L108'></a>    <a href='../S/64.html#L70' title='Defined at 70 in proc.c.'>mycpu</a>()-&gt;intena = eflags &amp; <a href='../S/122.html#L14' title='Defined at 14 in mmu.h.'>FL_IF</a>;
-<a id='L109' name='L109'></a>  <a href='../S/64.html#L70' title='Defined at 70 in proc.c.'>mycpu</a>()-&gt;ncli += 1;
+<a id='L107' name='L107'></a>  <strong class='reserved'>if</strong>(<a href='../S/64.html#L71' title='Defined at 71 in proc.c.'>mycpu</a>()-&gt;ncli == 0)
+<a id='L108' name='L108'></a>    <a href='../S/64.html#L71' title='Defined at 71 in proc.c.'>mycpu</a>()-&gt;intena = eflags &amp; <a href='../S/123.html#L14' title='Defined at 14 in mmu.h.'>FL_IF</a>;
+<a id='L109' name='L109'></a>  <a href='../S/64.html#L71' title='Defined at 71 in proc.c.'>mycpu</a>()-&gt;ncli += 1;
 <a id='L110' name='L110'></a><em class='brace'>}</em>
 <a id='L111' name='L111'></a>
 <a id='L112' name='L112'></a><strong class='reserved'>void</strong>
-<a id='L113' name='L113'></a><a href='../R/458.html' title='Multiple referred from 5 places.'>popcli</a>(<strong class='reserved'>void</strong>)
+<a id='L113' name='L113'></a><a href='../R/463.html' title='Multiple referred from 5 places.'>popcli</a>(<strong class='reserved'>void</strong>)
 <a id='L114' name='L114'></a><em class='brace'>{</em>
-<a id='L115' name='L115'></a>  <strong class='reserved'>if</strong>(<a href='../S/68.html#L98' title='Defined at 98 in x86.h.'>readeflags</a>()&amp;<a href='../S/122.html#L14' title='Defined at 14 in mmu.h.'>FL_IF</a>)
-<a id='L116' name='L116'></a>    <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("popcli - interruptible");
-<a id='L117' name='L117'></a>  <strong class='reserved'>if</strong>(--<a href='../S/64.html#L70' title='Defined at 70 in proc.c.'>mycpu</a>()-&gt;ncli &lt; 0)
-<a id='L118' name='L118'></a>    <a href='../D/535.html' title='Multiple defined in 2 places.'>panic</a>("popcli");
-<a id='L119' name='L119'></a>  <strong class='reserved'>if</strong>(<a href='../S/64.html#L70' title='Defined at 70 in proc.c.'>mycpu</a>()-&gt;ncli == 0 &amp;&amp; <a href='../S/64.html#L70' title='Defined at 70 in proc.c.'>mycpu</a>()-&gt;intena)    
+<a id='L115' name='L115'></a>  <strong class='reserved'>if</strong>(<a href='../S/68.html#L98' title='Defined at 98 in x86.h.'>readeflags</a>()&amp;<a href='../S/123.html#L14' title='Defined at 14 in mmu.h.'>FL_IF</a>)
+<a id='L116' name='L116'></a>    <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("popcli - interruptible");
+<a id='L117' name='L117'></a>  <strong class='reserved'>if</strong>(--<a href='../S/64.html#L71' title='Defined at 71 in proc.c.'>mycpu</a>()-&gt;ncli &lt; 0)
+<a id='L118' name='L118'></a>    <a href='../D/538.html' title='Multiple defined in 2 places.'>panic</a>("popcli");
+<a id='L119' name='L119'></a>  <strong class='reserved'>if</strong>(<a href='../S/64.html#L71' title='Defined at 71 in proc.c.'>mycpu</a>()-&gt;ncli == 0 &amp;&amp; <a href='../S/64.html#L71' title='Defined at 71 in proc.c.'>mycpu</a>()-&gt;intena)    
 <a id='L120' name='L120'></a>    <a href='../S/68.html#L118' title='Defined at 118 in x86.h.'>sti</a>();    
 <a id='L121' name='L121'></a><em class='brace'>}</em>
 <a id='L122' name='L122'></a>

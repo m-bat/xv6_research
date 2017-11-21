@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>scheduler</title>
+<title>ptable_t</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,11 +9,9 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/118.html#L124'>scheduler</a>         124 defs.h         void            scheduler(void) __attribute__((noreturn));</span>
-<span class='curline'><a href='../S/154.html#L65'>scheduler</a>          65 main.c           scheduler();     // start running processes</span>
-<span class='curline'><a href='../S/63.html#L421'>scheduler</a>         421 proc.c               swtch(&amp;(c-&gt;scheduler), p-&gt;context);</span>
-<span class='curline'><a href='../S/63.html#L455'>scheduler</a>         455 proc.c           swtch(&amp;p-&gt;context, mycpu()-&gt;scheduler);</span>
-<span class='curline'><a href='../S/92.html#L8'>scheduler</a>           8 proc.h           struct context *scheduler;   // swtch() here to enter scheduler</span>
+<span class='curline'><a href='../S/64.html#L34'>ptable_t</a>           34 proc.c         struct ptable_t *ptable;</span>
+<span class='curline'><a href='../S/64.html#L53'>ptable_t</a>           53 proc.c           if ((ptable = (struct ptable_t *)kalloc(ALLOC_KGLOBAL)) == 0) {</span>
+<span class='curline'><a href='../S/162.html#L22'>ptable_t</a>           22 vm.c           extern struct ptable_t *ptable;</span>
 </pre>
 </body>
 </html>

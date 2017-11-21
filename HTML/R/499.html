@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-<title>sleep</title>
+<title>setptew</title>
 <meta name='robots' content='noindex,nofollow' />
 <meta name='generator' content='GLOBAL-6.5.4' />
 <meta http-equiv='Content-Style-Type' content='text/css' />
@@ -9,23 +9,25 @@
 </head>
 <body>
 <pre>
-<span class='curline'><a href='../S/163.html#L293'>sleep</a>             293 console.c            sleep(&amp;input.r, &amp;cons-&gt;lock);</span>
-<span class='curline'><a href='../S/119.html#L130'>sleep</a>             130 defs.h         void            sleep(void*, struct spinlock*);</span>
-<span class='curline'><a href='../S/144.html#L163'>sleep</a>             163 ide.c              sleep(b, &amp;idelock);</span>
-<span class='curline'><a href='../S/196.html#L131'>sleep</a>             131 log.c                sleep(&amp;log, &amp;log.lock);</span>
-<span class='curline'><a href='../S/196.html#L134'>sleep</a>             134 log.c                sleep(&amp;log, &amp;log.lock);</span>
-<span class='curline'><a href='../S/6.html#L13'>sleep</a>              13 mysleep.c        sleep(n);</span>
-<span class='curline'><a href='../S/95.html#L94'>sleep</a>              94 pipe.c               sleep(&amp;p-&gt;nwrite, &amp;p-&gt;lock);  //DOC: pipewrite-sleep</span>
-<span class='curline'><a href='../S/95.html#L114'>sleep</a>             114 pipe.c             sleep(&amp;p-&gt;nread, &amp;p-&gt;lock); //DOC: piperead-sleep</span>
-<span class='curline'><a href='../S/64.html#L380'>sleep</a>             380 proc.c             sleep(curproc, &amp;ptable-&gt;lock);  //DOC: wait-sleep</span>
-<span class='curline'><a href='../S/138.html#L27'>sleep</a>              27 sleeplock.c        sleep(lk, &amp;lk-&gt;lk);</span>
-<span class='curline'><a href='../S/102.html#L74'>sleep</a>              74 sysproc.c          sleep(&amp;ticks, tickslock);</span>
-<span class='curline'><a href='../S/189.html#L27'>sleep</a>              27 user.h         int sleep(int);</span>
-<span class='curline'><a href='../S/47.html#L107'>sleep</a>             107 usertests.c      sleep(1);</span>
-<span class='curline'><a href='../S/47.html#L1524'>sleep</a>            1524 usertests.c          for(;;) sleep(1000);</span>
-<span class='curline'><a href='../S/47.html#L1577'>sleep</a>            1577 usertests.c        sleep(0);</span>
-<span class='curline'><a href='../S/47.html#L1578'>sleep</a>            1578 usertests.c        sleep(0);</span>
-<span class='curline'><a href='../S/81.html#L12'>sleep</a>              12 zombie.c           sleep(5);  // Let child exit before parent.</span>
+<span class='curline'><a href='../S/120.html#L220'>setptew</a>           220 defs.h         void            setptew(pde_t *pgdir, char *uva, uint size, uint c);</span>
+<span class='curline'><a href='../S/15.html#L93'>setptew</a>            93 file.c             setptew(p-&gt;pgdir, (char *)f, PGSIZE, 1);</span>
+<span class='curline'><a href='../S/95.html#L36'>setptew</a>            36 pipe.c           setptew(pr-&gt;pgdir, (char *)p, PGSIZE, 1);</span>
+<span class='curline'><a href='../S/162.html#L323'>setptew</a>           323 vm.c               //setptew(p-&gt;pgdir, (char *)idt, PGSIZE, 1);</span>
+<span class='curline'><a href='../S/162.html#L324'>setptew</a>           324 vm.c               //setptew(p-&gt;pgdir, (char *)mem_inituvm, PGSIZE, 1);;      </span>
+<span class='curline'><a href='../S/162.html#L325'>setptew</a>           325 vm.c               //setptew(p-&gt;pgdir, (char *)&amp;ticks, PGSIZE, 1);</span>
+<span class='curline'><a href='../S/162.html#L326'>setptew</a>           326 vm.c               //setptew(p-&gt;pgdir, (char *)&amp;icache, sizeof(icache), 1);</span>
+<span class='curline'><a href='../S/162.html#L327'>setptew</a>           327 vm.c               //setptew(p-&gt;pgdir, (char *)idequeue, sizeof(idequeue), 1);    </span>
+<span class='curline'><a href='../S/162.html#L328'>setptew</a>           328 vm.c               //setptew(p-&gt;pgdir, (char *)tickslock, PGSIZE, 1);   </span>
+<span class='curline'><a href='../S/162.html#L329'>setptew</a>           329 vm.c               //setptew(p-&gt;pgdir, (char *)lapic, PGSIZE, 1);        </span>
+<span class='curline'><a href='../S/162.html#L330'>setptew</a>           330 vm.c               //setptew(p-&gt;pgdir, (char *)ptable, PGSIZE, 1);</span>
+<span class='curline'><a href='../S/162.html#L331'>setptew</a>           331 vm.c               //setptew(p-&gt;pgdir, (char *)&amp;sb, sizeof(sb), 1);</span>
+<span class='curline'><a href='../S/162.html#L332'>setptew</a>           332 vm.c               //setptew(p-&gt;pgdir, (char *)&amp;bcache, sizeof(bcache), 1);</span>
+<span class='curline'><a href='../S/162.html#L333'>setptew</a>           333 vm.c               //setptew(p-&gt;pgdir, (char *)&amp;kmem, sizeof(kmem), 1);    </span>
+<span class='curline'><a href='../S/162.html#L335'>setptew</a>           335 vm.c               </span>
+<span class='curline'><a href='../S/162.html#L339'>setptew</a>           339 vm.c               //********* Kenel Global (Optimisation)  *********************</span>
+<span class='curline'><a href='../S/162.html#L346'>setptew</a>           346 vm.c               cprintf("DEBUG: bcache size %d\n", sizeof(bcache));</span>
+<span class='curline'><a href='../S/162.html#L360'>setptew</a>           360 vm.c               //Because fork is duped from the original process, ofile is made writeable.</span>
+<span class='curline'><a href='../S/162.html#L363'>setptew</a>           363 vm.c                   continue;</span>
 </pre>
 </body>
 </html>
