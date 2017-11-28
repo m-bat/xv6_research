@@ -134,6 +134,14 @@ trap(struct trapframe *tf)
     //panic("T_PGFLT");
     //exit();    
     break;
+
+  case T_NMI:
+    cprintf("DEBUG: T_NMI call\n");
+    break;
+
+  case T_STACK:
+    cprintf("DEBUG: T_STACK call\n");
+    break;
     
   //PAGEBREAK: 13
   default:
