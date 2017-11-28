@@ -325,11 +325,11 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, (char *)cons, PGSIZE, 1);
     setptew(p->pgdir, (char *)tickslock, PGSIZE, 1);
     setptew(p->pgdir, (char *)ptable, PGSIZE, 1);
-    setptew(p->pgdir, (char *)(&bcache) - PGSIZE, PGSIZE, 1);   //scheduler context stack
+    setptew(p->pgdir, (char *)(&bcache) - PGSIZE, PGSIZE, 3);   //scheduler context stack
    
      //******* Life Externsion ********************************************    
     setptew(p->pgdir, (char *)&icache, sizeof(icache), 1);
-    setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 1);
+    setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 4);
 
     //********************************************************************
     //setptew(p->pgdir, (char *)(&bcache + 4096), 1, 1);
@@ -566,6 +566,16 @@ setptew(pde_t *pgdir, char *uva, uint size, uint c)
 
   for (;;) {
     pte = walkpgdir(pgdir, a);
+
+
+    /*
+    if (c == 3) {
+      cprintf("DEBUG: setptew: stack pte %x\n", pte);
+    }
+    if (c == 4) {
+      cprintf("DEBUG: setptew: bcache pte %x\n", pte);
+    }
+    */
   
     if (pte == 0)
       panic("setptew");
