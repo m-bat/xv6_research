@@ -283,7 +283,7 @@ void
 switchuvm_ro(struct proc *p, const int n)
 {
   int i;
-  
+ 
   if(p == 0)
     panic("switchuvm: no process");
   if(p->kstack == 0)
@@ -300,7 +300,7 @@ switchuvm_ro(struct proc *p, const int n)
   // setting IOPL=0 in eflags *and* iomb beyond the tss segment limit
   // forbids I/O instructions (e.g., inb and outb) from user space
   mycpu()->ts.iomb = (ushort) 0xFFFF;
-  ltr(SEG_TSS << 3);
+  ltr(SEG_TSS << 3); 
 
     // add manabu 10/16  
   if (n) {
@@ -316,17 +316,26 @@ switchuvm_ro(struct proc *p, const int n)
     //cprintf("ptable size %d\n", size);
     //cprintf("DEBUG: keme size: %x\n", sizeof(kmem));
 
+    //cprintf("DEBUG: bcache: %x\n", (char *)(&bcache));
+    //cprintf("DEBUG: bcache - PGSIZE: %x\n", (char *)(&bcache) - PGSIZE);    
+
     //********* Kenel Global (Essential requirement)  ********************
     //下記二つのデータを書き込み可能にしなければ exec すら実行されない
     setptew(p->pgdir, (char *)cpus, PGSIZE, 1);    
     setptew(p->pgdir, (char *)cons, PGSIZE, 1);
     setptew(p->pgdir, (char *)tickslock, PGSIZE, 1);
     setptew(p->pgdir, (char *)ptable, PGSIZE, 1);
-    //setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 1);
+    setptew(p->pgdir, (char *)(&bcache) - PGSIZE, PGSIZE, 1);   //scheduler context stack
+   
+     //******* Life Externsion ********************************************    
+    setptew(p->pgdir, (char *)&icache, sizeof(icache), 1);
+    setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 1);
+
+    //********************************************************************
+    //setptew(p->pgdir, (char *)(&bcache + 4096), 1, 1);
     //setptew(p->pgdir, (char *)idt, PGSIZE, 1);
     //setptew(p->pgdir, (char *)mem_inituvm, PGSIZE, 1);;      
     //setptew(p->pgdir, (char *)&ticks, PGSIZE, 1);
-    //setptew(p->pgdir, (char *)&icache, sizeof(icache), 1);
     //setptew(p->pgdir, (char *)idequeue, sizeof(idequeue), 1);        
     //setptew(p->pgdir, (char *)lapic, PGSIZE, 1);        
     //setptew(p->pgdir, (char *)&sb, sizeof(sb), 1);    
@@ -336,7 +345,7 @@ switchuvm_ro(struct proc *p, const int n)
     //index of test array    
     setptew(p->pgdir, (char *)&plist_index, sizeof(plist_index), 1);
 
-    //********* Kenel Global (Optimisation)  *********************
+    //********* Kenel Global (Optimisation)  *****************************
     
     for (i = 0; i < 100; i++) {
       //cprintf("DEBUG: setptew &plist[%d] %x\n", i, &plist[i]);
@@ -346,10 +355,10 @@ switchuvm_ro(struct proc *p, const int n)
     cprintf("DEBUG: bcache size %d\n", sizeof(bcache));
     cprintf("DEBUG: plist size %d\n", sizeof(&plist));
 
-    //********* Kernel Process Local  *************
+    //********* Kernel Process Local  ************************************
     setptew(p->pgdir, p->kstack, KSTACKSIZE, 1);
 
-    //*********************************************
+    //********************************************************************
 
     cprintf("DEBUG: process name %s\n", p->name);
     //set open filen array to be writable
@@ -367,14 +376,13 @@ switchuvm_ro(struct proc *p, const int n)
         setptew(p->pgdir, (char *)(p->ofile[i]->pipe), PGSIZE, 1);
       }
     }
-
     cprintf("DEBUG: after: kernel_ro\n");
   }
    
   lcr3(V2P(p->pgdir));  // switch to process's address space
     
   cprintf("DEBUG: after: changed lcr3\n");
-  popcli();
+  popcli();  
   //cprintf("after: popcli");
   //panic after
 }
@@ -550,9 +558,10 @@ clearptew(pde_t *pgdir, char *uva)
 void
 setptew(pde_t *pgdir, char *uva, uint size, uint c)  
 {
-  char *a, *last;
+  char *a, *last, *b;
   a = (char *)PGROUNDDOWN((uint)uva);
   last = (char *)PGROUNDDOWN(((uint)uva) + size - 1);
+  b = a;
   pte_t *pte;
 
   for (;;) {
@@ -571,6 +580,11 @@ setptew(pde_t *pgdir, char *uva, uint size, uint c)
   //flush the TLB
   if (c == 0)
     lcr3(V2P(pgdir));
+
+  if (c == 2) {
+    cprintf("setptew: bcache %x\n", &b);
+  }
+
 }
 
 //add manabu 10/24: set wite-enable kernel land data & memory
