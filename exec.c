@@ -114,14 +114,17 @@ exec(char *path, char **argv)
   }
   else {
     n = 0;
-  }  
-  switchuvm(curproc);  
+  }
+
+  switchuvm(curproc);
   freevm(oldpgdir);
-
-//************************************************************************//
-switchkvm();
-switchuvm_ro(curproc, n);
-
+ 
+  
+  //************************************************************************//
+  if (!n) {
+    switchkvm();
+    switchuvm_ro(curproc, n);    
+  }
 //****************************************************************************
   
   return 0;
