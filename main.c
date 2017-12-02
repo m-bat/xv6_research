@@ -67,6 +67,7 @@ mpmain(void)
 }
 
 pde_t entrypgdir[];  // For entry.S
+char *stack;
 
 // Start the non-boot (AP) processors.
 static void
@@ -75,7 +76,6 @@ startothers(void)
   extern uchar _binary_entryother_start[], _binary_entryother_size[];
   uchar *code;
   struct cpu *c;
-  char *stack;
 
   // Write entry code to unused memory at 0x7000.
   // The linker has placed the image of entryother.S in

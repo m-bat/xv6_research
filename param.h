@@ -5,8 +5,8 @@
 #define KSTACKSIZE 4096  // size of per-process kernel stack
 
 //add manabu 11/10`
-//#define NCPU          8  // maximum number of CPUs
-#define NCPU          1  // DEBUG
+#define NCPU          8  // maximum number of CPUs
+//#define NCPU          1  // DEBUG
 //
 
 #define NOFILE       16  // open files per process
@@ -20,7 +20,7 @@
 #define NBUF         (MAXOPBLOCKS*3)  // size of disk block cache
 #define FSSIZE       1000  // size of file system in blocks
 
-///add manabu 11/07
+//add manabu 11/07
 //#define NPROC         8
 
 #endif
