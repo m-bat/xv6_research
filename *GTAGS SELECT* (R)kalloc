@@ -1,0 +1,16 @@
+kalloc            345 console.c          if ((cons = (struct cons_lk*)kalloc(ALLOC_KGLOBAL)) == 0) {
+kalloc             76 defs.h           char*           kalloc(alloc_flag_t);
+kalloc             88 file.c             if ((f = (struct file *)kalloc(ALLOC_PLOCAL)) == 0) {
+kalloc            185 kalloc.c           if ((cpus = (struct cpu *)kalloc(ALLOC_KGLOBAL)) == 0) {
+kalloc             93 main.c               stack = kalloc(ALLOC_KGLOBAL);
+kalloc            106 mp.c               if ((lapic = (uint *)kalloc(ALLOC_KGLOBAL)) == 0) {
+kalloc             32 pipe.c             if((p = (struct pipe*)kalloc(ALLOC_PLOCAL)) == 0)
+kalloc             53 proc.c             if ((ptable = (struct ptable_t *)kalloc(ALLOC_KGLOBAL)) == 0) {
+kalloc            137 proc.c             if((p->kstack = kalloc(ALLOC_PLOCAL)) == 0){    
+kalloc            167 proc.c             if ((p->tl = (struct test_local *)kalloc(ALLOC_PLOCAL)) == 0) {
+kalloc             33 trap.c             if ((tickslock = (struct spinlock *)kalloc(ALLOC_KGLOBAL)) == 0) {
+kalloc            100 vm.c                 if((pgtab = (pte_t*)kalloc(flag)) == 0)
+kalloc            189 vm.c               if((pgdir = (pde_t*)kalloc(ALLOC_KGLOBAL)) == 0)
+kalloc            400 vm.c               mem = kalloc(ALLOC_KGLOBAL);
+kalloc            452 vm.c                 mem = kalloc(ALLOC_KGLOBAL);
+kalloc            655 vm.c                 if((mem = kalloc(ALLOC_KGLOBAL)) == 0)
