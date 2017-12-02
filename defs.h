@@ -40,6 +40,8 @@ void            fileinit(void);
 int             fileread(struct file*, char*, int n);
 int             filestat(struct file*, struct stat*);
 int             filewrite(struct file*, char*, int n);
+void            insert_file(struct file *f);
+void            remove_file(struct file *f);
 
 // fs.c
 void            readsb(int dev, struct superblock *sb);

@@ -19,7 +19,7 @@ struct {
   struct spinlock lock;
   //struct file file[NFILE];
   //add manabu
-  struct file file;  //file head 
+  struct file fhead;  //file head
 } ftable;
 
 struct file *h;
@@ -27,27 +27,11 @@ struct file *h;
 void
 fileinit(void)
 {
-  //***:add manabu 10/7 start*****
-  /*
-  struct file *f;
-  int i;
-  h = &(ftable.file);
-
+  //init file list
+  h = &(ftable.fhead);
   h->next = h;
-  h->prev = h;  for (i = 0; i < NFILE; i++) {    
-    if ((f = (struct file *)kuinfo_alloc()) == 0) {
-      panic("fileinit");
-    }
-    //insert ftable list(from head)    
-    f->prev = h;
-    f->next = h->next;
-    h->next->prev = f;
-    h->next = f;
-    f->ref = 0;
-  } 
-  */ 
-  // ****finish***********************
-  
+  h->prev = h;
+    
   initlock(&ftable.lock, "ftable");
 }
 
@@ -99,6 +83,7 @@ filealloc(void)
     //DEBUG FINISH
     
     f->ref = 1;
+    //insert_file(f);    
     //plocal_insert((char *)f); //insert plocal alloc list    
     
     release(&ftable.lock);
@@ -138,12 +123,12 @@ fileclose(struct file *f)
   ff = *f;
   f->ref = 0;
   f->type = FD_NONE;
-  
+ 
   //add manabu 10/31
   //free file struct (kuinfo_alloc)
-  kfree((char*)f);
   //
-  
+  //remove_file(f);
+  kfree((char*)f);  
   release(&ftable.lock);
 
   if(ff.type == FD_PIPE)
@@ -179,7 +164,7 @@ fileclose_plocal(struct file *f)
   
   //add manabu 10/31
   //free file struct (kuinfo_alloc)
-  kfree((char*)f);  
+  remove_file(f);
   //  
   //release(&ftable.lock);
 
@@ -190,6 +175,7 @@ fileclose_plocal(struct file *f)
     iput(ff.ip);
     end_op();
   }
+  kfree((char*)f);  
 }
 // Get metadata about file f.
 int
@@ -272,4 +258,19 @@ filewrite(struct file *f, char *addr, int n)
   }
   panic("filewrite");
 }
+
+void insert_file(struct file *f) {
+  //insert ftable list(from head)    
+  f->prev = h;
+  f->next = h->next;
+  h->next->prev = f;
+  h->next = f;
+}
+
+void remove_file(struct file *f) {
+  f->prev->next = f->next;
+  f->next->prev = f->prev;
+  f->next = f->prev = 0;
+}
+
 
