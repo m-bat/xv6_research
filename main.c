@@ -67,7 +67,7 @@ mpmain(void)
 }
 
 pde_t entrypgdir[];  // For entry.S
-char *stack;
+char *stack[NCPU - 1];
 
 // Start the non-boot (AP) processors.
 static void
@@ -76,6 +76,7 @@ startothers(void)
   extern uchar _binary_entryother_start[], _binary_entryother_size[];
   uchar *code;
   struct cpu *c;
+  int i = 0;
 
   // Write entry code to unused memory at 0x7000.
   // The linker has placed the image of entryother.S in
@@ -90,11 +91,11 @@ startothers(void)
     // Tell entryother.S what stack to use, where to enter, and what
     // pgdir to use. We cannot use kpgdir yet, because the AP processor
     // is running in low  memory, so we use entrypgdir for the APs too.
-    stack = kalloc(ALLOC_KGLOBAL);
+    stack[i] = kalloc(ALLOC_KGLOBAL);
     //DEBUG    
     //cprintf("stack %x", stack);
     //
-    *(void**)(code-4) = stack + KSTACKSIZE;
+    *(void**)(code-4) = stack[i++] + KSTACKSIZE;
     *(void**)(code-8) = mpenter;
     *(int**)(code-12) = (void *) V2P(entrypgdir);
 

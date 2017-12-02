@@ -49,7 +49,7 @@ extern struct {
   struct run *freelist_plocal;
 } kmem;
 
-extern char *stack;
+extern char *stack[NCPU - 1];
 
 // Set up CPU's kernel segment descriptors.
 // Run once on entry on each CPU.
@@ -327,8 +327,11 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, (char *)cons, PGSIZE, 1);
     setptew(p->pgdir, (char *)tickslock, PGSIZE, 1);
     setptew(p->pgdir, (char *)ptable, PGSIZE, 1);
-    setptew(p->pgdir, (char *)(&bcache) - PGSIZE, PGSIZE, 1);   //stack of scheduler context
-    setptew(p->pgdir, (char *)stack, PGSIZE, 1);
+    setptew(p->pgdir, (char *)(&bcache) - PGSIZE, PGSIZE, 1);   //stack of scheduler context (NCPU == 1)    
+    for (i = 0; i < NCPU - 1; i++) {
+      setptew(p->pgdir, (char *)stack[i], PGSIZE, 1); //NCPU >= 2
+      //cprintf("DEBUG: startothers stack[%d] %x\n", i, stack[i]);
+    }
    
      //******* Life Externsion ********************************************    
     setptew(p->pgdir, (char *)&icache, sizeof(icache), 1);
