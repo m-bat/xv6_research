@@ -99,7 +99,7 @@ filealloc(void)
     //DEBUG FINISH
     
     f->ref = 1;
-    plocal_insert((char *)f); //insert plocal alloc list    
+    //plocal_insert((char *)f); //insert plocal alloc list    
     
     release(&ftable.lock);
     return f;
