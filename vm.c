@@ -326,6 +326,7 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, (char *)cpus, PGSIZE, 1);    
     setptew(p->pgdir, (char *)cons, PGSIZE, 1);
     setptew(p->pgdir, (char *)tickslock, PGSIZE, 1);
+    setptew(p->pgdir, (char *)&ticks, PGSIZE, 1);
     setptew(p->pgdir, (char *)ptable, PGSIZE, 1);
     setptew(p->pgdir, (char *)(&bcache) - PGSIZE, PGSIZE, 1);   //stack of scheduler context (NCPU == 1)    
     for (i = 0; i < NCPU - 1; i++) {
@@ -341,7 +342,6 @@ switchuvm_ro(struct proc *p, const int n)
     //setptew(p->pgdir, (char *)(&bcache + 4096), 1, 1);
     //setptew(p->pgdir, (char *)idt, PGSIZE, 1);
     //setptew(p->pgdir, (char *)mem_inituvm, PGSIZE, 1);;      
-    //setptew(p->pgdir, (char *)&ticks, PGSIZE, 1);
     //setptew(p->pgdir, (char *)idequeue, sizeof(idequeue), 1);        
     //setptew(p->pgdir, (char *)lapic, PGSIZE, 1);        
     //setptew(p->pgdir, (char *)&sb, sizeof(sb), 1);    
