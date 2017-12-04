@@ -23,7 +23,7 @@ int
 pipealloc(struct file **f0, struct file **f1)
 {  
   struct pipe *p;
-  struct proc *pr = myproc();  
+  //struct proc *pr = myproc();  
 
   p = 0;
   *f0 = *f1 = 0;
@@ -32,13 +32,18 @@ pipealloc(struct file **f0, struct file **f1)
   if((p = (struct pipe*)kalloc(ALLOC_PLOCAL)) == 0)
     goto bad;
 
+  /*
   switchkvm();
   setptew(pr->pgdir, (char *)p, PGSIZE, 1);
-  switchuvm(pr);
-
-  cprintf("DEBUG: pipe p %x\n", p);
+  switchuvm(pr);  
+  */
   
-  p->readopen = 1;
+  //f0 = 0; //Fault Injection (Null Pointer) : file read
+  //f1 = 0; //Fault Injection (Null Pointer) : file write
+  
+  //cprintf("DEBUG: pipe p %x\n", p);
+  //p = 0;  
+  p->readopen = 1;  
   p->writeopen = 1;
   p->nwrite = 0;
   p->nread = 0;
@@ -51,6 +56,7 @@ pipealloc(struct file **f0, struct file **f1)
   (*f1)->readable = 0;
   (*f1)->writable = 1;
   (*f1)->pipe = p;
+
   return 0;
 
 //PAGEBREAK: 20
@@ -130,7 +136,7 @@ piperead(struct pipe *p, char *addr, int n)
 {
   int i;
 
-  acquire(&p->lock);
+ acquire(&p->lock);
   while(p->nread == p->nwrite && p->writeopen){  //DOC: pipe-empty
     if(myproc()->killed){
       release(&p->lock);
