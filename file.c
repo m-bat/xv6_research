@@ -163,7 +163,7 @@ fileclose_plocal(struct file *f)
   
   //acquire(&ftable.lock);
 
-  cprintf("DEBUG: f->ref %d\n", f->ref);
+  //cprintf("DEBUG: f->ref %d\n", f->ref);
   if(f->ref < 1)    
     panic("fileclose_plocal");
       
