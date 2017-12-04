@@ -381,7 +381,6 @@ exit_plocal(void)
   
   sched();
   panic("zombie exit");
-  //add manabu 11/20
 }
 
 // Wait for a child process to exit and return its pid.

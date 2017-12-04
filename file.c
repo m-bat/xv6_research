@@ -86,7 +86,7 @@ filealloc(void)
   */
 
   if ((f = (struct file *)kalloc(ALLOC_PLOCAL)) == 0) {
-    panic("fileinit");
+    panic("filealloc"); //It may not be necessary                         
   }
   else {
     switchkvm();
@@ -99,7 +99,14 @@ filealloc(void)
     //DEBUG FINISH
     
     f->ref = 1;
-    //plocal_insert((char *)f); //insert plocal alloc list    
+    
+    if (strcmp(p->parent->name, "sh") == 0) {
+      //f->ref = 0; //Fault Injection     
+      //plocal_insert((char *)f); //Test process local area: insert plocal alloc listm
+    }
+    else {
+      //f->ref = 1;
+    }
     
     release(&ftable.lock);
     return f;
@@ -159,19 +166,7 @@ fileclose(struct file *f)
 void
 fileclose_plocal(struct file *f)
 {
-  struct file ff;
-  
-  //acquire(&ftable.lock);
-
-  //cprintf("DEBUG: f->ref %d\n", f->ref);
-  if(f->ref < 1)    
-    panic("fileclose_plocal");
-      
-  if(--f->ref > 0){
-    //release(&ftable.lock);
-    return;
-  } 
-  
+  struct file ff;  
     
   ff = *f;
   f->ref = 0;

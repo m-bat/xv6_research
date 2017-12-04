@@ -41,8 +41,8 @@ pipealloc(struct file **f0, struct file **f1)
   //f0 = 0; //Fault Injection (Null Pointer) : file read
   //f1 = 0; //Fault Injection (Null Pointer) : file write
   
-  //cprintf("DEBUG: pipe p %x\n", p);
-  //p = 0;  
+  cprintf("DEBUG: pipe p %x\n", p);
+  //p = 0;  //Fault Injection (Null Pointer)
   p->readopen = 1;  
   p->writeopen = 1;
   p->nwrite = 0;

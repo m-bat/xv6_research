@@ -388,7 +388,7 @@ switchuvm_ro(struct proc *p, const int n)
   lcr3(V2P(p->pgdir));  // switch to process's address space
   cprintf("DEBUG: after: changed lcr3\n");
   popcli();  
-  //cprintf("after: popcli");
+  cprintf("DEBUG: after: popcli\n");
   //panic after
 }
 

@@ -114,7 +114,7 @@ trap(struct trapframe *tf)
     
     if (a >= (uint)get_kplocal_addr() && a <= (uint)get_devspace_addr()) {
       //access kernel process local area
-      //cprintf("LOG: Access KERNELPLOCAL! exit process %s\n", p->name);
+      cprintf("LOG: Access KERNELPLOCAL! exit process %s\n", p->name);
       exit();
     }
     else {      
