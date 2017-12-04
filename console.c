@@ -138,7 +138,7 @@ panic(char *s)
 
   //add manabu 10/30
   if (kgflag == 1) {
-    cprintf("Access KENERLGLOBAL!\n");
+    cprintf("LOG: KGFLAG==1 thus Fail Stop!\n");
   }
   else {
     cprintf("LOG: LIFE EXTENSION! As kgflag is not set, exit process %s\n", myproc()->name);
