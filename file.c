@@ -101,8 +101,9 @@ filealloc(void)
     f->ref = 1;
     
     if (strcmp(p->parent->name, "sh") == 0) {
+      //cprintf("DEBUG: Inject file struct addr %x\n", f);
       //f->ref = 0; //Fault Injection     
-      //plocal_insert((char *)f); //Test process local area: insert plocal alloc listm
+      //plocal_insert((char *)f); //Test process local area: insert plocal alloc list      
     }
     else {
       //f->ref = 1;
@@ -166,7 +167,12 @@ fileclose(struct file *f)
 void
 fileclose_plocal(struct file *f)
 {
-  struct file ff;  
+  struct file ff;
+  
+  if(--f->ref > 0){
+    //release(&ftable.lock);
+    return;
+  }
     
   ff = *f;
   f->ref = 0;
@@ -175,8 +181,7 @@ fileclose_plocal(struct file *f)
   //add manabu 10/31
   //free file struct (kuinfo_alloc)
   kfree((char*)f);  
-  //  
-  //release(&ftable.lock);
+  release(&ftable.lock); 
 
   if(ff.type == FD_PIPE)
     pipeclose_plocal(ff.pipe, ff.writable);
