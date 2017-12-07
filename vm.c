@@ -49,6 +49,14 @@ extern struct {
   struct run *freelist_plocal;
 } kmem;
 
+extern struct {
+  struct spinlock lock;
+  //struct file file[NFILE];
+  //add manabu
+  struct file file;  //file head 
+} ftable;
+
+
 extern char *stack[NCPU - 1];
 
 // Set up CPU's kernel segment descriptors.
@@ -324,19 +332,20 @@ switchuvm_ro(struct proc *p, const int n)
     //********* Kenel Global (Essential requirement)  ********************
     //下記二つのデータを書き込み可能にしなければ exec すら実行されない
     setptew(p->pgdir, (char *)cpus, PGSIZE, 1);    
-    setptew(p->pgdir, (char *)cons, PGSIZE, 1);
-    setptew(p->pgdir, (char *)tickslock, PGSIZE, 1);
-    setptew(p->pgdir, (char *)&ticks, PGSIZE, 1);
-    setptew(p->pgdir, (char *)ptable, PGSIZE, 1);
-    setptew(p->pgdir, (char *)(&bcache) - PGSIZE, PGSIZE, 1);   //stack of scheduler context (NCPU == 1)    
+    setptew(p->pgdir, (char *)cons, PGSIZE, 2);
+    setptew(p->pgdir, (char *)tickslock, PGSIZE, 3);
+    setptew(p->pgdir, (char *)&ticks, PGSIZE, 4);
+    setptew(p->pgdir, (char *)ptable, PGSIZE, 5);
+    setptew(p->pgdir, (char *)(&bcache) - PGSIZE, PGSIZE, 6);   //stack of scheduler context (NCPU == 1)    
     for (i = 0; i < NCPU - 1; i++) {
-      setptew(p->pgdir, (char *)stack[i], PGSIZE, 1); //NCPU >= 2
+      setptew(p->pgdir, (char *)stack[i], PGSIZE, 7); //NCPU >= 2
       //cprintf("DEBUG: startothers stack[%d] %x\n", i, stack[i]);
     }
    
      //******* Life Externsion ********************************************    
-    setptew(p->pgdir, (char *)&icache, sizeof(icache), 1);
-    setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 1);
+    setptew(p->pgdir, (char *)&icache, sizeof(icache), 8);    
+    setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 9);
+    //setptew(p->pgdir, (char *)&ftable, sizeof(ftable), 10);
 
     //********************************************************************
     //setptew(p->pgdir, (char *)(&bcache + 4096), 1, 1);
@@ -573,15 +582,40 @@ setptew(pde_t *pgdir, char *uva, uint size, uint c)
     pte = walkpgdir(pgdir, a);
 
 
-
     /*
-    if (c == 3) {
-      cprintf("DEBUG: setptew: cpus pte %x\n", pte);
-    }
-    if (c == 4) {
-      cprintf("DEBUG: setptew: pte %x\n", pte);
+    switch (c){
+    case 1:
+      cprintf("DEBUG: setptew:  cpus pte %x\n", pte);
+      break;
+    case 2:
+      cprintf("DEBUG: setptew:  cons pte %x\n", pte);
+      break;
+    case 3:
+      cprintf("DEBUG: setptew:  tickslock pte %x\n", pte);
+      break;
+    case 4:
+      cprintf("DEBUG: setptew:  ticks pte %x\n", pte);
+      break;
+    case 5:
+      cprintf("DEBUG: setptew:  ptable pte %x\n", pte);
+      break;
+    case 6:
+      cprintf("DEBUG: setptew:  bcache pte %x\n", pte);
+      pbreak;
+    case 7:
+      cprintf("DEBUG: setptew:  stack pte %x\n", pte);
+      break;
+    case 8:
+      cprintf("DEBUG: setptew:  icache pte %x\n", pte);
+      break;
+    case 9:
+      cprintf("DEBUG: setptew:  bcache pte %x\n", pte);
+      break;
+    case 10:
+      cprintf("DEBUG: setptew:  ftable pte %x\n", pte);
+      break;      
     } 
-    */   
+    */    
   
     if (pte == 0)
       panic("setptew");
