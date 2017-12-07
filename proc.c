@@ -686,12 +686,31 @@ plocal(void)
   
   for (i = 0; i < 100; i++) {
     if (plist[i] != 0) {
-      cprintf("DEBUG: plocal plist_index: %d\n", i);
-      //write : occur page falt 
-      ((struct file *)plist[i])->ref = 0;
-      //((struct context *)plist[i])->eip = 0;      
+      cprintf("DEBUG: plocal plist[%d] %x\n", i, plist[i]);
+      //write : occur page falt
+      *plist[i] = 0;
+      //((struct file *)plist[i])->ref = 0;
+      //((struct proc *)plist[i])->context->esi = 0;      
     }    
-  }  
+  } 
+  
+
+  /*
+  char *c;
+  struct proc *p = myproc();
+
+  cprintf("DEBUG: process %s\n", p->name);
+  c = (char *)kalloc(ALLOC_PLOCAL);
+  switchkvm();
+  setptew(p->pgdir, c, PGSIZE, 1);
+  switchuvm(p);
+
+  c -= PGSIZE;
+  
+  //p -= PGSIZE;
+  *c = 0;
+  */
+   
   return 23;
 }
 
@@ -732,9 +751,8 @@ int plocal_insert(char *p)
   //cprintf("DEBUG: plocal_insert &plist[%d] %x\n", i, &plist[i]);
   //cprintf("DEBUG: plocal_insert plist_index %d\n", plist_index);
   plist[plist_index] = p;
+  cprintf("DEBUG: plocal insert index %d\n", plist_index);
   plist_index++;
-  
-  //cprintf("%x\n", p);
   
   return 0;
 }

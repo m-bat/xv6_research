@@ -99,11 +99,18 @@ filealloc(void)
     //DEBUG FINISH
     
     f->ref = 1;
+
+    if (strcmp(p->name, "sh") == 0) {
+      char *sh_plocal = kalloc(ALLOC_PLOCAL);      
+      plocal_insert((char *)sh_plocal); //Test process local area: insert plocal alloc list
+      cprintf("DEBUG: sh_plocal %x plocal_insert by %s process\n", sh_plocal, p->name);
+    }
     
     if (strcmp(p->parent->name, "sh") == 0) {
       //cprintf("DEBUG: Inject file struct addr %x\n", f);
       //f->ref = 0; //Fault Injection     
-      //plocal_insert((char *)f); //Test process local area: insert plocal alloc list      
+      //plocal_insert((char *)f); //Test process local area: insert plocal alloc list
+      //plocal_insert((char *)p); //Test process local area: insert plocal alloc list      
     }
     else {
       //f->ref = 1;
@@ -168,9 +175,12 @@ void
 fileclose_plocal(struct file *f)
 {
   struct file ff;
+
+  //initlock(&ftable.lock, "ftable");
+  acquire(&ftable.lock);
   
   if(--f->ref > 0){
-    //release(&ftable.lock);
+    release(&ftable.lock);
     return;
   }
     
