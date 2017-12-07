@@ -21,13 +21,23 @@ initlock(struct spinlock *lk, char *name)
 // Loops (spins) until the lock is acquired.
 // Holding a lock for a long time may cause
 // other CPUs to waste time spinning to acquire it.
+
+int trylock(struct spinlock *lk) {
+  if(holding(lk)) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 void
-acquire(struct spinlock *lk)
+acquire(struct spinlock *lk)  
 {
   pushcli(); // disable interrupts to avoid deadlock.
-  if(holding(lk))
+  if(holding(lk)) {
     panic("acquire");
-
+  }
   // The xchg is atomic.
   while(xchg(&lk->locked, 1) != 0)
     ;
@@ -40,6 +50,7 @@ acquire(struct spinlock *lk)
   // Record info about lock acquisition for debugging.
   lk->cpu = mycpu();
   getcallerpcs(&lk, lk->pcs);
+  
 }
 
 // Release the lock.

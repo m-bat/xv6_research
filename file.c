@@ -177,8 +177,10 @@ fileclose_plocal(struct file *f)
   struct file ff;
 
   //initlock(&ftable.lock, "ftable");
-  acquire(&ftable.lock);
-  
+  if (!trylock(&ftable.lock)) {
+    acquire(&ftable.lock);
+  }
+        
   if(--f->ref > 0){
     release(&ftable.lock);
     return;
