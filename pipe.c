@@ -43,6 +43,7 @@ pipealloc(struct file **f0, struct file **f1)
   
   cprintf("DEBUG: pipe p %x\n", p);
   //p = 0;  //Fault Injection (Null Pointer)
+  
   p->readopen = 1;  
   p->writeopen = 1;
   p->nwrite = 0;
@@ -55,7 +56,7 @@ pipealloc(struct file **f0, struct file **f1)
   (*f1)->type = FD_PIPE;
   (*f1)->readable = 0;
   (*f1)->writable = 1;
-  (*f1)->pipe = p;
+  (*f1)->pipe = p;  
 
   return 0;
 
@@ -69,6 +70,26 @@ pipealloc(struct file **f0, struct file **f1)
     fileclose(*f1);
   return -1;
 }
+
+/*
+void
+pipeclose(struct pipe *p, int writable)
+{
+  acquire(&p->lock);
+  if(writable){
+    p->writeopen = 0;
+    wakeup(&p->nread);
+  } else {
+    p->readopen = 0;
+    wakeup(&p->nwrite);
+  }
+  if(p->readopen == 0 && p->writeopen == 0){
+    release(&p->lock);
+    kfree((char*)p);
+  } else
+    release(&p->lock);
+}
+*/
 
 void
 pipeclose(struct pipe *p, int writable)
@@ -88,10 +109,14 @@ pipeclose(struct pipe *p, int writable)
     release(&p->lock);
 }
 
-
 void
 pipeclose_plocal(struct pipe *p, int writable)  
 {
+  //initlock(&p->lock, "pipe");
+  if (!holding(&p->lock)) {
+    acquire(&p->lock);
+  }
+  
   if(writable){
     p->writeopen = 0;
     wakeup(&p->nread);
@@ -137,12 +162,12 @@ piperead(struct pipe *p, char *addr, int n)
   int i;
 
  acquire(&p->lock);
-  while(p->nread == p->nwrite && p->writeopen){  //DOC: pipe-empty
-    if(myproc()->killed){
-      release(&p->lock);
-      return -1;
-    }
-    sleep(&p->nread, &p->lock); //DOC: piperead-sleep
+ while(p->nread == p->nwrite && p->writeopen){  //DOC: pipe-empty
+   if(myproc()->killed){
+     release(&p->lock);
+     return -1;
+   }
+    sleep(&p->nread, &p->lock); //DOC: piperead-sleep  
   }
   for(i = 0; i < n; i++){  //DOC: piperead-copy
     if(p->nread == p->nwrite)
