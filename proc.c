@@ -682,8 +682,10 @@ cps(void)
 int
 plocal(void)
 {
+
+  //Protection violation test for file structure secured by sh process
+  /*
   int i = 0;
-  
   for (i = 0; i < 100; i++) {
     if (plist[i] != 0) {
       cprintf("DEBUG: plocal plist[%d] %x\n", i, plist[i]);
@@ -693,23 +695,35 @@ plocal(void)
       //((struct proc *)plist[i])->context->esi = 0;      
     }    
   } 
-  
+  */
 
-  /*
-  char *c;
+  //Protection violation test for kernel stack of sh process
+  
+  char *c1, *c2;
   struct proc *p = myproc();
 
   cprintf("DEBUG: process %s\n", p->name);
-  c = (char *)kalloc(ALLOC_PLOCAL);
-  switchkvm();
-  setptew(p->pgdir, c, PGSIZE, 1);
-  switchuvm(p);
+  c1 = (char *)kalloc(ALLOC_PLOCAL);
 
-  c -= PGSIZE;
-  
-  //p -= PGSIZE;
-  *c = 0;
+  cprintf("DEBUG: ALLOC_PLOCAL c1 addr %x\n", c1);
+  c2 = c1 + PGSIZE + PGSIZE + PGSIZE; //sh kerne stack memory 
+  cprintf("DEBUG: ALLOC_PLOCAL c2 addr %x\n", c2);
+  *c2 = 0;
+
+  /*
+  switchkvm();
+  setptew(p->pgdir, c2, PGSIZE, 1);
+  switchuvm(p);
   */
+  
+  //c += PGSIZE;
+  //switchkvm();
+  //setptew(p->pgdir, c, PGSIZE, 1);
+  //switchuvm(p);
+  
+  //c += PGSIZE;  
+  //*c = 0;
+  
    
   return 23;
 }
