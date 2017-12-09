@@ -14,3 +14,7 @@ kernel
 kernelmemfs
 mkfs
 .gdbinit
+GPATH
+GRTAGS
+GTAGS
+*#
