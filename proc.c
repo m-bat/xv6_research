@@ -697,33 +697,36 @@ plocal(void)
   } 
   */
 
-  //Protection violation test for kernel stack of sh process
-  
-  char *c1, *c2;
+  //test under consideration
+  /*
+  char *c1;
   struct proc *p = myproc();
 
   cprintf("DEBUG: process %s\n", p->name);
   c1 = (char *)kalloc(ALLOC_PLOCAL);
 
   cprintf("DEBUG: ALLOC_PLOCAL c1 addr %x\n", c1);
-  c2 = c1 + PGSIZE + PGSIZE + PGSIZE; //sh kerne stack memory 
-  cprintf("DEBUG: ALLOC_PLOCAL c2 addr %x\n", c2);
-  *c2 = 0;
+  //c2 = c1 + PGSIZE + PGSIZE + PGSIZE; //sh kerne stack memory 
+  //cprintf("DEBUG: ALLOC_PLOCAL c2 addr %x\n", c2);
+  *c1 = 0;
+  */
+  
+
+  //Protection violation test for kernel stack of other process
+  /*
+  struct proc *p;
+  for (p = ptable->proc; p < &ptable->proc[NPROC]; p++) {
+    if (p->state == SLEEPING) {
+      p->context->eip = 0;
+    }
+  }
+  */
 
   /*
   switchkvm();
   setptew(p->pgdir, c2, PGSIZE, 1);
   switchuvm(p);
-  */
-  
-  //c += PGSIZE;
-  //switchkvm();
-  //setptew(p->pgdir, c, PGSIZE, 1);
-  //switchuvm(p);
-  
-  //c += PGSIZE;  
-  //*c = 0;
-  
+  */     
    
   return 23;
 }
