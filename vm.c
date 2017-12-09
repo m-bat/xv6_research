@@ -291,9 +291,9 @@ char *mem_inituvm;
 
 void
 switchuvm_ro(struct proc *p, const int n)
-{
+{  
   int i;
- 
+  
   if(p == 0)
     panic("switchuvm: no process");
   if(p->kstack == 0)
@@ -314,10 +314,10 @@ switchuvm_ro(struct proc *p, const int n)
 
     // add manabu 10/16  
   if (n) {
-    cprintf("DEBUG: init hit or sh hit\n");
+    //cprintf("DEBUG: init hit or sh hit\n");
   }  
   else {
-    cprintf("DEBUG: before: kernel_ro\n");
+    //cprintf("DEBUG: before: kernel_ro\n");
     //cprintf("ptable addr %x\n", &ptable);
 
     set_kmem_readonly(p->pgdir);    
@@ -330,7 +330,6 @@ switchuvm_ro(struct proc *p, const int n)
     //cprintf("DEBUG: bcache - PGSIZE: %x\n", (char *)(&bcache) - PGSIZE);    
 
     //********* Kenel Global (Essential requirement)  ********************
-    //下記二つのデータを書き込み可能にしなければ exec すら実行されない
     setptew(p->pgdir, (char *)cpus, PGSIZE, 1);    
     setptew(p->pgdir, (char *)cons, PGSIZE, 2);
     setptew(p->pgdir, (char *)tickslock, PGSIZE, 3);
@@ -341,7 +340,7 @@ switchuvm_ro(struct proc *p, const int n)
       setptew(p->pgdir, (char *)stack[i], PGSIZE, 7); //NCPU >= 2
       //cprintf("DEBUG: startothers stack[%d] %x\n", i, stack[i]);
     }
-   
+    
      //******* Life Externsion ********************************************    
     setptew(p->pgdir, (char *)&icache, sizeof(icache), 8);    
     setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 9);
@@ -367,15 +366,15 @@ switchuvm_ro(struct proc *p, const int n)
       setptew(p->pgdir, (char *)&plist[i], sizeof(&plist), 1);
     }
           
-    cprintf("DEBUG: bcache size %d\n", sizeof(bcache));
-    cprintf("DEBUG: plist size %d\n", sizeof(&plist));
+    //cprintf("DEBUG: bcache size %d\n", sizeof(bcache));
+    //cprintf("DEBUG: plist size %d\n", sizeof(&plist));
 
     //********* Kernel Process Local  ************************************
     setptew(p->pgdir, p->kstack, KSTACKSIZE, 1);
 
     //********************************************************************
 
-    cprintf("DEBUG: process name %s\n", p->name);
+    //cprintf("DEBUG: process name %s\n", p->name);
     //set open filen array to be writable
     //set ofile[0], ofile[1], ofile[2] to be writable because parent process is init.
     //ofile[0] == ofile[1] == ofile[2] Even if i < 1
@@ -391,13 +390,13 @@ switchuvm_ro(struct proc *p, const int n)
         setptew(p->pgdir, (char *)(p->ofile[i]->pipe), PGSIZE, 1);
       }
     }
-    cprintf("DEBUG: after: kernel_ro\n");
+    //cprintf("DEBUG: after: kernel_ro\n");
   }
    
   lcr3(V2P(p->pgdir));  // switch to process's address space
-  cprintf("DEBUG: after: changed lcr3\n");
+  //cprintf("DEBUG: after: changed lcr3\n");
   popcli();  
-  cprintf("DEBUG: after: popcli\n");
+  //cprintf("DEBUG: after: popcli\n");
   //panic after
 }
 
@@ -572,10 +571,10 @@ clearptew(pde_t *pgdir, char *uva)
 void
 setptew(pde_t *pgdir, char *uva, uint size, uint c)  
 {
-  char *a, *last, *b;
+  char *a, *last;
   a = (char *)PGROUNDDOWN((uint)uva);
   last = (char *)PGROUNDDOWN(((uint)uva) + size - 1);
-  b = a;
+  //b = a;
   pte_t *pte;
 
   for (;;) {
@@ -632,9 +631,8 @@ setptew(pde_t *pgdir, char *uva, uint size, uint c)
     lcr3(V2P(pgdir));
 
   if (c == 2) {
-    cprintf("setptew: bcache %x\n", &b);
+    //cprintf("setptew: bcache %x\n", &b);
   }
-
 }
 
 //add manabu 10/24: set wite-enable kernel land data & memory

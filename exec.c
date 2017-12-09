@@ -13,6 +13,8 @@
 #include "buf.h"
 #include "spinlock.h"
 
+#define RDTSC(X) asm volatile ("rdtsc" : "=A" (X))
+
 int
 exec(char *path, char **argv)
 {
@@ -122,8 +124,14 @@ exec(char *path, char **argv)
   
   //************************************************************************//
   if (!n) {
+    uint stime = 0, etime = 0;
+    RDTSC(stime);
+    
     switchkvm();
-    switchuvm_ro(curproc, n);    
+    switchuvm_ro(curproc, n);
+    
+    RDTSC(etime);
+    cprintf("LOG: time %d\n", etime - stime);
   }
 //****************************************************************************
   
