@@ -1,0 +1,1917 @@
+<HTML><HEAD><TITLE>
+Detailed report on module anonymous
+</TITLE>
+</HEAD>
+<BODY>
+<H1><A NAME="summary">Detailed report on module anonymous</A></H1>
+<TABLE BORDER WIDTH=100%>
+<TR>
+<TH BGCOLOR="AQUA" WIDTH=70%>Metric</TH><TH BGCOLOR="AQUA" WIDTH=10%>Tag</TH><TH BGCOLOR="AQUA" WIDTH=10%>Overall</TH><TH BGCOLOR="AQUA" WIDTH=10%>Per Function</TH></TR>
+<TR>
+<TD>Lines of Code</TD><TD>LOC</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>  5678</STRONG></TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>McCabe's Cyclomatic Number</TD><TD>MVG</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>  1376</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>Lines of Comment</TD><TD>COM</TD><TD ALIGN=RIGHT>   539</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>********</STRONG></TD></TR>
+<TR>
+<TD>LOC/COM</TD><TD>L_C</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>10.534</EM></TD><TD>&nbsp;</TD></TR>
+<TR>
+<TD>MVG/COM</TD><TD>M_C</TD><TD ALIGN=RIGHT> 2.553</TD><TD>&nbsp;</TD></TR>
+<TR>
+<TD>Weighted Methods per Class ( &nbsp;weighting = unity&nbsp;)</TD><TD>WMC1</TD><TD ALIGN=RIGHT>   283</TD><TD>&nbsp;</TD></TR>
+<TR>
+<TD>Weighted Methods per Class ( &nbsp;weighting = visible&nbsp;)</TD><TD>WMCv</TD><TD ALIGN=RIGHT>   179</TD><TD>&nbsp;</TD></TR>
+<TR>
+<TD>Depth of Inheritance Tree</TD><TD>DIT</TD><TD ALIGN=RIGHT>     0</TD><TD>&nbsp;</TD></TR>
+<TR>
+<TD>Number of Children</TD><TD>NOC</TD><TD ALIGN=RIGHT>     0</TD><TD>&nbsp;</TD></TR>
+<TR>
+<TD>Coupling between objects</TD><TD>CBO</TD><TD ALIGN=RIGHT>     0</TD><TD>&nbsp;</TD></TR>
+<TR>
+<TD>Information Flow measure ( &nbsp;inclusive&nbsp;)</TD><TD>IF4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>********</TD></TR>
+<TR>
+<TD>Information Flow measure ( &nbsp;visible&nbsp;)</TD><TD>IF4v</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>********</TD></TR>
+<TR>
+<TD>Information Flow measure ( &nbsp;concrete&nbsp;)</TD><TD>IF4c</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>********</TD></TR>
+</TABLE>
+<H2><A NAME="modext">Definitions and Declarations</A></H2>
+<TABLE BORDER WIDTH=100%><TR>
+<TD WIDTH=50%>Description</TD><TH BGCOLOR="AQUA" WIDTH=10%>LOC</TH><TH BGCOLOR="AQUA" WIDTH=10%>MVG</TH><TH BGCOLOR="AQUA" WIDTH=10%>COM</TH><TH BGCOLOR="AQUA" WIDTH=10%>L_C</TH><TH BGCOLOR="AQUA" WIDTH=10%>M_C</TH><TR><TD COLSPAN=6>No module extents have been identified for this module</TD></TR>
+<TR><TD HEIGHT=12 COLSPAN=6></TD></TR>
+</TR></TABLE>
+<H2><A NAME="proc">Functions</A></H2>
+<TABLE BORDER WIDTH=100%><TR>
+<TD WIDTH=50%>Function prototype</TD><TH BGCOLOR="AQUA" WIDTH=10%>LOC</TH><TH BGCOLOR="AQUA" WIDTH=10%>MVG</TH><TH BGCOLOR="AQUA" WIDTH=10%>COM</TH><TH BGCOLOR="AQUA" WIDTH=10%>L_C</TH><TH BGCOLOR="AQUA" WIDTH=10%>M_C</TH><TR>
+<TD>P2V( &nbsp;...&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#console.c:       161">console.c:161</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>__attribute__( &nbsp;...&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#main.c:       115">main.c:115</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>acquire( &nbsp;spinlock *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#spinlock.c:        25">spinlock.c:25</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>acquiresleep( &nbsp;sleeplock *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sleeplock.c:        23">sleeplock.c:23</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>alloc_test_local( &nbsp;proc *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       165">proc.c:165</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>allocproc( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       107">proc.c:107</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    29</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT> 2.417</TD><TD ALIGN=RIGHT> 0.500</TD></TR>
+<TR>
+<TD>argfd( &nbsp;int, &nbsp;int *, &nbsp;file **&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:        22">sysfile.c:22</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    14</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>argint( &nbsp;int, &nbsp;int *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        50">syscall.c:50</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>argptest( &nbsp;&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1727">usertests.c:1727</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>argptr( &nbsp;int, &nbsp;char **, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        59">syscall.c:59</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>argstr( &nbsp;int, &nbsp;char **&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        77">syscall.c:77</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>atoi( &nbsp;const char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ulib.c:        85">ulib.c:85</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>backcmd( &nbsp;cmd *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       249">sh.c:249</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>balloc( &nbsp;int&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:        36">mkfs.c:36</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:       238">mkfs.c:238</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    14</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>balloc( &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:        57">fs.c:57</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    21</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>10.500</EM></TD><TD ALIGN=RIGHT> 2.500</TD></TR>
+<TR>
+<TD>begin_op( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#log.c:       126">log.c:126</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    15</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>bfree( &nbsp;int, &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:        82">fs.c:82</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    14</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>bget( &nbsp;uint, &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#bio.c:        62">bio.c:62</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    25</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT> 6.250</TD><TD ALIGN=RIGHT> 2.000</TD></TR>
+<TR>
+<TD>bigargtest( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1613">usertests.c:1613</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    30</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>bigdir( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       893">usertests.c:893</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    35</EM></TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>bigfile( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1148">usertests.c:1148</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    50</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    12</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>bigwrite( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1119">usertests.c:1119</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    24</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>binit( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#bio.c:        39">bio.c:39</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    14</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>bmap( &nbsp;inode *, &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       374">fs.c:374</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    24</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>24.000</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM> 7.000</EM></TD></TR>
+<TR>
+<TD>bootmain( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#bootmain.c:        18">bootmain.c:18</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    21</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT> 3.000</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>bread( &nbsp;uint, &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#bio.c:        97">bio.c:97</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>brelse( &nbsp;buf *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#bio.c:       121">bio.c:121</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    17</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>bsstest( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1595">usertests.c:1595</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>bwrite( &nbsp;buf *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#bio.c:       110">bio.c:110</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>bzero( &nbsp;int, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:        43">fs.c:43</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>cat( &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#cat.c:         8">cat.c:8</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    14</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>cgaputc( &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#console.c:       164">console.c:164</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    26</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM> 8.667</EM></TD><TD ALIGN=RIGHT> 2.000</TD></TR>
+<TR>
+<TD>cmos_read( &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#lapic.c:       174">lapic.c:174</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>cmostime( &nbsp;rtcdate *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#lapic.c:       193">lapic.c:193</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    25</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM> 8.333</EM></TD><TD ALIGN=RIGHT> 1.667</TD></TR>
+<TR>
+<TD>commit( &nbsp;&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#log.c:        51">log.c:51</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#log.c:       193">log.c:193</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>concreate( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       765">usertests.c:765</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    84</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    22</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>consoleinit( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#console.c:       342">console.c:342</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>consoleintr( &nbsp;...&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#console.c:       224">console.c:224</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    40</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    16</EM></TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT> 5.714</TD><TD ALIGN=RIGHT> 2.286</TD></TR>
+<TR>
+<TD>consoleread( &nbsp;inode *, &nbsp;char *, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#console.c:       272">console.c:272</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    32</EM></TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT> 4.571</TD><TD ALIGN=RIGHT> 1.429</TD></TR>
+<TR>
+<TD>consolewrite( &nbsp;inode *, &nbsp;char *, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#console.c:       322">console.c:322</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>consputc( &nbsp;int&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#console.c:        18">console.c:18</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#console.c:       198">console.c:198</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    14</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>cprintf( &nbsp;...&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#console.c:        67">console.c:67</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    45</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    15</EM></TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>11.250</EM></TD><TD ALIGN=RIGHT> 3.750</TD></TR>
+<TR>
+<TD>cps( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       654">proc.c:654</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    21</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>cpualloc( &nbsp;&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#kalloc.c:       183">kalloc.c:183</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>cpuid( &nbsp;&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:        64">proc.c:64</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>create( &nbsp;char *, &nbsp;short, &nbsp;short, &nbsp;short&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:       242">sysfile.c:242</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    34</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    13</EM></TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>11.333</EM></TD><TD ALIGN=RIGHT> 4.333</TD></TR>
+<TR>
+<TD>createdelete( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       584">usertests.c:584</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    63</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    20</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>createtest( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       245">usertests.c:245</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    19</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>dirfile( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1284">usertests.c:1284</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    53</EM></TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>dirlink( &nbsp;inode *, &nbsp;char *, &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       553">fs.c:553</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    21</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>10.500</EM></TD><TD ALIGN=RIGHT> 4.000</TD></TR>
+<TR>
+<TD>dirlookup( &nbsp;inode *, &nbsp;char *, &nbsp;uint *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       526">fs.c:526</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    20</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>20.000</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM> 8.000</EM></TD></TR>
+<TR>
+<TD>dirtest( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       267">usertests.c:267</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    21</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>end_op( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#log.c:       146">log.c:146</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    22</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT> 4.400</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>exec( &nbsp;char *, &nbsp;char **&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#exec.c:        17">exec.c:17</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    98</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    27</EM></TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM> 8.167</EM></TD><TD ALIGN=RIGHT> 2.250</TD></TR>
+<TR>
+<TD>execcmd( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       196">sh.c:196</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>exectest( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       294">usertests.c:294</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>exit( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       296">proc.c:296</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    30</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT> 5.000</TD><TD ALIGN=RIGHT> 1.000</TD></TR>
+<TR>
+<TD>exit_plocal( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       342">proc.c:342</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    31</EM></TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM> 7.750</EM></TD><TD ALIGN=RIGHT> 1.500</TD></TR>
+<TR>
+<TD>exitiputtest( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:        43">usertests.c:43</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    27</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>exitwait( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       405">usertests.c:405</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    20</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>******</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>fdalloc( &nbsp;file *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:        41">sysfile.c:41</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>fetchint( &nbsp;uint, &nbsp;int *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        18">syscall.c:18</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>fetchstr( &nbsp;uint, &nbsp;char **&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        32">syscall.c:32</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    14</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>filealloc( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#file.c:        56">file.c:56</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    24</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>    32</TD><TD ALIGN=RIGHT> 0.750</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>fileclose( &nbsp;file *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#file.c:       135">file.c:135</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    23</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM> 7.667</EM></TD><TD ALIGN=RIGHT> 1.667</TD></TR>
+<TR>
+<TD>fileclose_plocal( &nbsp;file *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#file.c:       168">file.c:168</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    19</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>filedup( &nbsp;file *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#file.c:       123">file.c:123</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>fileinit( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#file.c:        28">file.c:28</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>    20</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>fileread( &nbsp;file *, &nbsp;char *, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#file.c:       209">file.c:209</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    16</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>filestat( &nbsp;file *, &nbsp;stat *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#file.c:       196">file.c:196</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>filewrite( &nbsp;file *, &nbsp;char *, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#file.c:       230">file.c:230</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    30</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    13</EM></TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT> 2.727</TD><TD ALIGN=RIGHT> 1.182</TD></TR>
+<TR>
+<TD>fill_rtcdate( &nbsp;rtcdate *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#lapic.c:       182">lapic.c:182</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>fmtname( &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ls.c:         7">ls.c:7</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    13</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT> 2.500</TD></TR>
+<TR>
+<TD>fork( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       238">proc.c:238</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    29</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>    14</TD><TD ALIGN=RIGHT> 2.071</TD><TD ALIGN=RIGHT> 0.500</TD></TR>
+<TR>
+<TD>fork1( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:        52">sh.c:52</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       182">sh.c:182</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>forkret( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:        39">proc.c:39</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       514">proc.c:514</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>forktest( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#forktest.c:        17">forktest.c:17</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1380">usertests.c:1380</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    54</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    16</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>fourfiles( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       518">usertests.c:518</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    55</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    12</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>fourteen( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1204">usertests.c:1204</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    34</EM></TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>34.000</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM> 6.000</EM></TD></TR>
+<TR>
+<TD>free( &nbsp;void *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#umalloc.c:        25">umalloc.c:25</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    19</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>freerange( &nbsp;void *, &nbsp;void *&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#kalloc.c:        14">kalloc.c:14</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#kalloc.c:        62">kalloc.c:62</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>fsfull( &nbsp;&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1648">usertests.c:1648</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    45</EM></TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>getcallerpcs( &nbsp;...&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#spinlock.c:        72">spinlock.c:72</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    14</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT> 3.000</TD></TR>
+<TR>
+<TD>getcmd( &nbsp;char *, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       134">sh.c:134</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>gets( &nbsp;char *, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ulib.c:        53">ulib.c:53</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    15</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>gettoken( &nbsp;char **, &nbsp;char *, &nbsp;char **, &nbsp;char **&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       266">sh.c:266</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    41</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    16</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>grep( &nbsp;char *, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#grep.c:        11">grep.c:11</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    25</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>growproc( &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       216">proc.c:216</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    16</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>holding( &nbsp;spinlock *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#spinlock.c:        90">spinlock.c:90</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>holdingsleep( &nbsp;sleeplock *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sleeplock.c:        45">sleeplock.c:45</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>ialloc( &nbsp;uint, &nbsp;short&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       196">fs.c:196</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    19</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>ialloc( &nbsp;ushort&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:        41">mkfs.c:41</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:       224">mkfs.c:224</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>iappend( &nbsp;uint, &nbsp;void *, &nbsp;int&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:        42">mkfs.c:42</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:       256">mkfs.c:256</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    41</EM></TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>41.000</STRONG></TD><TD ALIGN=RIGHT> 5.000</TD></TR>
+<TR>
+<TD>ideinit( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ide.c:        53">ide.c:53</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#memide.c:        22">memide.c:22</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    20</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>10.000</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>ideintr( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ide.c:       106">ide.c:106</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#memide.c:        30">memide.c:30</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    21</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT> 4.200</TD><TD ALIGN=RIGHT> 1.000</TD></TR>
+<TR>
+<TD>iderw( &nbsp;buf *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ide.c:       140">ide.c:140</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#memide.c:        39">memide.c:39</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    40</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    12</EM></TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM> 8.000</EM></TD><TD ALIGN=RIGHT> 2.400</TD></TR>
+<TR>
+<TD>idestart( &nbsp;buf *&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#ide.c:        37">ide.c:37</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ide.c:        76">ide.c:76</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    26</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>13.000</EM></TD><TD ALIGN=RIGHT> 3.000</TD></TR>
+<TR>
+<TD>idewait( &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ide.c:        41">ide.c:41</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>idtinit( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#trap.c:        42">trap.c:42</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>idup( &nbsp;inode *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       278">fs.c:278</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>iget( &nbsp;uint, &nbsp;uint&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       189">fs.c:189</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       243">fs.c:243</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    25</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM> 8.333</EM></TD><TD ALIGN=RIGHT> 3.000</TD></TR>
+<TR>
+<TD>iinit( &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       173">fs.c:173</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    13</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>ilock( &nbsp;inode *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       289">fs.c:289</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    22</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>initlock( &nbsp;spinlock *, &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#spinlock.c:        13">spinlock.c:13</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>initlog( &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#log.c:        54">log.c:54</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>initsleeplock( &nbsp;sleeplock *, &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sleeplock.c:        14">sleeplock.c:14</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>install_trans( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#log.c:        70">log.c:70</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>ioapicenable( &nbsp;int, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ioapic.c:        68">ioapic.c:68</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>ioapicinit( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ioapic.c:        49">ioapic.c:49</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    13</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>ioapicread( &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ioapic.c:        35">ioapic.c:35</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>ioapicwrite( &nbsp;int, &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ioapic.c:        42">ioapic.c:42</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>iput( &nbsp;inode *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       333">fs.c:333</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    19</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>iputtest( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:        18">usertests.c:18</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    21</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>iref( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1344">usertests.c:1344</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    26</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>26.000</EM></TD><TD ALIGN=RIGHT> 5.000</TD></TR>
+<TR>
+<TD>isdirempty( &nbsp;inode *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:       169">sysfile.c:169</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>itrunc( &nbsp;inode *&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:        25">fs.c:25</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       409">fs.c:409</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    26</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT> 2.889</TD><TD ALIGN=RIGHT> 0.556</TD></TR>
+<TR>
+<TD>iunlock( &nbsp;inode *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       317">fs.c:317</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>iunlockput( &nbsp;inode *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       357">fs.c:357</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>iupdate( &nbsp;inode *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       222">fs.c:222</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    15</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>kalloc( &nbsp;alloc_flag_t&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#kalloc.c:       129">kalloc.c:129</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    23</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>11.500</EM></TD><TD ALIGN=RIGHT> 4.000</TD></TR>
+<TR>
+<TD>kbdgetc( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#kbd.c:         7">kbd.c:7</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    33</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    14</EM></TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>16.500</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM> 7.000</EM></TD></TR>
+<TR>
+<TD>kbdintr( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#kbd.c:        47">kbd.c:47</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>kfree( &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#kalloc.c:        76">kalloc.c:76</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    20</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT> 3.333</TD><TD ALIGN=RIGHT> 1.000</TD></TR>
+<TR>
+<TD>kill( &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       597">proc.c:597</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    16</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT> 5.000</TD></TR>
+<TR>
+<TD>kinit1( &nbsp;void *, &nbsp;void *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#kalloc.c:        41">kalloc.c:41</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>kinit2( &nbsp;void *, &nbsp;void *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#kalloc.c:        56">kalloc.c:56</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>lapiceoi( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#lapic.c:       110">lapic.c:110</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>lapicid( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#lapic.c:       101">lapic.c:101</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>lapicinit( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#lapic.c:        55">lapic.c:55</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    22</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>    13</TD><TD ALIGN=RIGHT> 1.692</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>lapicstartap( &nbsp;uchar, &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#lapic.c:       129">lapic.c:129</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    20</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>    13</TD><TD ALIGN=RIGHT> 1.538</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>lapicw( &nbsp;int, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#lapic.c:        48">lapic.c:48</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>linktest( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       702">usertests.c:702</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    50</EM></TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>linkunlink( &nbsp;&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       858">usertests.c:858</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    27</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>listcmd( &nbsp;cmd *, &nbsp;cmd *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       236">sh.c:236</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>log_write( &nbsp;buf *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#log.c:       214">log.c:214</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    18</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT> 3.500</TD></TR>
+<TR>
+<TD>ls( &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ls.c:        26">ls.c:26</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    42</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    12</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>main( &nbsp;...&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#cat.c:        25">cat.c:25</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#echo.c:         6">echo.c:6</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#grep.c:        39">grep.c:39</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ln.c:         6">ln.c:6</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ls.c:        74">ls.c:74</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mkdir.c:         6">mkdir.c:6</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:        68">mkfs.c:68</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mysleep.c:         7">mysleep.c:7</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#plist_init.c:         6">plist_init.c:6</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#plocal.c:         6">plocal.c:6</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ps.c:         6">ps.c:6</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#rm.c:         6">rm.c:6</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#stressfs.c:        17">stressfs.c:17</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1749">usertests.c:1749</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#wc.c:        36">wc.c:36</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>   277</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>    37</STRONG></TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>27.700</EM></TD><TD ALIGN=RIGHT> 3.700</TD></TR>
+<TR>
+<TD>main( &nbsp;int, &nbsp;char **&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#kill.c:         6">kill.c:6</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>main( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#forktest.c:        52">forktest.c:52</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#init.c:        11">init.c:11</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#main.c:        18">main.c:18</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#manabu_program.c:         6">manabu_program.c:6</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       145">sh.c:145</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#zombie.c:         9">zombie.c:9</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    87</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    16</EM></TD><TD ALIGN=RIGHT>    34</TD><TD ALIGN=RIGHT> 2.559</TD><TD ALIGN=RIGHT> 0.471</TD></TR>
+<TR>
+<TD>malloc( &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#umalloc.c:        64">umalloc.c:64</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    26</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>mappages( &nbsp;pde_t *, &nbsp;void *, &nbsp;uint, &nbsp;uint, &nbsp;int, &nbsp;alloc_flag_t&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#vm.c:       118">vm.c:118</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    19</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>match( &nbsp;char *, &nbsp;char *&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#grep.c:         8">grep.c:8</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#grep.c:        73">grep.c:73</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM> 6.000</EM></TD></TR>
+<TR>
+<TD>matchhere( &nbsp;char *, &nbsp;char *&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#grep.c:        69">grep.c:69</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#grep.c:        85">grep.c:85</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    13</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    12</EM></TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT> 4.000</TD></TR>
+<TR>
+<TD>matchstar( &nbsp;int, &nbsp;char *, &nbsp;char *&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#grep.c:        70">grep.c:70</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#grep.c:        99">grep.c:99</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT> 3.000</TD></TR>
+<TR>
+<TD>mem( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       428">usertests.c:428</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    30</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>memcmp( &nbsp;const void *, &nbsp;const void *, &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#string.c:        16">string.c:16</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>memcpy( &nbsp;void *, &nbsp;const void *, &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#string.c:        53">string.c:53</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>memmove( &nbsp;void *, &nbsp;const void *, &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#string.c:        32">string.c:32</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    16</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>memmove( &nbsp;void *, &nbsp;void *, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ulib.c:        96">ulib.c:96</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>memset( &nbsp;void *, &nbsp;int, &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#string.c:         5">string.c:5</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ulib.c:        37">ulib.c:37</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    14</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>microdelay( &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#lapic.c:       119">lapic.c:119</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>morecore( &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#umalloc.c:        47">umalloc.c:47</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    14</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>mpconfig( &nbsp;mp **&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mp.c:        77">mp.c:77</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    16</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    11</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>mpenter( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#main.c:        51">main.c:51</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>mpinit( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mp.c:        96">mp.c:96</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    47</EM></TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT> 6.714</TD><TD ALIGN=RIGHT> 1.143</TD></TR>
+<TR>
+<TD>mpmain( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#main.c:        10">main.c:10</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#main.c:        61">main.c:61</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>mpsearch( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mp.c:        53">mp.c:53</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    16</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>mpsearch1( &nbsp;uint, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mp.c:        35">mp.c:35</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>mycpu( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:        71">proc.c:71</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>myproc( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:        91">proc.c:91</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>namecmp( &nbsp;const char *, &nbsp;const char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       518">fs.c:518</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>namei( &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       661">fs.c:661</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>nameiparent( &nbsp;char *, &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       668">fs.c:668</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>namex( &nbsp;char *, &nbsp;int, &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       626">fs.c:626</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    30</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    12</EM></TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>30.000</EM></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>12.000</STRONG></TD></TR>
+<TR>
+<TD>nulterminate( &nbsp;cmd *&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       325">sh.c:325</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       450">sh.c:450</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    39</EM></TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>openiputtest( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:        85">usertests.c:85</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    29</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>opentest( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       119">usertests.c:119</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    17</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>panic( &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#console.c:       124">console.c:124</A></CODE><BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:        53">sh.c:53</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       175">sh.c:175</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    29</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT> 5.800</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>parseblock( &nbsp;char **, &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       400">sh.c:400</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    13</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>parsecmd( &nbsp;char *&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:        54">sh.c:54</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       328">sh.c:328</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    15</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>parseexec( &nbsp;char **, &nbsp;char *&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       324">sh.c:324</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       416">sh.c:416</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    29</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>parseline( &nbsp;char **, &nbsp;char *&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       322">sh.c:322</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       345">sh.c:345</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    15</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>parsepipe( &nbsp;char **, &nbsp;char *&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       323">sh.c:323</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       362">sh.c:362</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>parseredirs( &nbsp;cmd *, &nbsp;char **, &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       375">sh.c:375</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    22</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>22.000</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM> 7.000</EM></TD></TR>
+<TR>
+<TD>peek( &nbsp;char **, &nbsp;char *, &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       311">sh.c:311</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>picinit( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#picirq.c:        11">picirq.c:11</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>pinit( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:        50">proc.c:50</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>pipe1( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       306">usertests.c:306</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    49</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    12</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>pipealloc( &nbsp;file **, &nbsp;file **&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#pipe.c:        23">pipe.c:23</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    33</EM></TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT> 3.300</TD><TD ALIGN=RIGHT> 0.800</TD></TR>
+<TR>
+<TD>pipeclose( &nbsp;pipe *, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#pipe.c:        75">pipe.c:75</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    16</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>pipeclose_plocal( &nbsp;pipe *, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#pipe.c:        94">pipe.c:94</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    16</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>pipecmd( &nbsp;cmd *, &nbsp;cmd *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       223">sh.c:223</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>piperead( &nbsp;pipe *, &nbsp;char *, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#pipe.c:       139">pipe.c:139</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    20</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT> 4.000</TD><TD ALIGN=RIGHT> 1.600</TD></TR>
+<TR>
+<TD>pipewrite( &nbsp;pipe *, &nbsp;char *, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#pipe.c:       113">pipe.c:113</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    19</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT> 1.500</TD></TR>
+<TR>
+<TD>plist_init( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       699">proc.c:699</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>plocal( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       683">proc.c:683</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>plocal_insert( &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       729">proc.c:729</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>popcli( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#spinlock.c:       113">spinlock.c:113</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>preempt( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       359">usertests.c:359</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    39</EM></TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>printf( &nbsp;...&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#forktest.c:        11">forktest.c:11</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#printf.c:        40">printf.c:40</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    48</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    12</EM></TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>48.000</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>12.000</STRONG></TD></TR>
+<TR>
+<TD>printint( &nbsp;int, &nbsp;int, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#console.c:        40">console.c:40</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    19</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>printint( &nbsp;int, &nbsp;int, &nbsp;int, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#printf.c:        12">printf.c:12</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    22</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>procdump( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       621">proc.c:621</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    30</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>pushcli( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#spinlock.c:       101">spinlock.c:101</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>putc( &nbsp;int, &nbsp;char&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#printf.c:         6">printf.c:6</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>rand( &nbsp;&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1742">usertests.c:1742</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>read_head( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#log.c:        86">log.c:86</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>readi( &nbsp;inode *, &nbsp;char *, &nbsp;uint, &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       454">fs.c:454</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    21</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    12</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>readsb( &nbsp;int, &nbsp;superblock *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:        32">fs.c:32</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>readsect( &nbsp;void *, &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#bootmain.c:        60">bootmain.c:60</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>readseg( &nbsp;uchar *, &nbsp;uint, &nbsp;uint&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#bootmain.c:        15">bootmain.c:15</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#bootmain.c:        79">bootmain.c:79</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>recover_from_log( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#log.c:        50">log.c:50</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#log.c:       116">log.c:116</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>redircmd( &nbsp;cmd *, &nbsp;char *, &nbsp;char *, &nbsp;int, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:       207">sh.c:207</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    13</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>release( &nbsp;spinlock *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#spinlock.c:        47">spinlock.c:47</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>releasesleep( &nbsp;sleeplock *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sleeplock.c:        35">sleeplock.c:35</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>rinode( &nbsp;uint, &nbsp;dinode *&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:        39">mkfs.c:39</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:       198">mkfs.c:198</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>rmdot( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1245">usertests.c:1245</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    37</EM></TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>rsect( &nbsp;uint, &nbsp;void *&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:        40">mkfs.c:40</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:       211">mkfs.c:211</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>runcmd( &nbsp;cmd *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sh.c:        58">sh.c:58</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    67</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    14</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>safestrcpy( &nbsp;char *, &nbsp;const char *, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#string.c:        83">string.c:83</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>sbrktest( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1415">usertests.c:1415</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>   110</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    24</EM></TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM> 9.167</EM></TD><TD ALIGN=RIGHT> 2.000</TD></TR>
+<TR>
+<TD>sched( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       483">proc.c:483</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    16</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>scheduler( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       440">proc.c:440</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    21</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT> 3.000</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>seginit( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#vm.c:        57">vm.c:57</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>sharedfd( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       465">usertests.c:465</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    47</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    15</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>skipelem( &nbsp;char *, &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       597">fs.c:597</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    22</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>sleep( &nbsp;void *, &nbsp;spinlock *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       535">proc.c:535</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    20</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT> 1.667</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>startothers( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#main.c:         9">main.c:9</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#main.c:        74">main.c:74</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    21</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT> 1.909</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>stat( &nbsp;char *, &nbsp;stat *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ulib.c:        71">ulib.c:71</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>stati( &nbsp;inode *, &nbsp;stat *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       441">fs.c:441</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>strchr( &nbsp;const char *, &nbsp;char&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ulib.c:        44">ulib.c:44</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>strcmp( &nbsp;const char *, &nbsp;const char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       711">proc.c:711</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ulib.c:        19">ulib.c:19</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>strcpy( &nbsp;char *, &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       719">proc.c:719</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ulib.c:         8">ulib.c:8</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    16</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>strlen( &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#ulib.c:        27">ulib.c:27</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>strlen( &nbsp;const char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#string.c:        97">string.c:97</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>strncmp( &nbsp;const char *, &nbsp;const char *, &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#string.c:        59">string.c:59</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>strncpy( &nbsp;char *, &nbsp;const char *, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#string.c:        69">string.c:69</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>subdir( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       935">usertests.c:935</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>   166</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>    38</STRONG></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>sum( &nbsp;uchar *, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mp.c:        23">mp.c:23</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>sys_chdir( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        85">syscall.c:85</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:       373">sysfile.c:373</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    23</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>sys_close( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        86">syscall.c:86</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:        94">sysfile.c:94</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>sys_cps( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:       106">syscall.c:106</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysproc.c:        93">sysproc.c:93</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>sys_dup( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        87">syscall.c:87</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:        56">sysfile.c:56</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>sys_exec( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        88">syscall.c:88</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:       398">sysfile.c:398</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    24</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    13</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>sys_exit( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        89">syscall.c:89</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysproc.c:        17">sysproc.c:17</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>sys_fork( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        90">syscall.c:90</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysproc.c:        11">sysproc.c:11</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>sys_fstat( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        91">syscall.c:91</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:       107">sysfile.c:107</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>sys_getpid( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        92">syscall.c:92</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysproc.c:        40">sysproc.c:40</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>sys_kill( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        93">syscall.c:93</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysproc.c:        30">sysproc.c:30</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>sys_link( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        94">syscall.c:94</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:       119">sysfile.c:119</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    40</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    12</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>sys_mkdir( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        95">syscall.c:95</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:       337">sysfile.c:337</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    14</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>sys_mknod( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        96">syscall.c:96</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:       353">sysfile.c:353</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    18</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>sys_open( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        97">syscall.c:97</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:       287">sysfile.c:287</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    44</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    17</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>sys_pipe( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        98">syscall.c:98</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:       424">sysfile.c:424</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    22</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>sys_plist_init( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:       108">syscall.c:108</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysproc.c:       103">sysproc.c:103</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>sys_plocal( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:       107">syscall.c:107</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysproc.c:        98">sysproc.c:98</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>sys_read( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:        99">syscall.c:99</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:        70">sysfile.c:70</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>sys_sbrk( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:       100">syscall.c:100</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysproc.c:        46">sysproc.c:46</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>sys_sleep( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:       101">syscall.c:101</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysproc.c:        60">sysproc.c:60</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    19</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>sys_unlink( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:       102">syscall.c:102</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:       185">sysfile.c:185</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    44</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    14</EM></TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>44.000</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>14.000</STRONG></TD></TR>
+<TR>
+<TD>sys_uptime( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:       105">syscall.c:105</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysproc.c:        83">sysproc.c:83</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>sys_wait( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:       103">syscall.c:103</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysproc.c:        24">sysproc.c:24</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>sys_write( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:       104">syscall.c:104</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#sysfile.c:        82">sysfile.c:82</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>syscall( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#syscall.c:       138">syscall.c:138</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    13</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>trap( &nbsp;trapframe *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#trap.c:        49">trap.c:49</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    88</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    28</EM></TD><TD ALIGN=RIGHT>    33</TD><TD ALIGN=RIGHT> 2.667</TD><TD ALIGN=RIGHT> 0.848</TD></TR>
+<TR>
+<TD>trapret( &nbsp;void&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:        40">proc.c:40</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>tvinit( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#trap.c:        24">trap.c:24</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>uartgetc( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#uart.c:        64">uart.c:64</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>uartinit( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#uart.c:        20">uart.c:20</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    19</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>uartintr( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#uart.c:        74">uart.c:74</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>uartputc( &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#uart.c:        52">uart.c:52</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>uio( &nbsp;&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1699">usertests.c:1699</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    22</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>11.000</EM></TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>unlinkread( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       657">usertests.c:657</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    39</EM></TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>userinit( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       178">proc.c:178</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    24</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT> 4.800</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>validateint( &nbsp;int *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1550">usertests.c:1550</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    11</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>validatetest( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:      1563">usertests.c:1563</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    22</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>11.000</EM></TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>wait( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       389">proc.c:389</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    33</EM></TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT> 5.500</TD><TD ALIGN=RIGHT> 1.333</TD></TR>
+<TR>
+<TD>waitdisk( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#bootmain.c:        51">bootmain.c:51</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>wakeup( &nbsp;void *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       586">proc.c:586</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>wakeup1( &nbsp;void *&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:        42">proc.c:42</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       575">proc.c:575</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>walkpgdir( &nbsp;pde_t *, &nbsp;const void *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#vm.c:        78">vm.c:78</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>walkpgdir_with_alloc( &nbsp;pde_t *, &nbsp;const void *, &nbsp;alloc_flag_t&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#vm.c:        93">vm.c:93</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    15</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>     4</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>wc( &nbsp;int, &nbsp;char *&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#wc.c:         8">wc.c:8</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    25</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>winode( &nbsp;uint, &nbsp;dinode *&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:        38">mkfs.c:38</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:       184">mkfs.c:184</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>write_head( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#log.c:       102">log.c:102</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>write_log( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#log.c:       178">log.c:178</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>writei( &nbsp;inode *, &nbsp;char *, &nbsp;uint, &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#fs.c:       483">fs.c:483</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    26</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    15</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>writetest( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       139">usertests.c:139</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    45</EM></TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>writetest1( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#usertests.c:       188">usertests.c:188</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    49</EM></TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    11</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>wsect( &nbsp;uint, &nbsp;void *&nbsp;)<BR>
+declaration &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:        37">mkfs.c:37</A></CODE><BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:       171">mkfs.c:171</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    12</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>xint( &nbsp;uint&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:        56">mkfs.c:56</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    10</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>xshort( &nbsp;ushort&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#mkfs.c:        46">mkfs.c:46</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     8</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>yield( &nbsp;void&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#proc.c:       503">proc.c:503</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR><TD HEIGHT=12 COLSPAN=6></TD></TR>
+</TR></TABLE>
+<H2><A NAME="structdet">Relationships</A></H2>
+<TABLE BORDER WIDTH=100%>
+<TR><TH WIDTH=50%>Clients</TH><TH WIDTH=50%>Suppliers</TH></TR>
+<TR>
+<TD WIDTH=50%>
+&nbsp;
+</TD>
+<TD WIDTH=50%>
+&nbsp;
+</TD>
+</TR></TABLE>
+</BODY></HTML>
