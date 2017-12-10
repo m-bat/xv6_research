@@ -13,7 +13,13 @@
 #include "buf.h"
 #include "spinlock.h"
 
-#define RDTSC(X) asm volatile ("rdtsc" : "=A" (X))
+//#define RDTSC(X) asm volatile ("rdtsc" : "=A" (X))
+
+static inline void rdtsc(uint *eax, uint *edx)
+{
+  //eax is low, edx is high
+  asm volatile("rdtsc": "=a" (*eax), "=d" (*edx)); 
+}
 
 int
 exec(char *path, char **argv)
@@ -114,6 +120,9 @@ exec(char *path, char **argv)
   else if (strcmp(path, "sh") == 0) {
     n = 1;
   }
+  else if (strcmp(path, "measure") == 0) {
+    n = 1;
+  }
   else {
     n = 0;
   }
@@ -124,14 +133,21 @@ exec(char *path, char **argv)
   
   //************************************************************************//
   if (!n) {
-    uint stime = 0, etime = 0;
-    RDTSC(stime);
+    uint stime1 = 0, stime2 = 0;
+    uint etime1 = 0, etime2 = 0;
+
+    //Start measurement
+    rdtsc(&stime1, &stime2);
     
     switchkvm();
     switchuvm_ro(curproc, n);
+
+    rdtsc(&etime1, &etime2);
+    //Stop measurement
     
-    RDTSC(etime);
-    cprintf("LOG: time %d\n", etime - stime);
+    cprintf("LOG: stime1 %u, stime2 %u\n", stime1, stime2);
+    cprintf("LOG: etime1 %u, etime2 %u\n", etime1, etime2);    
+    
   }
 //****************************************************************************
   
