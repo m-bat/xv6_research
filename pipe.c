@@ -50,10 +50,12 @@ pipealloc(struct file **f0, struct file **f1)
   p->nread = 0;
   initlock(&p->lock, "pipe");
   (*f0)->type = FD_PIPE;
-  (*f0)->readable = 1;
+  //(*f0)->type = (*f0)->type; //Fault Injection
+  (*f0)->readable = 1;  
   (*f0)->writable = 0;
-  (*f0)->pipe = p;
+  (*f0)->pipe = p;  
   (*f1)->type = FD_PIPE;
+  //(*f1)->type = (*f1)->type; //Fault Injection
   (*f1)->readable = 0;
   (*f1)->writable = 1;
   (*f1)->pipe = p;  
