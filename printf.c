@@ -57,6 +57,9 @@ printf(int fd, char *fmt, ...)
       if(c == 'd'){
         printint(fd, *ap, 10, 1);
         ap++;
+      } else if(c == 'u'){
+        printint(fd, *ap, 10, 0);
+        ap++;
       } else if(c == 'x' || c == 'p'){
         printint(fd, *ap, 16, 0);
         ap++;
