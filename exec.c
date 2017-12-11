@@ -133,21 +133,17 @@ exec(char *path, char **argv)
   
   //************************************************************************//
   if (!n) {
-    uint stime1 = 0, stime2 = 0;
-    uint etime1 = 0, etime2 = 0;
-
+    //uint stime1 = 0, stime2 = 0;
+    //uint etime1 = 0, etime2 = 0;
     //Start measurement
-    rdtsc(&stime1, &stime2);
+    //rdtsc(&stime1, &stime2);
     
     switchkvm();
     switchuvm_ro(curproc, n);
 
-    rdtsc(&etime1, &etime2);
-    //Stop measurement
-    
-    cprintf("LOG: stime1 %u, stime2 %u\n", stime1, stime2);
-    cprintf("LOG: etime1 %u, etime2 %u\n", etime1, etime2);    
-    
+    //rdtsc(&etime1, &etime2);
+    //Stop measurement    
+    //cprintf("st1 %u, st2 %u, et1 %u, et2 %u\n", stime1, stime2, etime1, etime2);    
   }
 //****************************************************************************
   
