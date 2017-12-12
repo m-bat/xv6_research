@@ -139,19 +139,68 @@ runcmd(struct cmd *cmd)
 int
 main(void)
 {
+  /*
   int i;
-  char *buf = "ls";  
-  
+  char *buf = "ls";
+
   uint stime1[COMCOUNT], stime2[COMCOUNT];
   uint etime1[COMCOUNT], etime2[COMCOUNT];
 
-  for (i = 0; i < COMCOUNT; i++) {
+
+    for (i = 0; i < COMCOUNT; i++) {
     rdtsc(&stime1[i], &stime2[i]);
-    if(fork1() == 0)
-      runcmd(parsecmd(buf));    
+    if(fork1() == 0) {
+        runcmd(parsecmd(buf));
+    }
     wait();
-    rdtsc(&etime1[i], &etime2[i]);   
-  }
+    rdtsc(&etime1[i], &etime2[i]);
+    }
+  */
+
+  uint stime1[COMCOUNT], stime2[COMCOUNT];
+  uint etime1[COMCOUNT], etime2[COMCOUNT];
+
+  char buf[20], str[20];
+  char c, c1;
+  int i, start1, start2, k, j = 0;
+
+  strcpy(buf, "mkdir manabu0");
+  strcpy(str, "mkdir manabu00");
+
+  for (i = 0; buf[i] != '\0'; i++);
+  start1 = i - 1;
+
+  for (i = 0; str[i] != '\0'; i++);
+  start2 = i - 1;
+
+
+  for (i = 0; i < 100; i++) {
+    rdtsc(&stime1[i], &stime2[i]);
+    if(fork1() == 0) {
+      if (j == 0)
+        runcmd(parsecmd(buf));
+      else
+        runcmd(parsecmd(str));
+    }
+    wait();
+    rdtsc(&etime1[i], &etime2[i]);
+
+    if (i % 10 == 0 && i != 0) {
+      k = 0;      
+      c1 = '0' + j;
+      j++;
+    }
+    if (j == 0) {
+      c = '0' + i;
+      buf[start1] = c;
+    }
+    else {
+      c = '0' + k;
+      k++;
+      str[start2 - 1] = c1;
+      str[start2] = c;
+    }    
+  } 
   
   for (i = 0; i < COMCOUNT; i++)
     printf(1 ,"%u, %u, %u, %u\n", stime1[i], stime2[i], etime1[i], etime2[i]);
