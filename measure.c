@@ -139,7 +139,7 @@ runcmd(struct cmd *cmd)
 int
 main(void)
 {
-  /*
+  
   int i;
   char *buf = "ls";
 
@@ -155,8 +155,9 @@ main(void)
     wait();
     rdtsc(&etime1[i], &etime2[i]);
     }
-  */
+  
 
+  /*
   uint stime1[COMCOUNT], stime2[COMCOUNT];
   uint etime1[COMCOUNT], etime2[COMCOUNT];
 
@@ -201,11 +202,13 @@ main(void)
       str[start2] = c;
     }    
   } 
+  */
   
   for (i = 0; i < COMCOUNT; i++)
     printf(1 ,"%u, %u, %u, %u\n", stime1[i], stime2[i], etime1[i], etime2[i]);
   
   exit();
+  
 }
  
 void
