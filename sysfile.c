@@ -258,13 +258,19 @@ create(char *path, short type, short major, short minor)
     return 0;
   }
 
-  if((ip = ialloc(dp->dev, type)) == 0)
-    panic("create: ialloc");
 
-  ilock(ip);
+  //Fault Injection
+  if((ip = ialloc(dp->dev, type)) == 0)
+      panic("create: ialloc");
+  
+
+  ilock(ip);  //Fualt Inejction
   ip->major = major;
   ip->minor = minor;
   ip->nlink = 1;
+
+  ip->nlink = ip->nlink;
+  
   iupdate(ip);
 
   if(type == T_DIR){  // Create . and .. entries.
@@ -275,10 +281,12 @@ create(char *path, short type, short major, short minor)
       panic("create dots");
   }
 
+ 
   if(dirlink(dp, name, ip->inum) < 0)
     panic("create: dirlink");
+  
 
-  iunlockput(dp);
+  iunlockput(dp);  //Fault Injection
 
   return ip;
 }
@@ -339,13 +347,15 @@ sys_mkdir(void)
   char *path;
   struct inode *ip;
 
-  begin_op();
+  begin_op();  //Fault Injection
+  
   if(argstr(0, &path) < 0 || (ip = create(path, T_DIR, 0, 0)) == 0){
     end_op();
     return -1;
   }
+  
   iunlockput(ip);
-  end_op();
+  end_op(); //Fault Injection
   return 0;
 }
 
@@ -404,6 +414,7 @@ sys_exec(void)
   if(argstr(0, &path) < 0 || argint(1, (int*)&uargv) < 0){
     return -1;
   }
+
   memset(argv, 0, sizeof(argv));
   for(i=0;; i++){
     if(i >= NELEM(argv))
@@ -429,8 +440,11 @@ sys_pipe(void)
   
   if(argptr(0, (void*)&fd, 2*sizeof(fd[0])) < 0)
     return -1;
+
+  
   if(pipealloc(&rf, &wf) < 0)
     return -1;
+  
   fd0 = -1;
   if((fd0 = fdalloc(rf)) < 0 || (fd1 = fdalloc(wf)) < 0){
   //if((fd0 = fdalloc(wf)) < 0 || (fd1 = fdalloc(wf)) < 0){  //Fault Injection

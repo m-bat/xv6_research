@@ -31,17 +31,9 @@ pipealloc(struct file **f0, struct file **f1)
     goto bad;
   if((p = (struct pipe*)kalloc(ALLOC_PLOCAL)) == 0)
     goto bad;
-
-  /*
-  switchkvm();
-  setptew(pr->pgdir, (char *)p, PGSIZE, 1);
-  switchuvm(pr);  
-  */
-  
+      
   //f0 = 0; //Fault Injection (Null Pointer) : file read
-  //f1 = 0; //Fault Injection (Null Pointer) : file write
-  
-  //cprintf("DEBUG: pipe p %x\n", p);
+  //f1 = 0; //Fault Injection (Null Pointer) : file write  
   //p = 0;  //Fault Injection (Null Pointer)
   
   p->readopen = 1;  
@@ -146,6 +138,7 @@ pipewrite(struct pipe *p, char *addr, int n)
         release(&p->lock);
         return -1;
       }
+      
       wakeup(&p->nread);
       sleep(&p->nwrite, &p->lock);  //DOC: pipewrite-sleep
     }
@@ -171,7 +164,7 @@ piperead(struct pipe *p, char *addr, int n)
    }
     sleep(&p->nread, &p->lock); //DOC: piperead-sleep  
   }
-  for(i = 0; i < n; i++){  //DOC: piperead-copy
+  for(i = 0; i < n; i++){  //DOC: piperead-copy    
     if(p->nread == p->nwrite)
       break;
     addr[i] = p->data[p->nread++ % PIPESIZE];

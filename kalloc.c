@@ -22,7 +22,7 @@ struct run {
 struct {
   struct spinlock lock;
   int use_lock;
-  struct run *freelist;
+  struct run *freelist_global;
   struct run *freelist_plocal;
 } kmem;
 
@@ -45,9 +45,9 @@ kinit1(void *vstart, void *vend)
   freerange(vstart, vend);
   //DEBU
   /*
-  cprintf("kinit1\n");
-  cprintf("vstart: %x", vstart);
-  cprintf("vlast: %x", vend);  
+  cprintf("DEBUG: kinit1\n");
+  cprintf("DEBUG: vstart: %x", vstart);
+  cprintf("DEBUG: vlast: %x", vend);  
   */
   //
 }
@@ -92,15 +92,13 @@ kfree(char *v)
     kmem.freelist_plocal = r;
     //Read-only set PTE_R
     //clearptew(kpgdir, (char *)r);
-    //DEBUG
-    //cprintf("kinit2: kpgdir->0x%x\n", kpgdir);
+    //cprintf("DEBUG: kinit2: kpgdir->0x%x\n", kpgdir);
   }
   else {
-    r->next = kmem.freelist;
-    kmem.freelist = r;
+    r->next = kmem.freelist_global;
+    kmem.freelist_global = r;
   }
-    
-  //kmem.freelist = r;
+
   if(kmem.use_lock)
     release(&kmem.lock);
 }
@@ -108,26 +106,9 @@ kfree(char *v)
 // Allocate one 4096-byte page of physical memory.
 // Returns a pointer that the kernel can use.
 // Returns 0 if the memory cannot be allocated.
-/*
-char*
-kalloc(void)
-{
-  struct run *r;
-
-  if(kmem.use_lock)
-    acquire(&kmem.lock);
-  r = kmem.freelist;
-  if(r)
-    kmem.freelist = r->next;
-  if(kmem.use_lock)
-    release(&kmem.lock);
-  return (char*)r;
-}*/
-//add manabu 11/12
 
 char*
 kalloc(alloc_flag_t flag) {
-  //struct run *r;
   struct run *r = 0;
 
   if(kmem.use_lock)
@@ -135,9 +116,9 @@ kalloc(alloc_flag_t flag) {
 
   switch(flag) {
   case ALLOC_KGLOBAL:
-    r = kmem.freelist;
+    r = kmem.freelist_global;
     if(r)
-      kmem.freelist = r->next;
+      kmem.freelist_global = r->next;
     break;
   case ALLOC_PLOCAL:
     r = kmem.freelist_plocal;
@@ -146,7 +127,7 @@ kalloc(alloc_flag_t flag) {
     }
     break;
   default:
-    panic("unknown allocation flag");
+    panic("Unknown allocation flag");
   }
   
   if(kmem.use_lock)
@@ -155,38 +136,12 @@ kalloc(alloc_flag_t flag) {
 }
 
 
-//add function  by manabu
-/*
-char*
-kuinfo_alloc (void) {
-  struct run *r;
-
-  if (kmem.use_lock) 
-    acquire(&kmem.lock);
-	
-  r = kmem.freelist_plocal;
-  if (r) 
-    kmem.freelist_plocal = r->next;
-	
-  if (kmem.use_lock)
-    release(&kmem.lock);
-	
-  return (char*)r;
-}
-*/
-
-//add function by manabu 10/26
-//allocate cpu array
-//
-
 int 
 cpualloc() {
-
   if ((cpus = (struct cpu *)kalloc(ALLOC_KGLOBAL)) == 0) {
     return 0;
   }
-  //DEBUG
-  //`cprintf("cpus %x", cpus);
+  //cprintf("DEBUG: cpus %x", cpus);
 
   //init cpus by zero
   memset((char *)cpus, 0, PGSIZE);
