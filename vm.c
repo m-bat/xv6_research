@@ -318,12 +318,12 @@ switchuvm_ro(struct proc *p, const int n)
   }  
   else {
     //cprintf("DEBUG: before: kernel_ro\n");
-    //cprintf("ptable addr %x\n", &ptable);
+    //cprintf("DEBUG: ptable addr %x\n", &ptable);
 
     set_kmem_readonly(p->pgdir);    
-    //cprintf("ptable addr: %x\n", ptable);
+    //cprintf("DEBUG: ptable addr: %x\n", ptable);
     //int size = PGROUNDUP(sizeof(ptable));
-    //cprintf("ptable size %d\n", size);
+    //cprintf("DEBUG: ptable size %d\n", size);
     //cprintf("DEBUG: keme size: %x\n", sizeof(kmem));
 
     //cprintf("DEBUG: bcache: %x\n", (char *)(&bcache));
