@@ -7,11 +7,12 @@
 #define EXTMEM  0x100000            // Start of extended memory
 //#define EXTUSE  0xDFFF000
 //#define EXTUSE  0xE000000
-#define PROCLOCAL  0xC000000           //Start of the process local data 
+#define PROCLOCAL  0xA000000           //Start of the process local data 
 
 #define EXT64   0x64
 
 #define PHYSTOP 0xE000000          // Top physical memory
+//#define PHYSTOP 0x4E000000          // Top physical memory
 //#define PHYSTOP 0xE00A000
 
 //#define USERINFO 0xDFFFF9C
