@@ -106,11 +106,9 @@ trap(struct trapframe *tf)
     //force kill process
     //myproc()->killed = 1;   
     p = myproc();
-    cprintf("DEBUG INFO: page fault proccess name %s, pid %d\n", myproc()->name, myproc()->pid);
-    //cprintf("mycpu->ncli: %d\n", mycpu()->ncli);
     uint a = PGROUNDDOWN(rcr2());
-    cprintf("DEBUG: Fault addr: %x\n", a);
-    cprintf("DEBUG: Fault addr rcr2: %x\n", rcr2());
+    cprintf("LOG INFO: page fault proccess name %s, pid %d, addr %x\n", myproc()->name, myproc()->pid, a);
+    //cprintf("mycpu->ncli: %d\n", mycpu()->ncli);
     
     if (a >= (uint)get_kplocal_addr() && a <= (uint)get_devspace_addr()) {
       //access kernel process local area
@@ -119,14 +117,15 @@ trap(struct trapframe *tf)
     }
     else {      
       //setptew(p->pgdir, (void *)a, PGSIZE, 1);
-      cprintf("LOG: Access KERNELGLOBAL!  set kgflag\n");
+      if ( !kgflag ) {
+        kgflag = 1;        
+        cprintf("LOG: Access KERNELGLOBAL!  set kgflag\n");
+      }      
       switchkvm();
-      setptew_kernel(p->pgdir);
+      //setptew_kernel(p->pgdir);
+      setptew(p->pgdir, (char *)a, sizeof(a), 11);      
       switchuvm(p);
-      cprintf("LOG: Make the whole kernel space writeable\n");
-      //cprintf("after setptew :%x\n", a);
-      //cprintf("kgflag : %x\n", &kgflag);
-      kgflag = 1;
+      //cprintf("DEBUG: after setptew :%x\n", a);      
     }
     
     //cprintf("T_PGFLT: kgflag = %d\n", kgflag);
