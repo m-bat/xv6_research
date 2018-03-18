@@ -222,6 +222,7 @@ void            setptew(pde_t *pgdir, char *uva, uint size, uint c);
 void            setptew_kernel(pde_t *pgdir);
 char*           get_kplocal_addr();
 char*           get_devspace_addr();
+pte_t*          get_pte(pde_t *pgdir, char *v);
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))

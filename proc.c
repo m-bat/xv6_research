@@ -45,6 +45,7 @@ static void wakeup1(void *chan);
 extern pde_t *kpgdir;
 char *plist[100];
 int plist_index = 0;
+char *test;
 
 void
 pinit(void)
@@ -709,10 +710,9 @@ plocal(void)
   //c2 = c1 + PGSIZE + PGSIZE + PGSIZE; //sh kerne stack memory 
   //cprintf("DEBUG: ALLOC_PLOCAL c2 addr %x\n", c2);
   *c1 = 0;
-  */
-  
+  */  
 
-  //Protection violation test for kernel stack of other process
+  //protection violation test for kernel stack of other process
   /*
   struct proc *p;
   for (p = ptable->proc; p < &ptable->proc[NPROC]; p++) {
@@ -726,8 +726,10 @@ plocal(void)
   switchkvm();
   setptew(p->pgdir, c2, PGSIZE, 1);
   switchuvm(p);
-  */     
-   
+  */
+  test = kalloc(ALLOC_KGLOBAL);
+  cprintf("DEBUG: plocal test: %d\n", *test);
+  kfree((char *)test);
   return 23;
 }
 
@@ -771,6 +773,6 @@ int plocal_insert(char *p)
   cprintf("DEBUG: plocal insert index %d\n", plist_index);
   plist_index++;
   
-  return 0;
+  return 0;  
 }
 

@@ -182,12 +182,16 @@ static struct kmap {
 
 // Set up kernel part of a page table.
 
-char * get_kplocal_addr() {    
+char *get_kplocal_addr() {    
   return kmap[3].virt;
 }
 
-char * get_devspace_addr() {
+char *get_devspace_addr() {
   return kmap[4].virt;
+}
+
+pte_t *get_pte(pde_t *pgdir, char * v) {  
+  return walkpgdir(pgdir, v);
 }
 
 pde_t*
@@ -335,7 +339,8 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, (char *)tickslock, PGSIZE, 3);
     setptew(p->pgdir, (char *)&ticks, PGSIZE, 4);
     setptew(p->pgdir, (char *)ptable, PGSIZE, 5);
-    setptew(p->pgdir, (char *)(&bcache) - PGSIZE, PGSIZE, 6);   //stack of scheduler context (NCPU == 1)    
+    setptew(p->pgdir, (char *)(&bcache) - PGSIZE, PGSIZE, 6);   //stack of scheduler context (NCPU == 1)
+    
     for (i = 0; i < NCPU - 1; i++) {
       setptew(p->pgdir, (char *)stack[i], PGSIZE, 7); //NCPU >= 2
       //cprintf("DEBUG: startothers stack[%d] %x\n", i, stack[i]);
@@ -580,7 +585,6 @@ setptew(pde_t *pgdir, char *uva, uint size, uint c)
   for (;;) {
     pte = walkpgdir(pgdir, a);
 
-
     /*
     switch (c){
     case 1:
@@ -621,6 +625,9 @@ setptew(pde_t *pgdir, char *uva, uint size, uint c)
 
     //set write-eable
     *pte |= PTE_W;
+    if (c == 11) {
+      cprintf("DEBUG: setptew: pte %x\n", pte);
+    }
     if  (a == last) {
       break;
     }
@@ -635,8 +642,6 @@ setptew(pde_t *pgdir, char *uva, uint size, uint c)
   }
 }
 
-//add manabu 10/24: set wite-enable kernel land data & memory
-
 void setptew_kernel(pde_t *pgdir)
 {
   char *a, *last;
@@ -645,13 +650,11 @@ void setptew_kernel(pde_t *pgdir)
   
   size = kmap[2].phys_end - kmap[2].phys_start;
 
-  //DEBUG
-  //size /= 1.5;  
   a = (char *)PGROUNDDOWN((uint)kmap[2].virt);
   last = (char *)PGROUNDDOWN(((uint)kmap[2].virt) + size - 1);
 
-  cprintf("kernel start addr %x\n", a);
-  cprintf("kernel last addr %x\n", last);
+  cprintf("DEBUG: kernel start addr %x\n", a);
+  cprintf("DEBUG: kernel last addr %x\n", last);
   
   for (;;) {
     pte = walkpgdir(pgdir, a);
@@ -659,16 +662,13 @@ void setptew_kernel(pde_t *pgdir)
     if (pte == 0)
       panic("setptew");
 
-    //set write-eable
     *pte |= PTE_W;
     if (a == last) {
       break;
     }
-    //cprintf("a %x\n", a);
+    //cprintf("DEBUG: a %x\n", a);
     a += PGSIZE;
   }
-  //flush the TLB
-  //lcr3(V2P(pgdir));
 }
 
 // Given a parent process's page table, create a copy
