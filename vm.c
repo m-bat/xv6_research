@@ -295,9 +295,7 @@ char *mem_inituvm;
 
 void
 switchuvm_ro(struct proc *p, const int n)
-{  
-  int i;
-  
+{    
   if(p == 0)
     panic("switchuvm: no process");
   if(p->kstack == 0)
@@ -339,16 +337,17 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, (char *)tickslock, PGSIZE, 3);
     setptew(p->pgdir, (char *)&ticks, PGSIZE, 4);
     setptew(p->pgdir, (char *)ptable, PGSIZE, 5);
-    setptew(p->pgdir, (char *)(&bcache) - PGSIZE, PGSIZE, 6);   //stack of scheduler context (NCPU == 1)
-    
-    for (i = 0; i < NCPU - 1; i++) {
-      setptew(p->pgdir, (char *)stack[i], PGSIZE, 7); //NCPU >= 2
-      //cprintf("DEBUG: startothers stack[%d] %x\n", i, stack[i]);
-    }
+    //stack of scheduler context when NCPU == 1
+    setptew(p->pgdir, (char *)(&bcache) - PGSIZE, PGSIZE, 6); 
+
+    // When NCPU >= 2
+    /* for (i = 0; i < NCPU - 1; i++) { */
+    /*   setptew(p->pgdir, (char *)stack[i], PGSIZE, 7); //NCPU >= 2 */
+    /* } */
     
      //******* Life Externsion ********************************************    
-    setptew(p->pgdir, (char *)&icache, sizeof(icache), 8);    
-    setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 9);
+    //setptew(p->pgdir, (char *)&icache, sizeof(icache), 8);    
+    //setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 9);
     //setptew(p->pgdir, (char *)&ftable, sizeof(ftable), 10);
 
     //********************************************************************
@@ -362,14 +361,14 @@ switchuvm_ro(struct proc *p, const int n)
     //setptew(p->pgdir, (char *)&idelock, sizeof(idelock), 1);
     
     //index of test array    
-    setptew(p->pgdir, (char *)&plist_index, sizeof(plist_index), 1);
+    //setptew(p->pgdir, (char *)&plist_index, sizeof(plist_index), 1);
 
     //********* Kenel Global (Optimisation)  *****************************
     
-    for (i = 0; i < 100; i++) {
-      //cprintf("DEBUG: setptew &plist[%d] %x\n", i, &plist[i]);
-      setptew(p->pgdir, (char *)&plist[i], sizeof(&plist), 1);
-    }
+    /* for (i = 0; i < 100; i++) { */
+    /*   //cprintf("DEBUG: setptew &plist[%d] %x\n", i, &plist[i]); */
+    /*   setptew(p->pgdir, (char *)&plist[i], sizeof(&plist), 1); */
+    /* } */
           
     //cprintf("DEBUG: bcache size %d\n", sizeof(bcache));
     //cprintf("DEBUG: plist size %d\n", sizeof(&plist));
