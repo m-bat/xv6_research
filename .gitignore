@@ -17,6 +17,8 @@ mkfs
 GPATH
 GRTAGS
 GTAGS
+GSYMS
+TAGS
 HTML/
 .cccc/
 *#
