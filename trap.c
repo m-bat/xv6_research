@@ -61,13 +61,6 @@ trap(struct trapframe *tf)
      return;
   }
   switch(tf->trapno){
-
-    /*
-    switchkvm();    
-    p = myproc();
-    setptew_kernel(p->pgdir);
-    switchuvm(p);
-    */
     
   case T_IRQ0 + IRQ_TIMER:
     if(cpuid() == 0){
@@ -119,19 +112,14 @@ trap(struct trapframe *tf)
       //setptew(p->pgdir, (void *)a, PGSIZE, 1);
       if ( !kgflag ) {
         kgflag = 1;        
-        cprintf("LOG: Access KERNELGLOBAL!  set kgflag\n");
+        cprintf("LOG: Access KERNELGLOBAL! set kgflag\n");
       }      
       switchkvm();
       //setptew_kernel(p->pgdir);
       setptew(p->pgdir, (char *)a, sizeof(a), 11);      
       switchuvm(p);
-      //cprintf("DEBUG: after setptew :%x\n", a);      
     }
     
-    //cprintf("T_PGFLT: kgflag = %d\n", kgflag);
-    //cprintf("DEBUG info: proccess name %s pid %d\n", myproc()->name, myproc()->pid);
-    //panic("T_PGFLT");
-    //exit();    
     break;
 
   case T_NMI:

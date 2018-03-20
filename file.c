@@ -22,8 +22,6 @@ struct {
   struct file file;  //file head 
 } ftable;
 
-struct file *h;
-
 void
 fileinit(void)
 { 

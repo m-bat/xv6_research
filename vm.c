@@ -291,11 +291,11 @@ switchuvm(struct proc *p)
 
 //add manabu 10/14 moify switchuvm
 
-char *mem_inituvm;
-
 void
 switchuvm_ro(struct proc *p, const int n)
-{    
+{
+  int i;
+  
   if(p == 0)
     panic("switchuvm: no process");
   if(p->kstack == 0)
@@ -337,23 +337,22 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, (char *)tickslock, PGSIZE, 3);
     setptew(p->pgdir, (char *)&ticks, PGSIZE, 4);
     setptew(p->pgdir, (char *)ptable, PGSIZE, 5);
-    //stack of scheduler context when NCPU == 1
-    setptew(p->pgdir, (char *)(&bcache) - PGSIZE, PGSIZE, 6); 
+    setptew(p->pgdir, (char *)(&bcache) - PGSIZE, PGSIZE, 6); //stack of scheduler context when NCPU == 1
 
-    // When NCPU >= 2
-    /* for (i = 0; i < NCPU - 1; i++) { */
-    /*   setptew(p->pgdir, (char *)stack[i], PGSIZE, 7); //NCPU >= 2 */
-    /* } */
+    if (NCPU >=2) {
+      for (i = 0; i < NCPU - 1; i++) {
+        setptew(p->pgdir, (char *)stack[i], PGSIZE, 7);
+      }
+    }
     
      //******* Life Externsion ********************************************    
-    //setptew(p->pgdir, (char *)&icache, sizeof(icache), 8);    
-    //setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 9);
+    setptew(p->pgdir, (char *)&icache, sizeof(icache), 8);    
+    setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 9);
     //setptew(p->pgdir, (char *)&ftable, sizeof(ftable), 10);
 
     //********************************************************************
     //setptew(p->pgdir, (char *)(&bcache + 4096), 1, 1);
     //setptew(p->pgdir, (char *)idt, PGSIZE, 1);
-    //setptew(p->pgdir, (char *)mem_inituvm, PGSIZE, 1);;      
     //setptew(p->pgdir, (char *)idequeue, sizeof(idequeue), 1);        
     //setptew(p->pgdir, (char *)lapic, PGSIZE, 1);        
     //setptew(p->pgdir, (char *)&sb, sizeof(sb), 1);    
@@ -415,9 +414,6 @@ inituvm(pde_t *pgdir, char *init, uint sz)
   if(sz >= PGSIZE)
     panic("inituvm: more than a page");
   mem = kalloc(ALLOC_KGLOBAL);
-  //add manabu
-  mem_inituvm = mem;
-  //
   
   //DEBUG
   cprintf("mem %x", mem);
@@ -625,7 +621,7 @@ setptew(pde_t *pgdir, char *uva, uint size, uint c)
     //set write-eable
     *pte |= PTE_W;
     if (c == 11) {
-      cprintf("DEBUG: setptew: pte %x\n", pte);
+      cprintf("DEBUG: setptew: pte %x\n", *pte);
     }
     if  (a == last) {
       break;
