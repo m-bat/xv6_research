@@ -51,15 +51,22 @@ SECTIONS
 
 	/* The data segment */
 	.data : {
-		*(.data)
+		*(.data)        
 	}
 
 	PROVIDE(edata = .);
 
 	.bss : {
-		*(.bss)
+		*(.bss)       
 	}
 
+	PROVIDE(ebss = .);
+
+    .should_writable : {
+        . = ALIGN(0x1000);  
+        *(.should_writable)
+    }    
+    
 	PROVIDE(end = .);
 
 	/DISCARD/ : {

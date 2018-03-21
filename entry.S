@@ -66,3 +66,4 @@ entry:
   jmp *%eax
 
 .comm stack, KSTACKSIZE
+    

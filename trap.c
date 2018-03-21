@@ -13,9 +13,10 @@ struct gatedesc idt[256];
 extern uint vectors[];  // in vectors.S: array of 256 entry pointers
 //struct spinlock tickslock;
 //add manabu 11/10
-struct spinlock *tickslock;
 
-uint ticks;
+struct spinlock *tickslock;
+uint ticks __attribute__((__section__(".should_writable")));
+
 
 //add manabu 10/24
 uint kgflag = 0;

@@ -67,7 +67,7 @@ mpmain(void)
 }
 
 pde_t entrypgdir[];  // For entry.S
-char *stack[NCPU - 1];
+char *stack_other[NCPU - 1];
 
 // Start the non-boot (AP) processors.
 static void
@@ -91,11 +91,11 @@ startothers(void)
     // Tell entryother.S what stack to use, where to enter, and what
     // pgdir to use. We cannot use kpgdir yet, because the AP processor
     // is running in low  memory, so we use entrypgdir for the APs too.
-    stack[i] = kalloc(ALLOC_KGLOBAL);
+    stack_other[i] = kalloc(ALLOC_KGLOBAL);
     //DEBUG    
     //cprintf("stack %x", stack);
     //
-    *(void**)(code-4) = stack[i++] + KSTACKSIZE;
+    *(void**)(code-4) = stack_other[i++] + KSTACKSIZE;
     *(void**)(code-8) = mpenter;
     *(int**)(code-12) = (void *) V2P(entrypgdir);
 

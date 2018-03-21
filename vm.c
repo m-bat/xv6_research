@@ -57,7 +57,7 @@ extern struct {
 } ftable;
 
 
-extern char *stack[NCPU - 1];
+extern char *stack_other[NCPU - 1];
 
 // Set up CPU's kernel segment descriptors.
 // Run once on entry on each CPU.
@@ -339,15 +339,14 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, (char *)ptable, PGSIZE, 5);
     setptew(p->pgdir, (char *)(&bcache) - PGSIZE, PGSIZE, 6); //stack of scheduler context when NCPU == 1
 
-    if (NCPU >=2) {
-      for (i = 0; i < NCPU - 1; i++) {
-        setptew(p->pgdir, (char *)stack[i], PGSIZE, 7);
-      }
-    }
+    for (i = 0; i < NCPU - 1; i++) {
+      setptew(p->pgdir, (char *)stack_other[i], PGSIZE, 7);       
+    }    
+    
     
      //******* Life Externsion ********************************************    
     setptew(p->pgdir, (char *)&icache, sizeof(icache), 8);    
-    setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 9);
+    //setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 9);
     //setptew(p->pgdir, (char *)&ftable, sizeof(ftable), 10);
 
     //********************************************************************
