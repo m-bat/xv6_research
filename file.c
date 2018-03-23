@@ -20,7 +20,7 @@ struct {
   //struct file file[NFILE];
   //add manabu
   struct file file;  //file head 
-} ftable;
+} ftable __attribute__((__section__(".should_writable")));
 
 void
 fileinit(void)

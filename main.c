@@ -68,6 +68,7 @@ mpmain(void)
 
 pde_t entrypgdir[];  // For entry.S
 char *stack_other[NCPU - 1];
+char stack[KSTACKSIZE] __attribute__((__section__(".must_writable")));
 
 // Start the non-boot (AP) processors.
 static void

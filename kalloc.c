@@ -24,7 +24,7 @@ struct {
   int use_lock;
   struct run *freelist_global;
   struct run *freelist_plocal;
-} kmem;
+} kmem __attribute__((__section__(".should_writable")));
 
 
 //add manabu

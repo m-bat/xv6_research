@@ -17,6 +17,8 @@ extern char data[];  // defined by kernel.ld
 pde_t *kpgdir;  // for use in scheduler()
 //add manabu 10/31
 extern struct cons_lk *cons;
+extern uint kgflag;
+extern char stack[KSTACKSIZE];
 
 //add manabu 11/2
 extern struct ptable_t *ptable;
@@ -294,7 +296,7 @@ switchuvm(struct proc *p)
 void
 switchuvm_ro(struct proc *p, const int n)
 {
-  int i;
+  //int i;
   
   if(p == 0)
     panic("switchuvm: no process");
@@ -331,22 +333,24 @@ switchuvm_ro(struct proc *p, const int n)
     //cprintf("DEBUG: bcache: %x\n", (char *)(&bcache));
     //cprintf("DEBUG: bcache - PGSIZE: %x\n", (char *)(&bcache) - PGSIZE);    
 
-    //********* Kenel Global (Essential requirement)  ********************
-    setptew(p->pgdir, (char *)cpus, PGSIZE, 1);    
+    //********* Kenel Global (must requirement)  ********************
+    setptew(p->pgdir, (char *)&kgflag, PGSIZE, 4);
+    setptew(p->pgdir, (char *)stack, PGSIZE, 4);    
+    setptew(p->pgdir, (char *)cpus, PGSIZE, 1);
     setptew(p->pgdir, (char *)cons, PGSIZE, 2);
-    setptew(p->pgdir, (char *)tickslock, PGSIZE, 3);
-    setptew(p->pgdir, (char *)&ticks, PGSIZE, 4);
-    setptew(p->pgdir, (char *)ptable, PGSIZE, 5);
-    setptew(p->pgdir, (char *)(&bcache) - PGSIZE, PGSIZE, 6); //stack of scheduler context when NCPU == 1
 
-    for (i = 0; i < NCPU - 1; i++) {
-      setptew(p->pgdir, (char *)stack_other[i], PGSIZE, 7);       
-    }    
-    
+    for (int i = 0; i < NCPU - 1; i++) {
+      setptew(p->pgdir, (char *)stack_other[i], PGSIZE, 7);
+    }
+
+    //********* Kenel Global (should requirement)  ********************
+    //setptew(p->pgdir, (char *)&ticks, PGSIZE, 4);
+    setptew(p->pgdir, (char *)tickslock, PGSIZE, 3);     
+    setptew(p->pgdir, (char *)ptable, PGSIZE, 5);
     
      //******* Life Externsion ********************************************    
     setptew(p->pgdir, (char *)&icache, sizeof(icache), 8);    
-    //setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 9);
+    setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 9);
     //setptew(p->pgdir, (char *)&ftable, sizeof(ftable), 10);
 
     //********************************************************************

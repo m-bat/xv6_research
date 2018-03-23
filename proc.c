@@ -514,7 +514,7 @@ yield(void)
 void
 forkret(void)
 {
-  static int first = 1;
+  static int first __attribute__((__section__(".should_writable"))) = 1;
   // Still holding ptable.lock from scheduler.
   release(&ptable->lock);
 

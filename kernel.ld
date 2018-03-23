@@ -62,6 +62,13 @@ SECTIONS
 
 	PROVIDE(ebss = .);
 
+    .must_writable : {
+        . = ALIGN(0x1000);  
+        *(.must_writable)
+    }
+
+	PROVIDE(emust_writable = .);
+
     .should_writable : {
         . = ALIGN(0x1000);  
         *(.should_writable)
