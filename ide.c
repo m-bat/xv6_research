@@ -29,9 +29,9 @@
 // You must hold idelock while manipulating queue.
 
 //static struct spinlock idelock;
-struct spinlock idelock;
+struct spinlock idelock __attribute__((__section__(".should_writable")));
 //static struct buf *idequeue;
-struct buf *idequeue;
+struct buf *idequeue __attribute__((__section__(".should_writable")));
 
 static int havedisk1;
 static void idestart(struct buf*);

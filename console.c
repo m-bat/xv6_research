@@ -219,7 +219,7 @@ struct {
   uint r;  // Read index
   uint w;  // Write index
   uint e;  // Edit index
-} input;
+} input __attribute__((__section__(".should_writable")));
 
 #define C(x)  ((x)-'@')  // Control-x
 

@@ -13,12 +13,13 @@ struct gatedesc idt[256];
 extern uint vectors[];  // in vectors.S: array of 256 entry pointers
 //struct spinlock tickslock;
 //add manabu 11/10
-struct spinlock *tickslock;
 
-uint ticks;
+struct spinlock *tickslock;
+uint ticks __attribute__((__section__(".should_writable")));
+
 
 //add manabu 10/24
-uint kgflag = 0;
+uint kgflag __attribute__((__section__(".must_writable"))) = 0;
 
 void
 tvinit(void)
@@ -99,8 +100,8 @@ trap(struct trapframe *tf)
     //force kill process
     //myproc()->killed = 1;   
     p = myproc();
-    uint a = PGROUNDDOWN(rcr2());
-    cprintf("LOG INFO: page fault proccess name %s, pid %d, addr %x\n", myproc()->name, myproc()->pid, a);
+     uint a = PGROUNDDOWN(rcr2());
+    cprintf("LOG INFO: page fault proccess name %s, pid %d, addr %x\n", myproc()->name, myproc()->pid, rcr2());
     //cprintf("mycpu->ncli: %d\n", mycpu()->ncli);
     
     if (a >= (uint)get_kplocal_addr() && a <= (uint)get_devspace_addr()) {
