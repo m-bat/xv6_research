@@ -626,10 +626,10 @@ setptew(pde_t *pgdir, char *uva, uint size, uint c)
     //set write-eable
     *pte |= PTE_W;
     if (c == 11) {
-      cprintf("DEBUG: setptew: pte %x\n", *pte);
+      cprintf("DEBUG: setptew: pte %p\n", &pte);
     }
     if  (a == last) {
-      break;
+      break;2
     }
     a += PGSIZE;
   }
@@ -751,4 +751,3 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 // Blank page.
 //PAGEBREAK!
 // Blank page.
-

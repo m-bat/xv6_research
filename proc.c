@@ -46,6 +46,7 @@ extern pde_t *kpgdir;
 char *plist[100];
 int plist_index = 0;
 char *test;
+int test_plocal = 0;
 
 void
 pinit(void)
@@ -719,10 +720,13 @@ plocal(void)
   setptew(p->pgdir, c2, PGSIZE, 1);
   switchuvm(p);
   */
-  test = kalloc(ALLOC_KGLOBAL);
-  cprintf("DEBUG: plocal test: %d\n", *test);
-  kfree((char *)test);
-  return 23;
+  
+  /* test = kalloc(ALLOC_KGLOBAL); */
+  /* cprintf("DEBUG: plocal test: %d\n", *test); */
+  /* kfree((char *)test); */
+
+  test_plocal = 1;
+  return 23;  
 }
 
 int
