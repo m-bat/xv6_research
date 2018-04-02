@@ -122,17 +122,8 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
-
+  p->kgflag = 0;
   release(&ptable->lock);
-
-  // Allocate kernel stack.
-
-  /*
-  if((p->kstack = kalloc()) == 0){
-    p->state = UNUSED;
-    return 0;
-  }
-  */
  
   //Allocate kernel stack by kalloc(ALLOC_PLOCAL)
   if((p->kstack = kalloc(ALLOC_PLOCAL)) == 0){    
@@ -411,7 +402,8 @@ wait(void)
         p->pid = 0;
         p->parent = 0;
         p->name[0] = 0;
-        p->killed = 0;
+        p->kgflag = 0;        
+        p->killed = 0;        
         p->state = UNUSED;
         release(&ptable->lock);
         return pid;
