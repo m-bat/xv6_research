@@ -50,7 +50,8 @@ void
 trap(struct trapframe *tf)
 {
   //add manabu 10/29
-  struct proc *p;  
+  struct proc *p;
+  pte_t *pte;
   //  
   if(tf->trapno == T_SYSCALL){
     if(myproc()->killed)
@@ -114,7 +115,9 @@ trap(struct trapframe *tf)
       if ( !kgflag ) {
         kgflag = 1;        
         cprintf("LOG: Access KERNELGLOBAL! set kgflag\n");
-      }      
+      }
+      pte = get_pte(p->pgdir, (char *)rcr2());            
+      cprintf("LOG: Fault pte addr %x %x\n", &pte, *pte);
       switchkvm();
       //setptew_kernel(p->pgdir);
       setptew(p->pgdir, (char *)a, sizeof(a), 11);      

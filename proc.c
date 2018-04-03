@@ -36,6 +36,7 @@ struct ptable_t *ptable;
 static struct proc *initproc;
 
 int nextpid = 1;
+int test_pte = 0;
 extern void forkret(void);
 extern void trapret(void);
 
@@ -727,9 +728,12 @@ plocal(void)
   setptew(p->pgdir, c2, PGSIZE, 1);
   switchuvm(p);
   */
-  test = kalloc(ALLOC_KGLOBAL);
+  /*test = kalloc(ALLOC_KGLOBAL);
   cprintf("DEBUG: plocal test: %d\n", *test);
   kfree((char *)test);
+  */
+
+  test_pte = 1;
   return 23;
 }
 
