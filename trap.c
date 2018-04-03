@@ -17,9 +17,9 @@ extern uint vectors[];  // in vectors.S: array of 256 entry pointers
 struct spinlock *tickslock;
 uint ticks __attribute__((__section__(".should_writable")));
 
-
 //add manabu 10/24
 uint kgflag __attribute__((__section__(".must_writable"))) = 0;
+char write_ptelist[256] __attribute__((__section__(".must_writable")));
 
 void
 tvinit(void)
@@ -110,14 +110,16 @@ trap(struct trapframe *tf)
       cprintf("LOG: Access KERNELPLOCAL! exit process %s\n", p->name);
       exit();
     }
-    else {      
+    else {
       //setptew(p->pgdir, (void *)a, PGSIZE, 1);
-      if ( !kgflag ) {
-        kgflag = 1;        
-        cprintf("LOG: Access KERNELGLOBAL! set kgflag\n");
+
+      if ( !(p->kgflag) ) {
+        p->kgflag = 1; 
+        cprintf("LOG: Access KERNELGLOBAL! set kgflag of %s\n", p->name);
+        
+        cprintf("DEBUG: page table enty %p\n", get_pte(p->pgdir, (char *)rcr2()));
       }
-      pte = get_pte(p->pgdir, (char *)rcr2());            
-      cprintf("LOG: Fault pte addr %x %x\n", &pte, *pte);
+
       switchkvm();
       //setptew_kernel(p->pgdir);
       setptew(p->pgdir, (char *)a, sizeof(a), 11);      

@@ -128,8 +128,9 @@ panic(char *s)
 {
   int i;
   uint pcs[10];
-  
-  
+
+  struct proc *p = myproc();
+    
   cli();
   //cons.locking = 0;
   cons->locking = 0;
@@ -138,17 +139,16 @@ panic(char *s)
   cprintf("lapicid %d: panic: ", lapicid());
   cprintf(s);
   cprintf("\n");
-
+  
   //add manabu 10/30
-  if (kgflag == 1) {
-    cprintf("LOG: KGFLAG==1 thus Fail Stop!\n");
+  if (p->kgflag == 1) {
+    cprintf("LOG: KGFLAG==1 of %s thus Fail Stop!\n", p->name);
   }
   else {
-    cprintf("LOG: LIFE EXTENSION! As kgflag is not set, exit process %s\n", myproc()->name);
-    exit_plocal();
-    
+    cprintf("LOG: LIFE EXTENSION! As kgflag is not set, exit process %s\n", p->name);
+    exit_plocal();    
   }
-  //                      `
+  //  
   getcallerpcs(&s, pcs);
   
   for(i=0; i<10; i++)

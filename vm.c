@@ -19,6 +19,7 @@ pde_t *kpgdir;  // for use in scheduler()
 extern struct cons_lk *cons;
 extern uint kgflag;
 extern char stack[KSTACKSIZE];
+extern char write_ptelist[256];
 
 //add manabu 11/2
 extern struct ptable_t *ptable;
@@ -338,6 +339,7 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, (char *)stack, PGSIZE, 4);    
     setptew(p->pgdir, (char *)cpus, PGSIZE, 1);
     setptew(p->pgdir, (char *)cons, PGSIZE, 2);
+    setptew(p->pgdir, (char *)write_ptelist, PGSIZE, 2);
 
     for (int i = 0; i < NCPU - 1; i++) {
       setptew(p->pgdir, (char *)stack_other[i], PGSIZE, 7);
@@ -624,10 +626,10 @@ setptew(pde_t *pgdir, char *uva, uint size, uint c)
     //set write-eable
     *pte |= PTE_W;
     if (c == 11) {
-      cprintf("DEBUG: setptew: pte %x\n", *pte);
+      cprintf("DEBUG: setptew: pte %p\n", &pte);
     }
     if  (a == last) {
-      break;
+      break;2
     }
     a += PGSIZE;
   }
@@ -749,4 +751,3 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 // Blank page.
 //PAGEBREAK!
 // Blank page.
-
