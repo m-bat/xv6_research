@@ -51,7 +51,7 @@ trap(struct trapframe *tf)
 {
   //add manabu 10/29
   struct proc *p;
-  pte_t *pte;
+
   //  
   if(tf->trapno == T_SYSCALL){
     if(myproc()->killed)

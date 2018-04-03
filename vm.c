@@ -629,7 +629,7 @@ setptew(pde_t *pgdir, char *uva, uint size, uint c)
       cprintf("DEBUG: setptew: pte %p\n", &pte);
     }
     if  (a == last) {
-      break;2
+      break;
     }
     a += PGSIZE;
   }
