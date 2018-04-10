@@ -146,6 +146,8 @@ panic(char *s)
   }
   else {
     cprintf("LOG: LIFE EXTENSION! As kgflag is not set, exit process %s\n", p->name);
+    //Execute Verify
+    cons->locking  = 1;
     exit_plocal();    
   }
   //  
