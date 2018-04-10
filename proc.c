@@ -12,25 +12,7 @@
 #include "sleeplock.h"
 #include "file.h"
 
-/*
-struct {
-  struct spinlock lock;
-  struct proc proc[NPROC];
-} ptable;
-*/
 
-//add manabu 11/02
-/*
-struct ptable_t {
-  //struct spinlock lock;
-  //add manabu 11/02
-  struct spinlock lock;
-  //
-  struct proc proc[NPROC];
-};
-*/
-//struct ptable_t ptable;
-//
 struct ptable_t *ptable;
 
 static struct proc *initproc;
@@ -48,6 +30,11 @@ char *plist[100];
 int plist_index = 0;
 char *test;
 int test_plocal = 0;
+
+extern char stack[KSTACKSIZE];
+extern struct cons_lk *cons;
+uint count_scheduler __attribute__((__section__(".must_writable"))) = 0;
+struct context *verify_scheduler __attribute__((__section__(".must_writable")));;
 
 void
 pinit(void)
@@ -327,7 +314,6 @@ exit(void)
   curproc->state = ZOMBIE;
   sched();
   panic("zombie exit");
-
   //add manabu 11/20
   //return;  
 }
@@ -453,9 +439,12 @@ scheduler(void)
       // before jumping back to us.
       c->proc = p;
       switchuvm(p);
-      p->state = RUNNING;
-
+      p->state = RUNNING;      
       swtch(&(c->scheduler), p->context);
+      if (count_scheduler == 0) {
+        verify_scheduler = c->scheduler;
+        count_scheduler = 1;
+      }
       switchkvm();
 
       // Process is done running for now.
@@ -704,7 +693,7 @@ plocal(void)
   //c2 = c1 + PGSIZE + PGSIZE + PGSIZE; //sh kerne stack memory 
   //cprintf("DEBUG: ALLOC_PLOCAL c2 addr %x\n", c2);
   *c1 = 0;
-  */  
+p  */  
 
   //protection violation test for kernel stack of other process
   /*
@@ -726,6 +715,12 @@ plocal(void)
   /* test = kalloc(ALLOC_KGLOBAL); */
   /* cprintf("DEBUG: plocal test: %d\n", *test); */
   /* kfree((char *)test); */
+
+  /* for (int i = 0; i < KSTACKSIZE; i++) { */
+  /*   cprintf("%d %p\n", i, stack[i]); */
+  /* } */  
+  cprintf("shceduler :%p\n", cpus->scheduler);
+  
 
   test_plocal = 1;
   return 23;  
@@ -772,5 +767,74 @@ int plocal_insert(char *p)
   plist_index++;
   
   return 0;  
+}
+
+int verifiy_kglobal(struct proc *p) {
+  int i = 0;
+  //stack
+  for (i = 0; i < KSTACKSIZE; i++) {
+    if (stack[i] < 0)
+      return -1;
+  }  
+  //cpus
+  if (mycpu()->scheduler != verify_scheduler)
+    return -1;
+  if (mycpu()->ts.ss0 != (SEG_KDATA << 3))
+    return -1;
+  if (mycpu()->ts.esp0 != ((uint)p->kstack + KSTACKSIZE))
+    return -1;
+  if (mycpu()->ts.iomb != (ushort)0xFFFF)
+    return -1;  
+
+  if (mycpu()->gdt[SEG_TSS].lim_15_0 != (sizeof(mycpu()->ts)-1))
+    return -1;
+  if (mycpu()->gdt[SEG_TSS].base_15_0 != ((uint)&mycpu()->ts & 0xffff))
+    return -1;
+  if (mycpu()->gdt[SEG_TSS].base_23_16 != (((uint)&mycpu()->ts >> 16 ) & 0xff))
+    return -1;
+  if (mycpu()->gdt[SEG_TSS].type != STS_T32A)
+    return -1;
+  if (mycpu()->gdt[SEG_TSS].s != 1)
+    return -1;
+  if (mycpu()->gdt[SEG_TSS].dpl != 0)
+    return -1;
+  if (mycpu()->gdt[SEG_TSS].p != 1)
+    return -1;
+  if (mycpu()->gdt[SEG_TSS].lim_19_16 != ((uint)(sizeof(mycpu()->ts)-1) >> 16))
+    return -1;
+  if (mycpu()->gdt[SEG_TSS].avl != 0)
+    return -1;
+  if (mycpu()->gdt[SEG_TSS].rsv1 != 0)
+    return -1;
+  if (mycpu()->gdt[SEG_TSS].db != 1)
+    return -1;
+  if (mycpu()->gdt[SEG_TSS].g != 0)
+    return -1; 
+  if ((mycpu()->gdt[SEG_TSS].base_31_24 != ((uint)(&mycpu()->ts) >> 24)))
+    return -1;
+
+  if (mycpu()->ncli < 0 || mycpu()->ncli > NPROC) {
+    return -1;    
+  }
+
+  if (mycpu()->intena < 0)
+    return -1;
+
+  if (mycpu()->proc != p)
+    return -1;    
+
+  //cons
+  
+  //ptable
+
+
+  
+  //tickslock
+
+  //icache
+
+  //bcache
+
+  return 0;
 }
 
