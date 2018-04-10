@@ -143,7 +143,7 @@ pipewrite(struct pipe *p, char *addr, int n)
       sleep(&p->nwrite, &p->lock);  //DOC: pipewrite-sleep
     }
     
-    p = 0;  //Fault Injection (Null Pointer)    
+    //p = 0;  //Fault Injection (Null Pointer)    
     p->data[p->nwrite++ % PIPESIZE] = addr[i];   
   }
   wakeup(&p->nread);  //DOC: pipewrite-wakeup1
