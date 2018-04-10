@@ -17,7 +17,6 @@ extern char data[];  // defined by kernel.ld
 pde_t *kpgdir;  // for use in scheduler()
 //add manabu 10/31
 extern struct cons_lk *cons;
-extern uint kgflag;
 extern char stack[KSTACKSIZE];
 extern char write_ptelist[256];
 
@@ -335,24 +334,23 @@ switchuvm_ro(struct proc *p, const int n)
     //cprintf("DEBUG: bcache - PGSIZE: %x\n", (char *)(&bcache) - PGSIZE);    
 
     //********* Kenel Global (must requirement)  ********************
-    setptew(p->pgdir, (char *)&kgflag, PGSIZE, 4);
     setptew(p->pgdir, (char *)stack, PGSIZE, 4);    
     setptew(p->pgdir, (char *)cpus, PGSIZE, 1);
     setptew(p->pgdir, (char *)cons, PGSIZE, 2);
     setptew(p->pgdir, (char *)write_ptelist, PGSIZE, 2);
+    setptew(p->pgdir, (char *)ptable, PGSIZE, 5);
 
     for (int i = 0; i < NCPU - 1; i++) {
       setptew(p->pgdir, (char *)stack_other[i], PGSIZE, 7);
     }
 
     //********* Kenel Global (should requirement)  ********************
-    //setptew(p->pgdir, (char *)&ticks, PGSIZE, 4);
-    setptew(p->pgdir, (char *)tickslock, PGSIZE, 3);     
-    setptew(p->pgdir, (char *)ptable, PGSIZE, 5);
+    //setptew(p->pgdir, (char *)tickslock, PGSIZE, 3);
+    //setptew(p->pgdir, (char *)&icache, sizeof(icache), 8);    
+    //setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 9);
+
     
-     //******* Life Externsion ********************************************    
-    setptew(p->pgdir, (char *)&icache, sizeof(icache), 8);    
-    setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 9);
+    //setptew(p->pgdir, (char *)&ticks, PGSIZE, 4);                
     //setptew(p->pgdir, (char *)&ftable, sizeof(ftable), 10);
 
     //********************************************************************
