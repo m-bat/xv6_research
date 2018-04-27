@@ -36,6 +36,8 @@ struct cons_lk {
 struct cons_lk *cons;
 //
 
+extern struct ptable_t *ptable;
+
 static void
 printint(int xx, int base, int sign)
 {
@@ -145,10 +147,19 @@ panic(char *s)
     cprintf("LOG: KGFLAG==1 of %s thus Fail Stop!\n", p->name);
   }
   else {
-    cprintf("LOG: LIFE EXTENSION! As kgflag is not set, exit process %s\n", p->name);
     //Execute Verify
-    cons->locking  = 1;
-    exit_plocal();    
+    if (verify_kglobal(p) == 0 || verify_kglobal(p) == -1) {
+      cprintf("LOG: LIFE EXTENSION! As kgflag is not set, exit process %s\n", p->name);
+      cons->locking  = 1;
+      acquire(&ptable->lock);
+      p->killed = 1;
+      p->state = ZOMBIE;
+      release(&ptable->lock);
+      exit_plocal();
+    }
+    else {
+      cprintf("LOG: Fail Stop! Kgflag is not set, but kglobal data was broken %s\n", p->name);
+    }
   }
   //  
   getcallerpcs(&s, pcs);
