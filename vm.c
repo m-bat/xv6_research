@@ -78,7 +78,6 @@ struct log {
 };
 
 extern struct log log;
-extern int count;
 char *uselist[4096];
 
 
@@ -389,8 +388,8 @@ switchuvm_ro(struct proc *p, const int n)
     //setptew(p->pgdir, (char *)&bcache, sizeof(bcache)+PGSIZE*5, 9);
 
     //********* Kenel Global (test requirement)  ********************
-    setptew(p->pgdir, (char *)&count, sizeof(count), 9);
     setptew(p->pgdir, (char *)uselist, sizeof(uselist), 9);
+    setptew(p->pgdir, (char *)uselist, 5000, 9);
     
     //setptew(p->pgdir, (char *)&ticks, PGSIZE, 4);
     //setptew(p->pgdir, (char *)tickslock, PGSIZE, 3);
