@@ -18,7 +18,6 @@ struct spinlock *tickslock;
 uint ticks __attribute__((__section__(".should_writable")));
 
 //add manabu 10/24
-uint kgflag __attribute__((__section__(".must_writable"))) = 0;
 char write_ptelist[256] __attribute__((__section__(".must_writable")));
 
 void
@@ -51,16 +50,47 @@ trap(struct trapframe *tf)
 {
   //add manabu 10/29
   struct proc *p;
+  p = myproc();
+  uint a = 0;
+  //
 
-  //  
+  if (p != 0) {
+    if (strcmp(p->parent->name, "sh") == 0) {
+      switchtrapvm();
+    }
+  }
+  
   if(tf->trapno == T_SYSCALL){
-    if(myproc()->killed)
+    if(myproc()->killed) {
+      
+      if (p != 0) {
+        if (strcmp(p->parent->name, "sh") == 0) {
+          switchuvm(p);
+        }
+      }
+    
       exit();
+    }
     myproc()->tf = tf;
+
+    if (p != 0) {
+      if (strcmp(p->parent->name, "sh") == 0) {
+        switchuvm(p);
+      }
+    }
+    
     syscall();
-    if(myproc()->killed)
+    if(myproc()->killed) {
+      
+      if (p != 0) {
+        if (strcmp(p->parent->name, "sh") == 0) {
+          switchuvm(p);
+        }
+      }
+      
       exit();
-     return;
+    }
+    return;
   }
   switch(tf->trapno){
     
@@ -99,33 +129,36 @@ trap(struct trapframe *tf)
   case T_PGFLT:
     //cprintf("&lapic :%x, lapic :%x\n", &lapic, lapic);
     //force kill process
-    //myproc()->killed = 1;   
-    p = myproc();
-     uint a = PGROUNDDOWN(rcr2());
+    //myproc()->killed = 1;
+    a = PGROUNDDOWN(rcr2());    
     cprintf("LOG INFO: page fault proccess name %s, pid %d, addr %x\n", myproc()->name, myproc()->pid, rcr2());
     //cprintf("mycpu->ncli: %d\n", mycpu()->ncli);
     
-    if (a >= (uint)get_kplocal_addr() && a <= (uint)get_devspace_addr()) {
+    if (a >= (uint)get_kplocal_addr() && a < (uint)get_devspace_addr()) {
       //access kernel process local area
       cprintf("LOG: Access KERNELPLOCAL! exit process %s\n", p->name);
-      exit();
-    }
+
+      if (p != 0) {
+        if (strcmp(p->parent->name, "sh") == 0) {
+          switchuvm(p);
+        }
+      }      
+      exit_plocal();
+    }       
     else {
       //setptew(p->pgdir, (void *)a, PGSIZE, 1);
-
       if ( !(p->kgflag) ) {
         p->kgflag = 1; 
         cprintf("LOG: Access KERNELGLOBAL! set kgflag of %s\n", p->name);
         
         cprintf("DEBUG: page table enty %p\n", get_pte(p->pgdir, (char *)rcr2()));
-      }
-
+      }      
       switchkvm();
       //setptew_kernel(p->pgdir);
       setptew(p->pgdir, (char *)a, sizeof(a), 11);      
       switchuvm(p);
     }
-    
+   
     break;
 
   case T_NMI:
@@ -151,22 +184,55 @@ trap(struct trapframe *tf)
             tf->err, cpuid(), tf->eip, rcr2());
     myproc()->killed = 1;
   }
+
+
+
   // Force process exit if it has been killed and is in user space.
   // (If it is still executing in the kernel, let it keep running
   // until it gets to the regular system call return.)
-  if(myproc() && myproc()->killed && (tf->cs&3) == DPL_USER)
+  if(myproc() && myproc()->killed && (tf->cs&3) == DPL_USER) {
+
+    if (p != 0) {
+      if (strcmp(p->parent->name, "sh") == 0) {
+        switchuvm(p);
+      }
+    }
+       
     exit();
+  }
 
   // Force process to give up CPU on clock tick.
   // If interrupts were on while locks held, would need to check nlock.
   if(myproc() && myproc()->state == RUNNING &&
      tf->trapno == T_IRQ0+IRQ_TIMER) {
+
+    if (p != 0) {
+      if (strcmp(p->parent->name, "sh") == 0) {
+        switchuvm(p);
+      }
+    }
+    
     yield();
     //DEBUG
     //cprintf("DEBUG manabu\n");
   }
 
   // Check if the process has been killed since we yielded
-  if(myproc() && myproc()->killed && (tf->cs&3) == DPL_USER)
+  if(myproc() && myproc()->killed && (tf->cs&3) == DPL_USER) {
+
+    if (p != 0) {
+      if (strcmp(p->parent->name, "sh") == 0) {
+        switchuvm(p);
+      }
+    }
+    
     exit();
+  }
+  
+  if (p != 0) {
+    if (strcmp(p->parent->name, "sh") == 0) {
+      switchuvm(p);
+    }
+  }
+  
 }

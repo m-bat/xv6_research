@@ -19,6 +19,7 @@ main(void)
 {
   kinit1(end, P2V(4*1024*1024)); // phys page allocator
   kvmalloc();      // kernel page table
+  trapvmalloc();   // trap page table
   pinit();         // process table
   //add manabu 10/28
   cpualloc();

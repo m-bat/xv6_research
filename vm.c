@@ -15,6 +15,7 @@
 
 extern char data[];  // defined by kernel.ld
 pde_t *kpgdir;  // for use in scheduler()
+pde_t *trapgdir;
 //add manabu 10/31
 extern struct cons_lk *cons;
 extern char stack[KSTACKSIZE];
@@ -60,6 +61,26 @@ extern struct {
 
 
 extern char *stack_other[NCPU - 1];
+
+struct logheader {
+  int n;
+  int block[LOGSIZE];
+};
+
+struct log {
+  struct spinlock lock;
+  int start;
+  int size;
+  int outstanding; // how many FS sys calls are executing.
+  int committing;  // in commit(), please wait.
+  int dev;
+  struct logheader lh;
+};
+
+extern struct log log;
+extern int count;
+char *uselist[4096];
+
 
 // Set up CPU's kernel segment descriptors.
 // Run once on entry on each CPU.
@@ -184,6 +205,10 @@ static struct kmap {
 
 // Set up kernel part of a page table.
 
+char *get_kglobal_addr() {    
+  return kmap[2].virt;
+}
+
 char *get_kplocal_addr() {    
   return kmap[3].virt;
 }
@@ -257,12 +282,25 @@ kvmalloc(void)
   switchkvm();
 }
 
+void
+trapvmalloc(void)
+{
+  trapgdir = setupkvm(ALLOC_KGLOBAL);
+  switchkvm();
+}
+
 // Switch h/w page table register to the kernel-only page table,
 // for when no process is running.
 void
 switchkvm(void)
 {
   lcr3(V2P(kpgdir));   // switch to the kernel page table
+}
+
+void
+switchtrapvm(void)
+{
+  lcr3(V2P(trapgdir));   // switch to the trap page table
 }
 
 // Switch TSS and h/w page table to correspond to process p.
@@ -292,7 +330,6 @@ switchuvm(struct proc *p)
 }
 
 //add manabu 10/14 moify switchuvm
-
 void
 switchuvm_ro(struct proc *p, const int n)
 {
@@ -337,20 +374,26 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, (char *)stack, PGSIZE, 4);    
     setptew(p->pgdir, (char *)cpus, PGSIZE, 1);
     setptew(p->pgdir, (char *)cons, PGSIZE, 2);
-    setptew(p->pgdir, (char *)write_ptelist, PGSIZE, 2);
-    setptew(p->pgdir, (char *)ptable, PGSIZE, 5);
+    setptew(p->pgdir, (char *)write_ptelist, PGSIZE, 2);    
+    //
 
     for (int i = 0; i < NCPU - 1; i++) {
       setptew(p->pgdir, (char *)stack_other[i], PGSIZE, 7);
     }
 
     //********* Kenel Global (should requirement)  ********************
-    //setptew(p->pgdir, (char *)tickslock, PGSIZE, 3);
-    //setptew(p->pgdir, (char *)&icache, sizeof(icache), 8);    
-    //setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 9);
+    setptew(p->pgdir, (char *)ptable, PGSIZE, 5);
+    setptew(p->pgdir, (char *)&log, PGSIZE, 5);
+    setptew(p->pgdir, (char *)&icache, sizeof(icache), 8);    
+    setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 9);
+    //setptew(p->pgdir, (char *)&bcache, sizeof(bcache)+PGSIZE*5, 9);
 
+    //********* Kenel Global (test requirement)  ********************
+    setptew(p->pgdir, (char *)&count, sizeof(count), 9);
+    setptew(p->pgdir, (char *)uselist, sizeof(uselist), 9);
     
-    //setptew(p->pgdir, (char *)&ticks, PGSIZE, 4);                
+    //setptew(p->pgdir, (char *)&ticks, PGSIZE, 4);
+    //setptew(p->pgdir, (char *)tickslock, PGSIZE, 3);
     //setptew(p->pgdir, (char *)&ftable, sizeof(ftable), 10);
 
     //********************************************************************
