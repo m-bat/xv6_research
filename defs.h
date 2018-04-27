@@ -142,6 +142,7 @@ char*           strcpy(char *s, char *t);
 int             plocal_insert(char *p);
 int             plist_init(void);          
 void            exit_plocal(void);
+int             verify_kglobal(struct proc *p);
 
 // swtch.S
 void            swtch(struct context**, struct context*);
@@ -201,6 +202,7 @@ void            uartputc(int);
 // vm.c
 void            seginit(void);
 void            kvmalloc(void);
+void            trapvmalloc(void);
 pde_t*          setupkvm(alloc_flag_t);
 char*           uva2ka(pde_t*, char*);
 int             allocuvm(pde_t*, uint, uint);
@@ -211,6 +213,7 @@ int             loaduvm(pde_t*, char*, struct inode*, uint, uint);
 pde_t*          copyuvm(pde_t*, uint);
 void            switchuvm(struct proc*);
 void            switchkvm(void);
+void            switchtrapvm(void);
 int             copyout(pde_t*, uint, void*, uint);
 void            clearpteu(pde_t *pgdir, char *uva);
 void            clearptew(pde_t *pgdir, char *uvao);
@@ -220,6 +223,7 @@ void            switchuvm_ro(struct proc *p, const int n);
 void            set_kmem_readonly(pde_t *pgdir);
 void            setptew(pde_t *pgdir, char *uva, uint size, uint c);
 void            setptew_kernel(pde_t *pgdir);
+char*           get_kglobal_addr();
 char*           get_kplocal_addr();
 char*           get_devspace_addr();
 pte_t*          get_pte(pde_t *pgdir, char *v);
