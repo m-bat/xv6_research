@@ -167,7 +167,7 @@ bfree(int dev, uint b)
 struct {
   struct spinlock lock;
   struct inode inode[NINODE];
-} icache __attribute__((__section__(".should_writable")));
+} icache __attribute__((__section__(".must_writable")));
 
 void
 iinit(int dev)

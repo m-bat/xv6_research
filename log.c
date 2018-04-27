@@ -45,7 +45,7 @@ struct log {
   int dev;
   struct logheader lh;
 };
-struct log log  __attribute__((__section__(".should_writable")));
+struct log log __attribute__((__section__(".must_writable")));
 
 static void recover_from_log(void);
 static void commit();

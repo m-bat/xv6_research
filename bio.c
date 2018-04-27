@@ -33,7 +33,7 @@ struct {
   // Linked list of all buffers, through prev/next.
   // head.next is most recently used.
   struct buf head;
-} bcache __attribute__((__section__(".should_writable")));
+} bcache __attribute__((__section__(".must_writable")));
 
 void
 binit(void)
