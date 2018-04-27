@@ -72,6 +72,11 @@ SECTIONS
     .should_writable : {
         . = ALIGN(0x1000);  
         *(.should_writable)
+    }
+
+    .test_writable : {
+        . = ALIGN(0x1000);  
+        *(.test_writable)
     }    
     
 	PROVIDE(end = .);
