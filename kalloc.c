@@ -24,11 +24,14 @@ struct {
   int use_lock;
   struct run *freelist_global;
   struct run *freelist_plocal;
-} kmem __attribute__((__section__(".should_writable")));
+} kmem __attribute__((__section__(".must_writable")));
+
+char *uselist[4096] __attribute__((__section__(".test_writable")));
 
 
 //add manabu
 extern pde_t *kpgdir;
+int count __attribute__((__section__(".test_writable"))) = 0;
 //extern struct cpu *cpus;
 //
 
@@ -101,6 +104,12 @@ kfree(char *v)
 
   if(kmem.use_lock)
     release(&kmem.lock);
+
+  /* for (int i = 0; i < PGSIZE; i++) { */
+  /*   if (uselist[i] == v) { */
+  /*     uselist[i] = 0; */
+  /*   } */
+  /* } */
 }
 
 // Allocate one 4096-byte page of physical memory.
@@ -122,7 +131,8 @@ kalloc(alloc_flag_t flag) {
     break;
   case ALLOC_PLOCAL:
     r = kmem.freelist_plocal;
-    if(r) {
+    uselist[count++] = (char *)r;
+    if(r) {      
       kmem.freelist_plocal = r->next;
     }
     break;
@@ -132,7 +142,8 @@ kalloc(alloc_flag_t flag) {
   
   if(kmem.use_lock)
     release(&kmem.lock);
-  return (char*)r;
+  
+  return (char*)r;  
 }
 
 
