@@ -1,4 +1,4 @@
-#include "types.h"
+ #include "types.h"
 #include "defs.h"
 #include "param.h"
 #include "memlayout.h"
@@ -14,6 +14,7 @@
 #include "buf.h"
 
 
+#define FAULT_SIZE 300
 struct ptable_t *ptable;
 
 static struct proc *initproc;
@@ -482,27 +483,35 @@ scheduler(void)
       // before jumping back to us.
       c->proc = p;
 
-      switchuvm(p);
-      //Fault Injection
-      if (strcmp(p->name, "ls") == 0) {
-        num = ticks % 30 - 1;
-        destroy = uselist[num];
-        if (destroy != 0) {
-          //cprintf("num: %d destory_addr %p\n", num, destroy);
-          //tmp = (char *)0x801C55C;
-          //*destory = 0;
-          /* tmp = ~(int)*destory; */
-          /* *destory = tmp; n*/
-          memset(destroy, 0, 1);
-        }
-      }
-                
+      switchuvm(p);      
       p->state = RUNNING;      
       swtch(&(c->scheduler), p->context);
       if (count_scheduler == 0) {
         verify_scheduler = c->scheduler;
         count_scheduler = 1;
       }
+      //Fault Injection
+      if ((strcmp(p->parent->name, "sh") == 0) && (p->parent->state == SLEEPING)) {
+        num = ticks % FAULT_SIZE - 1;
+        destroy = uselist[num];
+        if (destroy == 0) {
+          for (num++; num < FAULT_SIZE; num++) {
+            if ((destroy = uselist[num]) != 0) {
+              cprintf("Fault userlist num: %d\n", num);
+              memset(destroy-num, 0, 1);
+              break;
+            }
+            if (num == (FAULT_SIZE - 1)) {
+              num = -1;
+            }
+          }
+        }
+        else {
+          cprintf("Fault userlist num: %d\n", num);
+          memset(destroy-num, 0, 1);
+        }
+      }
+
       switchkvm();
 
       // Process is done running for now.

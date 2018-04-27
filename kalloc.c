@@ -26,12 +26,12 @@ struct {
   struct run *freelist_plocal;
 } kmem __attribute__((__section__(".must_writable")));
 
-char *uselist[4096] __attribute__((__section__(".test_writable")));
+char *uselist[PGSIZE] __attribute__((__section__(".test_writable")));
+
 
 
 //add manabu
 extern pde_t *kpgdir;
-int count __attribute__((__section__(".test_writable"))) = 0;
 //extern struct cpu *cpus;
 //
 
@@ -40,6 +40,8 @@ int count __attribute__((__section__(".test_writable"))) = 0;
 // the pages mapped by entrypgdir on free list.
 // 2. main() calls kinit2() with the rest of the physical pages
 // after installing a full page table that maps them on all cores.
+
+
 void
 kinit1(void *vstart, void *vend)
 {
@@ -52,7 +54,7 @@ kinit1(void *vstart, void *vend)
   cprintf("DEBUG: vstart: %x", vstart);
   cprintf("DEBUG: vlast: %x", vend);  
   */
-  //
+  //  
 }
 
 void
@@ -60,7 +62,12 @@ kinit2(void *vstart, void *vend)
 {  
   freerange(vstart, vend);
   kmem.use_lock = 1;
+
+  for (int i = 0; i < PGSIZE; i++) {
+    uselist[i] = 0;
+  }
 }
+
 void
 freerange(void *vstart, void *vend)
 {
@@ -105,11 +112,12 @@ kfree(char *v)
   if(kmem.use_lock)
     release(&kmem.lock);
 
-  /* for (int i = 0; i < PGSIZE; i++) { */
-  /*   if (uselist[i] == v) { */
-  /*     uselist[i] = 0; */
-  /*   } */
-  /* } */
+  for (int i = 0; i < PGSIZE; i++) {
+    if (uselist[i] == v) {
+      uselist[i] = 0;
+      break;
+    }
+  }
 }
 
 // Allocate one 4096-byte page of physical memory.
@@ -131,13 +139,22 @@ kalloc(alloc_flag_t flag) {
     break;
   case ALLOC_PLOCAL:
     r = kmem.freelist_plocal;
-    uselist[count++] = (char *)r;
     if(r) {      
       kmem.freelist_plocal = r->next;
     }
     break;
   default:
     panic("Unknown allocation flag");
+  }
+
+  //Test fault injection arra
+  if (flag == ALLOC_KGLOBAL || flag == ALLOC_PLOCAL) {
+    for (int i = 0 ; i < PGSIZE; i++) {
+      if (uselist[i] == 0) {
+        uselist[i] = (char *)r;
+        break;
+      }
+    }
   }
   
   if(kmem.use_lock)
