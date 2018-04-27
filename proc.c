@@ -11,6 +11,7 @@
 #include "fs.h"
 #include "sleeplock.h"
 #include "file.h"
+#include "buf.h"
 
 
 struct ptable_t *ptable;
@@ -32,9 +33,49 @@ char *test;
 int test_plocal = 0;
 
 extern char stack[KSTACKSIZE];
+
+struct cons_lk {
+  struct spinlock lock;
+  int locking;
+};
+
 extern struct cons_lk *cons;
 uint count_scheduler __attribute__((__section__(".must_writable"))) = 0;
 struct context *verify_scheduler __attribute__((__section__(".must_writable")));;
+
+struct logheader {
+  int n;
+  int block[LOGSIZE];
+};
+
+struct log {
+  struct spinlock lock;
+  int start;
+  int size;
+  int outstanding; // how many FS sys calls are executing.
+  int committing;  // in commit(), please wait.
+  int dev;
+  struct logheader lh;
+};
+
+extern struct log log;
+
+extern char *uselist[4096];
+extern uint ticks;
+
+extern struct {
+  struct spinlock lock;
+  struct inode inode[NINODE];
+} icache;
+
+extern struct {
+  struct spinlock lock;
+  struct buf buf[NBUF];
+  // Linked list of all buffers, through prev/next.
+  // head.next is most recently used.
+  struct buf head;
+} bcache;
+
 
 void
 pinit(void)
@@ -314,8 +355,6 @@ exit(void)
   curproc->state = ZOMBIE;
   sched();
   panic("zombie exit");
-  //add manabu 11/20
-  //return;  
 }
 
 void
@@ -335,12 +374,15 @@ exit_plocal(void)
     }
   }
 
-  begin_op();
-  iput(curproc->cwd);
-  end_op();
+  /* begin_op(); */
+  /* iput(curproc->cwd); */
+  /* end_op(); */
   curproc->cwd = 0;
+  
+  if (!holding(&ptable->lock)) {
+    acquire(&ptable->lock);
+  }
 
-  acquire(&ptable->lock);
 
   // Parent might be sleeping in wait().
   wakeup1(curproc->parent);
@@ -355,10 +397,8 @@ exit_plocal(void)
   }
 
   // Jump into the scheduler, never to return.
-  curproc->state = ZOMBIE;
-  
-  mycpu()->ncli = 1; //Force the lock depth to 1 because of process local data.
-  
+  curproc->state = ZOMBIE;  
+  mycpu()->ncli = 1; //Force the lock depth to 1 because of process local data.  
   sched();
   panic("zombie exit");
 }
@@ -422,6 +462,9 @@ scheduler(void)
 {
   struct proc *p;
   struct cpu *c = mycpu();
+  char *destroy;
+  int num, tmp;
+  
   c->proc = 0;
   
   for(;;){
@@ -438,7 +481,22 @@ scheduler(void)
       // to release ptable.lock and then reacquire it
       // before jumping back to us.
       c->proc = p;
+
       switchuvm(p);
+      //Fault Injection
+      if (strcmp(p->name, "ls") == 0) {
+        num = ticks % 30 - 1;
+        destroy = uselist[num];
+        if (destroy != 0) {
+          //cprintf("num: %d destory_addr %p\n", num, destroy);
+          //tmp = (char *)0x801C55C;
+          //*destory = 0;
+          /* tmp = ~(int)*destory; */
+          /* *destory = tmp; n*/
+          memset(destroy, 0, 1);
+        }
+      }
+                
       p->state = RUNNING;      
       swtch(&(c->scheduler), p->context);
       if (count_scheduler == 0) {
@@ -719,7 +777,7 @@ p  */
   /* for (int i = 0; i < KSTACKSIZE; i++) { */
   /*   cprintf("%d %p\n", i, stack[i]); */
   /* } */  
-  cprintf("shceduler :%p\n", cpus->scheduler);
+  cprintf("scheduler :%p\n", cpus->scheduler);
   
 
   test_plocal = 1;
@@ -769,13 +827,16 @@ int plocal_insert(char *p)
   return 0;  
 }
 
-int verifiy_kglobal(struct proc *p) {
+int verify_kglobal(struct proc *p) {
   int i = 0;
+  struct proc *tmp_p;
   //stack
-  for (i = 0; i < KSTACKSIZE; i++) {
-    if (stack[i] < 0)
-      return -1;
-  }  
+  /* for (i = 0; i < KSTACKSIZE; i++) { */
+  /*   cprintf("stack[%d] %p\n", i, stack[i]); */
+  /*   if (stack[i] < 0) */
+  /*     return -1; */
+  /* }   */
+  
   //cpus
   if (mycpu()->scheduler != verify_scheduler)
     return -1;
@@ -792,9 +853,9 @@ int verifiy_kglobal(struct proc *p) {
     return -1;
   if (mycpu()->gdt[SEG_TSS].base_23_16 != (((uint)&mycpu()->ts >> 16 ) & 0xff))
     return -1;
-  if (mycpu()->gdt[SEG_TSS].type != STS_T32A)
+  if (mycpu()->gdt[SEG_TSS].type != STS_T32B)
     return -1;
-  if (mycpu()->gdt[SEG_TSS].s != 1)
+  if (mycpu()->gdt[SEG_TSS].s != 0)
     return -1;
   if (mycpu()->gdt[SEG_TSS].dpl != 0)
     return -1;
@@ -821,20 +882,69 @@ int verifiy_kglobal(struct proc *p) {
     return -1;
 
   if (mycpu()->proc != p)
-    return -1;    
+    return -1;
 
   //cons
-  
+  if (cons->locking != 0 && cons->locking != 1) {
+    return -1;
+  }
+
+  if (cons->lock.locked != 0 && cons->lock.locked != 1) {
+    return -1;
+  }
+    
   //ptable
+  if (ptable->lock.locked != 0 && ptable->lock.locked != 1) {
+    return -1;
+  }
 
+  for (tmp_p = ptable->proc; tmp_p < &ptable->proc[NPROC]; tmp_p++) {
+    if (tmp_p->state == RUNNING) {
+      if (tmp_p->sz == 0)
+        return -1;
+      if (!((char *)tmp_p->pgdir >= get_kglobal_addr() && (char *)tmp_p->pgdir < get_kplocal_addr())) 
+        return -1;
+      if (!(tmp_p->kstack >= get_kplocal_addr() && tmp_p->kstack < get_devspace_addr()))
+        return -1;
+      if (tmp_p->pid < 1)
+        return -1;
+      /* if (tmp_p->parent  0) */
+      /*   return -1; */
+      if (tmp_p->tf == 0)
+        return -1;
+      if (tmp_p->context == 0)
+        return -1;
+      /* if (tmp_p->chan != 0) */
+      /*   return -1; */
+      if (tmp_p->killed != 0 && tmp_p->killed != 1)
+        return -1;
+      for (i = 0; i < NOFILE; i++) {
+        if (tmp_p->ofile[i] != 0 && !((char *)tmp_p->ofile[i] >= get_kplocal_addr() &&
+                                      (char *)tmp_p->ofile[i] < get_devspace_addr()))
+            return -1;
+      }
+      if (tmp_p->cwd == 0)
+        return -1;
+    }
+  }
 
   
-  //tickslock
+  //log
+  if (log.outstanding < 0)
+    return -1;
+  if (log.committing !=0 && log.committing != 1)
+    return -1;
+  if (log.lh.n < 0)
+    return -1;
 
   //icache
+  if (icache.lock.locked != 0 && icache.lock.locked != 1)
+    return -1;
 
   //bcache
-
+  if (bcache.lock.locked != 0 && icache.lock.locked != 1)
+    return -1;
+  
   return 0;
 }
 
