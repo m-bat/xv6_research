@@ -78,7 +78,7 @@ filealloc(void)
     
   }
   */
-  if ((f = (struct file *)kalloc(ALLOC_PLOCAL)) == 0) {
+  if ((f = (struct file *)kalloc(ALLOC_KGLOBAL)) == 0) {
     panic("filealloc"); //It may not be necessary                         
   }
   
@@ -188,9 +188,9 @@ fileclose_plocal(struct file *f)
   if(ff.type == FD_PIPE)
     pipeclose_plocal(ff.pipe, ff.writable);
   else if(ff.type == FD_INODE){
-    begin_op();
-    iput(ff.ip);
-    end_op();
+    /* begin_op(); */
+    /* iput(ff.ip); */
+    /* end_op(); */
   }
 }
 // Get metadata about file f.
