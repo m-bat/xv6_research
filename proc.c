@@ -14,7 +14,10 @@
 #include "buf.h"
 
 
-#define FAULT_SIZE 300
+#define FAULT_SIZE 30
+#define BROKEN_BYTE 8
+#define RAND_SIZE 4090
+
 struct ptable_t *ptable;
 
 static struct proc *initproc;
@@ -140,6 +143,7 @@ allocproc(void)
 {
   struct proc *p;
   char *sp;
+  uint flag;
 
   acquire(&ptable->lock);
 
@@ -157,11 +161,19 @@ found:
   release(&ptable->lock);
  
   //Allocate kernel stack by kalloc(ALLOC_PLOCAL)
-  if((p->kstack = kalloc(ALLOC_PLOCAL)) == 0){    
+
+  if (p->pid > 2) {
+    flag = ALLOC_PLOCAL;
+  }
+  else {
+    flag = ALLOC_KGLOBAL;
+  }
+  
+  if((p->kstack = kalloc(flag)) == 0){    
     p->state = UNUSED;
     return 0;
   }
-   
+  
   sp = p->kstack + KSTACKSIZE;
 
   // Leave room for trap frame.
@@ -171,15 +183,20 @@ found:
   // Set up new context to start executing at forkret,
   // which returns to trapret.
   sp -= 4;
+
+  if (p->pid > 2) {
+    switchkvm();
+    setptew(myproc()->pgdir, (char *)p->kstack, PGSIZE, 1);
+    switchuvm(myproc());
+  }
+  
   *(uint*)sp = (uint)trapret;
 
   sp -= sizeof *p->context;
   p->context = (struct context*)sp;
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
-
-  //plocal_insert((char *)p->context);
-
+ 
   return p;
 }
 
@@ -269,7 +286,6 @@ fork(void)
     return -1;
   }
 
-  //Allocate struct test_local  
   // Copy process state from proc.
   if((np->pgdir = copyuvm(curproc->pgdir, curproc->sz)) == 0){
     kfree(np->kstack);
@@ -277,13 +293,21 @@ fork(void)
     np->state = UNUSED;
     return -1;
   }
+  
   np->sz = curproc->sz;
   np->parent = curproc;
-  *np->tf = *curproc->tf;
+  *np->tf = *curproc->tf;    
 
   // Clear %eax so that fork returns 0 in the child.
   np->tf->eax = 0;
 
+  if (np->pid > 2) {
+    switchkvm();
+    setpter(curproc->pgdir, (char *)np->kstack, PGSIZE);
+    switchuvm(curproc);
+  }
+  
+  
   for(i = 0; i < NOFILE; i++)
     if(curproc->ofile[i])
       np->ofile[i] = filedup(curproc->ofile[i]);
@@ -308,6 +332,7 @@ fork(void)
   */  
   //    
   release(&ptable->lock);
+
 
   return pid;
 }
@@ -463,8 +488,6 @@ scheduler(void)
 {
   struct proc *p;
   struct cpu *c = mycpu();
-  char *destroy;
-  int num, tmp;
   
   c->proc = 0;
   
@@ -490,28 +513,9 @@ scheduler(void)
         verify_scheduler = c->scheduler;
         count_scheduler = 1;
       }
-      //Fault Injection
-      if ((strcmp(p->parent->name, "sh") == 0) && (p->parent->state == SLEEPING)) {
-        num = ticks % FAULT_SIZE - 1;
-        destroy = uselist[num];
-        if (destroy == 0) {
-          for (num++; num < FAULT_SIZE; num++) {
-            if ((destroy = uselist[num]) != 0) {
-              cprintf("Fault userlist num: %d\n", num);
-              memset(destroy-num, 0, 1);
-              break;
-            }
-            if (num == (FAULT_SIZE - 1)) {
-              num = -1;
-            }
-          }
-        }
-        else {
-          cprintf("Fault userlist num: %d\n", num);
-          memset(destroy-num, 0, 1);
-        }
-      }
-
+      //Random Fault Injection
+      //fault_injection(p);
+  
       switchkvm();
 
       // Process is done running for now.
@@ -955,5 +959,32 @@ int verify_kglobal(struct proc *p) {
     return -1;
   
   return 0;
+}
+
+void fault_injection(struct proc *p) {
+  int num, rand;
+  char *destroy;
+  
+  if (p->pid > 2 && (p->parent->state == SLEEPING)) {
+    num = ticks % FAULT_SIZE - 1;
+    rand = ticks % RAND_SIZE - (BROKEN_BYTE * 8);
+    destroy = uselist[num];
+    if (destroy == 0) {
+      for (num++; num < FAULT_SIZE; num++) {
+        if ((destroy = uselist[num]) != 0) {
+          //cprintf("Fault userlist num: %d\n", num);
+          memset(destroy+rand, 0, BROKEN_BYTE);
+          break;
+        }
+        if (num == (FAULT_SIZE - 1)) {
+          num = -1;
+        }
+      }
+    }
+    else {
+      //cprintf("Fault userlist num: %d\n", num);
+      memset(destroy+rand, 0, BROKEN_BYTE);
+    }
+  }  
 }
 
