@@ -55,7 +55,7 @@ trap(struct trapframe *tf)
   //
 
   if (p != 0) {
-    if (strcmp(p->parent->name, "sh") == 0) {
+    if (p->pid > 2) {
       switchtrapvm();
     }
   }
@@ -64,7 +64,7 @@ trap(struct trapframe *tf)
     if(myproc()->killed) {
       
       if (p != 0) {
-        if (strcmp(p->parent->name, "sh") == 0) {
+        if (p->pid > 2) {
           switchuvm(p);
         }
       }
@@ -74,7 +74,7 @@ trap(struct trapframe *tf)
     myproc()->tf = tf;
 
     if (p != 0) {
-      if (strcmp(p->parent->name, "sh") == 0) {
+      if (p->pid > 2) {
         switchuvm(p);
       }
     }
@@ -83,7 +83,7 @@ trap(struct trapframe *tf)
     if(myproc()->killed) {
       
       if (p != 0) {
-        if (strcmp(p->parent->name, "sh") == 0) {
+        if (p->pid > 2) {
           switchuvm(p);
         }
       }
@@ -139,7 +139,7 @@ trap(struct trapframe *tf)
       cprintf("LOG: Access KERNELPLOCAL! exit process %s\n", p->name);
 
       if (p != 0) {
-        if (strcmp(p->parent->name, "sh") == 0) {
+        if (p->pid > 2) {
           switchuvm(p);
         }
       }      
@@ -193,7 +193,7 @@ trap(struct trapframe *tf)
   if(myproc() && myproc()->killed && (tf->cs&3) == DPL_USER) {
 
     if (p != 0) {
-      if (strcmp(p->parent->name, "sh") == 0) {
+      if (p->pid > 2) {
         switchuvm(p);
       }
     }
@@ -207,7 +207,7 @@ trap(struct trapframe *tf)
      tf->trapno == T_IRQ0+IRQ_TIMER) {
 
     if (p != 0) {
-      if (strcmp(p->parent->name, "sh") == 0) {
+      if (p->pid > 2) {
         switchuvm(p);
       }
     }
@@ -221,7 +221,7 @@ trap(struct trapframe *tf)
   if(myproc() && myproc()->killed && (tf->cs&3) == DPL_USER) {
 
     if (p != 0) {
-      if (strcmp(p->parent->name, "sh") == 0) {
+      if (p->pid > 2) {
         switchuvm(p);
       }
     }
@@ -230,7 +230,7 @@ trap(struct trapframe *tf)
   }
   
   if (p != 0) {
-    if (strcmp(p->parent->name, "sh") == 0) {
+    if (p->pid > 2) {
       switchuvm(p);
     }
   }
