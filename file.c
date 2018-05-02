@@ -78,7 +78,7 @@ filealloc(void)
     
   }
   */
-  if ((f = (struct file *)kalloc(ALLOC_KGLOBAL)) == 0) {
+  if ((f = (struct file *)kalloc(ALLOC_PLOCAL)) == 0) {
     panic("filealloc"); //It may not be necessary                         
   }
   
