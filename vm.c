@@ -226,7 +226,7 @@ setupkvm(alloc_flag_t flag)
   pde_t *pgdir;
   struct kmap *k;
 
-  if((pgdir = (pde_t*)kalloc(ALLOC_KGLOBAL)) == 0)
+  if((pgdir = (pde_t*)kalloc(flag)) == 0)
     return 0;
   memset(pgdir, 0, PGSIZE);  
 
@@ -419,6 +419,7 @@ switchuvm_ro(struct proc *p, const int n)
 
     //********* Kernel Process Local  ************************************
     setptew(p->pgdir, p->kstack, KSTACKSIZE, 1);
+    
 
     //********************************************************************
 
@@ -514,7 +515,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       return 0;
     }
     memset(mem, 0, PGSIZE);
-    if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U, ALLOC_KGLOBAL) < 0){
+    if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U, ALLOC_PLOCAL) < 0){
       cprintf("allocuvm out of memory (2)\n");
       deallocuvm(pgdir, newsz, oldsz);
       kfree(mem);
@@ -665,9 +666,6 @@ setptew(pde_t *pgdir, char *uva, uint size, uint c)
 
     //set write-eable
     *pte |= PTE_W;
-    if (c == 11) {
-      cprintf("DEBUG: setptew: pte %p\n", &pte);
-    }
     if  (a == last) {
       break;
     }
@@ -676,11 +674,35 @@ setptew(pde_t *pgdir, char *uva, uint size, uint c)
   //flush the TLB
   if (c == 0)
     lcr3(V2P(pgdir));
-
-  if (c == 2) {
-    //cprintf("setptew: bcache %x\n", &b);
-  }
 }
+
+void
+setpter(pde_t *pgdir, char *uva, uint size)  
+{
+  char *a, *last;
+  a = (char *)PGROUNDDOWN((uint)uva);
+  last = (char *)PGROUNDDOWN(((uint)uva) + size - 1);
+  //b = a;
+  pte_t *pte;
+
+  for (;;) {
+    pte = walkpgdir(pgdir, a);
+  
+    if (pte == 0)
+      panic("setpter");
+
+    //set read-only
+    clearptew(pgdir, a);
+
+    if  (a == last) {
+      break;
+    }
+    a += PGSIZE;
+  }
+  //flush the TLB
+  lcr3(V2P(pgdir));
+}
+
 
 void setptew_kernel(pde_t *pgdir)
 {

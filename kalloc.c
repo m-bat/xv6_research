@@ -74,7 +74,7 @@ freerange(void *vstart, void *vend)
   char *p;
   p = (char*)PGROUNDUP((uint)vstart);
   for(; p + PGSIZE <= (char*)vend; p += PGSIZE)
-    kfree(p);
+    kfree_init(p);
 }
 
 //PAGEBREAK: 21
@@ -86,9 +86,17 @@ void
 kfree(char *v)
 {
   struct run *r;
+  struct proc *p = myproc();
 
   if((uint)v % PGSIZE || v < end || V2P(v) >= PHYSTOP)
     panic("kfree");
+
+
+  if (p != 0 && p->pid > 1) {    
+    switchkvm();
+    setptew(p->pgdir, v, PGSIZE, 1);
+    switchuvm(p);
+  }
 
   // Fill with junk to catch dangling refs.
   memset(v, 1, PGSIZE);
@@ -120,6 +128,45 @@ kfree(char *v)
   }
 }
 
+void
+kfree_init(char *v)
+{
+  struct run *r;
+
+  if((uint)v % PGSIZE || v < end || V2P(v) >= PHYSTOP)
+    panic("kfree");
+
+  // Fill with junk to catch dangling refs.  
+  memset(v, 1, PGSIZE);
+
+  if(kmem.use_lock)
+    acquire(&kmem.lock);
+  r = (struct run*)v;
+  
+  if (v >= (char *)KERNPLOCAL) {
+    r->next = kmem.freelist_plocal;
+    kmem.freelist_plocal = r;
+    //Read-only set PTE_R
+    //clearptew(kpgdir, (char *)r);
+    //cprintf("DEBUG: kinit2: kpgdir->0x%x\n", kpgdir);
+  }
+  else {
+    r->next = kmem.freelist_global;
+    kmem.freelist_global = r;
+  }
+
+  if(kmem.use_lock)
+    release(&kmem.lock);
+
+  for (int i = 0; i < PGSIZE; i++) {
+    if (uselist[i] == v) {
+      uselist[i] = 0;
+      break;
+    }
+  }
+}
+
+
 // Allocate one 4096-byte page of physical memory.
 // Returns a pointer that the kernel can use.
 // Returns 0 if the memory cannot be allocated.
@@ -147,8 +194,9 @@ kalloc(alloc_flag_t flag) {
     panic("Unknown allocation flag");
   }
 
+  //flag == ALLOC_KGLOBAL ||
   //Test fault injection arra
-  if (flag == ALLOC_KGLOBAL || flag == ALLOC_PLOCAL) {
+  if (flag == ALLOC_PLOCAL) {
     for (int i = 0 ; i < PGSIZE; i++) {
       if (uselist[i] == 0) {
         uselist[i] = (char *)r;
