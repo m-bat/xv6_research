@@ -49,7 +49,7 @@ exec(char *path, char **argv)
   if(elf.magic != ELF_MAGIC)
     goto bad;
 
-  if((pgdir = setupkvm(ALLOC_KGLOBAL)) == 0)
+  if((pgdir = setupkvm(ALLOC_PLOCAL)) == 0)
     goto bad;
 
   // Load program into memory.
@@ -117,7 +117,7 @@ exec(char *path, char **argv)
   if (strcmp(path, "/init") == 0) {
     n = 1;
   }
-  else if (strcmp(path, "sh") == 0) {
+  else if (strcmp(path, "sh") == 0) {    
     n = 1;
   }
   else if (strcmp(path, "measure") == 0) {
