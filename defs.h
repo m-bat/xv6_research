@@ -75,6 +75,7 @@ void            ioapicinit(void);
 typedef enum ALLOC_TYPE {ALLOC_KGLOBAL, ALLOC_PLOCAL} alloc_flag_t;
 char*           kalloc(alloc_flag_t);
 void            kfree(char*);
+void            kfree_init(char*);
 void            kinit1(void*, void*);
 void            kinit2(void*, void*);
 //char*           kuinfo_alloc(void);
@@ -143,6 +144,7 @@ int             plocal_insert(char *p);
 int             plist_init(void);          
 void            exit_plocal(void);
 int             verify_kglobal(struct proc *p);
+void            fault_injection(struct proc *p);
 
 // swtch.S
 void            swtch(struct context**, struct context*);
@@ -227,6 +229,7 @@ char*           get_kglobal_addr();
 char*           get_kplocal_addr();
 char*           get_devspace_addr();
 pte_t*          get_pte(pde_t *pgdir, char *v);
+void            setpter(pde_t *pgdir, char *uva, uint size);
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))
