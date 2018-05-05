@@ -80,6 +80,13 @@ extern struct {
   struct buf head;
 } bcache;
 
+extern struct {
+  struct spinlock lock;
+  //struct file file[NFILE];
+  //add manabu
+  struct file file;  //file head 
+} ftable;
+
 
 void
 pinit(void)
@@ -308,9 +315,12 @@ fork(void)
   }
   
   
-  for(i = 0; i < NOFILE; i++)
-    if(curproc->ofile[i])
+  for(i = 0; i < NOFILE; i++) {
+    if(curproc->ofile[i]) {
       np->ofile[i] = filedup(curproc->ofile[i]);
+    }
+  }
+  
   np->cwd = idup(curproc->cwd);
 
   safestrcpy(np->name, curproc->name, sizeof(curproc->name));

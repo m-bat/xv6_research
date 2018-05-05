@@ -22,6 +22,8 @@ struct {
   struct file file;  //file head 
 } ftable __attribute__((__section__(".should_writable")));
 
+extern struct ptable_t *ptable;
+
 void
 fileinit(void)
 { 
@@ -119,12 +121,40 @@ filealloc(void)
 struct file*
 filedup(struct file *f)
 {
+  struct file *new_f;
+  struct proc *p;
+  
   acquire(&ftable.lock);
   if(f->ref < 1)
     panic("filedup");
   f->ref++;
-  release(&ftable.lock);
-  return f;
+
+  //Change from process local data to kernel global data
+  if ((uint)f >= (uint)get_kplocal_addr() && (uint)f < (uint)get_devspace_addr()) {
+    if ((new_f = (struct file *)kalloc(ALLOC_KGLOBAL)) == 0) {
+      panic("filealloc");
+    }
+  
+    *new_f = *f;
+  
+    acquire(&ptable->lock);
+    for (p = ptable->proc; p < &ptable->proc[NPROC]; p++) {
+      for(int i = 0; i < NOFILE; i++) {
+        if (p->ofile[i] == f) {
+          p->ofile[i] = new_f;
+        }
+      }
+    }
+    release(&ptable->lock);
+    release(&ftable.lock);
+    fileclose_dup(f);
+  
+    return new_f;
+  }
+  else {
+    release(&ftable.lock);
+    return f;
+  }  
 }
 
 // Close file f.  (Decrement ref count, close when reaches 0.)
@@ -158,6 +188,22 @@ fileclose(struct file *f)
     iput(ff.ip);
     end_op();
   }
+}
+
+void fileclose_dup(struct file *f)
+{
+  acquire(&ftable.lock);
+  if(f->ref < 1)
+    panic("fileclose");
+
+  if(f->ref > 1){
+    release(&ftable.lock);
+    return;
+  }
+
+  kfree((char*)f);
+  
+  release(&ftable.lock);
 }
 
 

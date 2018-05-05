@@ -360,7 +360,7 @@ switchuvm_ro(struct proc *p, const int n)
     //cprintf("DEBUG: before: kernel_ro\n");
     //cprintf("DEBUG: ptable addr %x\n", &ptable);
 
-    set_kmem_readonly(p->pgdir);    
+    set_kmem_readonly(p->pgdir);
     //cprintf("DEBUG: ptable addr: %x\n", ptable);
     //int size = PGROUNDUP(sizeof(ptable));
     //cprintf("DEBUG: ptable size %d\n", size);
@@ -423,30 +423,29 @@ switchuvm_ro(struct proc *p, const int n)
 
     //********************************************************************
 
-    //cprintf("DEBUG: process name %s\n", p->name);
     //set open filen array to be writable
     //set ofile[0], ofile[1], ofile[2] to be writable because parent process is init.
     //ofile[0] == ofile[1] == ofile[2] Even if i < 1
     int i;
     //*Additional notes*
-    //Because fork is duped from the original process, ofile is made writeable.
+    //Because fork is duped from the parent process, ofile is made writeable.
     for (i = 0; i < NOFILE; i++) { // Even if i < NOFILE
       if (!p->ofile[i])
         continue;
-      setptew(p->pgdir, (char *)(p->ofile[i]), PGSIZE, 1);
+       if (p->ofile[i]->ref == 1) { 
+         setptew(p->pgdir, (char *)p->ofile[i], PGSIZE, 1); 
+       }
+      //setptew(p->pgdir, (char *)p->ofile[i], PGSIZE, 1); 
       //Make the pipe structure writeable
       if (p->ofile[i]->type == FD_PIPE) {        
         setptew(p->pgdir, (char *)(p->ofile[i]->pipe), PGSIZE, 1);
       }
     }
-    //cprintf("DEBUG: after: kernel_ro\n");
   }
    
   lcr3(V2P(p->pgdir));  // switch to process's address space
-  //cprintf("DEBUG: after: changed lcr3\n");
   popcli();  
-  //cprintf("DEBUG: after: popcli\n");
-  //panic after
+
 }
 
 // Load the initcode into address 0 of pgdir.

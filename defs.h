@@ -35,6 +35,7 @@ int             exec(char*, char**);
 struct file*    filealloc(void);
 void            fileclose(struct file*);
 void            fileclose_plocal(struct file*);
+void            fileclose_dup(struct file*);
 struct file*    filedup(struct file*);
 void            fileinit(void);
 int             fileread(struct file*, char*, int n);
