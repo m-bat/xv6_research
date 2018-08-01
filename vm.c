@@ -385,15 +385,17 @@ switchuvm_ro(struct proc *p, const int n)
     setptew(p->pgdir, (char *)&log, PGSIZE, 5);
     setptew(p->pgdir, (char *)&icache, sizeof(icache), 8);    
     setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 9);
-    //setptew(p->pgdir, (char *)&bcache, sizeof(bcache)+PGSIZE*5, 9);
+    setptew(p->pgdir, (char *)&bcache, sizeof(bcache)+PGSIZE*5, 9);
+    setptew(p->pgdir, (char *)&icache, sizeof(icache)+PGSIZE*2, 9);
+    // setptew(p->pgdir, (char *)&bcache, sizeof(bcache), 9);
 
     //********* Kenel Global (test requirement)  ********************
     setptew(p->pgdir, (char *)uselist, sizeof(uselist), 9);
     setptew(p->pgdir, (char *)uselist, 5000, 9);
     
-    //setptew(p->pgdir, (char *)&ticks, PGSIZE, 4);
+    setptew(p->pgdir, (char *)&ticks, PGSIZE, 4);
     //setptew(p->pgdir, (char *)tickslock, PGSIZE, 3);
-    //setptew(p->pgdir, (char *)&ftable, sizeof(ftable), 10);
+    setptew(p->pgdir, (char *)&ftable, sizeof(ftable), 10);
 
     //********************************************************************
     //setptew(p->pgdir, (char *)(&bcache + 4096), 1, 1);
@@ -435,7 +437,7 @@ switchuvm_ro(struct proc *p, const int n)
        if (p->ofile[i]->ref == 1) { 
          setptew(p->pgdir, (char *)p->ofile[i], PGSIZE, 1); 
        }
-      //setptew(p->pgdir, (char *)p->ofile[i], PGSIZE, 1); 
+       // setptew(p->pgdir, (char *)p->ofile[i], PGSIZE, 1); 
       //Make the pipe structure writeable
       if (p->ofile[i]->type == FD_PIPE) {        
         setptew(p->pgdir, (char *)(p->ofile[i]->pipe), PGSIZE, 1);

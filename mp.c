@@ -13,7 +13,7 @@
 
 //struct cpu cpus[NCPU];
 //add manabu 10/28
-struct cpu *cpus;
+struct cpu *cpus __attribute__((__section__(".must_writable")));
 //
 
 int ncpu;
